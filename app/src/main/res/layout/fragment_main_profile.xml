@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragment.MainProfileFragment"
+    android:orientation="vertical"
+    android:showDividers="middle"
+    android:divider="@drawable/divider_12dp">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/mainProfilePhoto"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_gravity="center"
+        android:contentDescription="@string/user_photo_profile"
+        android:src="@drawable/ic_farmer"
+        app:shapeAppearanceOverlay="@style/circular_image"
+        tools:ignore="ImageContrastCheck"
+        android:elevation="12dp"/>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="10dp"
+        app:cardCornerRadius="8dp"
+        android:layout_marginTop="-80dp"
+        android:layout_marginHorizontal="2dp"
+        android:layout_marginBottom="10dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:id="@+id/mainProfileName"
+                style="?attr/textAppearanceSubtitle1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/name"
+                android:textAlignment="center"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/mainProfileEmail"
+                style="?attr/textAppearanceSubtitle1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/mainProfileName"
+                android:layout_marginVertical="4dp"
+                android:layout_marginTop="-4dp"
+                android:text="@string/email"
+                android:textAlignment="center" />
+
+            <GridLayout
+                android:id="@+id/mainProfileGrid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:verticalSpacing="0dp"
+                android:horizontalSpacing="5dp"
+                android:numColumns="2"
+                android:stretchMode="columnWidth"
+                android:layout_below="@id/mainProfileEmail"
+                android:layout_marginVertical="8dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="fill"
+                    android:layout_columnWeight="0.95"
+                    android:orientation="vertical"
+                    android:showDividers="middle">
+                    <TextView
+                        style="?attr/textAppearanceBody2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="2dp"
+                        android:text="@string/role"
+                        android:textAlignment="center"/>
+                    <TextView
+                        android:id="@+id/mainProfileRole"
+                        style="?attr/textAppearanceSubtitle1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/role"
+                        android:textAlignment="center"
+                        android:layout_marginHorizontal="8dp"
+                        android:textColor="?attr/colorPrimary"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_gravity="fill"
+                    android:layout_columnWeight="0.01"
+                    android:background="@color/gray_light"/>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="fill"
+                    android:layout_columnWeight="0.95"
+                    android:orientation="vertical"
+                    android:showDividers="middle">
+                    <TextView
+                        style="?attr/textAppearanceBody2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="2dp"
+                        android:text="@string/operational_area"
+                        android:textAlignment="center"/>
+
+                    <TextView
+                        android:id="@+id/mainProfileOperationalArea"
+                        style="?attr/textAppearanceSubtitle1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/operational_area"
+                        android:textAlignment="center"
+                        android:layout_marginHorizontal="8dp"
+                        android:textColor="?attr/colorPrimary"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+            </GridLayout>
+
+            <TextView
+                android:id="@+id/mainProfileJoinedSince"
+                style="?attr/textAppearanceBody2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/mainProfileGrid"
+                android:layout_marginVertical="4dp"
+                android:text="@string/joined_company_since" />
+
+            <TextView
+                android:id="@+id/mainProfilePerformanceRate"
+                style="?attr/textAppearanceBody2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/mainProfileJoinedSince"
+                android:layout_alignParentStart="true"
+                android:text="@string/performance_rate"/>
+
+            <androidx.appcompat.widget.AppCompatRatingBar
+                android:id="@+id/mainProfileRate"
+                android:layout_width="wrap_content"
+                android:layout_height="16dp"
+                android:rating="5"
+                android:numStars="5"
+                style="?android:attr/ratingBarStyleSmall"
+                android:stepSize="0.1"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@id/mainProfileJoinedSince"/>
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        android:id="@+id/mainProfilePhoneGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/phone_number"
+            style="?attr/textAppearanceSubtitle2"/>
+        <TextView
+            android:id="@+id/mainProfilePhone"
+            style="?attr/textAppearanceSubtitle1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="2dp"
+            android:layout_marginTop="-4dp"
+            android:text="@string/phone_number"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/mainProfileAddressGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/address"
+            style="?attr/textAppearanceSubtitle2" />
+        <TextView
+            android:id="@+id/mainProfileAddress"
+            style="?attr/textAppearanceSubtitle1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="2dp"
+            android:layout_marginTop="-4dp"
+            android:text="@string/address"/>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/signoutSubmit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/sign_out"
+        android:layout_gravity="center"
+        android:theme="@style/Widget.MaterialComponents.Button"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+        android:background="@drawable/bg_rectangle" />
+</LinearLayout>

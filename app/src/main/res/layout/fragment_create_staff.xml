@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragment.CreateStaffFragment"
+    android:orientation="vertical"
+    android:showDividers="middle"
+    android:divider="@drawable/divider_12dp"
+    android:padding="20dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:showDividers="middle"
+        android:divider="@drawable/divider_6dp">
+
+        <ImageView
+            android:id="@+id/createStaffGardenImage"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/farm_picture"
+            android:src="@mipmap/ic_launcher_round"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/createStaffGardenLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.Design.TextInputLayout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/createStaffGarden"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:hint="@string/farm_id"
+                android:importantForAutofill="no"
+                android:minHeight="50dp"
+                android:singleLine="true"
+                android:maxLines="1"
+                tools:ignore="SpeakableTextPresentCheck" />
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+
+    <SearchView
+        android:id="@+id/createStaffSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:iconifiedByDefault="false"
+        android:queryHint="Search"/>
+
+<!--    <androidx.recyclerview.widget.RecyclerView-->
+<!--        android:id="@+id/createStaffSearchRecycler"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="-12dp"/>-->
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/createStaffSelectableRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+<!--    todo : layout recyclerview + adapter -->
+
+    <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
+        android:id="@+id/createStaffSubmit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/add_staff"
+        android:layout_gravity="center"
+        android:theme="@style/Widget.MaterialComponents.Button"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+        app:spinning_bar_color="@color/white"
+        app:spinning_bar_padding="12dp"
+        android:background="@drawable/bg_rectangle"
+        android:layout_marginTop="6dp"/>
+</LinearLayout>

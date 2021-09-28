@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/addDataMonitoring"
+        android:title="@string/add_recent_data_monitoring"
+        android:icon="@drawable/ic_add_data_monitoring"/>
+
+    <item
+        android:id="@+id/addCrops"
+        android:title="@string/add_new_crops_to_plant"
+        android:icon="@drawable/ic_farm"/>
+
+    <item
+        android:id="@+id/addTodoList"
+        android:title="@string/add_schedule_or_to_do_list"
+        android:icon="@drawable/ic_add_notes"/>
+
+    <item
+        android:id="@+id/addKit"
+        android:title="@string/create_new_hydroponic_kit_to_farm"
+        android:icon="@drawable/ic_add_kit"/>
+
+    <item
+        android:id="@+id/addPlant"
+        android:title="@string/add_new_plant_to_nydrodb"
+        android:icon="@drawable/ic_add_database"/>
+</menu>

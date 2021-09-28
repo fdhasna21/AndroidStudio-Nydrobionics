@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_create_profile"
+    app:startDestination="@id/createUserFragment">
+
+    <fragment
+        android:id="@+id/createUserFragment"
+        android:name="com.fdhasna21.nydrobionics.fragment.CreateUserFragment"
+        android:label="fragment_create_user"
+        tools:layout="@layout/fragment_create_user" >
+        <action
+            android:id="@+id/action_createUserFragment_to_createGardenFragment"
+            app:destination="@id/createGardenFragment" />
+        <action
+            android:id="@+id/action_createUserFragment_to_createStaffFragment"
+            app:destination="@id/createStaffFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createGardenFragment"
+        android:name="com.fdhasna21.nydrobionics.fragment.CreateFarmFragment"
+        android:label="fragment_create_garden"
+        tools:layout="@layout/fragment_create_farm" >
+        <action
+            android:id="@+id/action_createGardenFragment_to_createStaffFragment"
+            app:destination="@id/createStaffFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createStaffFragment"
+        android:name="com.fdhasna21.nydrobionics.fragment.CreateStaffFragment"
+        android:label="fragment_create_staff"
+        tools:layout="@layout/fragment_create_staff" />
+</navigation>

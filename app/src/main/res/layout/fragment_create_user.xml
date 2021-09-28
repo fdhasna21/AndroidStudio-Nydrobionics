@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".fragment.CreateUserFragment"
+    android:orientation="vertical"
+    android:showDividers="middle"
+    android:divider="@drawable/divider_12dp"
+    android:padding="20dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/createUserPhoto"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:contentDescription="@string/user_photo_profile"
+            android:src="@drawable/ic_farmer"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ImageContrastCheck"
+            app:shapeAppearanceOverlay="@style/circular_image"/>
+
+        <ImageView
+            android:id="@+id/createUserEditPhoto"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_circle"
+            android:backgroundTint="#80000000"
+            android:padding="7.5dp"
+            android:src="@drawable/ic_camera"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.95"
+            app:layout_constraintStart_toStartOf="@+id/createUserPhoto"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.95"
+            app:tint="@color/white"
+            android:foregroundGravity="center"
+            android:contentDescription="@string/add_photo"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/createUserEmailLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Widget.Design.TextInputLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/createUserEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:hint="@string/email"
+            android:importantForAutofill="no"
+            android:inputType="textEmailAddress"
+            android:minHeight="50dp"
+            android:singleLine="true"
+            android:maxLines="1"
+            tools:ignore="SpeakableTextPresentCheck" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/createUserNameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Widget.Design.TextInputLayout"
+        app:endIconMode="clear_text">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/createUserName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="50dp"
+            android:singleLine="true"
+            android:inputType="textPersonName"
+            android:hint="@string/name"
+            android:imeOptions="actionNext"
+            android:maxLines="1"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/createUserPhoneLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Widget.Design.TextInputLayout"
+        app:endIconMode="clear_text">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/createUserPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="50dp"
+            android:singleLine="true"
+            android:inputType="phone"
+            android:hint="@string/phone_number"
+            android:imeOptions="actionNext"
+            android:maxLines="1"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/createUserAddressLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Widget.Design.TextInputLayout"
+        app:endIconMode="clear_text">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/createUserAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="50dp"
+            android:singleLine="true"
+            android:inputType="textMultiLine"
+            android:hint="@string/address"
+            android:imeOptions="actionNext"
+            android:maxLines="3"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/createUserBioLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        style="@style/Widget.Design.TextInputLayout"
+        app:counterEnabled="true"
+        app:counterMaxLength="100">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/createUserBio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/bio"
+            android:importantForAutofill="no"
+            android:inputType="textMultiLine"
+            android:maxLines="5"
+            android:minHeight="50dp"
+            tools:ignore="SpeakableTextPresentCheck" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        android:showDividers="middle"
+        android:divider="@drawable/divider_6dp"
+        android:baselineAligned="false">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/createUserDOBLayout"
+            android:layout_weight=".5"
+            android:layout_height="wrap_content"
+            style="@style/Widget.Design.TextInputLayout"
+            android:layout_width="0dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/createUserDOB"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:cursorVisible="false"
+                android:drawableEnd="@drawable/ic_drop_down"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:hint="@string/date_of_birth"
+                android:importantForAutofill="no"
+                android:inputType="date"
+                android:minHeight="50dp"
+                android:singleLine="true"
+                tools:ignore="SpeakableTextPresentCheck" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.addisonelliott.segmentedbutton.SegmentedButtonGroup
+            android:id="@+id/createUserGender"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".5"
+            android:weightSum="2"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="4dp"
+            android:elevation="2dp"
+            android:background="@color/white"
+            app:borderColor="@color/default_gray"
+            app:borderWidth="1dp"
+            app:divider="@color/default_gray"
+            app:dividerWidth="1dp"
+            app:position="0"
+            app:radius="4dp"
+            app:ripple="true"
+            app:draggable="true"
+            app:rippleColor="@color/gray_light"
+            app:selectedBackground="@color/default_gray">
+
+            <com.addisonelliott.segmentedbutton.SegmentedButton
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:padding="10dp"
+                app:selectedTextColor="@color/white"
+                app:text="Male"
+                app:textColor="@color/default_gray"
+                style="?attr/textAppearanceSubtitle2"/>
+
+            <com.addisonelliott.segmentedbutton.SegmentedButton
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:padding="10dp"
+                app:drawableGravity="top"
+                app:selectedTextColor="@color/white"
+                app:text="Female"
+                app:textColor="@color/default_gray"
+                style="?attr/textAppearanceSubtitle2"/>
+        </com.addisonelliott.segmentedbutton.SegmentedButtonGroup>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/createUserRoleGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:showDividers="middle"
+        android:divider="@drawable/divider_12dp">
+
+        <TextView
+            android:id="@+id/createUserRole"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/select_your_role"
+            android:textSize="16sp"
+            android:paddingVertical="6dp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/roleOwner"
+                    android:layout_width="150dp"
+                    android:layout_height="175dp"
+                    android:checkable="true"
+                    android:clickable="true"
+                    android:elevation="12dp"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    app:cardCornerRadius="4dp"
+                    android:layout_margin="6dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="12dp"
+                        android:orientation="vertical"
+                        tools:ignore="UseCompoundDrawables">
+
+                        <ImageView
+                            android:layout_width="120dp"
+                            android:layout_height="120dp"
+                            android:src="@drawable/owner"
+                            android:contentDescription="@string/owner" />
+
+                        <TextView
+                            style="?attr/textAppearanceSubtitle2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/owner"
+                            android:textAlignment="center"
+                            android:textColor="?attr/colorPrimary" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/roleStaff"
+                    android:layout_width="150dp"
+                    android:layout_height="175dp"
+                    android:checkable="true"
+                    android:clickable="true"
+                    android:elevation="12dp"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    app:cardCornerRadius="4dp"
+                    android:layout_margin="6dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="12dp"
+                        android:orientation="vertical"
+                        tools:ignore="UseCompoundDrawables">
+
+                        <ImageView
+                            android:layout_width="120dp"
+                            android:layout_height="120dp"
+                            android:src="@drawable/staff"
+                            android:contentDescription="@string/staff"/>
+
+                        <TextView
+                            style="?attr/textAppearanceSubtitle2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/staff"
+                            android:textAlignment="center"
+                            android:textColor="?attr/colorPrimary" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/createUserRoleDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/role_description"
+            android:gravity="center"
+            android:textSize="14sp"/>
+    </LinearLayout>
+
+    <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
+        android:id="@+id/createUserSubmit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/create_profile"
+        android:layout_gravity="center"
+        android:theme="@style/Widget.MaterialComponents.Button"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+        app:spinning_bar_color="@color/white"
+        app:spinning_bar_padding="12dp"
+        android:background="@drawable/bg_rectangle"
+        android:layout_marginTop="6dp"/>
+</LinearLayout>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/mainHomeFragment"
+        android:title="@string/home"
+        android:icon="@drawable/ic_home"/>
+
+    <item
+        android:id="@+id/mainSocialFragment"
+        android:title="@string/social"
+        android:icon="@drawable/ic_social"/>
+
+    <item
+        android:id="@+id/mainPlaceholderFAB"
+        android:title=""
+        android:enabled="false"/>
+
+    <item
+        android:id="@+id/mainNotesFragment"
+        android:title="@string/notes"
+        android:icon="@drawable/ic_notes"/>
+
+    <item
+        android:id="@+id/mainProfileFragment"
+        android:title="@string/profile"
+        android:icon="@drawable/ic_profile"/>
+</menu>

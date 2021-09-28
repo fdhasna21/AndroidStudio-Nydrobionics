@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="10dp"
+    android:background="?attr/selectableItemBackground"
+    android:id="@+id/rowSearch"
+    android:orientation="horizontal"
+    android:divider="@drawable/divider_6dp"
+    android:showDividers="middle"
+    android:weightSum="2">
+
+    <ImageView
+        android:id="@+id/rowPicture"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_weight="0.25"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_launcher_foreground"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/rowpicture" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:layout_weight="1.5"
+        android:orientation="vertical"
+        android:divider="@drawable/divider_3dp"
+        android:showDividers="middle">
+
+        <TextView
+            android:id="@+id/rowTextSubtitle"
+            style="?attr/textAppearanceSubtitle1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:text="@string/subtitle"
+            android:textSize="14sp"
+            android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/rowTextTitle"
+            style="?attr/textAppearanceSubtitle1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:text="@string/title"
+            android:textSize="16sp"/>
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/rowClose"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.25"
+        android:src="@drawable/ic_close"
+        android:backgroundTint="@null"
+        android:contentDescription="@string/rowclose"/>
+</LinearLayout>

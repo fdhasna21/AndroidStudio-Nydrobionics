@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragment.MainAddFragment"
+    android:orientation="vertical"
+    android:paddingBottom="20dp"
+    android:background="@drawable/bg_bottomsheet">
+
+    <View
+        android:layout_width="80dp"
+        android:layout_height="1.5dp"
+        android:layout_gravity="center"
+        android:layout_marginVertical="@dimen/viewPadding"
+        android:background="@color/gray_light"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="?attr/textAppearanceSubtitle1"
+        android:text="@string/what_would_you_like_to_do"
+        android:paddingHorizontal="@dimen/layoutPadding"
+        android:paddingVertical="@dimen/viewPadding"/>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/mainAddMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:menu="@menu/menu_main_add"
+        android:outlineProvider="none"
+        android:nestedScrollingEnabled="false" />
+</LinearLayout>

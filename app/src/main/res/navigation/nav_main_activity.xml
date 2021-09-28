@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_main_activity"
+    app:startDestination="@id/mainHomeFragment">
+
+    <fragment
+        android:id="@+id/mainHomeFragment"
+        android:name="com.fdhasna21.nydrobionics.fragment.MainHomeFragment"
+        android:label="fragment_main_home"
+        tools:layout="@layout/fragment_main_home" />
+    <fragment
+        android:id="@+id/mainSocialFragment"
+        android:name="com.fdhasna21.nydrobionics.fragment.MainSocialFragment"
+        android:label="fragment_main_social"
+        tools:layout="@layout/fragment_main_social"/>
+    <fragment
+        android:id="@+id/mainNotesFragment"
+        android:name="com.fdhasna21.nydrobionics.fragment.MainNotesFragment"
+        android:label="fragment_main_notes"
+        tools:layout="@layout/fragment_main_notes"/>
+    <fragment
+        android:id="@+id/mainProfileFragment"
+        android:name="com.fdhasna21.nydrobionics.fragment.MainProfileFragment"
+        android:label="fragment_main_profile"
+        tools:layout="@layout/fragment_main_profile"/>
+<!--    <dialog-->
+<!--        android:id="@+id/mainAddFragment"-->
+<!--        android:name="com.fdhasna21.nydrobionics.fragment.MainAddFragment"-->
+<!--        android:label="fragment_main_add"-->
+<!--        tools:layout="@layout/fragment_main_add" />-->
+</navigation>
