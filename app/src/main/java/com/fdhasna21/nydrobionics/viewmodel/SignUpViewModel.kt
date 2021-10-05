@@ -7,26 +7,13 @@ import com.google.firebase.ktx.Firebase
 
 class SignUpViewModel : ViewModel() {
     private var auth = Firebase.auth
-     var isEmailNotEmpty : MutableLiveData<Boolean> = MutableLiveData(false)
-    var isPasswordNotEmpty : MutableLiveData<Boolean> = MutableLiveData(false)
-     var isConfirmPasswordNotEmpty : MutableLiveData<Boolean> = MutableLiveData(false)
-    var isNotEmpties : MutableLiveData<Boolean> = MutableLiveData(false)
+    private var isNotEmpties : MutableLiveData<Boolean> = MutableLiveData(false)
     var isUserSignUp : MutableLiveData<Boolean> = MutableLiveData(false)
     var signUpError : MutableLiveData<String> = MutableLiveData("")
 
-    fun setEmailEmpty(boolean: Boolean){
-        isEmailNotEmpty.value = boolean
-        isNotEmpties.value = boolean && isPasswordNotEmpty.value!! && isConfirmPasswordNotEmpty.value!!
-    }
-
-    fun setPasswordEmpty(boolean: Boolean){
-        isPasswordNotEmpty.value = boolean
-        isNotEmpties.value = isEmailNotEmpty.value!! && boolean && isConfirmPasswordNotEmpty.value!!
-    }
-
-    fun setConfirmPasswordEmpty(boolean: Boolean){
-        isConfirmPasswordNotEmpty.value = boolean
-        isNotEmpties.value =  isEmailNotEmpty.value!! && isPasswordNotEmpty.value!! && boolean
+    fun checkNotEmpty(boolean: Boolean) : MutableLiveData<Boolean> {
+        isNotEmpties.value = boolean
+        return isNotEmpties
     }
 
     fun signUp(email:String, password:String){

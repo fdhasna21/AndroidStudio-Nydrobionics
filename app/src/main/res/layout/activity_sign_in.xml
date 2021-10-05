@@ -134,7 +134,8 @@
                     android:text="@string/sign_up"
                     android:textStyle="bold"
                     android:textColor="@drawable/selector_button_color"
-                    android:paddingHorizontal="6dp"/>
+                    android:paddingHorizontal="6dp"
+                    android:background="?selectableItemBackground"/>
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>

@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.fdhasna21.nydrobionics.R
+import com.fdhasna21.nydrobionics.activity.*
 import com.fdhasna21.nydrobionics.databinding.FragmentMainAddBinding
 import com.fdhasna21.nydrobionics.viewmodel.MainViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -21,7 +22,7 @@ class MainAddFragment : BottomSheetDialogFragment(), NavigationView.OnNavigation
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentMainAddBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
@@ -34,30 +35,19 @@ class MainAddFragment : BottomSheetDialogFragment(), NavigationView.OnNavigation
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        // TODO: intent ke activity add
-        val intent = Intent()
         return when(item.itemId){
-            R.id.addDataMonitoring -> {
-                Toast.makeText(requireContext(), "data monitoring", Toast.LENGTH_SHORT).show()
-                true
-            }
-            R.id.addCrops -> {
-                Toast.makeText(requireContext(), "data crops", Toast.LENGTH_SHORT).show()
-                true
-            }
-            R.id.addTodoList -> {
-                Toast.makeText(requireContext(), "todo list", Toast.LENGTH_SHORT).show()
-                true
-            }
-            R.id.addKit -> {
-                Toast.makeText(requireContext(), "kit", Toast.LENGTH_SHORT).show()
-                true
-            }
-            R.id.addPlant -> {
-                Toast.makeText(requireContext(), "data plant", Toast.LENGTH_SHORT).show()
-                true
-            }
-            else -> false
+            R.id.addDataMonitoring  -> gotoActivity(AddDataMonitoringActivity::class.java)
+            R.id.addCrops           -> gotoActivity(AddCropsActivity::class.java)
+            R.id.addTodoList        -> gotoActivity(AddTodoListActivity::class.java)
+            R.id.addKit             -> gotoActivity(AddKitActivity::class.java)
+            R.id.addPlant           -> gotoActivity(AddPlantActivity::class.java)
+            else                    -> false
         }
+    }
+
+    private fun gotoActivity(destination : Class<*>) : Boolean{
+        dismiss()
+        startActivity(Intent(requireActivity(), destination))
+        return true
     }
 }

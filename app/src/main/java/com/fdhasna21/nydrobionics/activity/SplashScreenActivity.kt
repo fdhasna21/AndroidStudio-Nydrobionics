@@ -17,30 +17,4 @@ class SplashScreenActivity : AppCompatActivity() {
         setContentView(binding.root)
     }
 
-    override fun onStart() {
-        super.onStart()
-
-//        val handler = Handler(Looper.getMainLooper())
-//        handler.postDelayed({
-//            if(auth.currentUser != null){
-//                startActivity(Intent(this, MainActivity::class.java))
-//                finish()
-//            } else {
-//                startActivity(Intent(this, SignInActivity::class.java))
-//            }
-//        }, 5000)
-
-//        val x = UsersFirebase<User>()
-//        x.getUserDataListener("abc", object : FirebaseListenerCallback<User> {
-//            override fun onSuccess(result: ArrayList<User>) {
-//                Log.i("splashScreen", "onSuccess: $result ${result?.size}")
-//            }
-//
-//            override fun onError(e: Exception) {
-//                Log.i("splashScreen", "onError: $e")
-//            }
-//
-//        })
-
-    }
 }

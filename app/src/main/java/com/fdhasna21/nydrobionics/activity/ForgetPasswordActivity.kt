@@ -6,28 +6,26 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
-import com.fdhasna21.nydrobionics.R
 import com.fdhasna21.nydrobionics.databinding.ActivityForgetPasswordBinding
+import com.fdhasna21.nydrobionics.utils.ViewUtility
 import com.fdhasna21.nydrobionics.viewmodel.ForgetPasswordViewModel
 import com.google.android.material.textfield.TextInputEditText
-import com.google.firebase.auth.ActionCodeResult
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
-import com.google.firebase.dynamiclinks.PendingDynamicLinkData
 import com.google.firebase.ktx.Firebase
-import java.lang.Exception
 import java.util.ArrayList
 
 class ForgetPasswordActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
     private lateinit var binding : ActivityForgetPasswordBinding
     private lateinit var viewModel : ForgetPasswordViewModel
     private var auth = Firebase.auth
+
+    companion object{
+        const val TAG = "forgetPassword"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,7 +79,7 @@ class ForgetPasswordActivity : AppCompatActivity(), View.OnClickListener, TextWa
 //                        viewModel.forgetPasswordError.observe(this, {
 //                            if(it.isNotEmpty()){
 //                                Toast.makeText(this@ForgetPasswordActivity, it, Toast.LENGTH_SHORT).show()
-//                                Log.i("forgetPasswordActivity", it)
+//                                Log.i(TAG, it)
 //                                viewModel.forgetPasswordError.value = ""
 //                            }
 //                        })
@@ -102,7 +100,7 @@ class ForgetPasswordActivity : AppCompatActivity(), View.OnClickListener, TextWa
     override fun afterTextChanged(s: Editable?) {}
 
     private fun checkEmpty() {
-        viewModel.checkEmailEmpty(binding.forgetEmail.text.toString().count() > 0).observe(this, {
+        viewModel.checkNotEmpty(ViewUtility().isEmpty(binding.forgetEmail)).observe(this, {
             binding.forgetSubmit.isEnabled = it
         })
     }

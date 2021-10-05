@@ -11,15 +11,11 @@ import com.google.firebase.ktx.Firebase
 class ForgetPasswordViewModel : ViewModel() {
     private var auth = Firebase.auth
     private var isEmailNotEmpty : MutableLiveData<Boolean> = MutableLiveData(false)
-    var isUserForgetPassword : MutableLiveData<Boolean> = MutableLiveData(false)
+    private var isUserForgetPassword : MutableLiveData<Boolean> = MutableLiveData(false)
     var forgetPasswordError : MutableLiveData<String> = MutableLiveData("")
 
-    fun checkEmailEmpty(boolean: Boolean) : MutableLiveData<Boolean>  {
+    fun checkNotEmpty(boolean: Boolean) : MutableLiveData<Boolean>  {
         isEmailNotEmpty.value = boolean
-        return isEmailNotEmpty
-    }
-
-    fun getEmailEmpty() : MutableLiveData<Boolean> {
         return isEmailNotEmpty
     }
 

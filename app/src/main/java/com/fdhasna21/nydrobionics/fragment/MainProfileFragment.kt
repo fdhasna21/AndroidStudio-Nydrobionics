@@ -1,22 +1,39 @@
 package com.fdhasna21.nydrobionics.fragment
 
-import android.app.AlertDialog
-import android.content.Intent
+import android.Manifest
 import android.os.Bundle
-import android.util.Log
 import android.view.*
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.fdhasna21.nydrobionics.R
-import com.fdhasna21.nydrobionics.activity.EditProfileActivity
-import com.fdhasna21.nydrobionics.activity.SignInActivity
+import com.fdhasna21.nydrobionics.activity.MainActivity
+import com.fdhasna21.nydrobionics.adapter.ViewPagerAdapter
 import com.fdhasna21.nydrobionics.databinding.FragmentMainProfileBinding
+import com.fdhasna21.nydrobionics.dataclass.model.Plant
+import com.fdhasna21.nydrobionics.enumclass.DatabaseType
+import com.fdhasna21.nydrobionics.utils.IntentUtility
+import com.fdhasna21.nydrobionics.utils.RequestPermission
 import com.fdhasna21.nydrobionics.viewmodel.MainViewModel
+import com.firebase.ui.database.FirebaseRecyclerOptions
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 class MainProfileFragment : Fragment(), View.OnClickListener {
     private var _binding : FragmentMainProfileBinding? = null
     private val  binding get() = _binding!!
     private lateinit var viewModel : MainViewModel
+    private lateinit var drawerLayout : DrawerLayout
+    private lateinit var viewsAsButton : ArrayList<View>
+
+    companion object {
+        val TAB_TITLES = intArrayOf(
+            R.string.posts
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,7 +48,15 @@ class MainProfileFragment : Fragment(), View.OnClickListener {
         setHasOptionsMenu(true)
         requireActivity().title = getString(R.string.profile)
         viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
-        binding.signoutSubmit.setOnClickListener(this)
+        drawerLayout = (requireActivity() as MainActivity).drawerLayout
+
+        binding.apply {
+            viewsAsButton = arrayListOf(mainProfilePhoneGroup,
+                                        mainProfileAddressGroup,
+                                        mainProfilePhoto)
+            viewsAsButton.forEach { it.setOnClickListener(this@MainProfileFragment) }
+        }
+        setupTabLayout()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -42,27 +67,49 @@ class MainProfileFragment : Fragment(), View.OnClickListener {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
-            R.id.profileEdit -> startActivity(Intent(activity, EditProfileActivity::class.java))
+            R.id.settings -> {
+                if(drawerLayout.isDrawerOpen(GravityCompat.END)){
+                    drawerLayout.closeDrawer(GravityCompat.END)
+                }
+                else{
+                    drawerLayout.openDrawer(GravityCompat.END)
+                }
+            }
         }
         return super.onOptionsItemSelected(item)
     }
 
+    private fun setupTabLayout(){
+        //todo : referencenya! plant dari user yg terkait
+        val reference = Firebase.database.getReference("posts")
+        val options = FirebaseRecyclerOptions.Builder<Plant>()
+            .setQuery(reference, Plant::class.java)
+            .build()
+
+        val tabLayoutAdapter = ViewPagerAdapter((requireActivity() as MainActivity), arrayListOf(options), DatabaseType.PLANT)
+        binding.mainProfileViewPager.adapter = tabLayoutAdapter
+        TabLayoutMediator(binding.mainProfileTabLayout, binding.mainProfileViewPager) { tab, position ->
+            tab.text = resources.getString(TAB_TITLES[position])
+        }.attach()
+
+        binding.mainProfileTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                when(tab!!.position){
+                    0 -> {}
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
+        })
+    }
+
     override fun onClick(v: View?) {
         when(v){
-            binding.signoutSubmit -> {
-                val alertDialog = AlertDialog.Builder(requireActivity()).apply {
-                    setTitle(getString(R.string.sign_out))
-                    setMessage(getString(R.string.sign_out_warning))
-                    setPositiveButton(getString(R.string.sign_out)){ _,_ ->
-                        //todo : logout
-                        startActivity(Intent(requireActivity(), SignInActivity::class.java))
-                        requireActivity().finish()
-                    }
-                    setNegativeButton(getString(R.string.cancel)){_,_ ->}
-                }
-                alertDialog.create()
-                alertDialog.show()
-            }
+            binding.mainProfilePhoneGroup -> RequestPermission().requestPermission(requireActivity(), Manifest.permission.CALL_PHONE, "Phone call", binding.mainProfilePhone.text.toString())
+            binding.mainProfileAddressGroup -> IntentUtility(requireContext()).openMaps(binding.mainProfileAddress.toString())
+            binding.mainProfilePhoto -> IntentUtility(requireContext()).openImage(binding.mainProfilePhoto, binding.mainProfileName.text.toString())
         }
     }
 }

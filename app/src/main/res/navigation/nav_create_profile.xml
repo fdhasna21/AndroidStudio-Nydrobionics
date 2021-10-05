@@ -11,14 +11,11 @@
         android:label="fragment_create_user"
         tools:layout="@layout/fragment_create_user" >
         <action
-            android:id="@+id/action_createUserFragment_to_createGardenFragment"
-            app:destination="@id/createGardenFragment" />
-        <action
-            android:id="@+id/action_createUserFragment_to_createStaffFragment"
-            app:destination="@id/createStaffFragment" />
+            android:id="@+id/action_createUserFragment_to_createFarmFragment"
+            app:destination="@id/createFarmFragment" />
     </fragment>
     <fragment
-        android:id="@+id/createGardenFragment"
+        android:id="@+id/createFarmFragment"
         android:name="com.fdhasna21.nydrobionics.fragment.CreateFarmFragment"
         android:label="fragment_create_garden"
         tools:layout="@layout/fragment_create_farm" >

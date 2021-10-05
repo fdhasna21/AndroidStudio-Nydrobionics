@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activity.AddTodoListActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp">
+
+        <GridLayout
+            android:id="@+id/atlDateTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:columnCount="2"
+            android:layout_marginBottom="12dp">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/atlDateLayout"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_gravity="fill"
+                android:layout_columnWeight="1"
+                style="@style/Widget.Design.TextInputLayout"
+                android:paddingEnd="4dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/atlDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:hint="@string/date"
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+                    android:minHeight="50dp"
+                    android:singleLine="true"
+                    tools:ignore="SpeakableTextPresentCheck"
+                    android:drawableEnd="@drawable/ic_drop_down"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/atlTimeLayout"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_gravity="fill"
+                android:layout_columnWeight="1"
+                style="@style/Widget.Design.TextInputLayout"
+                android:paddingStart="4dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/atlTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:hint="@string/time"
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+                    android:minHeight="50dp"
+                    android:singleLine="true"
+                    tools:ignore="SpeakableTextPresentCheck"
+                    android:drawableEnd="@drawable/ic_drop_down"/>
+            </com.google.android.material.textfield.TextInputLayout>
+        </GridLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/addTodoTitleLayout"
+            style="@style/Widget.Design.TextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:endIconMode="clear_text"
+            android:layout_below="@id/atlDateTime"
+            android:layout_marginBottom="12dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/addTodoTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/title"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:maxLines="1"
+                android:minHeight="50dp"
+                android:singleLine="true" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            android:id="@+id/addTodoDescLayout"-->
+<!--            style="@style/Widget.Design.TextInputLayout"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_below="@id/addTodoTitleLayout"-->
+<!--            android:layout_marginBottom="20dp">-->
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/addTodoDesc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/description"
+                android:imeOptions="actionNext"
+                android:inputType="textMultiLine"
+                android:minHeight="50dp"
+                android:importantForAutofill="no"
+                android:gravity="top"
+                android:background="@drawable/bg_notes"
+                android:padding="@dimen/layoutPadding"
+                android:layout_below="@id/addTodoTitleLayout"
+                android:layout_marginBottom="20dp"/>
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
+
+        <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
+            android:id="@+id/addTodoSubmit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/bg_rectangle"
+            android:text="@string/submit"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+            android:theme="@style/Widget.MaterialComponents.Button"
+            app:spinning_bar_color="@color/white"
+            app:spinning_bar_padding="12dp"
+            android:layout_below="@id/addTodoDesc"/>
+    </RelativeLayout>
+</ScrollView>

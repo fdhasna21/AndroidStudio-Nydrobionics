@@ -3,22 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.fdhasna21.nydrobionics">
 
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
-
-<!--    <intent-filter>-->
-<!--        <action android:name="android.intent.action.VIEW"/>-->
-<!--        <category android:name="android.intent.category.DEFAULT"/>-->
-<!--        <category android:name="android.intent.category.BROWSABLE"/>-->
-<!--        <data-->
-<!--            android:host="nydrobionics.page.link"-->
-<!--            android:scheme="https"/>-->
-<!--    </intent-filter>-->
 
     <application
         android:allowBackup="true"
@@ -27,26 +22,62 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Nydrobionics">
-
-        <!--    <intent-filter>-->
-        <!--        <action android:name="android.intent.action.VIEW"/>-->
-        <!--        <category android:name="android.intent.category.DEFAULT"/>-->
-        <!--        <category android:name="android.intent.category.BROWSABLE"/>-->
-        <!--        <data-->
-        <!--            android:host="nydrobionics.page.link"-->
-        <!--            android:scheme="https"/>-->
-        <!--    </intent-filter>-->
         <activity
-            android:name=".activity.EditProfileActivity"
+            android:name=".activity.ShowHistoryActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activity.ShowPictureActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activity.ProfileFarmActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activity.ProfileKitActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activity.ProfileUserActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activity.SearchActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+        <activity
+            android:name=".activity.AddPlantActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activity.AddKitActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activity.AddTodoListActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activity.AddCropsActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activity.AddDataMonitoringActivity"
+            android:exported="true" /> <!-- <intent-filter> -->
+        <!-- <action android:name="android.intent.action.VIEW"/> -->
+        <!-- <category android:name="android.intent.category.DEFAULT"/> -->
+        <!-- <category android:name="android.intent.category.BROWSABLE"/> -->
+        <!-- <data -->
+        <!-- android:host="nydrobionics.page.link" -->
+        <!-- android:scheme="https"/> -->
+        <!-- </intent-filter> -->
+        <activity
+            android:name=".activity.EditProfileUserActivity"
             android:exported="true" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity
-            android:name=".activity.DataMonitoringActivity"
-            android:exported="true" />
         <activity
             android:name=".activity.ResetPasswordActivity"
             android:exported="true"
@@ -66,6 +97,7 @@
             android:theme="@style/Theme.Nydrobionics.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -74,22 +106,15 @@
             android:exported="true"
             android:noHistory="true"
             android:theme="@style/Theme.Nydrobionics.NoActionBar">
-<!--             <intent-filter>-->
-<!--                 <action android:name="android.intent.action.MAIN" />-->
-<!--                 <category android:name="android.intent.category.LAUNCHER" />-->
-<!--             </intent-filter>-->
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity
             android:name=".activity.MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
-        </activity>
+            android:exported="true" />
 
         <uses-library
             android:name="org.apache.http.legacy"

@@ -48,18 +48,23 @@
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
-    <SearchView
+    <EditText
         android:id="@+id/createStaffSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:iconifiedByDefault="false"
-        android:queryHint="Search"/>
-
-<!--    <androidx.recyclerview.widget.RecyclerView-->
-<!--        android:id="@+id/createStaffSearchRecycler"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="-12dp"/>-->
+        android:hint="@string/search"
+        android:background="@null"
+        android:imeOptions="flagNoExtractUi|flagNoFullscreen"
+        android:cursorVisible="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:clickable="false"
+        android:drawableStart="@drawable/ic_search"
+        android:drawablePadding="12dp"
+        android:padding="12dp"
+        android:importantForAutofill="no"
+        android:inputType="text" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/createStaffSelectableRecycler"

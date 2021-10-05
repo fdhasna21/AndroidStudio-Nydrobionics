@@ -6,20 +6,24 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.CompoundButton
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.fdhasna21.nydrobionics.databinding.ActivitySignInBinding
+import com.fdhasna21.nydrobionics.utils.ViewUtility
 import com.fdhasna21.nydrobionics.viewmodel.SignInViewModel
 import com.google.android.material.textfield.TextInputEditText
 
 class SignInActivity : AppCompatActivity(), View.OnClickListener, TextWatcher, CompoundButton.OnCheckedChangeListener {
     private lateinit var binding: ActivitySignInBinding
     private lateinit var viewModel : SignInViewModel
+    private lateinit var editTexts : ArrayList<TextInputEditText>
+
+    companion object{
+        const val TAG = "signIn"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,11 +37,10 @@ class SignInActivity : AppCompatActivity(), View.OnClickListener, TextWatcher, C
             signinRemember.setOnCheckedChangeListener(this@SignInActivity)
             signinForgetPassword.setOnClickListener(this@SignInActivity)
 
-            signinEmail.addTextChangedListener(this@SignInActivity)
-            signinPassword.addTextChangedListener(this@SignInActivity)
+            editTexts = arrayListOf(signinEmail, signinPassword)
+            editTexts.forEach { it.addTextChangedListener(this@SignInActivity) }
             checkEmpty()
         }
-
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
@@ -52,7 +55,6 @@ class SignInActivity : AppCompatActivity(), View.OnClickListener, TextWatcher, C
     override fun onClick(v: View?) {
         when(v){
             binding.signinSubmit -> {
-                if(viewModel.isNotEmpties.value == true){
 //                    isLoading = true
 //                    viewModel.signIn(binding.signinEmail.text.toString(), binding.signinPassword.text.toString())
 //                    viewModel.isUserSignIn.observe(this@SignInActivity, {
@@ -65,13 +67,12 @@ class SignInActivity : AppCompatActivity(), View.OnClickListener, TextWatcher, C
 //                            viewModel.signInError.observe(this, {
 //                                if(it.isNotEmpty()){
 //                                    Toast.makeText(this@SignInActivity, it, Toast.LENGTH_SHORT).show()
-//                                    Log.i("signInActivity", it)
+//                                    Log.i(TAG, it)
 //                                    viewModel.signInError.value = ""
 //                                }
 //                            })
 //                        }
 //                    })
-                }
             }
             binding.signinSignUp -> startActivity(Intent(this, SignUpActivity::class.java))
             binding.signinForgetPassword -> startActivity(Intent(this, ForgetPasswordActivity::class.java))
@@ -87,13 +88,9 @@ class SignInActivity : AppCompatActivity(), View.OnClickListener, TextWatcher, C
     override fun afterTextChanged(s: Editable?) {}
 
     private fun checkEmpty() {
-        viewModel.apply {
-            setEmailEmpty(binding.signinEmail.text.toString().count() > 0)
-            setPasswordEmpty(binding.signinPassword.text.toString().count() > 0)
-            isNotEmpties.observe(this@SignInActivity, {
-                binding.signinSubmit.isEnabled = it
-            })
-        }
+        viewModel.checkNotEmpty(ViewUtility().isEmpties(editTexts)).observe(this, {
+            binding.signinSubmit.isEnabled = it
+        })
     }
 
     override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {

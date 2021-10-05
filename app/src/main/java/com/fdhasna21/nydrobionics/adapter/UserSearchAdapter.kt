@@ -7,8 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.cursoradapter.widget.CursorAdapter
 import com.fdhasna21.nydrobionics.databinding.RowItemSearchBinding
+import com.fdhasna21.nydrobionics.dataclass.model.User
 
-class SearchAdapter(context: Context, cursor: Cursor, var data:ArrayList<com.fdhasna21.nydrobionics.dataclass.User>) : CursorAdapter(context, cursor) {
+class UserSearchAdapter(context: Context, cursor: Cursor, var data:ArrayList<User>) : CursorAdapter(context, cursor) {
     private lateinit var binding : RowItemSearchBinding
     override fun newView(context: Context, cursor: Cursor, parent: ViewGroup): View {
         binding = RowItemSearchBinding.inflate(LayoutInflater.from(context), parent, false)

@@ -1,4 +1,4 @@
-package com.fdhasna21.nydrobionics.dataclass
+package com.fdhasna21.nydrobionics.dataclass.model
 
 import android.os.Parcelable
 import android.util.Log
@@ -16,7 +16,9 @@ data class User(
     var performanceRate : Float? = null,
     var address : String? = null,
     var phone : String? = null,
-    var joinedSince : String? = null
+    var joinedSince : String? = null,
+    var photo_url : String? = null
+
 ) : Parcelable {
     companion object {
         fun DocumentSnapshot.toUser() : User? {

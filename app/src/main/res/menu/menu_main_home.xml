@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/farmProfile"
+        android:title="@string/farm"
+        android:icon="@drawable/ic_farm"
+        app:showAsAction="always"
+        android:iconTint="@color/white"/>
+
+<!--    todo : buat trial aja -->
+    <item
+        android:id="@+id/userProfile"
+        android:title="Try Profile User Activity"
+        android:icon="@drawable/ic_person"
+        app:showAsAction="always"
+        android:iconTint="@color/white"/>
+
+    <item
+        android:id="@+id/kitProfile"
+        android:title="Try Profile Kit Activity"
+        android:icon="@drawable/ic_add_kit"
+        app:showAsAction="always"
+        android:iconTint="@color/white"/>
+</menu>

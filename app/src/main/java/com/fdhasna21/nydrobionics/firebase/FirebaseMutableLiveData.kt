@@ -18,7 +18,7 @@ class FirebaseMutableLiveData(val databaseReference: DatabaseReference) : Mutabl
         }
 
         override fun onCancelled(error: DatabaseError) {
-            Log.e("FirebaseMutableLiveData", "Can't listen to query $databaseReference", error.toException());
+            Log.e("FirebaseMutableLiveData", "Can't listen to query $databaseReference", error.toException())
         }
 
     }

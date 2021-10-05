@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         style="@style/Widget.Design.TextInputLayout"
         app:endIconMode="clear_text">
-        des<com.google.android.material.textfield.TextInputEditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/createFarmName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -69,8 +69,45 @@
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="300dp"
         tools:context=".fragment.MapsFragment" />
+
+    <RelativeLayout
+        android:id="@+id/editStaff"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/esTitle"
+            style="?attr/textAppearanceBody1"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_alignParentStart="true"
+            android:gravity="left|center_vertical"
+            android:text="@string/farm_staff"
+            android:textStyle="bold" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/esRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/esTitle"
+            android:layout_marginVertical="12dp"/>
+
+        <Button
+            android:id="@+id/esAddStaff"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/bg_rectangle"
+            android:text="@string/add_staff"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+            style="?attr/buttonBarNeutralButtonStyle"
+            android:layout_below="@id/esRecyclerView"
+            android:layout_marginTop="12dp" />
+    </RelativeLayout>
+
+
 
     <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
         android:id="@+id/createFarmSubmit"

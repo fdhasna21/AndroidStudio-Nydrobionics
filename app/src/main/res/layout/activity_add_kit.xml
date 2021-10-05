@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activity.AddKitActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/addKitNameLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.Design.TextInputLayout"
+            app:endIconMode="clear_text"
+            android:layout_marginBottom="12dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/addKitName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="50dp"
+                android:singleLine="true"
+                android:inputType="text"
+                android:hint="@string/kit_name"
+                android:imeOptions="actionNext"
+                android:maxLines="1"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/addKitPositionLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.Design.TextInputLayout"
+            app:endIconMode="clear_text"
+            android:layout_below="@id/addKitNameLayout"
+            android:layout_marginBottom="20dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/addKitPosition"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="50dp"
+                android:singleLine="true"
+                android:inputType="textMultiLine"
+                android:hint="@string/kit_position_description"
+                android:imeOptions="actionNext"
+                android:maxLines="3"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/akSizeTitle"
+            style="?attr/textAppearanceBody1"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_below="@id/addKitPositionLayout"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@id/akSizeInfo"
+            android:gravity="left|center_vertical"
+            android:text="@string/kit_size"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/akSizeInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_info"
+            android:layout_below="@id/addKitPositionLayout"
+            android:layout_alignParentEnd="true"
+            android:background="@null"
+            android:contentDescription="@string/kit_size"/>
+
+        <GridLayout
+            android:id="@+id/akSizeInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:columnCount="2"
+            android:layout_below="@id/akSizeTitle"
+            android:layout_marginBottom="20dp">
+
+            <TextView
+                style="?attr/textAppearanceBody2"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_gravity="fill"
+                android:layout_columnWeight="1"
+                android:text="@string/width"
+                android:paddingEnd="4dp"/>
+
+            <TextView
+                style="?attr/textAppearanceBody2"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_gravity="fill"
+                android:layout_columnWeight="1"
+                android:text="@string/length"
+                android:paddingStart="4dp" />
+
+            <pl.polak.clicknumberpicker.ClickNumberPickerView
+                android:id="@+id/addKitWidth"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_gravity="fill"
+                android:layout_columnWeight="1"
+                android:paddingEnd="4dp"
+                app:decimal_number="0"
+                app:picker_corner_radius="10"
+                app:pickers_background_color="@color/purple_500"
+                app:step="1"
+                app:value_background_color="@color/purple_200"
+                app:value_text_color="@color/white" />
+
+            <pl.polak.clicknumberpicker.ClickNumberPickerView
+                android:id="@+id/addKitLength"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_gravity="fill"
+                android:layout_columnWeight="1"
+                android:paddingStart="4dp"
+                app:decimal_number="0"
+                app:picker_corner_radius="10"
+                app:pickers_background_color="@color/purple_500"
+                app:step="1"
+                app:value_background_color="@color/purple_200"
+                app:value_text_color="@color/white" />
+        </GridLayout>
+
+        <TextView
+            android:id="@+id/akWaterLevelTitle"
+            style="?attr/textAppearanceBody1"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_below="@id/akSizeInput"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@id/akSizeInfo"
+            android:gravity="left|center_vertical"
+            android:text="@string/water_level"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/akWaterLevelInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_info"
+            android:layout_below="@id/akSizeInput"
+            android:layout_alignParentEnd="true"
+            android:background="@null"
+            android:contentDescription="@string/water_level"/>
+
+        <GridLayout
+            android:id="@+id/akWaterLevelInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:columnCount="2"
+            android:layout_below="@id/akWaterLevelTitle"
+            android:layout_marginBottom="20dp">
+
+            <TextView
+                style="?attr/textAppearanceBody2"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_gravity="fill"
+                android:layout_columnWeight="1"
+                android:text="@string/minimum"
+                android:paddingEnd="4dp"/>
+
+            <TextView
+                style="?attr/textAppearanceBody2"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_gravity="fill"
+                android:layout_columnWeight="1"
+                android:text="@string/maximum"
+                android:paddingStart="4dp" />
+
+            <pl.polak.clicknumberpicker.ClickNumberPickerView
+                android:id="@+id/addKitWaterMin"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_gravity="fill"
+                android:layout_columnWeight="1"
+                android:paddingEnd="4dp"
+                app:decimal_number="1"
+                app:picker_corner_radius="10"
+                app:pickers_background_color="@color/purple_500"
+                app:step="0.1"
+                app:value_background_color="@color/purple_200"
+                app:value_text_color="@color/white" />
+
+            <pl.polak.clicknumberpicker.ClickNumberPickerView
+                android:id="@+id/addWaterMax"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_gravity="fill"
+                android:layout_columnWeight="1"
+                android:paddingStart="4dp"
+                app:decimal_number="1"
+                app:picker_corner_radius="10"
+                app:pickers_background_color="@color/purple_500"
+                app:step="0.1"
+                app:value_background_color="@color/purple_200"
+                app:value_text_color="@color/white" />
+        </GridLayout>
+
+        <TextView
+            android:id="@+id/akNutrientLevelTitle"
+            style="?attr/textAppearanceBody1"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_below="@id/akWaterLevelInput"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@id/akNutrientLevelInfo"
+            android:gravity="left|center_vertical"
+            android:text="@string/nutrient_level"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/akNutrientLevelInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_info"
+            android:layout_below="@id/akWaterLevelInput"
+            android:layout_alignParentEnd="true"
+            android:background="@null"
+            android:contentDescription="@string/nutrient_level"/>
+
+        <GridLayout
+            android:id="@+id/akNutrientLevelInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:columnCount="2"
+            android:layout_below="@id/akNutrientLevelTitle"
+            android:layout_marginBottom="20dp">
+
+            <TextView
+                style="?attr/textAppearanceBody2"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_gravity="fill"
+                android:layout_columnWeight="1"
+                android:text="@string/minimum"
+                android:paddingEnd="4dp"/>
+
+            <TextView
+                style="?attr/textAppearanceBody2"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_gravity="fill"
+                android:layout_columnWeight="1"
+                android:text="@string/maximum"
+                android:paddingStart="4dp" />
+
+            <pl.polak.clicknumberpicker.ClickNumberPickerView
+                android:id="@+id/addKitNutrientMin"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_gravity="fill"
+                android:layout_columnWeight="1"
+                android:paddingEnd="4dp"
+                app:decimal_number="1"
+                app:picker_corner_radius="10"
+                app:pickers_background_color="@color/purple_500"
+                app:step="0.1"
+                app:value_background_color="@color/purple_200"
+                app:value_text_color="@color/white" />
+
+            <pl.polak.clicknumberpicker.ClickNumberPickerView
+                android:id="@+id/addNutrientMax"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_gravity="fill"
+                android:layout_columnWeight="1"
+                android:paddingStart="4dp"
+                app:decimal_number="1"
+                app:picker_corner_radius="10"
+                app:pickers_background_color="@color/purple_500"
+                app:step="0.1"
+                app:value_background_color="@color/purple_200"
+                app:value_text_color="@color/white" />
+        </GridLayout>
+
+        <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
+            android:id="@+id/addKitSubmit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/bg_rectangle"
+            android:text="@string/submit"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+            android:theme="@style/Widget.MaterialComponents.Button"
+            app:spinning_bar_color="@color/white"
+            app:spinning_bar_padding="12dp"
+            android:layout_below="@id/akNutrientLevelInput"/>
+    </RelativeLayout>
+</ScrollView>

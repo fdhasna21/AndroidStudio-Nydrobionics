@@ -13,7 +13,6 @@
 .externalNativeBuild
 .cxx
 local.properties
-frontend.xd
 /app/google-services.json
 /app/src/debug/res/values/google_maps_api.xml
 /app/src/main/java/com/fdhasna21/nydrobionics/notfixed

@@ -6,17 +6,26 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.fdhasna21.nydrobionics.R
 import com.fdhasna21.nydrobionics.databinding.ActivityResetPasswordBinding
+import com.fdhasna21.nydrobionics.utils.ViewUtility
 import com.fdhasna21.nydrobionics.viewmodel.ResetPasswordViewModel
+import com.google.android.material.textfield.TextInputEditText
 
 class ResetPasswordActivity : AppCompatActivity(), View.OnClickListener, TextWatcher{
     private lateinit var binding : ActivityResetPasswordBinding
     private lateinit var viewModel : ResetPasswordViewModel
+    private lateinit var editTexts : ArrayList<TextInputEditText>
+
+    companion object{
+        const val TAG = "resetPassword"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +36,8 @@ class ResetPasswordActivity : AppCompatActivity(), View.OnClickListener, TextWat
 
         binding.apply {
             resetSubmit.setOnClickListener(this@ResetPasswordActivity)
+            editTexts = arrayListOf(resetPassword, resetConfirmPassword)
+            editTexts.forEach { it.addTextChangedListener(this@ResetPasswordActivity) }
             checkEmpty()
         }
     }
@@ -48,9 +59,23 @@ class ResetPasswordActivity : AppCompatActivity(), View.OnClickListener, TextWat
     override fun onClick(v: View?) {
         when(v?.id){
             R.id.resetSubmit -> {
-                //todo : reset password
-                startActivity(Intent(this, MainActivity::class.java))
-                finish()
+//                viewModel.sendNewPassword(binding.resetConfirmPassword.text.toString())
+//                viewModel.isPasswordChange.observe(this, {
+//                    if(it){
+//                        isLoading = false
+                        startActivity(Intent(this, MainActivity::class.java))
+                        finish()
+//                    } else {
+////                        isLoading = false
+//                        viewModel.resetPaswordError.observe(this, {
+//                            if(it.isNotEmpty()){
+//                                Toast.makeText(this@ResetPasswordActivity, it, Toast.LENGTH_SHORT).show()
+//                                Log.i(TAG, it)
+//                                viewModel.resetPaswordError.value = ""
+//                            }
+//                        })
+//                    }
+//                })
             }
         }
     }
@@ -64,8 +89,8 @@ class ResetPasswordActivity : AppCompatActivity(), View.OnClickListener, TextWat
     override fun afterTextChanged(s: Editable?) {}
 
     private fun checkEmpty() {
-        viewModel.apply {
-
-        }
+        viewModel.checkNotEmpty(ViewUtility().isEmpties(editTexts)).observe(this, {
+            binding.resetSubmit.isEnabled = it
+        })
     }
 }

@@ -1,4 +1,4 @@
-package com.fdhasna21.nydrobionics.dataclass
+package com.fdhasna21.nydrobionics.dataclass.model
 
 import android.os.Parcelable
 import android.util.Log

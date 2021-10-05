@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_margin="4dp"
+    android:elevation="12dp"
+    app:cardCornerRadius="8dp"
+    android:id="@+id/kitPlantCard">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp">
+
+        <TextView
+            android:id="@+id/kitPlantTitle"
+            style="?attr/textAppearanceBody1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="6dp"
+            android:gravity="left|center_vertical"
+            android:text="@string/planted_crops"
+            android:textStyle="bold"
+            android:textColor="?attr/colorPrimary"/>
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/kitPlantPhoto"
+            android:layout_width="85dp"
+            android:layout_height="85dp"
+            android:layout_below="@id/kitPlantTitle"
+            android:layout_gravity="center"
+            android:layout_marginRight="6dp"
+            android:contentDescription="@string/user_photo_profile"
+            android:elevation="12dp"
+            android:src="@drawable/ic_farmer"
+            app:shapeAppearanceOverlay="@style/circular_image"
+            tools:ignore="ImageContrastCheck" />
+
+        <TextView
+            android:id="@+id/kitPlantName"
+            style="?attr/textAppearanceBody2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/kitPlantTitle"
+            android:layout_marginBottom="6dp"
+            android:layout_toRightOf="@id/kitPlantPhoto"
+            android:gravity="left|center_vertical"
+            android:text="@string/planted_crops" />
+
+        <TextView
+            android:id="@+id/kitPlantDate"
+            style="?attr/textAppearanceBody2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/kitPlantName"
+            android:layout_marginBottom="6dp"
+            android:layout_toRightOf="@id/kitPlantPhoto"
+            android:gravity="left|center_vertical"
+            android:text="@string/planted_at"
+            android:drawablePadding="3dp"
+            app:drawableLeftCompat="@drawable/ic_circle"
+            android:drawableTint="?android:colorActivatedHighlight"/>
+
+        <TextView
+            android:id="@+id/kitPlantHarvest"
+            style="?attr/textAppearanceBody2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/kitPlantDate"
+            android:layout_toEndOf="@id/kitPlantPhoto"
+            android:gravity="left|center_vertical"
+            android:text="@string/can_be_harvested_at_s"
+            android:drawablePadding="3dp"
+            app:drawableLeftCompat="@drawable/ic_circle"
+            android:drawableTint="@color/green"/>
+
+        <TextView
+            android:id="@+id/kitPlantHarvestMore"
+            style="?attr/textAppearanceBody2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/kitPlantHarvest"
+            android:layout_toEndOf="@id/kitPlantPhoto"
+            android:gravity="left|center_vertical"
+            android:text="@string/d_more_days"
+            app:drawableLeftCompat="@drawable/bg_circle"
+            android:paddingLeft="15dp"/>
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

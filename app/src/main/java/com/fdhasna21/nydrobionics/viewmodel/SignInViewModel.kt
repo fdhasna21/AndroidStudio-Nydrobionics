@@ -7,21 +7,14 @@ import com.google.firebase.ktx.Firebase
 
 class SignInViewModel : ViewModel() {
     private var auth = Firebase.auth
-    private var isEmailNotEmpty : MutableLiveData<Boolean> = MutableLiveData(false)
-    private var isPasswordNotEmpty : MutableLiveData<Boolean> = MutableLiveData(false)
     private var isRememberChecked : MutableLiveData<Boolean> = MutableLiveData(false)
-    var isNotEmpties : MutableLiveData<Boolean> = MutableLiveData(false)
+    private var isNotEmpties : MutableLiveData<Boolean> = MutableLiveData(false)
     var isUserSignIn : MutableLiveData<Boolean> = MutableLiveData(false)
     var signInError : MutableLiveData<String> = MutableLiveData("")
 
-    fun setEmailEmpty(boolean: Boolean){
-        isEmailNotEmpty.value = boolean
-        isNotEmpties.value = isPasswordNotEmpty.value!! && boolean
-    }
-
-    fun setPasswordEmpty(boolean: Boolean){
-        isPasswordNotEmpty.value = boolean
-        isNotEmpties.value = isPasswordNotEmpty.value!! && boolean
+    fun checkNotEmpty(boolean: Boolean) : MutableLiveData<Boolean> {
+        isNotEmpties.value = boolean
+        return isNotEmpties
     }
 
     fun setRememberChecked(boolean: Boolean){

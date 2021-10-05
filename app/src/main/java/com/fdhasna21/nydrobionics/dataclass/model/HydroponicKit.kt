@@ -1,16 +1,20 @@
-package com.fdhasna21.nydrobionics.dataclass
+package com.fdhasna21.nydrobionics.dataclass.model
 
 import android.os.Parcelable
 import android.util.Log
+import com.fdhasna21.nydrobionics.dataclass.ScoreLevel
 import com.google.firebase.firestore.DocumentSnapshot
 import kotlinx.parcelize.Parcelize
+import kotlinx.parcelize.RawValue
 
 @Parcelize
 data class HydroponicKit(
     var kitId : String? = null,
     var length : Int? = null,
-    var width : Int? = null
-)  : Parcelable{
+    var width : Int? = null,
+    var water_lvl : @RawValue ScoreLevel? = null,
+    var nutrient_lvl : @RawValue ScoreLevel? = null
+)  : Parcelable {
     companion object{
         fun DocumentSnapshot.toKit() : HydroponicKit?{
             try {

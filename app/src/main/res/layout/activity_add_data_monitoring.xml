@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activity.AddDataMonitoringActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/admSelectKit"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hydroponic_kit"
+            android:layout_marginBottom="12dp">
+            <AutoCompleteTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                tools:ignore="LabelFor" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/admTempTitle"
+            style="?attr/textAppearanceBody1"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_below="@id/admSelectKit"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@id/admTempInfo"
+            android:gravity="left|center_vertical"
+            android:text="@string/temperature"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/admTempInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_info"
+            android:layout_below="@id/admSelectKit"
+            android:layout_alignParentEnd="true"
+            android:background="@null"
+            android:contentDescription="@string/temperature"/>
+
+        <pl.polak.clicknumberpicker.ClickNumberPickerView
+            android:id="@+id/addMonitoringTemperature"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/admTempTitle"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="12dp"
+            app:decimal_number="1"
+            app:picker_corner_radius="10"
+            app:pickers_background_color="@color/purple_500"
+            app:step="0.1"
+            app:value_background_color="@color/purple_200"
+            app:value_text_color="@color/white" />
+
+        <TextView
+            android:id="@+id/admHumidTitle"
+            style="?attr/textAppearanceBody1"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_below="@id/addMonitoringTemperature"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@id/admHumidInfo"
+            android:gravity="left|center_vertical"
+            android:text="@string/humidity"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/admHumidInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_info"
+            android:layout_below="@id/addMonitoringTemperature"
+            android:layout_alignParentEnd="true"
+            android:background="@null"
+            android:contentDescription="@string/humidity"/>
+
+        <pl.polak.clicknumberpicker.ClickNumberPickerView
+            android:id="@+id/addMonitoringHumidity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/admHumidTitle"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="12dp"
+            app:decimal_number="1"
+            app:picker_corner_radius="10"
+            app:pickers_background_color="@color/purple_500"
+            app:step="0.1"
+            app:value_background_color="@color/purple_200"
+            app:value_text_color="@android:color/white" />
+
+        <TextView
+            android:id="@+id/admAcidityTitle"
+            style="?attr/textAppearanceBody1"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_below="@id/addMonitoringHumidity"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@id/admHumidInfo"
+            android:gravity="left|center_vertical"
+            android:text="@string/acidity_level_ph"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/admAcidityInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_info"
+            android:layout_below="@id/addMonitoringHumidity"
+            android:layout_alignParentEnd="true"
+            android:background="@null"
+            android:contentDescription="@string/humidity"/>
+
+        <pl.polak.clicknumberpicker.ClickNumberPickerView
+            android:id="@+id/addMonitoringAcidity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/admAcidityTitle"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="12dp"
+            app:decimal_number="1"
+            app:picker_corner_radius="10"
+            app:pickers_background_color="@color/purple_500"
+            app:step="0.1"
+            app:value_background_color="@color/purple_200"
+            app:value_text_color="@android:color/white"
+            app:min_value="0"
+            app:max_value="14"/>
+
+        <TextView
+            android:id="@+id/admWaterLevelTitle"
+            style="?attr/textAppearanceBody1"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_below="@id/addMonitoringAcidity"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@id/admWaterLevelInfo"
+            android:gravity="left|center_vertical"
+            android:text="@string/water_level"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/admWaterLevelInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_info"
+            android:layout_below="@id/addMonitoringAcidity"
+            android:layout_alignParentEnd="true"
+            android:background="@null"
+            android:contentDescription="@string/water_level"/>
+
+        <pl.polak.clicknumberpicker.ClickNumberPickerView
+            android:id="@+id/addMonitoringWaterLevel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:picker_corner_radius="10"
+            app:pickers_background_color="@color/purple_500"
+            app:value_background_color="@color/purple_200"
+            app:value_text_color="@android:color/white"
+            app:step="0.1"
+            app:decimal_number="1"
+            android:layout_below="@id/admWaterLevelTitle"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="12dp"/>
+
+        <TextView
+            android:id="@+id/admNutrientLevelTitle"
+            style="?attr/textAppearanceBody1"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_below="@id/addMonitoringWaterLevel"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@id/admNutrientLevelInfo"
+            android:gravity="left|center_vertical"
+            android:text="@string/nutrient_level"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/admNutrientLevelInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_info"
+            android:layout_below="@id/addMonitoringWaterLevel"
+            android:layout_alignParentEnd="true"
+            android:background="@null"
+            android:contentDescription="@string/nutrient_level"/>
+
+        <pl.polak.clicknumberpicker.ClickNumberPickerView
+            android:id="@+id/addMonitoringNutrientLevel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:picker_corner_radius="10"
+            app:pickers_background_color="@color/purple_500"
+            app:value_background_color="@color/purple_200"
+            app:value_text_color="@android:color/white"
+            app:step="0.1"
+            app:decimal_number="1"
+            android:layout_below="@id/admNutrientLevelTitle"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="12dp"/>
+
+        <TextView
+            android:id="@+id/admWaterTurbidityTitle"
+            style="?attr/textAppearanceBody1"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_below="@id/addMonitoringNutrientLevel"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@id/admWaterLevelInfo"
+            android:gravity="left|center_vertical"
+            android:text="@string/turbidity"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/admWaterTurbidityInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_info"
+            android:layout_below="@id/addMonitoringNutrientLevel"
+            android:layout_alignParentEnd="true"
+            android:background="@null"
+            android:contentDescription="@string/temperature"/>
+
+        <pl.polak.clicknumberpicker.ClickNumberPickerView
+            android:id="@+id/addMonitoringWaterTurbidity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:picker_corner_radius="10"
+            app:pickers_background_color="@color/purple_500"
+            app:value_background_color="@color/purple_200"
+            app:value_text_color="@android:color/white"
+            app:step="0.1"
+            app:decimal_number="1"
+            android:layout_below="@id/admWaterTurbidityTitle"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="12dp"/>
+
+        <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
+            android:id="@+id/addMonitoringSubmit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/addMonitoringWaterTurbidity"
+            android:layout_gravity="center"
+            android:background="@drawable/bg_rectangle"
+            android:text="@string/submit"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+            android:theme="@style/Widget.MaterialComponents.Button"
+            app:spinning_bar_color="@color/white"
+            app:spinning_bar_padding="12dp" />
+    </RelativeLayout>
+</ScrollView>

@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activity.AddPlantActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/addPlantPhotoLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:divider="@drawable/divider_12dp"
+            android:layout_centerHorizontal="true">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/addPlantPhoto"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:contentDescription="@string/user_photo_profile"
+                android:src="@drawable/ic_farmer"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ImageContrastCheck"
+                app:shapeAppearanceOverlay="@style/circular_image"/>
+<!--todo : default photo ganti crops-->
+            <ImageView
+                android:id="@+id/addPlantEditPhoto"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/bg_circle"
+                android:backgroundTint="#80000000"
+                android:padding="7.5dp"
+                android:src="@drawable/ic_camera"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.95"
+                app:layout_constraintStart_toStartOf="@+id/addPlantPhoto"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.95"
+                app:tint="@color/white"
+                android:foregroundGravity="center"
+                android:contentDescription="@string/add_photo"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/addPlantNameLayout"
+            style="@style/Widget.Design.TextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:endIconMode="clear_text"
+            android:layout_below="@id/addPlantPhotoLayout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/addPlantName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/plant_name"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:maxLines="1"
+                android:minHeight="50dp"
+                android:singleLine="true" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/addPlantDescriptionLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.Design.TextInputLayout"
+            app:endIconMode="clear_text"
+            android:layout_below="@id/addPlantNameLayout"
+            android:layout_marginBottom="20dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/addPlantDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="50dp"
+                android:singleLine="true"
+                android:inputType="textMultiLine"
+                android:hint="@string/plant_description"
+                android:imeOptions="actionNext"
+                android:maxLines="3"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/apGrowth"
+            style="?attr/textAppearanceBody1"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_below="@id/addPlantDescriptionLayout"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@id/apGrowthInfo"
+            android:gravity="left|center_vertical"
+            android:text="@string/growth_time"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/apGrowthInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_info"
+            android:layout_below="@id/addPlantDescriptionLayout"
+            android:layout_alignParentEnd="true"
+            android:background="@null"
+            android:contentDescription="@string/growth_time"/>
+
+        <pl.polak.clicknumberpicker.ClickNumberPickerView
+            android:id="@+id/addPlantGrowthTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/apGrowth"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="12dp"
+            app:decimal_number="0"
+            app:picker_corner_radius="10"
+            app:pickers_background_color="@color/purple_500"
+            app:step="1"
+            app:value="1"
+            app:value_background_color="@color/purple_200"
+            app:value_text_color="@color/white" />
+
+        <TextView
+            android:id="@+id/apTempTitle"
+            style="?attr/textAppearanceBody1"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_below="@id/addPlantGrowthTime"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@id/apTempInfo"
+            android:gravity="left|center_vertical"
+            android:text="@string/temperature"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/apTempInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_info"
+            android:layout_below="@id/addPlantGrowthTime"
+            android:layout_alignParentEnd="true"
+            android:background="@null"
+            android:contentDescription="@string/temperature"/>
+
+        <GridLayout
+            android:id="@+id/apTempInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:columnCount="2"
+            android:layout_below="@id/apTempTitle"
+            android:layout_marginBottom="20dp">
+
+            <TextView
+                style="?attr/textAppearanceBody2"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_gravity="fill"
+                android:layout_columnWeight="1"
+                android:text="@string/minimum"
+                android:paddingEnd="4dp"/>
+
+            <TextView
+                style="?attr/textAppearanceBody2"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_gravity="fill"
+                android:layout_columnWeight="1"
+                android:text="@string/maximum"
+                android:paddingStart="4dp" />
+
+            <pl.polak.clicknumberpicker.ClickNumberPickerView
+                android:id="@+id/addPlantTempMin"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_gravity="fill"
+                android:layout_columnWeight="1"
+                android:paddingEnd="4dp"
+                app:decimal_number="1"
+                app:picker_corner_radius="10"
+                app:pickers_background_color="@color/purple_500"
+                app:step="0.1"
+                app:value_background_color="@color/purple_200"
+                app:value_text_color="@color/white" />
+
+            <pl.polak.clicknumberpicker.ClickNumberPickerView
+                android:id="@+id/addPlantTempMax"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_gravity="fill"
+                android:layout_columnWeight="1"
+                android:paddingStart="4dp"
+                app:decimal_number="1"
+                app:picker_corner_radius="10"
+                app:pickers_background_color="@color/purple_500"
+                app:step="0.1"
+                app:value_background_color="@color/purple_200"
+                app:value_text_color="@color/white" />
+        </GridLayout>
+
+        <TextView
+            android:id="@+id/apHumidTitle"
+            style="?attr/textAppearanceBody1"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_below="@id/apTempInput"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@id/apHumidInfo"
+            android:gravity="left|center_vertical"
+            android:text="@string/humidity"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/apHumidInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_info"
+            android:layout_below="@id/apTempInput"
+            android:layout_alignParentEnd="true"
+            android:background="@null"
+            android:contentDescription="@string/nutrient_level"/>
+
+        <GridLayout
+            android:id="@+id/apHumidInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:columnCount="2"
+            android:layout_below="@id/apHumidTitle"
+            android:layout_marginBottom="20dp">
+
+            <TextView
+                style="?attr/textAppearanceBody2"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_gravity="fill"
+                android:layout_columnWeight="1"
+                android:text="@string/minimum"
+                android:paddingEnd="4dp"/>
+
+            <TextView
+                style="?attr/textAppearanceBody2"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_gravity="fill"
+                android:layout_columnWeight="1"
+                android:text="@string/maximum"
+                android:paddingStart="4dp" />
+
+            <pl.polak.clicknumberpicker.ClickNumberPickerView
+                android:id="@+id/addPlantHumidMin"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_gravity="fill"
+                android:layout_columnWeight="1"
+                android:paddingEnd="4dp"
+                app:decimal_number="1"
+                app:picker_corner_radius="10"
+                app:pickers_background_color="@color/purple_500"
+                app:step="0.1"
+                app:value_background_color="@color/purple_200"
+                app:value_text_color="@color/white" />
+
+            <pl.polak.clicknumberpicker.ClickNumberPickerView
+                android:id="@+id/addPlantHumidMax"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_gravity="fill"
+                android:layout_columnWeight="1"
+                android:paddingStart="4dp"
+                app:decimal_number="1"
+                app:picker_corner_radius="10"
+                app:pickers_background_color="@color/purple_500"
+                app:step="0.1"
+                app:value_background_color="@color/purple_200"
+                app:value_text_color="@color/white" />
+        </GridLayout>
+
+        <TextView
+            android:id="@+id/apAcidityTitle"
+            style="?attr/textAppearanceBody1"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_below="@id/apHumidInput"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@id/apHumidInfo"
+            android:gravity="left|center_vertical"
+            android:text="@string/acidity_level_ph"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/apAcidityInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_info"
+            android:layout_below="@id/apHumidInput"
+            android:layout_alignParentEnd="true"
+            android:background="@null"
+            android:contentDescription="@string/nutrient_level"/>
+
+        <GridLayout
+            android:id="@+id/apAcidityInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:columnCount="2"
+            android:layout_below="@id/apAcidityTitle"
+            android:layout_marginBottom="20dp">
+
+            <TextView
+                style="?attr/textAppearanceBody2"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_gravity="fill"
+                android:layout_columnWeight="1"
+                android:text="@string/minimum"
+                android:paddingEnd="4dp"/>
+
+            <TextView
+                style="?attr/textAppearanceBody2"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_gravity="fill"
+                android:layout_columnWeight="1"
+                android:text="@string/maximum"
+                android:paddingStart="4dp" />
+
+            <pl.polak.clicknumberpicker.ClickNumberPickerView
+                android:id="@+id/addPlantAcidMin"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_gravity="fill"
+                android:layout_columnWeight="1"
+                android:paddingEnd="4dp"
+                app:decimal_number="1"
+                app:picker_corner_radius="10"
+                app:pickers_background_color="@color/purple_500"
+                app:step="0.1"
+                app:value_background_color="@color/purple_200"
+                app:value_text_color="@color/white" />
+
+            <pl.polak.clicknumberpicker.ClickNumberPickerView
+                android:id="@+id/addPlantAcidMax"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_gravity="fill"
+                android:layout_columnWeight="1"
+                android:paddingStart="4dp"
+                app:decimal_number="1"
+                app:picker_corner_radius="10"
+                app:pickers_background_color="@color/purple_500"
+                app:step="0.1"
+                app:value_background_color="@color/purple_200"
+                app:value_text_color="@color/white" />
+        </GridLayout>
+
+        <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
+            android:id="@+id/addPlantSubmit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/apAcidityInput"
+            android:layout_gravity="center"
+            android:background="@drawable/bg_rectangle"
+            android:text="@string/submit"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+            android:theme="@style/Widget.MaterialComponents.Button"
+            app:spinning_bar_color="@color/white"
+            app:spinning_bar_padding="12dp" />
+    </RelativeLayout>
+</ScrollView>
