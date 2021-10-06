@@ -2,23 +2,26 @@ package com.fdhasna21.nydrobionics.fragment
 
 import android.Manifest
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.fdhasna21.nydrobionics.R
 import com.fdhasna21.nydrobionics.activity.MainActivity
 import com.fdhasna21.nydrobionics.adapter.ViewPagerAdapter
 import com.fdhasna21.nydrobionics.databinding.FragmentMainProfileBinding
 import com.fdhasna21.nydrobionics.dataclass.model.Plant
-import com.fdhasna21.nydrobionics.enumclass.DatabaseType
+import com.fdhasna21.nydrobionics.enumclass.AdapterRealTimeType
 import com.fdhasna21.nydrobionics.utils.IntentUtility
 import com.fdhasna21.nydrobionics.utils.RequestPermission
 import com.fdhasna21.nydrobionics.viewmodel.MainViewModel
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
@@ -33,6 +36,7 @@ class MainProfileFragment : Fragment(), View.OnClickListener {
         val TAB_TITLES = intArrayOf(
             R.string.posts
         )
+        const val TAG = "mainProfile"
     }
 
     override fun onCreateView(
@@ -51,10 +55,34 @@ class MainProfileFragment : Fragment(), View.OnClickListener {
         drawerLayout = (requireActivity() as MainActivity).drawerLayout
 
         binding.apply {
-            viewsAsButton = arrayListOf(mainProfilePhoneGroup,
+            viewsAsButton = arrayListOf(mainProfileEmailGroup,
+                                        mainProfilePhoneGroup,
                                         mainProfileAddressGroup,
                                         mainProfilePhoto)
             viewsAsButton.forEach { it.setOnClickListener(this@MainProfileFragment) }
+
+            viewModel.currentUserModel.observe(requireActivity(),{
+                Log.i(TAG, "$it")
+                it?.let {
+                    mainProfileName.text = it.name
+                    mainProfilePhone.text = it.phone
+                    mainProfileAddress.text = it.address
+                    mainProfileJoinedSince.text = getString(R.string.joined_company_since, it.joinedSince)
+                    mainProfileBio.text = it.bio
+                    it.performanceRate?.let {
+                        mainProfileRate.rating = it
+                    }
+                    mainProfileEmail.text = viewModel.currentUser?.email!!
+                    mainProfileRole.text = getString(R.string.role_in_profile, it.role, "garden")
+                    //todo : operational area & nama garden
+                    it.photo_url?.let {
+                        Glide.with(requireActivity())
+                            .load(it)
+                            .centerCrop()
+                            .into(mainProfilePhoto)
+                    }
+                }
+            })
         }
         setupTabLayout()
     }
@@ -86,7 +114,7 @@ class MainProfileFragment : Fragment(), View.OnClickListener {
             .setQuery(reference, Plant::class.java)
             .build()
 
-        val tabLayoutAdapter = ViewPagerAdapter((requireActivity() as MainActivity), arrayListOf(options), DatabaseType.PLANT)
+        val tabLayoutAdapter = ViewPagerAdapter((requireActivity() as MainActivity), arrayListOf(options), AdapterRealTimeType.PLANT)
         binding.mainProfileViewPager.adapter = tabLayoutAdapter
         TabLayoutMediator(binding.mainProfileTabLayout, binding.mainProfileViewPager) { tab, position ->
             tab.text = resources.getString(TAB_TITLES[position])
@@ -107,8 +135,9 @@ class MainProfileFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when(v){
+            binding.mainProfileEmail -> IntentUtility(requireContext()).openEmail(binding.mainProfileEmail.text.toString())
             binding.mainProfilePhoneGroup -> RequestPermission().requestPermission(requireActivity(), Manifest.permission.CALL_PHONE, "Phone call", binding.mainProfilePhone.text.toString())
-            binding.mainProfileAddressGroup -> IntentUtility(requireContext()).openMaps(binding.mainProfileAddress.toString())
+            binding.mainProfileAddressGroup -> IntentUtility(requireContext()).openMaps(binding.mainProfileAddress.text.toString())
             binding.mainProfilePhoto -> IntentUtility(requireContext()).openImage(binding.mainProfilePhoto, binding.mainProfileName.text.toString())
         }
     }

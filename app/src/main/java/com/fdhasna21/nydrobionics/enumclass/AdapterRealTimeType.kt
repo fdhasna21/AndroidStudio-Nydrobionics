@@ -8,7 +8,7 @@ import com.fdhasna21.nydrobionics.dataclass.model.realtime.LogHistory
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 
-enum class DatabaseType {
+enum class AdapterRealTimeType {
     /** For Firebase Real Time **/
     PLANT {
         override fun getAdapter(context: Context, options: FirebaseRecyclerOptions<*>): FirebaseRecyclerAdapter<*, *> {

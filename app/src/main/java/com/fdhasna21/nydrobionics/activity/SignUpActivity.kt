@@ -6,9 +6,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.fdhasna21.nydrobionics.databinding.ActivitySignUpBinding
 import com.fdhasna21.nydrobionics.utils.ViewUtility
@@ -62,24 +64,24 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
     override fun onClick(v: View?) {
         when(v){
             binding.signupSubmit -> {
-//                    isLoading = true
-//                    viewModel.signUp(binding.signupEmail.text.toString(), binding.signupPassword.text.toString())
-//                    viewModel.isUserSignUp.observe(this@SignUpActivity, {
-//                        if(it){
-//                            isLoading = false
+                    isLoading = true
+                    viewModel.signUp(binding.signupEmail.text.toString(), binding.signupPassword.text.toString())
+                    viewModel.isUserSignUp.observe(this@SignUpActivity, {
+                        if(it){
+                            isLoading = false
                             startActivity(Intent(this, CreateProfileActivity::class.java))
                             finish()
-//                        } else {
-//                            isLoading = false
-//                            viewModel.signUpError.observe(this, {
-//                                if(it.isNotEmpty()){
-//                                    Toast.makeText(this@SignUpActivity, it, Toast.LENGTH_SHORT).show()
-//                                    Log.i(TAG, it)
-//                                    viewModel.signUpError.value = ""
-//                                }
-//                            })
-//                        }
-//                    })
+                        } else {
+                            isLoading = false
+                            viewModel.signUpError.observe(this, {
+                                if(it.isNotEmpty()){
+                                    Toast.makeText(this@SignUpActivity, it, Toast.LENGTH_SHORT).show()
+                                    Log.i(TAG, it)
+                                    viewModel.signUpError.value = ""
+                                }
+                            })
+                        }
+                    })
             }
             binding.signupSignIn -> onBackPressed()
         }

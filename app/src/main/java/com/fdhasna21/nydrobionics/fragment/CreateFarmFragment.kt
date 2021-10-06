@@ -32,6 +32,10 @@ class CreateFarmFragment : Fragment(), View.OnClickListener, TextWatcher {
     private lateinit var viewModel : CreateProfileViewModel
     private lateinit var editTexts : ArrayList<TextInputEditText>
 
+    companion object {
+        const val TAG = "createFarm"
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -63,30 +67,28 @@ class CreateFarmFragment : Fragment(), View.OnClickListener, TextWatcher {
     override fun onClick(v: View?) {
         when(v){
             binding.createFarmSubmit -> {
-                //todo : bikin foto, maps, check kosong, make edittext not clickable
-
-//                isLoading = true
-//                viewModel.createFarmProfile(
-//                    binding.createFarmName.text.toString(),
-//                    binding.createFarmDesc.text.toString(),
-//                    binding.createFarmLoc.text.toString()
-//                )
-//                viewModel.isFarmCreated.observe(this, {
-//                    if(it){
-//                        isLoading = false
-//                        Toast.makeText(requireContext(), "Farm created", Toast.LENGTH_SHORT).show()
+                isLoading = true
+                viewModel.createFarmProfile(
+                    binding.createFarmName.text.toString(),
+                    binding.createFarmDesc.text.toString(),
+                    binding.createFarmLoc.text.toString()
+                )
+                viewModel.isFarmCreated.observe(this, {
+                    if(it){
+                        isLoading = false
+                        Toast.makeText(requireContext(), "Farm created", Toast.LENGTH_SHORT).show()
                         Navigation.findNavController(binding.root).navigate(R.id.action_createGardenFragment_to_createStaffFragment)
-//                    } else {
-//                        isLoading = false
-//                        viewModel.createProfileError.observe(this, {
-//                            if(it.isNotEmpty()){
-//                                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
-//                                Log.i("createUserFragment", it)
-//                                viewModel.createProfileError.value = ""
-//                            }
-//                        })
-//                    }
-//                })
+                    } else {
+                        isLoading = false
+                        viewModel.createProfileError.observe(this, {
+                            if(it.isNotEmpty()){
+                                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+                                Log.i(TAG, it)
+                                viewModel.createProfileError.value = ""
+                            }
+                        })
+                    }
+                })
             }
         }
     }
@@ -95,7 +97,7 @@ class CreateFarmFragment : Fragment(), View.OnClickListener, TextWatcher {
         val sydney = LatLng(-34.0, 151.0)
         googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
-        //todo posisi awal sesuai current location, tambahin zoom
+        //todo : Maps. posisi awal sesuai current location, tambahin zoom
     }
 
     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}

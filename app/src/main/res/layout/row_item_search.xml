@@ -13,7 +13,7 @@
     android:weightSum="2">
 
     <ImageView
-        android:id="@+id/rowPicture"
+        android:id="@+id/searchPicture"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_gravity="center"
@@ -21,7 +21,7 @@
         android:scaleType="centerCrop"
         android:src="@drawable/ic_launcher_foreground"
         android:adjustViewBounds="true"
-        android:contentDescription="@string/rowpicture" />
+        android:contentDescription="@string/user_photo_profile" />
 
     <LinearLayout
         android:layout_width="0dp"
@@ -33,7 +33,7 @@
         android:showDividers="middle">
 
         <TextView
-            android:id="@+id/rowTextSubtitle"
+            android:id="@+id/searchTextSubtitle"
             style="?attr/textAppearanceSubtitle1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
             android:textSize="14sp"
             android:textStyle="bold"/>
         <TextView
-            android:id="@+id/rowTextTitle"
+            android:id="@+id/searchTextTitle"
             style="?attr/textAppearanceSubtitle1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -54,11 +54,11 @@
     </LinearLayout>
 
     <ImageButton
-        android:id="@+id/rowClose"
+        android:id="@+id/searchClose"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0.25"
         android:src="@drawable/ic_close"
         android:backgroundTint="@null"
-        android:contentDescription="@string/rowclose"/>
+        android:contentDescription="@string/close"/>
 </LinearLayout>

@@ -27,7 +27,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="ImageContrastCheck"
-            app:shapeAppearanceOverlay="@style/circular_image"/>
+            app:shapeAppearanceOverlay="@style/circular_image"
+            android:background="@color/white"/>
 
         <ImageView
             android:id="@+id/createUserEditPhoto"

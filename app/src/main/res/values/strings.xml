@@ -14,7 +14,7 @@
     <string name="have_an_account">Have an Account?</string>
     <string name="provide_your_account_s_email_for_which_you_want_to_reset_your_password">Provide your account\'s email for which you want to reset your password!</string>
     <string name="new_password">New Password</string>
-    <string name="create_nnew_password">Create \nnew password</string>
+    <string name="create_new_password">Create \nnew password</string>
     <string name="your_identity_has_been_verified_nset_your_new_password">Your identity has been verified! \nSet your new password.</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="user_photo_profile">User Photo Profile</string>
@@ -49,7 +49,7 @@
     <string name="edit_profile">Edit Profile</string>
     <string name="cancel">Cancel</string>
     <string name="sign_out_warning">Are you sure want to sign out?</string>
-    <string name="joined_company_since">Joined company since</string>
+    <string name="joined_company_since">Joined company since %s</string>
     <string name="performance_rate">Performance Rate</string>
     <string name="role">Role</string>
     <string name="operational_area">Operational Area</string>
@@ -58,8 +58,7 @@
     <string name="forget_success">Check your email for a link to reset your password. If it doesn\'t appear within a few minutes, check your spam folder or</string>
     <string name="subtitle">Subtitle</string>
     <string name="title">Title</string>
-    <string name="rowpicture">rowPicture</string>
-    <string name="rowclose">rowClose</string>
+    <string name="close">Close</string>
     <string name="posts">Posts</string>
     <string name="notes">Notes</string>
     <string name="social">Social</string>
@@ -117,4 +116,9 @@
     <string name="planted_at">Planted at</string>
     <string name="can_be_harvested_at_s">Can be harvested at %s</string>
     <string name="d_more_days">%d more days</string>
+    <string name="history_content">History Content</string>
+    <string name="role_in_profile">%s of %s</string>
+    <string name="discard">Discard</string>
+    <string name="discard_change_warning">Changes will not be saved. Do you want to proceed?</string>
+    <string name="discard_change">Discard Change</string>
 </resources>

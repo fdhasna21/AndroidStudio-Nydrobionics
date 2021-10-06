@@ -15,8 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.canhub.cropper.CropImage
 import com.canhub.cropper.CropImageView
 import com.fdhasna21.nydrobionics.databinding.ActivityCreateProfileBinding
-import com.fdhasna21.nydrobionics.dataclass.model.Plant
-import com.fdhasna21.nydrobionics.dataclass.model.User
+import com.fdhasna21.nydrobionics.dataclass.model.UserModel
 import com.fdhasna21.nydrobionics.viewmodel.CreateProfileViewModel
 import java.lang.Exception
 
@@ -55,7 +54,7 @@ class CreateProfileActivity : AppCompatActivity() {
                     viewModel.setPhotoProfile(it.uriContent!!, fileExtension)
                 }
 
-                data.data?.getParcelableExtra<User>("selectedUser")?.let {
+                data.data?.getParcelableExtra<UserModel>("selectedUser")?.let {
                     //todo : update viewModel data nya
                 }
             }

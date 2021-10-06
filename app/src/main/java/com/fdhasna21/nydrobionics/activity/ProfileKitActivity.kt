@@ -2,7 +2,6 @@ package com.fdhasna21.nydrobionics.activity
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -18,7 +17,7 @@ import com.fdhasna21.nydrobionics.databinding.ActivityProfileKitBinding
 import com.fdhasna21.nydrobionics.databinding.LayoutPlantedCropsBinding
 import com.fdhasna21.nydrobionics.databinding.RowItemKitMonitoringBinding
 import com.fdhasna21.nydrobionics.dataclass.model.Plant
-import com.fdhasna21.nydrobionics.enumclass.DatabaseType
+import com.fdhasna21.nydrobionics.enumclass.AdapterRealTimeType
 import com.fdhasna21.nydrobionics.viewmodel.ProfileKitViewModel
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.android.material.color.MaterialColors
@@ -110,7 +109,7 @@ class ProfileKitActivity : AppCompatActivity(), View.OnClickListener {
             .setQuery(reference, Plant::class.java)
             .build()
 
-        val tabLayoutAdapter = ViewPagerAdapter(this, arrayListOf(options, options), DatabaseType.PLANT)
+        val tabLayoutAdapter = ViewPagerAdapter(this, arrayListOf(options, options), AdapterRealTimeType.PLANT)
         binding.kitViewPager.adapter = tabLayoutAdapter
         TabLayoutMediator(binding.kitTabLayout, binding.kitViewPager) { tab, position ->
             tab.text = resources.getString(TAB_TITLES[position])

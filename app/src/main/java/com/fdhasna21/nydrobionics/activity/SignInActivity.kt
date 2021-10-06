@@ -6,10 +6,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.CompoundButton
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.fdhasna21.nydrobionics.databinding.ActivitySignInBinding
 import com.fdhasna21.nydrobionics.utils.ViewUtility
@@ -55,24 +57,24 @@ class SignInActivity : AppCompatActivity(), View.OnClickListener, TextWatcher, C
     override fun onClick(v: View?) {
         when(v){
             binding.signinSubmit -> {
-//                    isLoading = true
-//                    viewModel.signIn(binding.signinEmail.text.toString(), binding.signinPassword.text.toString())
-//                    viewModel.isUserSignIn.observe(this@SignInActivity, {
-//                        if(it){
-//                            isLoading = false
-                            startActivity(Intent(this@SignInActivity, MainActivity::class.java))
-                            finish()
-//                        } else {
-//                            isLoading = false
-//                            viewModel.signInError.observe(this, {
-//                                if(it.isNotEmpty()){
-//                                    Toast.makeText(this@SignInActivity, it, Toast.LENGTH_SHORT).show()
-//                                    Log.i(TAG, it)
-//                                    viewModel.signInError.value = ""
-//                                }
-//                            })
-//                        }
-//                    })
+                isLoading = true
+                viewModel.signIn(binding.signinEmail.text.toString(), binding.signinPassword.text.toString())
+                viewModel.isUserSignIn.observe(this@SignInActivity, {
+                    if(it){
+                        isLoading = false
+                        startActivity(Intent(this@SignInActivity, MainActivity::class.java))
+                        finish()
+                    } else {
+                        isLoading = false
+                        viewModel.signInError.observe(this, {
+                            if(it.isNotEmpty()){
+                                Toast.makeText(this@SignInActivity, it, Toast.LENGTH_SHORT).show()
+                                Log.i(TAG, it)
+                                viewModel.signInError.value = ""
+                            }
+                        })
+                    }
+                })
             }
             binding.signinSignUp -> startActivity(Intent(this, SignUpActivity::class.java))
             binding.signinForgetPassword -> startActivity(Intent(this, ForgetPasswordActivity::class.java))

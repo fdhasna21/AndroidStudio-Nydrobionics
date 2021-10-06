@@ -13,7 +13,7 @@ import com.fdhasna21.nydrobionics.adapter.ViewPagerAdapter
 import com.fdhasna21.nydrobionics.databinding.ActivityProfileUserBinding
 import com.fdhasna21.nydrobionics.databinding.FragmentMainProfileBinding
 import com.fdhasna21.nydrobionics.dataclass.model.Plant
-import com.fdhasna21.nydrobionics.enumclass.DatabaseType
+import com.fdhasna21.nydrobionics.enumclass.AdapterRealTimeType
 import com.fdhasna21.nydrobionics.utils.IntentUtility
 import com.fdhasna21.nydrobionics.utils.RequestPermission
 import com.fdhasna21.nydrobionics.viewmodel.ProfileUserViewModel
@@ -49,7 +49,8 @@ class ProfileUserActivity : AppCompatActivity(), View.OnClickListener {
 
         bindingFragment = binding.showUserProfile
         bindingFragment.apply {
-            viewsAsButton = arrayListOf(mainProfilePhoneGroup,
+            viewsAsButton = arrayListOf(mainProfileEmailGroup,
+                                        mainProfilePhoneGroup,
                                         mainProfileAddressGroup,
                                         mainProfilePhoto)
             viewsAsButton.forEach { it.setOnClickListener(this@ProfileUserActivity) }
@@ -73,6 +74,7 @@ class ProfileUserActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when(v){
+            bindingFragment.mainProfileEmail -> IntentUtility(this).openEmail(bindingFragment.mainProfileEmail.text.toString())
             bindingFragment.mainProfilePhoneGroup -> RequestPermission().requestPermission(this, Manifest.permission.CALL_PHONE, "Phone call", bindingFragment.mainProfilePhone.text.toString())
             bindingFragment.mainProfileAddressGroup -> IntentUtility(this).openMaps(bindingFragment.mainProfileAddress.toString())
             bindingFragment.mainProfilePhoto -> IntentUtility(this).openImage(bindingFragment.mainProfilePhoto, bindingFragment.mainProfileName.text.toString())
@@ -86,7 +88,7 @@ class ProfileUserActivity : AppCompatActivity(), View.OnClickListener {
             .setQuery(reference, Plant::class.java)
             .build()
 
-        val tabLayoutAdapter = ViewPagerAdapter(this, arrayListOf(options), DatabaseType.PLANT)
+        val tabLayoutAdapter = ViewPagerAdapter(this, arrayListOf(options), AdapterRealTimeType.PLANT)
         bindingFragment.mainProfileViewPager.adapter = tabLayoutAdapter
         TabLayoutMediator(bindingFragment.mainProfileTabLayout, bindingFragment.mainProfileViewPager) { tab, position ->
             tab.text = resources.getString(TAB_TITLES[position])

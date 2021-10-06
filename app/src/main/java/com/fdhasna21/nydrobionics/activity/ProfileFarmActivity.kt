@@ -9,23 +9,19 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.webkit.MimeTypeMap
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
-import com.canhub.cropper.CropImage
 import com.fdhasna21.nydrobionics.R
 import com.fdhasna21.nydrobionics.databinding.ActivityProfileFarmBinding
 import com.fdhasna21.nydrobionics.databinding.FragmentCreateFarmBinding
-import com.fdhasna21.nydrobionics.databinding.FragmentCreateUserBinding
-import com.fdhasna21.nydrobionics.dataclass.model.User
+import com.fdhasna21.nydrobionics.dataclass.model.UserModel
 import com.fdhasna21.nydrobionics.viewmodel.CreateProfileViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.material.textfield.TextInputEditText
 import java.lang.Exception
 
 class ProfileFarmActivity : AppCompatActivity(), View.OnClickListener {
@@ -103,7 +99,7 @@ class ProfileFarmActivity : AppCompatActivity(), View.OnClickListener {
         Log.i(CreateProfileActivity.TAG, "$data")
         try{
             if(data?.resultCode == Activity.RESULT_OK){
-                data.data?.getParcelableExtra<User>("selectedUser")?.let {
+                data.data?.getParcelableExtra<UserModel>("selectedUser")?.let {
                     //todo : update viewModel data nya
                 }
             }

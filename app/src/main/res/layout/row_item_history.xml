@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="10dp"
+    android:background="?attr/selectableItemBackground"
+    android:id="@+id/rowHistory"
+    android:orientation="horizontal"
+    android:divider="@drawable/divider_6dp"
+    android:showDividers="middle"
+    android:weightSum="2">
+
+    <ImageView
+        android:id="@+id/historyPicture"
+        android:layout_width="0dp"
+        android:layout_height="44dp"
+        android:layout_gravity="center"
+        android:layout_weight="0.25"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_launcher_foreground"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/user_photo_profile" />
+
+    <TextView
+        android:id="@+id/historyContent"
+        style="?attr/textAppearanceSubtitle1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.5"
+        android:gravity="top|center_vertical"
+        android:text="@string/history_content"
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/historyTimestamp"
+        style="?attr/textAppearanceSubtitle1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:maxHeight="45dp"
+        android:layout_weight="0.25"
+        android:gravity="center|top"
+        android:text="@string/time"
+        android:maxLines="2"
+        android:textSize="14sp"/>
+</LinearLayout>

@@ -4,9 +4,11 @@ import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.fdhasna21.nydrobionics.dataclass.model.Farm
+import com.fdhasna21.nydrobionics.dataclass.model.FarmModel
 import com.fdhasna21.nydrobionics.dataclass.UriFileExtensions
-import com.fdhasna21.nydrobionics.dataclass.model.User
+import com.fdhasna21.nydrobionics.dataclass.model.FarmModel.Companion.toHashMap
+import com.fdhasna21.nydrobionics.dataclass.model.UserModel
+import com.fdhasna21.nydrobionics.dataclass.model.UserModel.Companion.toHashMap
 import com.fdhasna21.nydrobionics.enumclass.Gender
 import com.fdhasna21.nydrobionics.enumclass.Role
 import com.google.firebase.auth.FirebaseUser
@@ -28,12 +30,12 @@ class CreateProfileViewModel : ViewModel() {
     private var userEmail : MutableLiveData<String> = MutableLiveData()
     private var userImageUri : MutableLiveData<UriFileExtensions> = MutableLiveData(null)
 
-    private var user : MutableLiveData<User> = MutableLiveData(
-        User(gender = Gender.MALE.toString(),
+    private var userModel : MutableLiveData<UserModel> = MutableLiveData(
+        UserModel(gender = Gender.MALE.toString(),
              dob = today)
     )
-    private var farm : MutableLiveData<Farm> = MutableLiveData(
-        Farm(
+    private var farmModel : MutableLiveData<FarmModel> = MutableLiveData(
+        FarmModel(
 
         )
     )
@@ -58,8 +60,13 @@ class CreateProfileViewModel : ViewModel() {
     }
 
     /** CREATE USER FRAGMENT **/
-    fun setPhotoProfile(uri : Uri, fileExtension: String?){
-        userImageUri.value = UriFileExtensions(uri, fileExtension!!)
+    fun setPhotoProfile(uri : Uri?, fileExtension: String?=null){
+        userImageUri.value = if(uri != null){
+             UriFileExtensions(uri, fileExtension!!)
+        } else {
+            null
+        }
+
         Log.i("createProfile", "setPhotoProfile: $uri")
     }
 
@@ -68,26 +75,30 @@ class CreateProfileViewModel : ViewModel() {
     }
 
     fun setRole(role:Role){
-        user.value?.role = role.toString()
+        userModel.value?.role = role.toString()
     }
 
     fun setGender(gender: Gender){
-        user.value?.gender = gender.toString()
+        userModel.value?.gender = gender.toString()
+    }
+
+    fun getGenderPosition() : Int {
+        return Gender.getType(userModel.value?.gender!!)?.getPosition()!!
     }
 
     fun setDOB(date:Long?) : String? {
-        user.value?.dob = formatDate(date)
-        return user.value?.dob
+        userModel.value?.dob = formatDate(date)
+        return userModel.value?.dob
     }
 
     fun getDOB() : Long?{
-        return if(user.value?.dob == null){
+        return if(userModel.value?.dob == null){
             null
         } else {
             val c = Calendar.getInstance()
             val pos = ParsePosition(0)
             val sdf = SimpleDateFormat("dd MMMM yyyy", Locale.US)
-            c.time = sdf.parse(user.value!!.dob, pos)
+            c.time = sdf.parse(userModel.value!!.dob, pos)
             c.add(Calendar.DATE, 1)
             c.timeInMillis
         }
@@ -97,8 +108,16 @@ class CreateProfileViewModel : ViewModel() {
         return userEmail
     }
 
+    fun getUserModel() : UserModel?{
+        return userModel.value
+    }
+
+    fun setUserModel(userModel: UserModel){
+        this.userModel.value = userModel
+    }
+
     fun createUserProfile(name:String, phone:String, address:String, bio:String) {
-        user.value?.apply {
+        userModel.value?.apply {
             this.name = name
             this.phone = phone
             this.address = address
@@ -120,7 +139,7 @@ class CreateProfileViewModel : ViewModel() {
             }.addOnCompleteListener {
                 if (it.isSuccessful) {
                     it.result.let {
-                        user.value?.photo_url = it.toString()
+                        userModel.value?.photo_url = it.toString()
                         sendUserProfile()
                     }
                 }
@@ -134,7 +153,7 @@ class CreateProfileViewModel : ViewModel() {
     private fun sendUserProfile(){
         createProfileError.value = ""
         val db = FirebaseFirestore.getInstance()
-        db.collection("users").document(currentUser?.uid!!).set(user).addOnCompleteListener {
+        db.collection("users").document(currentUser?.uid!!).set(userModel.value!!.toHashMap()).addOnCompleteListener {
             if(it.isSuccessful){
                 isUserCreated.value = true
                 isNotEmpties.value = false
@@ -148,13 +167,13 @@ class CreateProfileViewModel : ViewModel() {
 
     /** CREATE FARM FRAGMENT **/
     fun createFarmProfile(name:String, description:String, location:String){
-        if(user.value?.role!! == Role.OWNER.toString()){
+        if(userModel.value?.role!! == Role.OWNER.toString()){
             createProfileError.value = ""
             val db = FirebaseFirestore.getInstance().collection("farms")
             val ref : DocumentReference = db.document()
 
-            farm.value?.apply {
-                //gps sama photo masih null
+            farmModel.value?.apply {
+                //photo masih null
                 this.ownerId = currentUser?.uid!!
                 this.farmId = ref.id
                 this.name = name
@@ -162,7 +181,7 @@ class CreateProfileViewModel : ViewModel() {
                 this.location = location
             }
 
-            db.document(ref.id).set(farm).addOnCompleteListener {
+            db.document(ref.id).set(farmModel.value!!.toHashMap()).addOnCompleteListener {
                 if(it.isSuccessful){
                     isFarmCreated.value = true
                 } else {

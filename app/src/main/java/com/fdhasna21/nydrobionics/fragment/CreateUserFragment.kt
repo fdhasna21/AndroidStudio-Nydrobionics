@@ -5,10 +5,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.navigation.Navigation
 import com.addisonelliott.segmentedbutton.SegmentedButtonGroup
@@ -37,6 +39,10 @@ class CreateUserFragment : Fragment(), View.OnClickListener, SegmentedButtonGrou
     private lateinit var viewModel : CreateProfileViewModel
     private lateinit var editTexts : ArrayList<TextInputEditText>
     private lateinit var viewsAsButton : ArrayList<View>
+
+    companion object {
+        const val TAG = "createUser"
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -122,35 +128,33 @@ class CreateUserFragment : Fragment(), View.OnClickListener, SegmentedButtonGrou
             }
             binding.createUserPhoto -> IntentUtility(requireContext()).openImage(binding.createUserPhoto)
             binding.createUserSubmit -> {
-//                isLoading = true
-//                viewModel.createUserProfile(
-//                    binding.createUserName.text.toString(),
-//                    binding.createUserPhone.text.toString(),
-//                    binding.createUserAddress.text.toString(),
-//                    binding.createUserBio.text.toString()
-//                )
-//                viewModel.isUserCreated.observe(this, {
-//                    if(it){
-//                        isLoading = false
-//                        Toast.makeText(requireContext(), "User created", Toast.LENGTH_SHORT).show()
-
-                if (binding.roleOwner.isChecked) {
-                    Navigation.findNavController(binding.root).navigate(R.id.action_createUserFragment_to_createFarmFragment)
-                } else {
-                    startActivity(Intent(requireContext(), MainActivity::class.java))
-                }
-
-//                    } else {
-//                        isLoading = false
-//                        viewModel.createProfileError.observe(this, {
-//                            if(it.isNotEmpty()){
-//                                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
-//                                Log.i("createUserFragment", it)
-//                                viewModel.createProfileError.value = ""
-//                            }
-//                        })
-//                    }
-//                })
+                isLoading = true
+                viewModel.createUserProfile(
+                    binding.createUserName.text.toString(),
+                    binding.createUserPhone.text.toString(),
+                    binding.createUserAddress.text.toString(),
+                    binding.createUserBio.text.toString()
+                )
+                viewModel.isUserCreated.observe(this, {
+                    if(it){
+                        isLoading = false
+                        Toast.makeText(requireContext(), "User created", Toast.LENGTH_SHORT).show()
+                        if (binding.roleOwner.isChecked) {
+                            Navigation.findNavController(binding.root).navigate(R.id.action_createUserFragment_to_createFarmFragment)
+                        } else {
+                            startActivity(Intent(requireContext(), MainActivity::class.java))
+                        }
+                    } else {
+                        isLoading = false
+                        viewModel.createProfileError.observe(this, {
+                            if(it.isNotEmpty()){
+                                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+                                Log.i(TAG, it)
+                                viewModel.createProfileError.value = ""
+                            }
+                        })
+                    }
+                })
             }
         }
     }

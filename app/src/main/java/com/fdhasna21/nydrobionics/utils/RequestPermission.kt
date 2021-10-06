@@ -6,6 +6,7 @@ import android.app.Activity
 import android.util.Log
 import android.widget.Toast
 import com.fdhasna21.nydrobionics.activity.CreateProfileActivity
+import com.fdhasna21.nydrobionics.activity.EditProfileUserActivity
 import com.fdhasna21.nydrobionics.activity.MainActivity
 import com.fdhasna21.nydrobionics.activity.SplashScreenActivity
 import com.google.android.material.snackbar.Snackbar
@@ -80,9 +81,8 @@ class RequestPermission {
                 override fun onPermissionsChecked(report: MultiplePermissionsReport) {
                     if (report.areAllPermissionsGranted()) {
                         if(activity is CreateProfileActivity){activity.changeImageProfile()}
-//                        Log.i("requestPermission", "onPermissionsChecked: granted")
+                        if(activity is EditProfileUserActivity){activity.changeImageProfile()}
                     }
-//                    Log.i("requestPermission", "onPermissionsChecked: not")
                 }
 
                 override fun onPermissionRationaleShouldBeShown(
