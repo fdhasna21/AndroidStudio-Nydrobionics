@@ -9,4 +9,14 @@ enum class Role(var role: String){
     override fun toString(): String {
         return role
     }
+
+    companion object{
+        fun getType(type: String) : Role? {
+            return when(type){
+                "owner" -> OWNER
+                "female" -> STAFF
+                else -> null
+            }
+        }
+    }
 }

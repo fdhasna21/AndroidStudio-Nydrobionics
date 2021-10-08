@@ -7,6 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import com.avatarfirst.avatargenlib.AvatarConstants
+import com.avatarfirst.avatargenlib.AvatarGenerator
+import com.bumptech.glide.Glide
 import com.fdhasna21.nydrobionics.R
 import com.fdhasna21.nydrobionics.activity.CreateProfileActivity
 import com.fdhasna21.nydrobionics.activity.MainActivity
@@ -35,6 +38,12 @@ class CreateStaffFragment : Fragment(), View.OnClickListener {
         binding.apply {
             viewsAsButton = arrayListOf(createStaffSubmit, createStaffSearch)
             viewsAsButton.forEach { it.setOnClickListener(this@CreateStaffFragment) }
+
+            createStaffFarmId.setText(viewModel.getFarmModel()?.farmId.toString())
+            Glide.with(requireActivity())
+                .load("http://brokenfortest")
+                .placeholder(AvatarGenerator.avatarImage(requireContext(), 200, AvatarConstants.CIRCLE, viewModel.getFarmModel()?.name.toString()))
+                .into(createStaffFarmImage)
         }
         //todo : observer dari searchnya
     }
@@ -43,7 +52,11 @@ class CreateStaffFragment : Fragment(), View.OnClickListener {
         when(v){
             binding.createStaffSubmit -> {
                 //todo : send to firebase
-                startActivity(Intent(activity, MainActivity::class.java))
+                val intent = Intent(requireContext(), MainActivity::class.java)
+                intent.putExtra("currentUserModel", viewModel.getUserModel())
+                intent.putExtra("currentFarmModel", viewModel.getFarmModel())
+                startActivity(intent)
+                requireActivity().finish()
             }
             binding.createStaffSearch -> {
                 (activity as CreateProfileActivity).searchUser()

@@ -17,12 +17,12 @@ data class UserModel(
     var address : String? = null,
     var phone : String? = null,
     var joinedSince : String? = null,
-    var photo_url : String? = null
+    var photo_url : String? = null,
+    var farmId : String? = null
 ) : Parcelable {
     companion object {
-        fun DocumentSnapshot.toUser() : UserModel? {
+        fun DocumentSnapshot.toUserModel() : UserModel? {
             try{
-                Log.i(TAG, "toUser: ${contains("name")}")
                 val name = getString("name")
                 val gender = getString("gender")
                 val dob = getString("dob")
@@ -33,8 +33,9 @@ data class UserModel(
                 val address = getString("address")
                 val phone = getString("phone")
                 val joinedSince = getString("joinedSince")
-                val output = UserModel(name, gender, dob, role, bio, uid, performanceRate?.toFloat(), address, phone, joinedSince)
-                Log.i(TAG, "$output")
+                val photo_url = getString("photo_url")
+                val farmId = getString("farmId")
+                val output = UserModel(name, gender, dob, role, bio, uid, performanceRate?.toFloat(), address, phone, joinedSince, photo_url, farmId)
                 return output
             } catch (e: Exception) {
                 Log.e(TAG, "Error converting $TAG", e)
@@ -55,11 +56,11 @@ data class UserModel(
             output["phone"] = phone
             output["joinedSince"] = joinedSince
             output["photo_url"] = photo_url
+            output["farmId"] = farmId
             return output
         }
 
         private const val TAG = "UserModel"
-
     }
 }
 

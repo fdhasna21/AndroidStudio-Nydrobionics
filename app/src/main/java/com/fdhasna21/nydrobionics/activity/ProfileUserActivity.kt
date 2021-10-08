@@ -12,7 +12,7 @@ import com.fdhasna21.nydrobionics.R
 import com.fdhasna21.nydrobionics.adapter.ViewPagerAdapter
 import com.fdhasna21.nydrobionics.databinding.ActivityProfileUserBinding
 import com.fdhasna21.nydrobionics.databinding.FragmentMainProfileBinding
-import com.fdhasna21.nydrobionics.dataclass.model.Plant
+import com.fdhasna21.nydrobionics.dataclass.model.PlantModel
 import com.fdhasna21.nydrobionics.enumclass.AdapterRealTimeType
 import com.fdhasna21.nydrobionics.utils.IntentUtility
 import com.fdhasna21.nydrobionics.utils.RequestPermission
@@ -84,8 +84,8 @@ class ProfileUserActivity : AppCompatActivity(), View.OnClickListener {
     private fun setupTabLayout(){
         //todo : referencenya! plant dari user yg terkait
         val reference = Firebase.database.getReference("posts")
-        val options = FirebaseRecyclerOptions.Builder<Plant>()
-            .setQuery(reference, Plant::class.java)
+        val options = FirebaseRecyclerOptions.Builder<PlantModel>()
+            .setQuery(reference, PlantModel::class.java)
             .build()
 
         val tabLayoutAdapter = ViewPagerAdapter(this, arrayListOf(options), AdapterRealTimeType.PLANT)

@@ -13,7 +13,7 @@ import com.fdhasna21.nydrobionics.R
 import com.fdhasna21.nydrobionics.activity.MainActivity
 import com.fdhasna21.nydrobionics.adapter.ViewPagerAdapter
 import com.fdhasna21.nydrobionics.databinding.FragmentMainProfileBinding
-import com.fdhasna21.nydrobionics.dataclass.model.Plant
+import com.fdhasna21.nydrobionics.dataclass.model.PlantModel
 import com.fdhasna21.nydrobionics.enumclass.AdapterRealTimeType
 import com.fdhasna21.nydrobionics.utils.IntentUtility
 import com.fdhasna21.nydrobionics.utils.RequestPermission
@@ -21,7 +21,6 @@ import com.fdhasna21.nydrobionics.viewmodel.MainViewModel
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
@@ -73,8 +72,8 @@ class MainProfileFragment : Fragment(), View.OnClickListener {
                         mainProfileRate.rating = it
                     }
                     mainProfileEmail.text = viewModel.currentUser?.email!!
-                    mainProfileRole.text = getString(R.string.role_in_profile, it.role, "garden")
-                    //todo : operational area & nama garden
+                    mainProfileRole.text = getString(R.string.role_in_profile, it.role, viewModel.currentFarmModel.value?.name.toString())
+                    //todo : operational area
                     it.photo_url?.let {
                         Glide.with(requireActivity())
                             .load(it)
@@ -110,8 +109,8 @@ class MainProfileFragment : Fragment(), View.OnClickListener {
     private fun setupTabLayout(){
         //todo : referencenya! plant dari user yg terkait
         val reference = Firebase.database.getReference("posts")
-        val options = FirebaseRecyclerOptions.Builder<Plant>()
-            .setQuery(reference, Plant::class.java)
+        val options = FirebaseRecyclerOptions.Builder<PlantModel>()
+            .setQuery(reference, PlantModel::class.java)
             .build()
 
         val tabLayoutAdapter = ViewPagerAdapter((requireActivity() as MainActivity), arrayListOf(options), AdapterRealTimeType.PLANT)

@@ -8,6 +8,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import com.fdhasna21.nydrobionics.R
 import com.fdhasna21.nydrobionics.activity.*
 import com.fdhasna21.nydrobionics.databinding.FragmentMainAddBinding
@@ -18,6 +19,7 @@ import com.google.android.material.navigation.NavigationView
 class MainAddFragment : BottomSheetDialogFragment(), NavigationView.OnNavigationItemSelectedListener {
     private var _binding : FragmentMainAddBinding? = null
     private val binding get() = _binding!!
+    private lateinit var viewModel : MainViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,7 +31,7 @@ class MainAddFragment : BottomSheetDialogFragment(), NavigationView.OnNavigation
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
         binding.mainAddMenu.itemIconTintList = null
         binding.mainAddMenu.setNavigationItemSelectedListener(this)
     }
@@ -47,7 +49,10 @@ class MainAddFragment : BottomSheetDialogFragment(), NavigationView.OnNavigation
 
     private fun gotoActivity(destination : Class<*>) : Boolean{
         dismiss()
-        startActivity(Intent(requireActivity(), destination))
+        val intent = Intent(requireActivity(), destination)
+        intent.putExtra("currentUserModel", viewModel.currentUserModel.value)
+        intent.putExtra("currentFarmModel", viewModel.currentFarmModel.value)
+        startActivity(intent)
         return true
     }
 }

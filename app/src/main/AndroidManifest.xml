@@ -21,8 +21,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:theme="@style/Theme.Nydrobionics">
+        android:theme="@style/Theme.Nydrobionics"
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".activity.FeedbackActivity"
+            android:exported="true" />
         <activity
             android:name=".activity.ShowHistoryActivity"
             android:exported="true" />
@@ -96,21 +99,24 @@
             android:name=".activity.SignInActivity"
             android:exported="true"
             android:theme="@style/Theme.Nydrobionics.NoActionBar">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
 
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity
             android:name=".activity.SplashScreenActivity"
             android:exported="true"
             android:noHistory="true"
             android:theme="@style/Theme.Nydrobionics.NoActionBar">
-             <intent-filter>
-                 <action android:name="android.intent.action.MAIN" />
-                 <category android:name="android.intent.category.LAUNCHER" />
-             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".activity.MainActivity"

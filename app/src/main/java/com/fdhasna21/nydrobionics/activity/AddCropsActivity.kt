@@ -16,7 +16,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
 import com.fdhasna21.nydrobionics.R
 import com.fdhasna21.nydrobionics.databinding.ActivityAddCropsBinding
-import com.fdhasna21.nydrobionics.dataclass.model.Plant
+import com.fdhasna21.nydrobionics.dataclass.model.PlantModel
 import com.fdhasna21.nydrobionics.viewmodel.AddCropsViewModel
 import com.google.android.material.textfield.TextInputEditText
 import java.lang.Exception
@@ -93,7 +93,7 @@ class AddCropsActivity : AppCompatActivity(), View.OnClickListener {
                 binding.acPlantSelector.visibility = View.GONE
                 binding.acCropsContent.visibility = View.VISIBLE
 
-                data.data?.getParcelableExtra<Plant>("selectedPlant")?.let {
+                data.data?.getParcelableExtra<PlantModel>("selectedPlant")?.let {
                     //todo : update viewModel data nya/tampilin data
                 }
                 //todo : tampilin datanya

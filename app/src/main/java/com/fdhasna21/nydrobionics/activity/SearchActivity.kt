@@ -13,6 +13,11 @@ import com.fdhasna21.nydrobionics.R
 import com.fdhasna21.nydrobionics.databinding.ActivitySearchBinding
 import com.fdhasna21.nydrobionics.enumclass.SearchObject
 import com.fdhasna21.nydrobionics.viewmodel.SearchViewModel
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ktx.database
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     private lateinit var binding : ActivitySearchBinding

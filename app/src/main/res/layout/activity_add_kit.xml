@@ -192,7 +192,7 @@
                 app:value_text_color="@color/white" />
 
             <pl.polak.clicknumberpicker.ClickNumberPickerView
-                android:id="@+id/addWaterMax"
+                android:id="@+id/addKitWaterMax"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
                 android:layout_gravity="fill"
@@ -270,7 +270,7 @@
                 app:value_text_color="@color/white" />
 
             <pl.polak.clicknumberpicker.ClickNumberPickerView
-                android:id="@+id/addNutrientMax"
+                android:id="@+id/addKitNutrientMax"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
                 android:layout_gravity="fill"
@@ -280,6 +280,84 @@
                 app:picker_corner_radius="10"
                 app:pickers_background_color="@color/purple_500"
                 app:step="0.1"
+                app:value_background_color="@color/purple_200"
+                app:value_text_color="@color/white" />
+        </GridLayout>
+
+        <TextView
+            android:id="@+id/akTurbidityLevelTitle"
+            style="?attr/textAppearanceBody1"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_below="@id/akNutrientLevelInput"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@id/akNutrientLevelInfo"
+            android:gravity="left|center_vertical"
+            android:text="@string/turbidity"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/akTurbidityLevelInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_info"
+            android:layout_below="@id/akNutrientLevelInput"
+            android:layout_alignParentEnd="true"
+            android:background="@null"
+            android:contentDescription="@string/nutrient_level"/>
+
+        <GridLayout
+            android:id="@+id/akTurbidityLevelInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:columnCount="2"
+            android:layout_below="@id/akTurbidityLevelTitle"
+            android:layout_marginBottom="20dp">
+
+            <TextView
+                style="?attr/textAppearanceBody2"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_gravity="fill"
+                android:layout_columnWeight="1"
+                android:text="@string/minimum"
+                android:paddingEnd="4dp"/>
+
+            <TextView
+                style="?attr/textAppearanceBody2"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_gravity="fill"
+                android:layout_columnWeight="1"
+                android:text="@string/maximum"
+                android:paddingStart="4dp" />
+
+            <pl.polak.clicknumberpicker.ClickNumberPickerView
+                android:id="@+id/addKitTurbidityMin"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_gravity="fill"
+                android:layout_columnWeight="1"
+                android:paddingEnd="4dp"
+                app:decimal_number="0"
+                app:picker_corner_radius="10"
+                app:pickers_background_color="@color/purple_500"
+                app:step="1"
+                app:value_background_color="@color/purple_200"
+                app:value_text_color="@color/white" />
+
+            <pl.polak.clicknumberpicker.ClickNumberPickerView
+                android:id="@+id/addKitTurbidityMax"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_gravity="fill"
+                android:layout_columnWeight="1"
+                android:paddingStart="4dp"
+                app:decimal_number="0"
+                app:picker_corner_radius="10"
+                app:pickers_background_color="@color/purple_500"
+                app:step="1"
                 app:value_background_color="@color/purple_200"
                 app:value_text_color="@color/white" />
         </GridLayout>
@@ -295,6 +373,6 @@
             android:theme="@style/Widget.MaterialComponents.Button"
             app:spinning_bar_color="@color/white"
             app:spinning_bar_padding="12dp"
-            android:layout_below="@id/akNutrientLevelInput"/>
+            android:layout_below="@id/akTurbidityLevelInput"/>
     </RelativeLayout>
 </ScrollView>

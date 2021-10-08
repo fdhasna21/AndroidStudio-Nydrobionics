@@ -34,16 +34,16 @@ class CreateProfileViewModel : ViewModel() {
         UserModel(gender = Gender.MALE.toString(),
              dob = today)
     )
-    private var farmModel : MutableLiveData<FarmModel> = MutableLiveData(
-        FarmModel(
-
-        )
-    )
+    private var farmModel : MutableLiveData<FarmModel> = MutableLiveData(FarmModel())
 
     var isNotEmpties : MutableLiveData<Boolean> = MutableLiveData(false)
     var isUserCreated : MutableLiveData<Boolean> = MutableLiveData(false)
     var isFarmCreated : MutableLiveData<Boolean> = MutableLiveData(false)
     var createProfileError : MutableLiveData<String> = MutableLiveData("")
+
+    companion object{
+        const val TAG = "createProfile"
+    }
 
     init {
         userEmail.value = currentUser?.email
@@ -58,6 +58,13 @@ class CreateProfileViewModel : ViewModel() {
         isNotEmpties.value = boolean
         return isNotEmpties
     }
+
+    /** SET MODEL **/
+    fun setCurrentUser(userModel: UserModel?){
+        this.userModel.value = userModel
+        isUserCreated.value = true
+    }
+
 
     /** CREATE USER FRAGMENT **/
     fun setPhotoProfile(uri : Uri?, fileExtension: String?=null){
@@ -173,8 +180,6 @@ class CreateProfileViewModel : ViewModel() {
             val ref : DocumentReference = db.document()
 
             farmModel.value?.apply {
-                //photo masih null
-                this.ownerId = currentUser?.uid!!
                 this.farmId = ref.id
                 this.name = name
                 this.description = description
@@ -183,12 +188,23 @@ class CreateProfileViewModel : ViewModel() {
 
             db.document(ref.id).set(farmModel.value!!.toHashMap()).addOnCompleteListener {
                 if(it.isSuccessful){
-                    isFarmCreated.value = true
+                    userModel.value!!.farmId = ref.id
+                    sendUserProfile()
+                    if(isUserCreated.value == true){
+                        isFarmCreated.value = true
+                    } else {
+                        createProfileError.value = it.exception.toString()
+                        isFarmCreated.value = false
+                    }
                 } else {
                     createProfileError.value = it.exception.toString()
                     isFarmCreated.value = false
                 }
             }
         }
+    }
+
+    fun getFarmModel() : FarmModel?{
+        return farmModel.value
     }
 }

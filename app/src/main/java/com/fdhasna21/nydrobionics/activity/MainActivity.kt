@@ -27,7 +27,10 @@ import com.canhub.cropper.CropImage
 import com.fdhasna21.nydrobionics.BuildConfig
 import com.fdhasna21.nydrobionics.R
 import com.fdhasna21.nydrobionics.databinding.ActivityMainBinding
+import com.fdhasna21.nydrobionics.dataclass.model.FarmModel
 import com.fdhasna21.nydrobionics.dataclass.model.UserModel
+import com.fdhasna21.nydrobionics.enumclass.Gender
+import com.fdhasna21.nydrobionics.enumclass.Role
 import com.fdhasna21.nydrobionics.fragment.MainAddFragment
 import com.fdhasna21.nydrobionics.viewmodel.MainViewModel
 import com.google.android.material.navigation.NavigationView
@@ -55,6 +58,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(binding.root)
 
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        viewModel.setCurrentUser(intent.getParcelableExtra<UserModel>("currentUserModel"))
+        viewModel.setCurrentFarm(intent.getParcelableExtra<FarmModel>("currentFarmModel"))
+
+        viewModel.isCurrentUserExist.observe(this, {
+            when(it){
+                false -> startActivity(Intent(this, CreateProfileActivity::class.java))
+            }
+        })
 
         navHostFragment = supportFragmentManager.findFragmentById(R.id.mainFragmentContainer) as NavHostFragment
         navController = navHostFragment.navController
@@ -65,15 +76,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             mainVersion.text = BuildConfig.VERSION_NAME
         }
 
-//        viewModel.isCurrentUserExist.observe(this, {
-//
-//            if(it == false){
-//                startActivity(Intent(this, CreateProfileActivity::class.java))
-//            }
-//            Log.i(TAG, "currentExist : $it")
-//        })
-
-        viewModel.setCurrentUser(intent.getParcelableExtra<UserModel>("currentUserModel"))
         setupDrawer()
     }
 
@@ -124,6 +126,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                         setNegativeButton(getString(R.string.cancel)){_,_ ->}
                     }
                     alertDialog.show()
+                    true
+                }
+                R.id.drawer_feedback -> {
+                    val intent = Intent(this, FeedbackActivity::class.java)
+                    intent.putExtra("currentUserModel", viewModel.currentUserModel.value)
+                    startActivity(intent)
+                    drawerLayout.closeDrawer(GravityCompat.END)
                     true
                 }
                 else -> false

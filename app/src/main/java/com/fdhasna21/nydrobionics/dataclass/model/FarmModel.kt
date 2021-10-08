@@ -11,24 +11,22 @@ data class FarmModel(
     var name : String? = null,
     var description : String? = null,
     var location : String? = null,
-    var gps : String? = null,
-    var ownerId : String? = null,
+    var gps : String? = null
 ) : Parcelable {
     companion object{
-        fun DocumentSnapshot.toFarm() : FarmModel? {
+        fun DocumentSnapshot.toFarmModel() : FarmModel? {
             try {
-                val id  = getString("id")
                 val name = getString("name")
                 val description = getString("description")
                 val location = getString("location")
                 val gps = getString("gps")
-                val ownerId = getString("ownerId")
-                val output = FarmModel(id, name, description, location, gps, ownerId)
+                val farmId = getString("farmId")
+                val output = FarmModel(farmId, name, description, location, gps)
                 Log.i(TAG, "$output")
                 return output
             }
             catch (e: Exception) {
-                Log.e(TAG, "Error converting $TAG profile", e)
+                Log.e(TAG, "Error converting $TAG", e)
                 return null
             }
         }
@@ -40,7 +38,6 @@ data class FarmModel(
             output["description"] = description
             output["location"] = location
             output["gps"] = gps
-            output["ownerId"] = ownerId
             return output
         }
 

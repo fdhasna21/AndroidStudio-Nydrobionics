@@ -18,7 +18,7 @@
         android:divider="@drawable/divider_6dp">
 
         <ImageView
-            android:id="@+id/createStaffGardenImage"
+            android:id="@+id/createStaffFarmImage"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
@@ -26,13 +26,13 @@
             android:src="@mipmap/ic_launcher_round"/>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/createStaffGardenLayout"
+            android:id="@+id/createStaffFarmIdLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/Widget.Design.TextInputLayout">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/createStaffGarden"
+                android:id="@+id/createStaffFarmId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clickable="false"

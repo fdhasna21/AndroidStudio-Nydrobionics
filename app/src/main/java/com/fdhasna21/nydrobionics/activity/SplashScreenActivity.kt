@@ -7,8 +7,10 @@ import android.os.Handler
 import android.os.Looper
 import android.os.Parcelable
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.fdhasna21.nydrobionics.databinding.ActivitySplashScreenBinding
+import com.fdhasna21.nydrobionics.enumclass.Role
 import com.fdhasna21.nydrobionics.viewmodel.MainViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -33,14 +35,30 @@ class SplashScreenActivity : AppCompatActivity() {
         if(auth.currentUser != null){
             viewModel.getUser(auth.uid!!)
             viewModel.isCurrentUserExist.observe(this, {
-                Log.i(TAG, "currentUserExist $it")
                 when(it){
                     true -> {
-                        val intent = Intent(this, MainActivity::class.java)
-                        intent.putExtra("currentUserModel", viewModel.currentUserModel.value)
-                        Log.i(TAG, "${viewModel.currentUserModel.value}")
-                        startActivity(intent)
-                        finish()
+                        viewModel.isCurrentFarmExist.observe(this, {
+                            when(it){
+                                true -> {
+                                    val intent = Intent(this, MainActivity::class.java)
+                                    intent.putExtra("currentUserModel", viewModel.currentUserModel.value)
+                                    intent.putExtra("currentFarmModel", viewModel.currentFarmModel.value)
+                                    startActivity(intent)
+                                    finish()
+                                }
+                                false -> {
+                                    if(Role.getType(viewModel.currentUserModel.value?.role!!) == Role.OWNER){
+                                        val intent = Intent(this, CreateProfileActivity::class.java)
+                                        intent.putExtra("currentUserModel", viewModel.currentUserModel.value)
+                                        startActivity(intent)
+                                        finish()
+                                    } else {
+                                        Toast.makeText(this, "wait for owner add you", Toast.LENGTH_SHORT).show()
+                                        Log.i(TAG, "wait for owner add you")
+                                    }
+                                }
+                            }
+                        })
                     }
                     false -> {
                         startActivity(Intent(this, CreateProfileActivity::class.java))
@@ -55,17 +73,4 @@ class SplashScreenActivity : AppCompatActivity() {
             startActivity(Intent(this, SignInActivity::class.java))
         }
     }
-
-//    override fun onStart() {
-//        super.onStart()
-//        val handler = Handler(Looper.getMainLooper())
-//        handler.postDelayed({
-//            if(auth.currentUser != null){
-//                startActivity(Intent(this, MainActivity::class.java))
-//                finish()
-//            } else {
-//                startActivity(Intent(this, SignInActivity::class.java))
-//            }
-//        }, 5000)
-//    }
 }

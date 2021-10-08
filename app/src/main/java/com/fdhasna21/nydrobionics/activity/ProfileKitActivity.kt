@@ -16,7 +16,7 @@ import com.fdhasna21.nydrobionics.adapter.ViewPagerAdapter
 import com.fdhasna21.nydrobionics.databinding.ActivityProfileKitBinding
 import com.fdhasna21.nydrobionics.databinding.LayoutPlantedCropsBinding
 import com.fdhasna21.nydrobionics.databinding.RowItemKitMonitoringBinding
-import com.fdhasna21.nydrobionics.dataclass.model.Plant
+import com.fdhasna21.nydrobionics.dataclass.model.PlantModel
 import com.fdhasna21.nydrobionics.enumclass.AdapterRealTimeType
 import com.fdhasna21.nydrobionics.viewmodel.ProfileKitViewModel
 import com.firebase.ui.database.FirebaseRecyclerOptions
@@ -105,8 +105,8 @@ class ProfileKitActivity : AppCompatActivity(), View.OnClickListener {
     private fun setupTabLayout(){
         //todo : referencenya! plant dari user yg terkait
         val reference = Firebase.database.getReference("crops")
-        val options = FirebaseRecyclerOptions.Builder<Plant>()
-            .setQuery(reference, Plant::class.java)
+        val options = FirebaseRecyclerOptions.Builder<PlantModel>()
+            .setQuery(reference, PlantModel::class.java)
             .build()
 
         val tabLayoutAdapter = ViewPagerAdapter(this, arrayListOf(options, options), AdapterRealTimeType.PLANT)

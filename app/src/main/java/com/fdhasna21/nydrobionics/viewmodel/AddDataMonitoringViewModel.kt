@@ -1,7 +1,6 @@
 package com.fdhasna21.nydrobionics.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.fdhasna21.nydrobionics.dataclass.ScoreLevel
 
 class AddDataMonitoringViewModel : ViewModel() {
 

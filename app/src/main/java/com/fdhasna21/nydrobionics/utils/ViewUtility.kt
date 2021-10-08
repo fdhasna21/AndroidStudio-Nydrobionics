@@ -5,6 +5,7 @@ import android.graphics.Canvas
 import android.util.Log
 import android.view.View
 import com.google.android.material.textfield.TextInputEditText
+import pl.polak.clicknumberpicker.ClickNumberPickerView
 
 class ViewUtility {
     companion object{
@@ -34,7 +35,7 @@ class ViewUtility {
         return bitmap
     }
 
-    fun isChange(lastString:String, textInputEditText: TextInputEditText) : Boolean{
+    private fun isChange(lastString:String, textInputEditText: TextInputEditText) : Boolean{
         return textInputEditText.text.toString() != lastString
     }
 
@@ -45,6 +46,22 @@ class ViewUtility {
                 isChange(it.key, it.value)
             } else {
                 output as Boolean || isChange(it.key, it.value)
+            }
+        }
+        return output!!
+    }
+
+    private fun isInRange(min : Float, max: Float) : Boolean{
+        return min > 0f && min < max
+    }
+
+    fun isInRanges(minMax : HashMap<Float, Float>) : Boolean{
+        var output : Boolean? = null
+        minMax.forEach { 
+            output = if(output==null){
+                isInRange(it.key, it.value)
+            } else {
+                output as Boolean && isInRange(it.key, it.value)
             }
         }
         return output!!

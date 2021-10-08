@@ -12,9 +12,12 @@ import android.webkit.MimeTypeMap
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import com.canhub.cropper.CropImage
 import com.canhub.cropper.CropImageView
+import com.fdhasna21.nydrobionics.R
 import com.fdhasna21.nydrobionics.databinding.ActivityCreateProfileBinding
+import com.fdhasna21.nydrobionics.dataclass.model.FarmModel
 import com.fdhasna21.nydrobionics.dataclass.model.UserModel
 import com.fdhasna21.nydrobionics.viewmodel.CreateProfileViewModel
 import java.lang.Exception
@@ -33,6 +36,7 @@ class CreateProfileActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         viewModel = ViewModelProvider(this).get(CreateProfileViewModel::class.java)
+        viewModel.setCurrentUser(intent.getParcelableExtra<UserModel>("currentUserModel"))
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {

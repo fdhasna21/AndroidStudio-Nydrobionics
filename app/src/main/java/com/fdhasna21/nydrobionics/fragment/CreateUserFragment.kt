@@ -90,6 +90,30 @@ class CreateUserFragment : Fragment(), View.OnClickListener, SegmentedButtonGrou
                     .into(binding.createUserPhoto)
             }
         })
+
+        viewModel.isUserCreated.observe(viewLifecycleOwner, {
+            if(it){
+                isLoading = false
+                Toast.makeText(requireContext(), "User created", Toast.LENGTH_SHORT).show()
+                if (Role.getType(viewModel.getUserModel()?.role!!) == Role.OWNER) {
+                    Navigation.findNavController(binding.root).navigate(R.id.action_createUserFragment_to_createFarmFragment)
+                } else {
+                    val intent = Intent(requireContext(), MainActivity::class.java)
+                    intent.putExtra("currentUserModel", viewModel.getUserModel())
+                    startActivity(intent)
+                    requireActivity().finish()
+                }
+            } else {
+                isLoading = false
+                viewModel.createProfileError.observe(viewLifecycleOwner, {
+                    if(it.isNotEmpty()){
+                        Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+                        Log.i(TAG, it)
+                        viewModel.createProfileError.value = ""
+                    }
+                })
+            }
+        })
     }
 
     override fun onClick(v: View?) {
@@ -135,26 +159,6 @@ class CreateUserFragment : Fragment(), View.OnClickListener, SegmentedButtonGrou
                     binding.createUserAddress.text.toString(),
                     binding.createUserBio.text.toString()
                 )
-                viewModel.isUserCreated.observe(this, {
-                    if(it){
-                        isLoading = false
-                        Toast.makeText(requireContext(), "User created", Toast.LENGTH_SHORT).show()
-                        if (binding.roleOwner.isChecked) {
-                            Navigation.findNavController(binding.root).navigate(R.id.action_createUserFragment_to_createFarmFragment)
-                        } else {
-                            startActivity(Intent(requireContext(), MainActivity::class.java))
-                        }
-                    } else {
-                        isLoading = false
-                        viewModel.createProfileError.observe(this, {
-                            if(it.isNotEmpty()){
-                                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
-                                Log.i(TAG, it)
-                                viewModel.createProfileError.value = ""
-                            }
-                        })
-                    }
-                })
             }
         }
     }

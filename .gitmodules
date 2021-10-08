@@ -1,0 +1,3 @@
+[submodule "numpick"]
+	path = numpick
+	url = https://github.com/polok/ClickNumberPicker.git

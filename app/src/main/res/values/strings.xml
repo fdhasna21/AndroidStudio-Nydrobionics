@@ -121,4 +121,13 @@
     <string name="discard">Discard</string>
     <string name="discard_change_warning">Changes will not be saved. Do you want to proceed?</string>
     <string name="discard_change">Discard Change</string>
+    <string name="support">Support</string>
+    <string name="about">About</string>
+    <string name="feedback">Feedback</string>
+    <string name="setting_language">Language Settings</string>
+    <string name="my_post">My Post</string>
+    <string name="general">General</string>
+    <string name="did_you_like_nydrobionics">Did you like Nydrobionics?</string>
+    <string name="let_us_know_what_you_think">Let us know what you think</string>
+    <string name="awesome">Awesome!</string>
 </resources>
