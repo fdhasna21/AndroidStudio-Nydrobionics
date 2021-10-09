@@ -19,6 +19,7 @@ import com.fdhasna21.nydrobionics.R
 import com.fdhasna21.nydrobionics.databinding.ActivityCreateProfileBinding
 import com.fdhasna21.nydrobionics.dataclass.model.FarmModel
 import com.fdhasna21.nydrobionics.dataclass.model.UserModel
+import com.fdhasna21.nydrobionics.utils.ViewUtility
 import com.fdhasna21.nydrobionics.viewmodel.CreateProfileViewModel
 import java.lang.Exception
 
@@ -48,7 +49,7 @@ class CreateProfileActivity : AppCompatActivity() {
         return super.dispatchTouchEvent(ev)
     }
 
-    private val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { data ->
+    val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { data ->
         Log.i(TAG, "$data")
         try{
             if(data?.resultCode == Activity.RESULT_OK){
@@ -58,7 +59,7 @@ class CreateProfileActivity : AppCompatActivity() {
                     viewModel.setPhotoProfile(it.uriContent!!, fileExtension)
                 }
 
-                data.data?.getParcelableExtra<UserModel>("selectedUser")?.let {
+                data.data?.getParcelableExtra<UserModel>("selectedUserModel")?.let {
                     //todo : update viewModel data nya
                 }
             }

@@ -11,18 +11,13 @@ import android.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import com.fdhasna21.nydrobionics.R
 import com.fdhasna21.nydrobionics.databinding.ActivitySearchBinding
-import com.fdhasna21.nydrobionics.enumclass.SearchObject
+import com.fdhasna21.nydrobionics.enumclass.ProfileType
 import com.fdhasna21.nydrobionics.viewmodel.SearchViewModel
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ktx.database
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 
 class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     private lateinit var binding : ActivitySearchBinding
     private lateinit var viewModel : SearchViewModel
-    private lateinit var objectSearch : SearchObject
+    private lateinit var objectSearch : ProfileType
 
     companion object {
         const val TAG = "searchActivity"
@@ -33,7 +28,7 @@ class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        objectSearch = SearchObject.getType(intent.getStringExtra("search").toString())
+        objectSearch = ProfileType.getType(intent.getStringExtra("search").toString())
 
         viewModel = ViewModelProvider(this).get(SearchViewModel::class.java)
         supportActionBar?.title = getString(R.string.search) + " $objectSearch"
@@ -63,8 +58,8 @@ class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
 
     private fun searchKeyword(key:String) : Boolean{
         when(objectSearch){
-            SearchObject.PLANT -> viewModel.searchPlants(key)
-            SearchObject.USER -> viewModel.searchUsers(key)
+            ProfileType.PLANT -> viewModel.searchPlants(key)
+            ProfileType.USER -> viewModel.searchUsers(key)
             else -> Log.i(TAG, "enum class not found")
         }
         return true

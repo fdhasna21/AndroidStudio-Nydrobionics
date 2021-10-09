@@ -4,17 +4,15 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
-import com.avatarfirst.avatargenlib.AvatarConstants
-import com.avatarfirst.avatargenlib.AvatarGenerator
-import com.bumptech.glide.Glide
 import com.fdhasna21.nydrobionics.R
+import com.fdhasna21.nydrobionics.activity.CreateProfileActivity
 import com.fdhasna21.nydrobionics.databinding.FragmentCreateFarmBinding
 import com.fdhasna21.nydrobionics.utils.ViewUtility
 import com.fdhasna21.nydrobionics.viewmodel.CreateProfileViewModel
@@ -24,12 +22,13 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.textfield.TextInputEditText
-import java.util.ArrayList
+import java.util.*
 
 class CreateFarmFragment : Fragment(), View.OnClickListener, TextWatcher {
     private var _binding : FragmentCreateFarmBinding? = null
     private val binding get() = _binding!!
     private lateinit var viewModel : CreateProfileViewModel
+    private lateinit var utility: ViewUtility
     private lateinit var editTexts : ArrayList<TextInputEditText>
 
     companion object {
@@ -50,12 +49,19 @@ class CreateFarmFragment : Fragment(), View.OnClickListener, TextWatcher {
         viewModel = ViewModelProvider(requireActivity()).get(CreateProfileViewModel::class.java)
         binding.apply {
             editStaff.visibility = View.GONE
-
-            createFarmSubmit.setOnClickListener(this@CreateFarmFragment)
             editTexts = arrayListOf(
                 createFarmName,
-                createFarmLoc
+                createFarmLoc,
+                createFarmDesc
             )
+            utility = ViewUtility(
+                context = requireContext(),
+                circularProgressButton = createFarmSubmit,
+                textInputEditTexts = editTexts,
+                actionBar = (requireActivity() as CreateProfileActivity).supportActionBar
+            )
+
+            createFarmSubmit.setOnClickListener(this@CreateFarmFragment)
             editTexts.forEach { it.addTextChangedListener(this@CreateFarmFragment) }
             checkEmpty()
         }
@@ -67,7 +73,7 @@ class CreateFarmFragment : Fragment(), View.OnClickListener, TextWatcher {
     override fun onClick(v: View?) {
         when(v){
             binding.createFarmSubmit -> {
-                isLoading = true
+                utility.isLoading = true
                 viewModel.createFarmProfile(
                     binding.createFarmName.text.toString(),
                     binding.createFarmDesc.text.toString(),
@@ -75,11 +81,11 @@ class CreateFarmFragment : Fragment(), View.OnClickListener, TextWatcher {
                 )
                 viewModel.isFarmCreated.observe(this, {
                     if(it){
-                        isLoading = false
+                        utility.isLoading = false
                         Toast.makeText(requireContext(), "Farm created", Toast.LENGTH_SHORT).show()
                         Navigation.findNavController(binding.root).navigate(R.id.action_createGardenFragment_to_createStaffFragment)
                     } else {
-                        isLoading = false
+                        utility.isLoading = false
                         viewModel.createProfileError.observe(this, {
                             if(it.isNotEmpty()){
                                 Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
@@ -109,29 +115,8 @@ class CreateFarmFragment : Fragment(), View.OnClickListener, TextWatcher {
     override fun afterTextChanged(s: Editable?) {}
 
     private fun checkEmpty() {
-        viewModel.checkNotEmpty(ViewUtility().isEmpties(editTexts)).observe(viewLifecycleOwner, {
+        viewModel.checkNotEmpty(utility.isEmpties(editTexts)).observe(viewLifecycleOwner, {
             binding.createFarmSubmit.isEnabled = it
         })
     }
-
-    private var isLoading : Boolean = false
-        set(value) {
-            val editableEditText : ArrayList<TextInputEditText> = arrayListOf(
-                binding.createFarmName,
-                binding.createFarmDesc,
-                binding.createFarmLoc
-            )
-            editableEditText.forEach {
-                it.isCursorVisible = !value
-                it.isFocusable = !value
-                it.isFocusableInTouchMode = !value
-            }
-            if(value){
-                binding.createFarmSubmit.startAnimation()
-            } else {
-                binding.createFarmSubmit.revertAnimation()
-            }
-
-            field = value
-        }
 }

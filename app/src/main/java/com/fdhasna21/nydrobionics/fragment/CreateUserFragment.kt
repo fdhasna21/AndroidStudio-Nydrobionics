@@ -20,6 +20,7 @@ import com.fdhasna21.nydrobionics.activity.CreateProfileActivity
 import com.fdhasna21.nydrobionics.activity.MainActivity
 import com.fdhasna21.nydrobionics.databinding.FragmentCreateUserBinding
 import com.fdhasna21.nydrobionics.enumclass.Gender
+import com.fdhasna21.nydrobionics.enumclass.ProfileType
 import com.fdhasna21.nydrobionics.enumclass.Role
 import com.fdhasna21.nydrobionics.utils.IntentUtility
 import com.fdhasna21.nydrobionics.utils.RequestPermission
@@ -37,6 +38,7 @@ class CreateUserFragment : Fragment(), View.OnClickListener, SegmentedButtonGrou
     private var _binding : FragmentCreateUserBinding? = null
     private val binding get() = _binding!!
     private lateinit var viewModel : CreateProfileViewModel
+    private lateinit var utility: ViewUtility
     private lateinit var editTexts : ArrayList<TextInputEditText>
     private lateinit var viewsAsButton : ArrayList<View>
 
@@ -64,17 +66,27 @@ class CreateUserFragment : Fragment(), View.OnClickListener, SegmentedButtonGrou
                                         createUserSubmit,
                                         createUserEditPhoto,
                                         createUserPhoto)
-            viewsAsButton.forEach { it.setOnClickListener(this@CreateUserFragment) }
-
-            createUserPhoto.setOnLongClickListener { createUserEditPhoto.performClick() }
-
-            createUserGender.onPositionChangedListener = this@CreateUserFragment
             editTexts = arrayListOf(
-                createUserName,
-                createUserPhone,
-                createUserAddress,
-                createUserDOB)
+                    createUserName,
+                    createUserPhone,
+                    createUserAddress,
+                    createUserDOB,
+                    createUserBio)
+            utility = ViewUtility(
+                context = requireContext(),
+                circularProgressButton = createUserSubmit,
+                textInputEditTexts = editTexts,
+                viewsAsButton = viewsAsButton,
+                actionBar = (requireActivity() as CreateProfileActivity).supportActionBar)
+            utility.onLoadingChangeListener {
+                binding.roleOwner.isClickable = it
+                binding.roleStaff.isClickable = it
+            }
+
             editTexts.forEach { it.addTextChangedListener(this@CreateUserFragment) }
+            viewsAsButton.forEach { it.setOnClickListener(this@CreateUserFragment) }
+            createUserPhoto.setOnLongClickListener { createUserEditPhoto.performClick() }
+            createUserGender.onPositionChangedListener = this@CreateUserFragment
             checkEmpty()
         }
 
@@ -93,18 +105,18 @@ class CreateUserFragment : Fragment(), View.OnClickListener, SegmentedButtonGrou
 
         viewModel.isUserCreated.observe(viewLifecycleOwner, {
             if(it){
-                isLoading = false
+                utility.isLoading = false
                 Toast.makeText(requireContext(), "User created", Toast.LENGTH_SHORT).show()
-                if (Role.getType(viewModel.getUserModel()?.role!!) == Role.OWNER) {
+                if (Role.getType(viewModel.getCurrentUser()?.role!!) == Role.OWNER) {
                     Navigation.findNavController(binding.root).navigate(R.id.action_createUserFragment_to_createFarmFragment)
                 } else {
                     val intent = Intent(requireContext(), MainActivity::class.java)
-                    intent.putExtra("currentUserModel", viewModel.getUserModel())
+                    intent.putExtra("currentUserModel", viewModel.getCurrentUser())
                     startActivity(intent)
                     requireActivity().finish()
                 }
             } else {
-                isLoading = false
+                utility.isLoading = false
                 viewModel.createProfileError.observe(viewLifecycleOwner, {
                     if(it.isNotEmpty()){
                         Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
@@ -139,20 +151,10 @@ class CreateUserFragment : Fragment(), View.OnClickListener, SegmentedButtonGrou
                 datePicker.addOnNegativeButtonClickListener{}
                 datePicker.isCancelable = false
             }
-            binding.createUserEditPhoto -> {
-                val items = arrayOf("Select photo", "Delete profile picture")
-                MaterialAlertDialogBuilder(requireContext())
-                    .setItems(items) { _, which ->
-                        when(which){
-                            0 -> RequestPermission().requestMultiplePermissions(requireActivity(), listOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE), "Change profile picture")
-                            1 -> binding.createUserPhoto.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_farmer))
-                        }
-                    }
-                    .show()
-            }
-            binding.createUserPhoto -> IntentUtility(requireContext()).openImage(binding.createUserPhoto)
+            binding.createUserEditPhoto -> utility.openEditPhoto(binding.createUserPhoto, ProfileType.USER)
+            binding.createUserPhoto -> utility.openImage(binding.createUserPhoto)
             binding.createUserSubmit -> {
-                isLoading = true
+                utility.isLoading = true
                 viewModel.createUserProfile(
                     binding.createUserName.text.toString(),
                     binding.createUserPhone.text.toString(),
@@ -187,32 +189,6 @@ class CreateUserFragment : Fragment(), View.OnClickListener, SegmentedButtonGrou
         checkEmpty()
     }
 
-    private var isLoading : Boolean = false
-        set(value) {
-            val editableEditText : ArrayList<TextInputEditText> = arrayListOf(
-                binding.createUserName,
-                binding.createUserPhone,
-                binding.createUserAddress,
-                binding.createUserBio,
-                binding.createUserDOB
-            )
-            editableEditText.forEach {
-                it.isCursorVisible = !value
-                it.isFocusable = !value
-                it.isFocusableInTouchMode = !value
-            }
-            binding.createUserGender.isEnabled = !value
-            binding.roleOwner.isClickable = value
-            binding.roleStaff.isClickable = value
-            if(value){
-                binding.createUserSubmit.startAnimation()
-            } else {
-                binding.createUserSubmit.revertAnimation()
-            }
-
-            field = value
-        }
-
     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -223,7 +199,7 @@ class CreateUserFragment : Fragment(), View.OnClickListener, SegmentedButtonGrou
 
     private fun checkEmpty() {
         viewModel.checkNotEmpty(
-            ViewUtility().isEmpties(editTexts) && (binding.roleOwner.isChecked || binding.roleStaff.isChecked)
+            utility.isEmpties(editTexts) && (binding.roleOwner.isChecked || binding.roleStaff.isChecked)
         ).observe(viewLifecycleOwner, {
             binding.createUserSubmit.isEnabled = it
         })

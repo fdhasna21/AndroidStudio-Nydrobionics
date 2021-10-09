@@ -19,8 +19,6 @@ data class PlantModel(
     var tempLv : @RawValue ScoreLevel? = null,
     var humidLv : @RawValue ScoreLevel? = null,
     var phLv : @RawValue ScoreLevel? = null,
-    var date : String? = null,
-    var time : String? = null,
     var userId : String? = null,
     var growthTime : Int? = 0
 ) : Parcelable {
@@ -34,15 +32,13 @@ data class PlantModel(
                 val tempLv = getString("tempLv")
                 val humidLv = getString("humidLv")
                 val phLv = getString("phLv")
-                val date = getString("date")
-                val time = getString("time")
                 val userId = getString("userId")
                 val growthTime : Int? = get("growthTime") as Int?
                 val output = PlantModel(plantId, name, description, photo_url,
                     getLevelModel(tempLv),
                     getLevelModel(humidLv),
                     getLevelModel(phLv),
-                    date, time, userId, growthTime)
+                    userId, growthTime)
                 Log.i(TAG, "$output")
                 output
             } catch (e : Exception){
@@ -60,8 +56,6 @@ data class PlantModel(
             output["tempLv"] = tempLv?.toHashMap()
             output["humidLv"] = humidLv?.toHashMap()
             output["phLv"] = phLv?.toHashMap()
-            output["date"] = date
-            output["time"] = time
             output["userId"] = userId
             output["growthTime"] = growthTime
             return output

@@ -5,10 +5,7 @@ import android.R
 import android.app.Activity
 import android.util.Log
 import android.widget.Toast
-import com.fdhasna21.nydrobionics.activity.CreateProfileActivity
-import com.fdhasna21.nydrobionics.activity.EditProfileUserActivity
-import com.fdhasna21.nydrobionics.activity.MainActivity
-import com.fdhasna21.nydrobionics.activity.SplashScreenActivity
+import com.fdhasna21.nydrobionics.activity.*
 import com.google.android.material.snackbar.Snackbar
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
@@ -43,15 +40,15 @@ class RequestPermission {
                 .withCallback(object : Snackbar.Callback(){
                     override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
                         super.onDismissed(transientBottomBar, event)
-//                        activity.splashIsDone()
+                        activity.splashIsDone()
                     }
                 })
                 .build(),
             object : MultiplePermissionsListener {
                 override fun onPermissionsChecked(report: MultiplePermissionsReport) {
-//                    if (report.areAllPermissionsGranted()) {
-//                        activity.splashIsDone()
-//                    }
+                    if (report.areAllPermissionsGranted()) {
+                        activity.splashIsDone()
+                    }
                 }
 
                 override fun onPermissionRationaleShouldBeShown(
@@ -80,8 +77,8 @@ class RequestPermission {
             object : MultiplePermissionsListener {
                 override fun onPermissionsChecked(report: MultiplePermissionsReport) {
                     if (report.areAllPermissionsGranted()) {
-                        if(activity is CreateProfileActivity){activity.changeImageProfile()}
-                        if(activity is EditProfileUserActivity){activity.changeImageProfile()}
+                        if(manifestPermissions.find { it == Manifest.permission.CAMERA } != null)
+                            IntentUtility(activity).openCropImage()
                     }
                 }
 

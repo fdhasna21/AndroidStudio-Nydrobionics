@@ -2,12 +2,10 @@ package com.fdhasna21.nydrobionics.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.fdhasna21.nydrobionics.R
 import com.fdhasna21.nydrobionics.activity.*
@@ -40,7 +38,7 @@ class MainAddFragment : BottomSheetDialogFragment(), NavigationView.OnNavigation
         return when(item.itemId){
             R.id.addDataMonitoring  -> gotoActivity(AddDataMonitoringActivity::class.java)
             R.id.addCrops           -> gotoActivity(AddCropsActivity::class.java)
-            R.id.addTodoList        -> gotoActivity(AddTodoListActivity::class.java)
+            R.id.addNote        -> gotoActivity(AddNoteActivity::class.java)
             R.id.addKit             -> gotoActivity(AddKitActivity::class.java)
             R.id.addPlant           -> gotoActivity(AddPlantActivity::class.java)
             else                    -> false

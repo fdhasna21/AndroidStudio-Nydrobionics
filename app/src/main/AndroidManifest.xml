@@ -59,7 +59,7 @@
             android:name=".activity.AddKitActivity"
             android:exported="true" />
         <activity
-            android:name=".activity.AddTodoListActivity"
+            android:name=".activity.AddNoteActivity"
             android:exported="true" />
         <activity
             android:name=".activity.AddCropsActivity"

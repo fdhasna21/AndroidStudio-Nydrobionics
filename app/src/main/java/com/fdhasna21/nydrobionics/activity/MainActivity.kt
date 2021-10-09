@@ -3,16 +3,12 @@ package com.fdhasna21.nydrobionics.activity
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.os.UserHandle
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.webkit.MimeTypeMap
-import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -23,20 +19,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import com.canhub.cropper.CropImage
 import com.fdhasna21.nydrobionics.BuildConfig
 import com.fdhasna21.nydrobionics.R
 import com.fdhasna21.nydrobionics.databinding.ActivityMainBinding
 import com.fdhasna21.nydrobionics.dataclass.model.FarmModel
 import com.fdhasna21.nydrobionics.dataclass.model.UserModel
-import com.fdhasna21.nydrobionics.enumclass.Gender
-import com.fdhasna21.nydrobionics.enumclass.Role
 import com.fdhasna21.nydrobionics.fragment.MainAddFragment
+import com.fdhasna21.nydrobionics.utils.IntentUtility
 import com.fdhasna21.nydrobionics.viewmodel.MainViewModel
-import com.google.android.material.navigation.NavigationView
-import com.google.android.material.textfield.TextInputEditText
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import java.lang.Exception
 
 
@@ -132,6 +122,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     val intent = Intent(this, FeedbackActivity::class.java)
                     intent.putExtra("currentUserModel", viewModel.currentUserModel.value)
                     startActivity(intent)
+                    drawerLayout.closeDrawer(GravityCompat.END)
+                    true
+                }
+                R.id.drawer_info -> {
+                    IntentUtility(this).openAppInfo()
+                    drawerLayout.closeDrawer(GravityCompat.END)
+                    true
+                }
+                R.id.drawer_language ->{
+                    IntentUtility(this).openLanguageSettings()
                     drawerLayout.closeDrawer(GravityCompat.END)
                     true
                 }

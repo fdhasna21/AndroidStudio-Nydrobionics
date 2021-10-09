@@ -4,15 +4,15 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".activity.AddTodoListActivity">
+    tools:context=".activity.AddNoteActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp">
+        android:padding="@dimen/layoutPadding" >
 
         <GridLayout
-            android:id="@+id/atlDateTime"
+            android:id="@+id/addNoteDateTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -20,7 +20,7 @@
             android:layout_marginBottom="12dp">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/atlDateLayout"
+                android:id="@+id/addNoteDateLayout"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
                 android:layout_gravity="fill"
@@ -29,7 +29,7 @@
                 android:paddingEnd="4dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/atlDate"
+                    android:id="@+id/addNoteDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:cursorVisible="false"
@@ -45,7 +45,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/atlTimeLayout"
+                android:id="@+id/addNoteTimeLayout"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
                 android:layout_gravity="fill"
@@ -54,7 +54,7 @@
                 android:paddingStart="4dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/atlTime"
+                    android:id="@+id/addNoteTime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:cursorVisible="false"
@@ -71,16 +71,16 @@
         </GridLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/addTodoTitleLayout"
+            android:id="@+id/addNoteTitleLayout"
             style="@style/Widget.Design.TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:endIconMode="clear_text"
-            android:layout_below="@id/atlDateTime"
+            android:layout_below="@id/addNoteDateTime"
             android:layout_marginBottom="12dp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/addTodoTitle"
+                android:id="@+id/addNoteTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/title"
@@ -92,10 +92,10 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/addTodoDesc"
+            android:id="@+id/addNoteDesc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/addTodoTitleLayout"
+            android:layout_below="@id/addNoteTitleLayout"
             android:layout_marginBottom="20dp"
             android:background="@drawable/bg_notes"
             android:gravity="top"
@@ -107,16 +107,17 @@
             android:padding="@dimen/layoutPadding" />
 
         <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
-            android:id="@+id/addTodoSubmit"
+            android:id="@+id/addNoteSubmit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_centerHorizontal="true"
             android:background="@drawable/bg_rectangle"
             android:text="@string/submit"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
             android:theme="@style/Widget.MaterialComponents.Button"
             app:spinning_bar_color="@color/white"
             app:spinning_bar_padding="12dp"
-            android:layout_below="@id/addTodoDesc"/>
+            android:layout_below="@id/addNoteDesc"/>
     </RelativeLayout>
 </ScrollView>

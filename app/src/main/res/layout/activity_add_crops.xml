@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="20dp">
+        android:padding="@dimen/layoutPadding" >
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/acSelectKit"
@@ -437,7 +437,8 @@
                 android:theme="@style/Widget.MaterialComponents.Button"
                 app:spinning_bar_color="@color/white"
                 app:spinning_bar_padding="12dp"
-                android:layout_below="@id/acAcidityData"/>
+                android:layout_below="@id/acAcidityData"
+                android:layout_centerHorizontal="true"/>
         </RelativeLayout>
     </LinearLayout>
 </ScrollView>

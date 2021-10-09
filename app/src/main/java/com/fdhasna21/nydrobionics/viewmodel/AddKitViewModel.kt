@@ -8,7 +8,7 @@ import com.fdhasna21.nydrobionics.dataclass.model.FarmModel
 import com.fdhasna21.nydrobionics.dataclass.model.KitModel
 import com.fdhasna21.nydrobionics.dataclass.model.KitModel.Companion.toHashMap
 import com.fdhasna21.nydrobionics.dataclass.model.UserModel
-import com.fdhasna21.nydrobionics.enumclass.NumberPickerDataType
+import com.fdhasna21.nydrobionics.enumclass.NumberPickerType
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
@@ -23,19 +23,23 @@ class AddKitViewModel : ViewModel() {
     var currentUserModel : MutableLiveData<UserModel> = MutableLiveData(UserModel())
     var currentFarmModel : MutableLiveData<FarmModel> = MutableLiveData(FarmModel())
 
-    private var kitWidth : MutableLiveData<ScoreLevel> = MutableLiveData(ScoreLevel(max=20f))
-    private var kitLength : MutableLiveData<ScoreLevel> = MutableLiveData(ScoreLevel(max=20f))
-    private var waterMin : MutableLiveData<ScoreLevel> = MutableLiveData(ScoreLevel())
-    private var waterMax : MutableLiveData<ScoreLevel> = MutableLiveData(ScoreLevel(max=100f))
-    private var nutrientMin : MutableLiveData<ScoreLevel> = MutableLiveData(ScoreLevel())
-    private var nutrientMax : MutableLiveData<ScoreLevel> = MutableLiveData(ScoreLevel(max=100f))
-    private var turbidityMin : MutableLiveData<ScoreLevel> = MutableLiveData(ScoreLevel())
-    private var turbidityMax : MutableLiveData<ScoreLevel> = MutableLiveData(ScoreLevel(max=25f))
+    private var kitWidth : MutableLiveData<Float> = MutableLiveData(0f)
+    private var kitLength : MutableLiveData<Float> = MutableLiveData(0f)
+    private var waterMin : MutableLiveData<Float> = MutableLiveData(0f)
+    private var waterMax : MutableLiveData<Float> = MutableLiveData(0f)
+    private var nutrientMin : MutableLiveData<Float> = MutableLiveData(0f)
+    private var nutrientMax : MutableLiveData<Float> = MutableLiveData(0f)
+    private var turbidityMin : MutableLiveData<Float> = MutableLiveData(0f)
+    private var turbidityMax : MutableLiveData<Float> = MutableLiveData(0f)
     private var kitModel : MutableLiveData<KitModel> = MutableLiveData(KitModel())
-    //todo : mekanisme max min nya belom
 
     companion object {
         const val TAG = "addKit"
+    }
+
+    fun checkNotEmpty(boolean: Boolean) : MutableLiveData<Boolean> {
+        isNotEmpties.value = boolean
+        return isNotEmpties
     }
 
     fun setCurrentData(userModel: UserModel?, farmModel: FarmModel?, kitModel: KitModel?){
@@ -46,82 +50,60 @@ class AddKitViewModel : ViewModel() {
         }
     }
 
-    fun setNumberPickerValue(currentValue : Float, type: NumberPickerDataType?){
+    fun setNumberPickerValue(currentValue : Float, type: NumberPickerType?){
         when(type){
-            NumberPickerDataType.KIT_WIDTH -> kitWidth.value?.score = currentValue
-            NumberPickerDataType.KIT_LENGTH -> kitLength.value?.score = currentValue
-            NumberPickerDataType.WATER_MIN -> {
-                waterMin.value?.score = currentValue
-                waterMin.value?.max = waterMax.value?.score
-            }
-            NumberPickerDataType.WATER_MAX -> {
-                waterMax.value?.score = currentValue
-                waterMax.value?.min = waterMin.value?.score
-            }
-            NumberPickerDataType.NUTRIENT_MIN -> {
-                nutrientMin.value?.score = currentValue
-                nutrientMin.value?.max = nutrientMax.value?.score
-            }
-            NumberPickerDataType.NUTRIENT_MAX -> {
-                nutrientMax.value?.score = currentValue
-                nutrientMax.value?.min = nutrientMin.value?.score
-            }
-            NumberPickerDataType.TURBIDITY_MIN -> {
-                turbidityMin.value?.score = currentValue
-                turbidityMin.value?.max = turbidityMax.value?.score
-            }
-            NumberPickerDataType.TURBIDITY_MAX -> {
-                turbidityMax.value?.score = currentValue
-                turbidityMax.value?.min = turbidityMin.value?.score
-            }
+            NumberPickerType.KIT_WIDTH -> kitWidth.value = currentValue
+            NumberPickerType.KIT_LENGTH -> kitLength.value = currentValue
+            NumberPickerType.WATER_MIN -> waterMin.value = currentValue
+            NumberPickerType.WATER_MAX -> waterMax.value = currentValue
+            NumberPickerType.NUTRIENT_MIN -> nutrientMin.value = currentValue
+            NumberPickerType.NUTRIENT_MAX -> nutrientMax.value = currentValue
+            NumberPickerType.TURBIDITY_MIN -> turbidityMin.value = currentValue
+            NumberPickerType.TURBIDITY_MAX -> turbidityMax.value = currentValue
             else -> { }
         }
     }
 
-    fun getNumberPickerValue(type: NumberPickerDataType?) : MutableLiveData<ScoreLevel>?{
+    fun getNumberPickerValue(type: NumberPickerType?) : MutableLiveData<Float>?{
         return when(type){
-            NumberPickerDataType.KIT_WIDTH -> kitWidth
-            NumberPickerDataType.KIT_LENGTH -> kitLength
-            NumberPickerDataType.WATER_MIN -> waterMin
-            NumberPickerDataType.WATER_MAX -> waterMax
-            NumberPickerDataType.NUTRIENT_MIN -> nutrientMin
-            NumberPickerDataType.NUTRIENT_MAX ->nutrientMax
-            NumberPickerDataType.TURBIDITY_MIN -> turbidityMin
-            NumberPickerDataType.TURBIDITY_MAX -> turbidityMax
+            NumberPickerType.KIT_WIDTH -> kitWidth
+            NumberPickerType.KIT_LENGTH -> kitLength
+            NumberPickerType.WATER_MIN -> waterMin
+            NumberPickerType.WATER_MAX -> waterMax
+            NumberPickerType.NUTRIENT_MIN -> nutrientMin
+            NumberPickerType.NUTRIENT_MAX ->nutrientMax
+            NumberPickerType.TURBIDITY_MIN -> turbidityMin
+            NumberPickerType.TURBIDITY_MAX -> turbidityMax
             else -> null
         }
     }
-
-    fun checkNotEmpty(boolean: Boolean) : MutableLiveData<Boolean> {
-        isNotEmpties.value = boolean
-        return isNotEmpties
-    }
-
 
     fun createKit(name:String, position:String){
         val db = firestore.collection("farms").document(currentUserModel.value?.farmId!!).collection("kits")
         val ref : DocumentReference = db.document()
 
-        kitModel.value?.apply {
-            this.kitId = ref.id
-            this.name = name
-            this.position = position
-            this.length = kitLength.value?.score?.toInt()
-            this.width = kitWidth.value?.score?.toInt()
-            this.waterLv = ScoreLevel(waterMin.value?.score, waterMax.value?.score)
-            this.nutrientLv = ScoreLevel(nutrientMin.value?.score, nutrientMax.value?.score)
-            this.turbidityLv = ScoreLevel(turbidityMin.value?.score, turbidityMax.value?.score)
-        }
-
-        Log.i(TAG, "${kitModel.value}")
-
-        db.document(ref.id).set(kitModel.value!!.toHashMap()).addOnCompleteListener {
-            if(it.isSuccessful){
-                isKitAdd.value = true
-            } else {
-                addKitError.value = it.exception.toString()
-                isKitAdd.value = false
+        try {
+            kitModel.value?.apply {
+                this.kitId = kitId ?: ref.id
+                this.name = name
+                this.position = position
+                this.length = kitLength.value?.toInt()
+                this.width = kitWidth.value?.toInt()
+                this.waterLv = ScoreLevel(waterMin.value, waterMax.value)
+                this.nutrientLv = ScoreLevel(nutrientMin.value, nutrientMax.value)
+                this.turbidityLv = ScoreLevel(turbidityMin.value, turbidityMax.value)
             }
+
+            db.document(ref.id).set(kitModel.value!!.toHashMap()).addOnCompleteListener {
+                if(it.isSuccessful){
+                    isKitAdd.value = true
+                } else {
+                    addKitError.value = it.exception.toString()
+                    isKitAdd.value = false
+                }
+            }
+        } catch (e:Exception){
+            Log.e(TAG, "Error submit kit", e)
         }
     }
 }

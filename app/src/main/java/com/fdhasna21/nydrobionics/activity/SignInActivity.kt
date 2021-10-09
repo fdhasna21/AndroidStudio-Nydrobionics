@@ -21,7 +21,9 @@ import com.google.android.material.textfield.TextInputEditText
 class SignInActivity : AppCompatActivity(), View.OnClickListener, TextWatcher, CompoundButton.OnCheckedChangeListener {
     private lateinit var binding: ActivitySignInBinding
     private lateinit var viewModel : SignInViewModel
+    private lateinit var utility : ViewUtility
     private lateinit var editTexts : ArrayList<TextInputEditText>
+    private lateinit var viewsAsButton : ArrayList<View>
 
     companion object{
         const val TAG = "signIn"
@@ -34,12 +36,19 @@ class SignInActivity : AppCompatActivity(), View.OnClickListener, TextWatcher, C
 
         viewModel = ViewModelProvider(this).get(SignInViewModel::class.java)
         binding.apply {
-            signinSubmit.setOnClickListener(this@SignInActivity)
-            signinSignUp.setOnClickListener(this@SignInActivity)
-            signinRemember.setOnCheckedChangeListener(this@SignInActivity)
-            signinForgetPassword.setOnClickListener(this@SignInActivity)
-
             editTexts = arrayListOf(signinEmail, signinPassword)
+            viewsAsButton = arrayListOf(signinSubmit,
+                signinSignUp,
+                signinForgetPassword)
+            utility = ViewUtility(
+                context = this@SignInActivity,
+                circularProgressButton = signinSubmit,
+                textInputEditTexts = editTexts,
+                viewsAsButton = viewsAsButton,
+                actionBar = supportActionBar)
+
+            signinRemember.setOnCheckedChangeListener(this@SignInActivity)
+            viewsAsButton.forEach { it.setOnClickListener(this@SignInActivity) }
             editTexts.forEach { it.addTextChangedListener(this@SignInActivity) }
             checkEmpty()
         }
@@ -57,15 +66,15 @@ class SignInActivity : AppCompatActivity(), View.OnClickListener, TextWatcher, C
     override fun onClick(v: View?) {
         when(v){
             binding.signinSubmit -> {
-                isLoading = true
+                utility.isLoading = true
                 viewModel.signIn(binding.signinEmail.text.toString(), binding.signinPassword.text.toString())
                 viewModel.isUserSignIn.observe(this@SignInActivity, {
                     if(it){
-                        isLoading = false
+                        utility.isLoading = false
                         startActivity(Intent(this@SignInActivity, MainActivity::class.java))
                         finish()
                     } else {
-                        isLoading = false
+                        utility.isLoading = false
                         viewModel.signInError.observe(this, {
                             if(it.isNotEmpty()){
                                 Toast.makeText(this@SignInActivity, it, Toast.LENGTH_SHORT).show()
@@ -90,37 +99,12 @@ class SignInActivity : AppCompatActivity(), View.OnClickListener, TextWatcher, C
     override fun afterTextChanged(s: Editable?) {}
 
     private fun checkEmpty() {
-        viewModel.checkNotEmpty(ViewUtility().isEmpties(editTexts)).observe(this, {
+        viewModel.checkNotEmpty(utility.isEmpties(editTexts)).observe(this, {
             binding.signinSubmit.isEnabled = it
         })
     }
 
     override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
         viewModel.setRememberChecked(true)
-    }
-
-    private var isLoading : Boolean = false
-    set(value) {
-        val editableEditText : ArrayList<TextInputEditText> = arrayListOf(
-            binding.signinEmail,
-            binding.signinPassword
-        )
-        editableEditText.forEach {
-            it.isCursorVisible = !value
-            it.isFocusable = !value
-            it.isFocusableInTouchMode = !value
-        }
-        binding.signinForgetPassword.isEnabled = !value
-        binding.signinSignUp.isEnabled = !value
-        binding.signinRemember.isEnabled = !value
-        binding.signinSubmit.apply {
-            if(value){
-                startAnimation()
-            } else {
-                revertAnimation()
-            }
-        }
-
-        field = value
     }
 }

@@ -14,12 +14,14 @@ import com.fdhasna21.nydrobionics.R
 import com.fdhasna21.nydrobionics.activity.CreateProfileActivity
 import com.fdhasna21.nydrobionics.activity.MainActivity
 import com.fdhasna21.nydrobionics.databinding.FragmentCreateStaffBinding
+import com.fdhasna21.nydrobionics.utils.ViewUtility
 import com.fdhasna21.nydrobionics.viewmodel.CreateProfileViewModel
 
 class CreateStaffFragment : Fragment(), View.OnClickListener {
     private var _binding : FragmentCreateStaffBinding? = null
     private val binding get() = _binding!!
     private lateinit var viewModel : CreateProfileViewModel
+    private lateinit var utility: ViewUtility
     private lateinit var viewsAsButton : ArrayList<View>
 
     override fun onCreateView(
@@ -37,8 +39,14 @@ class CreateStaffFragment : Fragment(), View.OnClickListener {
 
         binding.apply {
             viewsAsButton = arrayListOf(createStaffSubmit, createStaffSearch)
-            viewsAsButton.forEach { it.setOnClickListener(this@CreateStaffFragment) }
+            utility = ViewUtility(
+                context = requireContext(),
+                circularProgressButton = createStaffSubmit,
+                viewsAsButton = viewsAsButton,
+                actionBar = (requireActivity() as CreateProfileActivity).supportActionBar
+            )
 
+            viewsAsButton.forEach { it.setOnClickListener(this@CreateStaffFragment) }
             createStaffFarmId.setText(viewModel.getFarmModel()?.farmId.toString())
             Glide.with(requireActivity())
                 .load("http://brokenfortest")
@@ -53,7 +61,7 @@ class CreateStaffFragment : Fragment(), View.OnClickListener {
             binding.createStaffSubmit -> {
                 //todo : send to firebase
                 val intent = Intent(requireContext(), MainActivity::class.java)
-                intent.putExtra("currentUserModel", viewModel.getUserModel())
+                intent.putExtra("currentUserModel", viewModel.getCurrentUser())
                 intent.putExtra("currentFarmModel", viewModel.getFarmModel())
                 startActivity(intent)
                 requireActivity().finish()

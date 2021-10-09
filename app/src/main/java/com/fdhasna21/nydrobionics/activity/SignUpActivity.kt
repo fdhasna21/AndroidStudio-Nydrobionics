@@ -20,7 +20,9 @@ import com.google.android.material.textfield.TextInputEditText
 class SignUpActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
     private lateinit var binding : ActivitySignUpBinding
     private lateinit var viewModel : SignUpViewModel
+    private lateinit var utility : ViewUtility
     private lateinit var editTexts : ArrayList<TextInputEditText>
+    private lateinit var viewsAsButton : ArrayList<View>
 
     companion object{
         const val TAG = "signUp"
@@ -38,10 +40,17 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
         supportActionBar?.setDisplayShowHomeEnabled(false)
 
         binding.apply {
-            signupSubmit.setOnClickListener(this@SignUpActivity)
-            signupSignIn.setOnClickListener(this@SignUpActivity)
-
+            viewsAsButton = arrayListOf(signupSignIn, signupSubmit)
             editTexts = arrayListOf(signupEmail, signupPassword, signupConfirmPassword)
+            utility = ViewUtility(
+                context = this@SignUpActivity,
+                circularProgressButton = signupSubmit,
+                textInputEditTexts = editTexts,
+                viewsAsButton = viewsAsButton,
+                actionBar = supportActionBar
+            )
+
+            viewsAsButton.forEach { it.setOnClickListener(this@SignUpActivity) }
             editTexts.forEach { it.addTextChangedListener(this@SignUpActivity) }
             checkEmpty()
         }
@@ -64,15 +73,15 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
     override fun onClick(v: View?) {
         when(v){
             binding.signupSubmit -> {
-                    isLoading = true
+                    utility.isLoading = true
                     viewModel.signUp(binding.signupEmail.text.toString(), binding.signupPassword.text.toString())
                     viewModel.isUserSignUp.observe(this@SignUpActivity, {
                         if(it){
-                            isLoading = false
+                            utility.isLoading = false
                             startActivity(Intent(this, CreateProfileActivity::class.java))
                             finish()
                         } else {
-                            isLoading = false
+                            utility.isLoading = false
                             viewModel.signUpError.observe(this, {
                                 if(it.isNotEmpty()){
                                     Toast.makeText(this@SignUpActivity, it, Toast.LENGTH_SHORT).show()
@@ -104,34 +113,9 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
         }
 
         viewModel.apply {
-            checkNotEmpty(ViewUtility().isEmpties(editTexts) && passwordMatch).observe(this@SignUpActivity, {
+            checkNotEmpty(utility.isEmpties(editTexts) && passwordMatch).observe(this@SignUpActivity, {
                 binding.signupSubmit.isEnabled = it
             })
         }
     }
-
-    private var isLoading : Boolean = false
-        set(value) {
-            val editableEditText : ArrayList<TextInputEditText> = arrayListOf(
-                binding.signupEmail,
-                binding.signupPassword,
-                binding.signupConfirmPassword
-            )
-            editableEditText.forEach {
-                it.isCursorVisible = !value
-                it.isFocusable = !value
-                it.isFocusableInTouchMode = !value
-            }
-            binding.signupSignIn.isEnabled = !value
-            binding.signupSubmit.apply {
-                if(value){
-                    startAnimation()
-                } else {
-                    revertAnimation()
-                }
-            }
-            supportActionBar?.setDisplayHomeAsUpEnabled(value)
-
-            field = value
-        }
 }

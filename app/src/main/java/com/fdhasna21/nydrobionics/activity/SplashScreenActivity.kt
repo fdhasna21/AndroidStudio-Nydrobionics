@@ -5,12 +5,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.os.Parcelable
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.fdhasna21.nydrobionics.databinding.ActivitySplashScreenBinding
 import com.fdhasna21.nydrobionics.enumclass.Role
+import com.fdhasna21.nydrobionics.utils.RequestPermission
 import com.fdhasna21.nydrobionics.viewmodel.MainViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -29,8 +29,11 @@ class SplashScreenActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySplashScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        RequestPermission().requestAllPermissions(this)
+    }
+
+    fun splashIsDone(){
 
         if(auth.currentUser != null){
             viewModel.getUser(auth.uid!!)
@@ -63,14 +66,14 @@ class SplashScreenActivity : AppCompatActivity() {
                     false -> {
                         startActivity(Intent(this, CreateProfileActivity::class.java))
                     }
-                    null ->{
-                        //loading
-                    }
                 }
             })
 
         } else {
-            startActivity(Intent(this, SignInActivity::class.java))
+            val handler = Handler(Looper.getMainLooper())
+            handler.postDelayed({
+                startActivity(Intent(this, SignInActivity::class.java))
+            }, 3000)
         }
     }
 }

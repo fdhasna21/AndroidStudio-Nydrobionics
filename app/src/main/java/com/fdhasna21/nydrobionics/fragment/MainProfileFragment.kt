@@ -72,7 +72,7 @@ class MainProfileFragment : Fragment(), View.OnClickListener {
                         mainProfileRate.rating = it
                     }
                     mainProfileEmail.text = viewModel.currentUser?.email!!
-                    mainProfileRole.text = getString(R.string.role_in_profile, it.role, viewModel.currentFarmModel.value?.name.toString())
+                    mainProfileRole.text = getString(R.string.role_in_profile, it.role!!.replaceFirstChar { it.uppercase() }, viewModel.currentFarmModel.value?.name.toString())
                     //todo : operational area
                     it.photo_url?.let {
                         Glide.with(requireActivity())

@@ -1,6 +1,5 @@
 package com.fdhasna21.nydrobionics.activity
 
-import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -15,17 +14,16 @@ import android.webkit.MimeTypeMap
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.addisonelliott.segmentedbutton.SegmentedButtonGroup
 import com.bumptech.glide.Glide
 import com.canhub.cropper.CropImage
-import com.canhub.cropper.CropImageView
 import com.fdhasna21.nydrobionics.R
 import com.fdhasna21.nydrobionics.databinding.ActivityEditProfileUserBinding
 import com.fdhasna21.nydrobionics.databinding.FragmentCreateUserBinding
 import com.fdhasna21.nydrobionics.dataclass.model.UserModel
 import com.fdhasna21.nydrobionics.enumclass.Gender
+import com.fdhasna21.nydrobionics.enumclass.ProfileType
 import com.fdhasna21.nydrobionics.utils.IntentUtility
 import com.fdhasna21.nydrobionics.utils.RequestPermission
 import com.fdhasna21.nydrobionics.utils.ViewUtility
@@ -43,10 +41,10 @@ class EditProfileUserActivity : AppCompatActivity(), View.OnClickListener, Segme
     private lateinit var binding : ActivityEditProfileUserBinding
     private lateinit var bindingFragment : FragmentCreateUserBinding
     private lateinit var viewModel : CreateProfileViewModel
+    private lateinit var utility: ViewUtility
     private lateinit var viewsAsButton : ArrayList<View>
     private lateinit var editTexts : ArrayList<TextInputEditText>
     private var strEdt : HashMap<String, TextInputEditText> = hashMapOf()
-    private var currentUserModel : UserModel? = null
 
     companion object{
         const val TAG = "editProfileUser"
@@ -58,6 +56,7 @@ class EditProfileUserActivity : AppCompatActivity(), View.OnClickListener, Segme
         setContentView(binding.root)
 
         viewModel = ViewModelProvider(this).get(CreateProfileViewModel::class.java)
+        viewModel.setCurrentUser(intent.getParcelableExtra<UserModel>("currentUserModel"))
         supportActionBar?.title = getString(R.string.edit_profile)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(false)
@@ -65,29 +64,27 @@ class EditProfileUserActivity : AppCompatActivity(), View.OnClickListener, Segme
         bindingFragment = binding.editProfileFragment
         bindingFragment.apply {
             createUserGender.onPositionChangedListener = this@EditProfileUserActivity
-            setupDefaultData()
-
-            viewsAsButton = arrayListOf(createUserDOB,
-                                        createUserSubmit,
-                                        createUserEditPhoto,
-                                        createUserPhoto)
-            viewsAsButton.forEach { it.setOnClickListener(this@EditProfileUserActivity) }
-
-            viewsAsButton = arrayListOf(roleOwner,
-                roleStaff,
-                createUserDOB,
-                createUserSubmit,
-                createUserEditPhoto,
-                createUserPhoto)
-            viewsAsButton.forEach { it.setOnClickListener(this@EditProfileUserActivity) }
 
             editTexts = arrayListOf(
                 createUserName,
                 createUserPhone,
                 createUserAddress,
                 createUserDOB)
-            editTexts.forEach { it.addTextChangedListener(this@EditProfileUserActivity) }
+            viewsAsButton = arrayListOf(createUserDOB,
+                                        createUserSubmit,
+                                        createUserEditPhoto,
+                                        createUserPhoto)
+            utility = ViewUtility(
+                context = this@EditProfileUserActivity,
+                circularProgressButton = createUserSubmit,
+                textInputEditTexts = editTexts,
+                viewsAsButton = viewsAsButton,
+                actionBar = supportActionBar
+            )
 
+            setupDefaultData()
+            editTexts.forEach { it.addTextChangedListener(this@EditProfileUserActivity) }
+            viewsAsButton.forEach { it.setOnClickListener(this@EditProfileUserActivity) }
             createUserPhoto.setOnLongClickListener { createUserEditPhoto.performClick() }
             checkUpdate()
         }
@@ -100,6 +97,7 @@ class EditProfileUserActivity : AppCompatActivity(), View.OnClickListener, Segme
                     .into(bindingFragment.createUserPhoto)
             }
         })
+
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -123,23 +121,8 @@ class EditProfileUserActivity : AppCompatActivity(), View.OnClickListener, Segme
 
     override fun onClick(v: View?) {
         when(v){
-            bindingFragment.createUserEditPhoto -> {
-                val items = arrayOf("Select photo", "Delete profile picture")
-                MaterialAlertDialogBuilder(this)
-                    .setItems(items) { _, which ->
-                        when(which){
-                            0 -> RequestPermission().requestMultiplePermissions(this, listOf(
-                                Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE), "Change profile picture")
-                            1 -> {
-                                bindingFragment.createUserPhoto.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_farmer))
-                                viewModel.setPhotoProfile(null)
-                                checkUpdate()
-                            }
-                        }
-                    }
-                    .show()
-            }
-            bindingFragment.createUserPhoto -> IntentUtility(this).openImage(bindingFragment.createUserPhoto)
+            bindingFragment.createUserEditPhoto -> utility.openEditPhoto(bindingFragment.createUserPhoto, ProfileType.USER)
+            bindingFragment.createUserPhoto -> utility.openImage(bindingFragment.createUserPhoto)
             bindingFragment.createUserDOB -> {
                 val calendar = Calendar.getInstance(TimeZone.getTimeZone("WIB"))
                 calendar[Calendar.MONTH] = Calendar.DECEMBER
@@ -160,7 +143,7 @@ class EditProfileUserActivity : AppCompatActivity(), View.OnClickListener, Segme
                 datePicker.isCancelable = false
             }
             bindingFragment.createUserSubmit -> {
-                isLoading = true
+                utility.isLoading = true
                 viewModel.createUserProfile(
                     bindingFragment.createUserName.text.toString(),
                     bindingFragment.createUserPhone.text.toString(),
@@ -169,13 +152,13 @@ class EditProfileUserActivity : AppCompatActivity(), View.OnClickListener, Segme
                 )
                 viewModel.isUserCreated.observe(this, {
                     if(it){
-                        isLoading = false
+                        utility.isLoading = false
                         Toast.makeText(this, "Profile updated.", Toast.LENGTH_SHORT).show()
                         val intent = Intent()
-                        intent.putExtra("currentUserModel", viewModel.getUserModel())
+                        intent.putExtra("currentUserModel", viewModel.getCurrentUser())
                         setResult(RESULT_OK, intent)
                     } else {
-                        isLoading = false
+                        utility.isLoading = false
                         viewModel.createProfileError.observe(this, {
                             if(it.isNotEmpty()){
                                 Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
@@ -200,11 +183,9 @@ class EditProfileUserActivity : AppCompatActivity(), View.OnClickListener, Segme
         bindingFragment.apply {
             createUserRoleGroup.visibility = View.GONE
             createUserSubmit.text = getString(R.string.save)
-            isLoading = false
+            utility.isLoading = false
 
-            currentUserModel = intent.getParcelableExtra<UserModel>("currentUserModel")
-            currentUserModel?.let {
-                viewModel.setUserModel(it)
+            viewModel.getCurrentUser()?.let {
                 bindingFragment.apply {
                     createUserEmail.setText(Firebase.auth.currentUser?.email)
                     createUserName.setText(it.name)
@@ -230,30 +211,6 @@ class EditProfileUserActivity : AppCompatActivity(), View.OnClickListener, Segme
         }
     }
 
-    private var isLoading : Boolean = false
-        set(value) {
-            val editableEditText : ArrayList<TextInputEditText> = arrayListOf(
-                bindingFragment.createUserName,
-                bindingFragment.createUserPhone,
-                bindingFragment.createUserAddress,
-                bindingFragment.createUserBio,
-                bindingFragment.createUserDOB
-            )
-            editableEditText.forEach {
-                it.isCursorVisible = !value
-                it.isFocusable = !value
-                it.isFocusableInTouchMode = !value
-            }
-            supportActionBar?.setHomeButtonEnabled(value)
-            if(value){
-                bindingFragment.createUserSubmit.startAnimation()
-            } else {
-                bindingFragment.createUserSubmit.revertAnimation()
-            }
-
-            field = value
-        }
-
     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -263,15 +220,15 @@ class EditProfileUserActivity : AppCompatActivity(), View.OnClickListener, Segme
     override fun afterTextChanged(s: Editable?) {}
 
     private fun checkUpdate() {
-        if(currentUserModel == null){
+        if(viewModel.getCurrentUser() == null){
             viewModel.checkNotEmpty(
-                ViewUtility().isEmpties(editTexts)
+                utility.isEmpties(editTexts)
             ).observe(this, {
                 bindingFragment.createUserSubmit.isEnabled = it
             })
         } else {
             viewModel.checkNotEmpty(
-                ViewUtility().isChanges(strEdt) ||
+                utility.isChanges(strEdt) ||
                         viewModel.getGenderPosition() != bindingFragment.createUserGender.position ||
                         viewModel.getPhotoProfile().value != null
             ).observe(this, {
@@ -281,7 +238,7 @@ class EditProfileUserActivity : AppCompatActivity(), View.OnClickListener, Segme
 
     }
 
-    private val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { data ->
+    val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { data ->
         Log.i(TAG, "$data")
         try{
             if(data?.resultCode == Activity.RESULT_OK){
@@ -292,20 +249,8 @@ class EditProfileUserActivity : AppCompatActivity(), View.OnClickListener, Segme
                     checkUpdate()
                 }
             }
-
         } catch (e: Exception){
             Toast.makeText(this, e.message.toString(), Toast.LENGTH_SHORT).show()
         }
-    }
-
-    fun changeImageProfile(){
-        val intent = CropImage.activity()
-            .setActivityTitle("Edit Photo")
-            .setAspectRatio(1,1)
-            .setGuidelines(CropImageView.Guidelines.ON)
-            .setAutoZoomEnabled(true)
-            .setAllowFlipping(false)
-            .getIntent(this)
-        startForResult.launch(intent)
     }
 }

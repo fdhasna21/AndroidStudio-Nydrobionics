@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.FeedbackActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/layoutPadding"
+        android:orientation="vertical"
+        android:divider="@drawable/divider_6dp"
+        android:showDividers="middle">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/did_you_like_nydrobionics"
+            style="?attr/textAppearanceHeadline5"
+            android:textStyle="bold"
+            android:textAlignment="center"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/let_us_know_what_you_think"
+            style="?attr/textAppearanceSubtitle1"
+            android:textAlignment="center"
+            android:layout_marginBottom="10dp"/>
+
+        <androidx.appcompat.widget.AppCompatRatingBar
+            android:id="@+id/feedbackRatingbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="?android:attr/ratingBarStyle"
+            android:numStars="5"
+            android:stepSize="0.1"
+            android:isIndicator="false"
+            android:layout_gravity="center" />
+
+        <TextView
+            android:id="@+id/feedbackRatingtxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/awesome"
+            style="?attr/textAppearanceBody2"
+            android:textAlignment="center"
+            android:layout_marginBottom="@dimen/viewPadding"
+            android:layout_marginTop="-12dp"/>
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/feedbackContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/bg_notes"
+            android:gravity="top"
+            android:hint="@string/feedback_edittext"
+            android:imeOptions="actionNext"
+            android:importantForAutofill="no"
+            android:inputType="textMultiLine"
+            android:minHeight="50dp"
+            android:padding="@dimen/layoutPadding" />
+
+        <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
+            android:id="@+id/feedbackSubmit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/bg_rectangle"
+            android:text="@string/submit"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+            android:theme="@style/Widget.MaterialComponents.Button"
+            app:spinning_bar_color="@color/white"
+            app:spinning_bar_padding="12dp"
+            android:layout_centerHorizontal="true"/>
+    </LinearLayout>
+</ScrollView>

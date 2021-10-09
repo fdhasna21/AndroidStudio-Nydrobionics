@@ -32,13 +32,14 @@
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/activity_add_data_monitoring.xml" value="0.25" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/activity_add_kit.xml" value="0.22" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/activity_add_monitoring.xml" value="0.36666666666666664" />
+        <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/activity_add_note.xml" value="0.1" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/activity_add_plant.xml" value="0.1518987341772152" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/activity_add_todo_list.xml" value="0.11214953271028037" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/activity_create_profile.xml" value="0.25" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/activity_data_monitoring.xml" value="0.36666666666666664" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/activity_edit_profile.xml" value="0.1" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/activity_edit_profile_user.xml" value="0.22" />
-        <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/activity_feedback.xml" value="0.1" />
+        <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/activity_feedback.xml" value="0.15" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/activity_forget_password.xml" value="0.33" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/activity_main.xml" value="0.18" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/activity_profile_farm.xml" value="0.19010416666666666" />
@@ -47,7 +48,7 @@
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/activity_reset_password.xml" value="0.36666666666666664" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/activity_search.xml" value="0.12314814814814815" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/activity_show_history.xml" value="0.36666666666666664" />
-        <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/activity_show_picture.xml" value="0.17831813576494426" />
+        <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/activity_show_picture.xml" value="0.16666666666666666" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/activity_sign_in.xml" value="0.36666666666666664" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/activity_sign_up.xml" value="0.1" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/activity_splash_screen.xml" value="0.36666666666666664" />
@@ -77,7 +78,7 @@
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/row_item_post.xml" value="0.1" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/row_item_search.xml" value="0.33" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/row_item_select_user.xml" value="0.36666666666666664" />
-        <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/menu/menu_main_add.xml" value="0.2564814814814815" />
+        <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/menu/menu_main_add.xml" value="0.18681318681318682" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/menu/menu_main_bottom_navigation.xml" value="0.36666666666666664" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/menu/menu_main_drawer.xml" value="0.36666666666666664" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/menu/menu_main_drawer_settings.xml" value="0.3386243386243386" />

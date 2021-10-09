@@ -14,14 +14,13 @@ import com.fdhasna21.nydrobionics.databinding.ActivityForgetPasswordBinding
 import com.fdhasna21.nydrobionics.utils.ViewUtility
 import com.fdhasna21.nydrobionics.viewmodel.ForgetPasswordViewModel
 import com.google.android.material.textfield.TextInputEditText
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import java.util.ArrayList
 
 class ForgetPasswordActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
     private lateinit var binding : ActivityForgetPasswordBinding
     private lateinit var viewModel : ForgetPasswordViewModel
-    private var auth = Firebase.auth
+    private lateinit var utility : ViewUtility
+    private lateinit var viewsAsButton : ArrayList<View>
 
     companion object{
         const val TAG = "forgetPassword"
@@ -39,8 +38,21 @@ class ForgetPasswordActivity : AppCompatActivity(), View.OnClickListener, TextWa
         supportActionBar?.setDisplayShowHomeEnabled(false)
 
         binding.apply {
-            forgetSubmit.setOnClickListener(this@ForgetPasswordActivity)
-            forgetResend.setOnClickListener(this@ForgetPasswordActivity)
+            viewsAsButton = arrayListOf(forgetSubmit, forgetResend)
+            utility = ViewUtility(
+                context = this@ForgetPasswordActivity,
+                circularProgressButton = forgetSubmit,
+                textInputEditTexts = arrayListOf(forgetEmail),
+                viewsAsButton = viewsAsButton,
+                actionBar = supportActionBar
+            )
+            utility.onLoadingChangeListener{
+                if(it){
+                    binding.forgetSuccess.visibility = View.GONE
+                }
+            }
+
+            viewsAsButton.forEach { it.setOnClickListener(this@ForgetPasswordActivity) }
             forgetEmail.addTextChangedListener(this@ForgetPasswordActivity)
             checkEmpty()
         }
@@ -100,35 +112,10 @@ class ForgetPasswordActivity : AppCompatActivity(), View.OnClickListener, TextWa
     override fun afterTextChanged(s: Editable?) {}
 
     private fun checkEmpty() {
-        viewModel.checkNotEmpty(ViewUtility().isEmpty(binding.forgetEmail)).observe(this, {
+        viewModel.checkNotEmpty(utility.isEmpty(binding.forgetEmail)).observe(this, {
             binding.forgetSubmit.isEnabled = it
         })
     }
-
-    private var isLoading : Boolean = false
-        set(value) {
-            val editableEditText : ArrayList<TextInputEditText> = arrayListOf(
-                binding.forgetEmail
-            )
-            editableEditText.forEach {
-                it.isCursorVisible = !value
-                it.isFocusable = !value
-                it.isFocusableInTouchMode = !value
-            }
-            binding.forgetSubmit.apply {
-                if(value){
-                    startAnimation()
-                } else {
-                    revertAnimation()
-                }
-            }
-            if(value){
-                binding.forgetSuccess.visibility = View.GONE
-            }
-            supportActionBar?.setDisplayHomeAsUpEnabled(value)
-
-            field = value
-        }
 
 //    fun handleDynamicLink() {
 //        FirebaseDynamicLinks.getInstance().getDynamicLink(intent)

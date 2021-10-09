@@ -11,10 +11,12 @@ import com.fdhasna21.nydrobionics.dataclass.model.UserModel
 import com.fdhasna21.nydrobionics.dataclass.model.UserModel.Companion.toHashMap
 import com.fdhasna21.nydrobionics.enumclass.Gender
 import com.fdhasna21.nydrobionics.enumclass.Role
+import com.fdhasna21.nydrobionics.utils.ViewUtility
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -24,9 +26,10 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class CreateProfileViewModel : ViewModel() {
-    private val today = formatDate(Calendar.getInstance(TimeZone.getDefault()).timeInMillis)
+    private val today = ViewUtility().getCurrentDate()
     private var currentUser : FirebaseUser? = Firebase.auth.currentUser
     private var storage : FirebaseStorage = Firebase.storage
+    private var firestore : FirebaseFirestore = Firebase.firestore
     private var userEmail : MutableLiveData<String> = MutableLiveData()
     private var userImageUri : MutableLiveData<UriFileExtensions> = MutableLiveData(null)
 
@@ -49,10 +52,6 @@ class CreateProfileViewModel : ViewModel() {
         userEmail.value = currentUser?.email
     }
 
-    private fun formatDate(date: Long?) : String?{
-        val sdf = SimpleDateFormat("dd MMMM yyyy", Locale.US)
-        return sdf.format(date)
-    }
 
     fun checkNotEmpty(boolean: Boolean) : MutableLiveData<Boolean>{
         isNotEmpties.value = boolean
@@ -65,6 +64,10 @@ class CreateProfileViewModel : ViewModel() {
         isUserCreated.value = true
     }
 
+    fun getCurrentUser() : UserModel?{
+        return userModel.value
+    }
+
 
     /** CREATE USER FRAGMENT **/
     fun setPhotoProfile(uri : Uri?, fileExtension: String?=null){
@@ -73,8 +76,7 @@ class CreateProfileViewModel : ViewModel() {
         } else {
             null
         }
-
-        Log.i("createProfile", "setPhotoProfile: $uri")
+        Log.i(TAG, "setPhotoProfile: $uri")
     }
 
     fun getPhotoProfile() : MutableLiveData<UriFileExtensions>{
@@ -94,7 +96,7 @@ class CreateProfileViewModel : ViewModel() {
     }
 
     fun setDOB(date:Long?) : String? {
-        userModel.value?.dob = formatDate(date)
+        userModel.value?.dob = ViewUtility().formatDate(date)
         return userModel.value?.dob
     }
 
@@ -115,52 +117,46 @@ class CreateProfileViewModel : ViewModel() {
         return userEmail
     }
 
-    fun getUserModel() : UserModel?{
-        return userModel.value
-    }
-
-    fun setUserModel(userModel: UserModel){
-        this.userModel.value = userModel
-    }
-
     fun createUserProfile(name:String, phone:String, address:String, bio:String) {
-        userModel.value?.apply {
-            this.name = name
-            this.phone = phone
-            this.address = address
-            this.bio = bio
-            this.uid = currentUser?.uid!!
-            this.joinedSince = today
-            this.performanceRate = 5.0f
-        }
+        try {
+            userModel.value?.apply {
+                this.name = name
+                this.phone = phone
+                this.address = address
+                this.bio = bio
+                this.uid = currentUser?.uid!!
+                this.joinedSince = today
+                this.performanceRate = 5.0f
+            }
 
-        if(userImageUri.value != null){
-            val storageReference : StorageReference = storage.getReference("profile_images")
-                .child(System.currentTimeMillis().toString() + ".${userImageUri.value?.fileExtensions!!}")
-            val uploadTask = storageReference.putFile(userImageUri.value?.uri!!)
-            uploadTask.continueWithTask {
-                if(!it.isSuccessful){
-                    throw it.exception!!.cause!!
-                }
-                storageReference.downloadUrl
-            }.addOnCompleteListener {
-                if (it.isSuccessful) {
-                    it.result.let {
-                        userModel.value?.photo_url = it.toString()
-                        sendUserProfile()
+            if(userImageUri.value != null){
+                val storageReference : StorageReference = storage.getReference("profile_images")
+                    .child(System.currentTimeMillis().toString() + ".${userImageUri.value?.fileExtensions!!}")
+                val uploadTask = storageReference.putFile(userImageUri.value?.uri!!)
+                uploadTask.continueWithTask {
+                    if(!it.isSuccessful){
+                        throw it.exception!!.cause!!
+                    }
+                    storageReference.downloadUrl
+                }.addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        it.result.let {
+                            userModel.value?.photo_url = it.toString()
+                            sendUserProfile()
+                        }
                     }
                 }
+            } else {
+                sendUserProfile()
             }
-        } else {
-            sendUserProfile()
+        } catch (e:Exception){
+            Log.e(TAG, "Error submit user", e)
         }
-
     }
 
     private fun sendUserProfile(){
         createProfileError.value = ""
-        val db = FirebaseFirestore.getInstance()
-        db.collection("users").document(currentUser?.uid!!).set(userModel.value!!.toHashMap()).addOnCompleteListener {
+        firestore.collection("users").document(currentUser?.uid!!).set(userModel.value!!.toHashMap()).addOnCompleteListener {
             if(it.isSuccessful){
                 isUserCreated.value = true
                 isNotEmpties.value = false
@@ -174,9 +170,9 @@ class CreateProfileViewModel : ViewModel() {
 
     /** CREATE FARM FRAGMENT **/
     fun createFarmProfile(name:String, description:String, location:String){
-        if(userModel.value?.role!! == Role.OWNER.toString()){
+        try {
             createProfileError.value = ""
-            val db = FirebaseFirestore.getInstance().collection("farms")
+            val db = firestore.collection("farms")
             val ref : DocumentReference = db.document()
 
             farmModel.value?.apply {
@@ -201,6 +197,8 @@ class CreateProfileViewModel : ViewModel() {
                     isFarmCreated.value = false
                 }
             }
+        } catch (e:Exception){
+            Log.e(TAG, "Error submit farm", e)
         }
     }
 
