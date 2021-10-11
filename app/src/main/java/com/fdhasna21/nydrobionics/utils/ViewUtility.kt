@@ -1,23 +1,16 @@
 package com.fdhasna21.nydrobionics.utils
 
-import android.Manifest
-import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.os.Handler
 import android.os.Looper
 import android.view.View
-import android.widget.NumberPicker
 import androidx.appcompat.app.ActionBar
-import androidx.core.content.ContextCompat
 import br.com.simplepass.loadingbutton.customViews.CircularProgressButton
-import com.fdhasna21.nydrobionics.R
-import com.fdhasna21.nydrobionics.enumclass.ProfileType
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textfield.TextInputEditText
 import pl.polak.clicknumberpicker.ClickNumberPickerView
+import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -35,32 +28,90 @@ open class ViewUtility(
 
     companion object{
         const val TAG = "viewUtility"
+        const val DATE_FORMAT = "dd MMMM yyyy"
+        const val TIME_FORMAT = "HH:mm"
+        const val TIMESTAMP_FORMAT = "yyyy/MM/dd HH:mm"
+        const val STRING_FORMAT = "dd MMMM yyyy HH:mm"
     }
 
     override var initialState: Boolean = false
 
     override fun onLoadingChangeListener(function: (isLoading: Boolean) -> Unit) {}
 
-    fun getCurrentDate() : String? {
-        return formatDate(Calendar.getInstance(TimeZone.getDefault()).timeInMillis)
+    fun getCurrentDate() : String {
+        return formatDateToString(Calendar.getInstance(TimeZone.getDefault()).timeInMillis)!!
     }
 
-    fun getCurrentTime() : String? {
+    fun getCurrentTime() : String {
         val c = Calendar.getInstance(TimeZone.getDefault())
-        return formatTime(c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE))
+        return formatTimeToString(c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE))!!
     }
 
-    fun formatDate(date: Long?) : String?{
-        val sdf = SimpleDateFormat("dd MMMM yyyy", Locale.US)
+    fun getCurrentTimestamp() : String{
+        return formatTimestampToString()
+    }
+
+    fun formatDateToString(date: Long?) : String?{
+        val sdf = SimpleDateFormat(DATE_FORMAT, Locale.US)
         return sdf.format(date)
     }
 
-    fun formatTime(hour:Int, minute:Int) : String?{
+    fun formatTimeToString(hour:Int, minute:Int) : String?{
         val c = Calendar.getInstance(TimeZone.getDefault())
-        val sdf = SimpleDateFormat("HH:mm", Locale.US)
+        val sdf = SimpleDateFormat(TIME_FORMAT, Locale.US)
         c.set(Calendar.HOUR_OF_DAY, hour)
         c.set(Calendar.MINUTE, minute)
         return sdf.format(c.time)
+    }
+
+    fun formatStringToDate(date:String? = getCurrentDate(), est:Int?=0): Long {
+        date?.let {
+            val c = Calendar.getInstance()
+            val pos = ParsePosition(0)
+            val sdf = SimpleDateFormat(DATE_FORMAT, Locale.US)
+            c.time = sdf.parse(date, pos)
+            c.add(Calendar.DATE, (est?:1))
+            return c.timeInMillis
+        }
+        return formatStringToDate(getCurrentDate())
+    }
+
+    fun formatStringToTime(time:String?) : Pair<Int, Int> {
+        val c = Calendar.getInstance(TimeZone.getDefault())
+        val pos = ParsePosition(0)
+        val sdf = SimpleDateFormat(TIME_FORMAT, Locale.US)
+        c.time = sdf.parse(time ?: getCurrentTime(), pos)
+        return Pair(c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE))
+    }
+
+    fun formatTimestampToString(date: String?=null, time: String?=null) : String {
+        val inputFormat = SimpleDateFormat(STRING_FORMAT, Locale.US)
+        val outputFormat = SimpleDateFormat(TIMESTAMP_FORMAT, Locale.US)
+        val string = if(date != null && time != null){
+            "$date $time"
+        } else {
+            "${getCurrentDate()} ${getCurrentTime()}"
+        }
+        return outputFormat.format(inputFormat.parse(string))
+    }
+
+    fun formatTimestampToDate(timestamp: String?=null) : String{
+        val inputFormat = SimpleDateFormat(DATE_FORMAT, Locale.US)
+        val outputFormat = SimpleDateFormat(TIMESTAMP_FORMAT, Locale.US)
+        val string = if(timestamp != null){
+            timestamp
+        } else {
+            getCurrentTimestamp()
+        }
+        return outputFormat.format(inputFormat.parse(string))
+    }
+
+    fun formatStringToTimestamp(timestamp:String?) : Pair<String, String>{
+        val inputFormat = SimpleDateFormat(TIMESTAMP_FORMAT, Locale.US)
+        val dateFormat = SimpleDateFormat(DATE_FORMAT, Locale.US)
+        val timeFormat = SimpleDateFormat(TIME_FORMAT, Locale.US)
+        val string = timestamp ?: getCurrentTimestamp()
+        return Pair(inputFormat.format(dateFormat.parse(string)), inputFormat.format(timeFormat.parse(string)))
     }
 
     fun capitalizeEachWord(string: String, delimiter: String = " ", separator: String = " "): String {
@@ -112,7 +163,7 @@ open class ViewUtility(
         return if (min == null && max == null){
             false
         } else {
-            min!! > 0f && min!! < max!!
+            min!! > 0f && min < max!!
         }
     }
 

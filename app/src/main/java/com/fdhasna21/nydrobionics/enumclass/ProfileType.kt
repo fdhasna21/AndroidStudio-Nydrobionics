@@ -14,7 +14,8 @@ enum class ProfileType {
     },
     PLANT{
         override fun getDefaultPicture(): Int {
-            TODO("Not yet implemented")
+            //todo : default plant photo
+            return R.drawable.ic_launcher_foreground
         }
 
         override fun toString(): String {
@@ -37,7 +38,7 @@ enum class ProfileType {
         fun getType(tag:String) : ProfileType {
             return when (tag) {
                 "user", "createProfile", "profileFarm" -> USER
-                "plant", "crops", "addCrops" -> PLANT
+                "plant", "crops", "addCrops", "addDataMonitoring" -> PLANT
                 else -> NONE
             }
         }

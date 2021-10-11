@@ -9,20 +9,11 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.fdhasna21.nydrobionics.R
-import com.fdhasna21.nydrobionics.adapter.ViewPagerAdapter
 import com.fdhasna21.nydrobionics.databinding.ActivityProfileUserBinding
 import com.fdhasna21.nydrobionics.databinding.FragmentMainProfileBinding
-import com.fdhasna21.nydrobionics.dataclass.model.PlantModel
-import com.fdhasna21.nydrobionics.enumclass.AdapterRealTimeType
 import com.fdhasna21.nydrobionics.utils.IntentUtility
 import com.fdhasna21.nydrobionics.utils.RequestPermission
 import com.fdhasna21.nydrobionics.viewmodel.ProfileUserViewModel
-import com.firebase.ui.database.FirebaseRecyclerOptions
-import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
-
 
 class ProfileUserActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding : ActivityProfileUserBinding
@@ -59,7 +50,7 @@ class ProfileUserActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
+        super.onBackPressed()
         return true
     }
 
@@ -82,28 +73,28 @@ class ProfileUserActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun setupTabLayout(){
-        //todo : referencenya! plant dari user yg terkait
-        val reference = Firebase.database.getReference("posts")
-        val options = FirebaseRecyclerOptions.Builder<PlantModel>()
-            .setQuery(reference, PlantModel::class.java)
-            .build()
-
-        val tabLayoutAdapter = ViewPagerAdapter(this, arrayListOf(options), AdapterRealTimeType.PLANT)
-        bindingFragment.mainProfileViewPager.adapter = tabLayoutAdapter
-        TabLayoutMediator(bindingFragment.mainProfileTabLayout, bindingFragment.mainProfileViewPager) { tab, position ->
-            tab.text = resources.getString(TAB_TITLES[position])
-        }.attach()
-
-        bindingFragment.mainProfileTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                when(tab!!.position){
-                    0 -> {}
-                }
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {}
-
-            override fun onTabReselected(tab: TabLayout.Tab?) {}
-        })
+//        //todo : referencenya! plant dari user yg terkait
+//        val reference = Firebase.database.getReference("posts")
+//        val options = FirebaseRecyclerOptions.Builder<PlantModel>()
+//            .setQuery(reference, PlantModel::class.java)
+//            .build()
+//
+//        val tabLayoutAdapter = ViewPagerAdapter(this, arrayListOf(options), AdapterRealTimeType.PLANT)
+//        bindingFragment.mainProfileViewPager.adapter = tabLayoutAdapter
+//        TabLayoutMediator(bindingFragment.mainProfileTabLayout, bindingFragment.mainProfileViewPager) { tab, position ->
+//            tab.text = resources.getString(TAB_TITLES[position])
+//        }.attach()
+//
+//        bindingFragment.mainProfileTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
+//            override fun onTabSelected(tab: TabLayout.Tab?) {
+//                when(tab!!.position){
+//                    0 -> {}
+//                }
+//            }
+//
+//            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+//
+//            override fun onTabReselected(tab: TabLayout.Tab?) {}
+//        })
     }
 }

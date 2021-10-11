@@ -28,8 +28,8 @@
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/drawable/ic_signout.xml" value="0.37222222222222223" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/drawable/selector_button_color.xml" value="0.22135416666666666" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/font/font.xml" value="0.234375" />
-        <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/activity_add_crops.xml" value="0.25" />
-        <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/activity_add_data_monitoring.xml" value="0.25" />
+        <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/activity_add_crops.xml" value="0.1" />
+        <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/activity_add_data_monitoring.xml" value="0.13372093023255813" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/activity_add_kit.xml" value="0.22" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/activity_add_monitoring.xml" value="0.36666666666666664" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/activity_add_note.xml" value="0.1" />
@@ -75,6 +75,7 @@
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/row_item_history.xml" value="0.25" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/row_item_kit_monitoring.xml" value="0.33" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/row_item_list.xml" value="0.2046875" />
+        <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/row_item_note.xml" value="0.15806159420289856" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/row_item_post.xml" value="0.1" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/row_item_search.xml" value="0.33" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/row_item_select_user.xml" value="0.36666666666666664" />

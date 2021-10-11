@@ -158,25 +158,25 @@
             android:contentDescription="@string/water_level"/>
 
         <pl.polak.clicknumberpicker.ClickNumberPickerView
-            android:id="@+id/addMonitoringWaterLevel"
+            android:id="@+id/addMonitoringWaterTank"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:picker_corner_radius="10"
-            app:pickers_background_color="@color/purple_500"
-            app:value_background_color="@color/purple_200"
-            app:value_text_color="@android:color/white"
-            app:step="0.1"
-            app:decimal_number="1"
             android:layout_below="@id/admWaterLevelTitle"
             android:layout_marginTop="6dp"
-            android:layout_marginBottom="12dp"/>
+            android:layout_marginBottom="12dp"
+            app:decimal_number="1"
+            app:picker_corner_radius="10"
+            app:pickers_background_color="@color/purple_500"
+            app:step="0.1"
+            app:value_background_color="@color/purple_200"
+            app:value_text_color="@android:color/white" />
 
         <TextView
             android:id="@+id/admNutrientLevelTitle"
             style="?attr/textAppearanceBody1"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:layout_below="@id/addMonitoringWaterLevel"
+            android:layout_below="@id/addMonitoringWaterTank"
             android:layout_alignParentStart="true"
             android:layout_toStartOf="@id/admNutrientLevelInfo"
             android:gravity="left|center_vertical"
@@ -188,31 +188,31 @@
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:src="@drawable/ic_info"
-            android:layout_below="@id/addMonitoringWaterLevel"
+            android:layout_below="@id/addMonitoringWaterTank"
             android:layout_alignParentEnd="true"
             android:background="@null"
             android:contentDescription="@string/nutrient_level"/>
 
         <pl.polak.clicknumberpicker.ClickNumberPickerView
-            android:id="@+id/addMonitoringNutrientLevel"
+            android:id="@+id/addMonitoringNutrientTank"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:picker_corner_radius="10"
-            app:pickers_background_color="@color/purple_500"
-            app:value_background_color="@color/purple_200"
-            app:value_text_color="@android:color/white"
-            app:step="0.1"
-            app:decimal_number="1"
             android:layout_below="@id/admNutrientLevelTitle"
             android:layout_marginTop="6dp"
-            android:layout_marginBottom="12dp"/>
+            android:layout_marginBottom="12dp"
+            app:decimal_number="1"
+            app:picker_corner_radius="10"
+            app:pickers_background_color="@color/purple_500"
+            app:step="0.1"
+            app:value_background_color="@color/purple_200"
+            app:value_text_color="@android:color/white" />
 
         <TextView
             android:id="@+id/admWaterTurbidityTitle"
             style="?attr/textAppearanceBody1"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:layout_below="@id/addMonitoringNutrientLevel"
+            android:layout_below="@id/addMonitoringNutrientTank"
             android:layout_alignParentStart="true"
             android:layout_toStartOf="@id/admWaterLevelInfo"
             android:gravity="left|center_vertical"
@@ -224,7 +224,7 @@
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:src="@drawable/ic_info"
-            android:layout_below="@id/addMonitoringNutrientLevel"
+            android:layout_below="@id/addMonitoringNutrientTank"
             android:layout_alignParentEnd="true"
             android:background="@null"
             android:contentDescription="@string/temperature"/>
@@ -233,21 +233,66 @@
             android:id="@+id/addMonitoringWaterTurbidity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:picker_corner_radius="10"
-            app:pickers_background_color="@color/purple_500"
-            app:value_background_color="@color/purple_200"
-            app:value_text_color="@android:color/white"
-            app:step="0.1"
-            app:decimal_number="1"
             android:layout_below="@id/admWaterTurbidityTitle"
             android:layout_marginTop="6dp"
-            android:layout_marginBottom="12dp"/>
+            android:layout_marginBottom="12dp"
+            app:decimal_number="1"
+            app:picker_corner_radius="10"
+            app:pickers_background_color="@color/purple_500"
+            app:step="0.1"
+            app:value_background_color="@color/purple_200"
+            app:value_text_color="@android:color/white" />
+
+        <include
+            android:id="@+id/addMonitoringCropsPlanted"
+            layout="@layout/layout_planted_crops"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/addMonitoringWaterTurbidity"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="4dp"
+            android:visibility="gone"/>
+
+        <LinearLayout
+            android:id="@+id/addMonitoringNewCrops"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/addMonitoringCropsPlanted"
+            android:orientation="vertical"
+            android:showDividers="middle"
+            android:divider="@drawable/divider_6dp"
+            android:layout_marginBottom="12dp">
+
+            <FrameLayout
+                android:id="@+id/addCropsLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_card_stroke"
+                android:visibility="gone">
+                <include
+                    android:id="@+id/addMonitoringCropsCreate"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    layout="@layout/activity_add_crops"
+                    android:layout_margin="4dp" />
+            </FrameLayout>
+
+            <Button
+                android:id="@+id/addMonitoringCropsButton"
+                style="?attr/buttonBarNeutralButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/add_new_crops"
+                android:textSize="12sp"/>
+        </LinearLayout>
 
         <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
             android:id="@+id/addMonitoringSubmit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/addMonitoringWaterTurbidity"
+            android:layout_below="@id/addMonitoringNewCrops"
             android:layout_gravity="center"
             android:background="@drawable/bg_rectangle"
             android:text="@string/submit"

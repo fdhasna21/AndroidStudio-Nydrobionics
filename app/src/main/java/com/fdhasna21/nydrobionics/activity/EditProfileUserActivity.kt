@@ -104,7 +104,7 @@ class EditProfileUserActivity : AppCompatActivity(), View.OnClickListener, Segme
         viewModel.isNotEmpties.observe(this, {
             when(it){
                 true -> bindingFragment.createUserSubmit.performClick()
-                else -> onBackPressed()
+                else -> super.onBackPressed()
             }
         })
         return true
@@ -154,9 +154,8 @@ class EditProfileUserActivity : AppCompatActivity(), View.OnClickListener, Segme
                     if(it){
                         utility.isLoading = false
                         Toast.makeText(this, "Profile updated.", Toast.LENGTH_SHORT).show()
-                        val intent = Intent()
-                        intent.putExtra("currentUserModel", viewModel.getCurrentUser())
-                        setResult(RESULT_OK, intent)
+                        super.onBackPressed()
+                        finish()
                     } else {
                         utility.isLoading = false
                         viewModel.createProfileError.observe(this, {

@@ -12,6 +12,7 @@ import com.fdhasna21.nydrobionics.dataclass.model.UserModel.Companion.toHashMap
 import com.fdhasna21.nydrobionics.enumclass.Gender
 import com.fdhasna21.nydrobionics.enumclass.Role
 import com.fdhasna21.nydrobionics.utils.ViewUtility
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentReference
@@ -96,7 +97,7 @@ class CreateProfileViewModel : ViewModel() {
     }
 
     fun setDOB(date:Long?) : String? {
-        userModel.value?.dob = ViewUtility().formatDate(date)
+        userModel.value?.dob = ViewUtility().formatDateToString(date)
         return userModel.value?.dob
     }
 
@@ -121,6 +122,7 @@ class CreateProfileViewModel : ViewModel() {
         try {
             userModel.value?.apply {
                 this.name = name
+                this.email = currentUser?.email
                 this.phone = phone
                 this.address = address
                 this.bio = bio

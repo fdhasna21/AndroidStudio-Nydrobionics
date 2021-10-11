@@ -45,8 +45,6 @@ class FeedbackViewModel : ViewModel(){
             feedbackModel.value?.let {
                 it.feedbackId = ref.id
                 it.content = content
-                it.date = ViewUtility().getCurrentDate()
-                it.time = ViewUtility().getCurrentTime()
                 it.userId = auth.uid
             }
 

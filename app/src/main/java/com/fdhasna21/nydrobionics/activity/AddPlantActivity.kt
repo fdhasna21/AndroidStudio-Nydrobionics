@@ -117,7 +117,7 @@ class AddPlantActivity : AppCompatActivity(), TextWatcher, View.OnClickListener 
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
+        super.onBackPressed()
         return true
     }
 
@@ -184,14 +184,14 @@ class AddPlantActivity : AppCompatActivity(), TextWatcher, View.OnClickListener 
                 viewModel.isPlantAdd.observe(this@AddPlantActivity, {
                     if(it){
                         utility.isLoading = false
-                        if(intent.getStringExtra("from") == "addCrops"){
+                        if(intent.getStringExtra("from") != null){
                             val intent = Intent()
                             intent.putExtra("selectedPlantModel", viewModel.plantModel.value)
                             setResult(RESULT_OK, intent)
                         } else {
-                            onBackPressed()
+                            super.onBackPressed()
+                            finish()
                         }
-                        finish()
                     } else {
                         utility.isLoading = false
                         viewModel.addPlantError.observe(this@AddPlantActivity, {

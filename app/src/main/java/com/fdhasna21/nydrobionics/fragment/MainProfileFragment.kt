@@ -14,7 +14,7 @@ import com.fdhasna21.nydrobionics.activity.MainActivity
 import com.fdhasna21.nydrobionics.adapter.ViewPagerAdapter
 import com.fdhasna21.nydrobionics.databinding.FragmentMainProfileBinding
 import com.fdhasna21.nydrobionics.dataclass.model.PlantModel
-import com.fdhasna21.nydrobionics.enumclass.AdapterRealTimeType
+import com.fdhasna21.nydrobionics.notfixed.AdapterRealTimeType
 import com.fdhasna21.nydrobionics.utils.IntentUtility
 import com.fdhasna21.nydrobionics.utils.RequestPermission
 import com.fdhasna21.nydrobionics.viewmodel.MainViewModel
@@ -71,7 +71,7 @@ class MainProfileFragment : Fragment(), View.OnClickListener {
                     it.performanceRate?.let {
                         mainProfileRate.rating = it
                     }
-                    mainProfileEmail.text = viewModel.currentUser?.email!!
+                    mainProfileEmail.text = viewModel.currentUserModel.value?.email
                     mainProfileRole.text = getString(R.string.role_in_profile, it.role!!.replaceFirstChar { it.uppercase() }, viewModel.currentFarmModel.value?.name.toString())
                     //todo : operational area
                     it.photo_url?.let {

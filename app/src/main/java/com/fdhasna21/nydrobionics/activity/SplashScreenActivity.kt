@@ -34,15 +34,16 @@ class SplashScreenActivity : AppCompatActivity() {
     }
 
     fun splashIsDone(){
-
         if(auth.currentUser != null){
-            viewModel.getUser(auth.uid!!)
-            viewModel.isCurrentUserExist.observe(this, {
+            viewModel.getAllData()
+            viewModel.isCurrentUserExist.observe(this,{
                 when(it){
                     true -> {
+                        Log.i(TAG, "user ${viewModel.currentUserModel.value}")
                         viewModel.isCurrentFarmExist.observe(this, {
                             when(it){
                                 true -> {
+                                    Log.i(TAG, "farm ${viewModel.currentFarmModel.value}")
                                     val intent = Intent(this, MainActivity::class.java)
                                     intent.putExtra("currentUserModel", viewModel.currentUserModel.value)
                                     intent.putExtra("currentFarmModel", viewModel.currentFarmModel.value)
@@ -50,6 +51,7 @@ class SplashScreenActivity : AppCompatActivity() {
                                     finish()
                                 }
                                 false -> {
+                                    Log.i(TAG, "currentFarm not exist")
                                     if(Role.getType(viewModel.currentUserModel.value?.role!!) == Role.OWNER){
                                         val intent = Intent(this, CreateProfileActivity::class.java)
                                         intent.putExtra("currentUserModel", viewModel.currentUserModel.value)
@@ -60,11 +62,19 @@ class SplashScreenActivity : AppCompatActivity() {
                                         Log.i(TAG, "wait for owner add you")
                                     }
                                 }
+                                null -> {
+                                    Log.i(TAG, "currentFarm loading")
+                                }
                             }
                         })
                     }
                     false -> {
+                        Log.i(TAG, "currentUser not exist")
                         startActivity(Intent(this, CreateProfileActivity::class.java))
+                        finish()
+                    }
+                    null -> {
+                        Log.i(TAG, "currentUser loading")
                     }
                 }
             })
@@ -72,6 +82,7 @@ class SplashScreenActivity : AppCompatActivity() {
         } else {
             val handler = Handler(Looper.getMainLooper())
             handler.postDelayed({
+                Toast.makeText(this, "here", Toast.LENGTH_SHORT).show()
                 startActivity(Intent(this, SignInActivity::class.java))
             }, 3000)
         }

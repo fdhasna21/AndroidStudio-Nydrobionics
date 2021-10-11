@@ -48,8 +48,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(binding.root)
 
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        viewModel.setCurrentUser(intent.getParcelableExtra<UserModel>("currentUserModel"))
-        viewModel.setCurrentFarm(intent.getParcelableExtra<FarmModel>("currentFarmModel"))
+        viewModel.setCurrentData(intent.getParcelableExtra<UserModel>("currentUserModel"),
+            intent.getParcelableExtra<FarmModel>("currentFarmModel"))
 
         viewModel.isCurrentUserExist.observe(this, {
             when(it){
@@ -159,9 +159,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         Log.i(CreateProfileActivity.TAG, "$data")
         try{
             if(data?.resultCode == Activity.RESULT_OK){
-                data.data?.getParcelableExtra<UserModel>("currentUserModel")?.let {
-                    viewModel.setCurrentUser(it)
-                }
+//                data.data?.getParcelableExtra<UserModel>("currentUserModel")?.let {
+//                    viewModel.setCurrentData(it)
+//                }
             }
 
         } catch (e: Exception){

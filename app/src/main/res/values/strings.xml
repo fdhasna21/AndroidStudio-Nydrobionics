@@ -116,6 +116,7 @@
     <string name="planted_at">Planted at</string>
     <string name="can_be_harvested_at_s">Can be harvested at %s</string>
     <string name="d_more_days">%d more days</string>
+    <string name="d_days">%d days</string>
     <string name="history_content">History Content</string>
     <string name="role_in_profile">%s of %s</string>
     <string name="discard">Discard</string>
@@ -132,4 +133,6 @@
     <string name="awesome">Awesome!</string>
     <string name="feedback_edittext">Write your question or feedback here. We\'d love to hear from you</string>
     <string name="app_permission">App Permission</string>
+    <string name="temp_value">%.2f °C</string>
+    <string name="humid_value">%.2f\%% RH</string>
 </resources>

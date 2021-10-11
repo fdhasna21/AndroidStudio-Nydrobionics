@@ -2,6 +2,7 @@ package com.fdhasna21.nydrobionics.dataclass.model
 
 import android.os.Parcelable
 import android.util.Log
+import com.fdhasna21.nydrobionics.utils.ViewUtility
 import com.google.firebase.firestore.DocumentSnapshot
 import kotlinx.parcelize.Parcelize
 
@@ -11,8 +12,7 @@ data class HistoryModel(
     var content : String? = null,
     var senderId : String? = null,
     var receiverId : String? = null,
-    var date : String? = null,
-    var time : String? = null
+    var timestamp : String? = null
 ):Parcelable {
     companion object {
         fun DocumentSnapshot.toHistoryModel() : HistoryModel? {
@@ -21,9 +21,8 @@ data class HistoryModel(
                 val content = getString("content")
                 val senderId = getString("senderId")
                 val receiverId = getString("receiverId")
-                val date = getString("date")
-                val time = getString("time")
-                val output = HistoryModel(historyId, content, senderId, receiverId, date, time)
+                val timestamp = getString("timestamp")
+                val output = HistoryModel(historyId, content, senderId, receiverId, timestamp)
                 Log.i(TAG, "$output")
                 output
             } catch (e:Exception){
@@ -38,8 +37,7 @@ data class HistoryModel(
             output["content"] = content
             output["senderId"] = senderId
             output["receiverId"] = receiverId
-            output["date"] = date
-            output["time"] = time
+            output["timestamp"] = ViewUtility().getCurrentTimestamp()
             return output
         }
 

@@ -2,6 +2,7 @@ package com.fdhasna21.nydrobionics.dataclass.model
 
 import android.os.Parcelable
 import android.util.Log
+import com.fdhasna21.nydrobionics.utils.ViewUtility
 import com.google.firebase.firestore.DocumentSnapshot
 import kotlinx.parcelize.Parcelize
 
@@ -16,8 +17,7 @@ data class DataMonitoringModel(
     var ph : Float? = 0f,
     var userId : String? = null,
     var cropsId : String? = null,
-    var date : String? = null,
-    var time : String? = null
+    var timestamp : String? = null
 ) : Parcelable {
     companion object {
         fun DocumentSnapshot.toDataMonitoringModel() : DataMonitoringModel?{
@@ -31,8 +31,7 @@ data class DataMonitoringModel(
                 val ph : Double? = get("ph") as Double?
                 val userId = getString("userId")
                 val cropsId = getString("cropsId")
-                val date = getString("date")
-                val time = getString("time")
+                val timestamp = getString("timestamp")
                 val output = DataMonitoringModel(dataId,
                     temperature?.toFloat(),
                     humidity?.toFloat(),
@@ -40,7 +39,7 @@ data class DataMonitoringModel(
                     nutrientTank?.toFloat(),
                     turbidity?.toFloat(),
                     ph?.toFloat(),
-                    userId, cropsId, date, time)
+                    userId, cropsId, timestamp)
                 Log.i(TAG, "$output")
                 output
             } catch (e:Exception){
@@ -52,19 +51,43 @@ data class DataMonitoringModel(
         fun DataMonitoringModel.toHashMap() : HashMap<String, Any?>{
             val output : HashMap<String, Any?> = hashMapOf()
             output["dataId"] = dataId
-            output["temperature"] = temperature
-            output["humidity"] = humidity
-            output["waterTank"] = waterTank
-            output["nutrientTank"] = nutrientTank
-            output["turbidity"] = turbidity
-            output["ph"] = ph
+            output["temperature"] = temperature.round()
+            output["humidity"] = humidity.round()
+            output["waterTank"] = waterTank.round()
+            output["nutrientTank"] = nutrientTank.round()
+            output["turbidity"] = turbidity.round()
+            output["ph"] = ph.round()
             output["userId"] = userId
             output["cropsId"] = cropsId
-            output["date"] = date
-            output["time"] = time
+            output["timestamp"] = ViewUtility().getCurrentTimestamp()
             return output
         }
 
+        fun Float?.round(): Float? {
+            this?.let {
+                var multiplier = 1.0
+                repeat(2) { multiplier *= 10 }
+                return (kotlin.math.round(this * multiplier) / multiplier).toFloat()
+            }
+            return null
+        }
+
+        fun DataMonitoringModel.replace(input:DataMonitoringModel?) {
+            try {
+                this.dataId = input?.dataId
+                this.temperature = input?.temperature
+                this.humidity = input?.humidity
+                this.waterTank = input?.waterTank
+                this.nutrientTank = input?.nutrientTank
+                this.turbidity = input?.turbidity
+                this.ph = input?.ph
+                this.userId = input?.userId
+                this.cropsId = input?.cropsId
+                this.timestamp = input?.timestamp
+            } catch (e: Exception) {
+                Log.e(TAG, "Error converting $TAG", e)
+            }
+        }
         private const val TAG = "DataMonitoringModel"
     }
 }

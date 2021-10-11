@@ -3,7 +3,7 @@ package com.fdhasna21.nydrobionics.adapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.fdhasna21.nydrobionics.enumclass.AdapterRealTimeType
+import com.fdhasna21.nydrobionics.notfixed.AdapterRealTimeType
 import com.fdhasna21.nydrobionics.fragment.TabLayoutFragment
 import com.firebase.ui.database.FirebaseRecyclerOptions
 

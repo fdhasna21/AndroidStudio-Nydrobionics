@@ -16,7 +16,7 @@ import com.fdhasna21.nydrobionics.databinding.ActivityAddNoteBinding
 import com.fdhasna21.nydrobionics.dataclass.model.NoteModel
 import com.fdhasna21.nydrobionics.fragment.CreateFarmFragment
 import com.fdhasna21.nydrobionics.utils.ViewUtility
-import com.fdhasna21.nydrobionics.viewmodel.AddNoteModel
+import com.fdhasna21.nydrobionics.viewmodel.AddNoteViewModel
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.timepicker.MaterialTimePicker
@@ -26,7 +26,7 @@ import kotlin.collections.ArrayList
 
 class AddNoteActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
     private lateinit var binding : ActivityAddNoteBinding
-    private lateinit var viewModel : AddNoteModel
+    private lateinit var viewModel : AddNoteViewModel
     private lateinit var utility : ViewUtility
     private lateinit var editTexts : ArrayList<TextInputEditText>
 
@@ -40,7 +40,7 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
         binding = ActivityAddNoteBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel = ViewModelProvider(this).get(AddNoteModel::class.java)
+        viewModel = ViewModelProvider(this).get(AddNoteViewModel::class.java)
         viewModel.setCurrentData(intent.getParcelableExtra<NoteModel>("currentNoteModel"))
 
         supportActionBar?.title = getString(R.string.add_schedule_or_to_do_list)
@@ -66,7 +66,7 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
+        super.onBackPressed()
         return true
     }
 
@@ -118,7 +118,7 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
                     if(it){
                         utility.isLoading = false
                         Toast.makeText(this, "New note created.", Toast.LENGTH_SHORT).show()
-                        onBackPressed()
+                        super.onBackPressed()
                         finish()
                     } else {
                         utility.isLoading = false

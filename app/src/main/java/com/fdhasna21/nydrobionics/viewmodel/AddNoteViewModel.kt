@@ -3,11 +3,8 @@ package com.fdhasna21.nydrobionics.viewmodel
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.fdhasna21.nydrobionics.dataclass.model.FarmModel
-import com.fdhasna21.nydrobionics.dataclass.model.KitModel
 import com.fdhasna21.nydrobionics.dataclass.model.NoteModel
 import com.fdhasna21.nydrobionics.dataclass.model.NoteModel.Companion.toHashMap
-import com.fdhasna21.nydrobionics.dataclass.model.UserModel
 import com.fdhasna21.nydrobionics.utils.ViewUtility
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -20,7 +17,7 @@ import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.*
 
-class AddNoteModel : ViewModel(){
+class AddNoteViewModel : ViewModel(){
     private var auth : FirebaseAuth = Firebase.auth
     private var firestore : FirebaseFirestore = Firebase.firestore
     private var noteModel : MutableLiveData<NoteModel> = MutableLiveData(NoteModel())
@@ -49,21 +46,16 @@ class AddNoteModel : ViewModel(){
         if(noteModel.value?.date == null){
             noteModel.value?.date = ViewUtility().getCurrentDate()
         }
-        val c = Calendar.getInstance()
-        val pos = ParsePosition(0)
-        val sdf = SimpleDateFormat("dd MMMM yyyy", Locale.US)
-        c.time = sdf.parse(noteModel.value!!.date, pos)
-        c.add(Calendar.DATE, 1)
-        return c.timeInMillis
+        return ViewUtility().formatStringToDate(noteModel.value?.date)
     }
 
     fun setDate(date: Long?): String? {
-        noteModel.value?.date = ViewUtility().formatDate(date)
+        noteModel.value?.date = ViewUtility().formatDateToString(date)
         return noteModel.value?.date
     }
 
     fun setTime(hour: Int, minute: Int) : String?{
-        noteModel.value?.time = ViewUtility().formatTime(hour, minute)
+        noteModel.value?.time = ViewUtility().formatTimeToString(hour, minute)
         return noteModel.value?.time
     }
 
@@ -71,12 +63,9 @@ class AddNoteModel : ViewModel(){
         if(noteModel.value?.time == null){
             noteModel.value?.time = ViewUtility().getCurrentTime()
         }
-        val c = Calendar.getInstance(TimeZone.getDefault())
-        val pos = ParsePosition(0)
-        val sdf = SimpleDateFormat("HH:mm", Locale.US)
-        c.time = sdf.parse(noteModel.value!!.time, pos)
-        timeHour.value = c.get(Calendar.HOUR_OF_DAY)
-        timeMinute.value = c.get(Calendar.MINUTE)
+        val (hour, minute) = ViewUtility().formatStringToTime(noteModel.value?.time)
+        timeHour.value = hour
+        timeMinute.value = minute
     }
 
     fun getTimeHour() : Int {

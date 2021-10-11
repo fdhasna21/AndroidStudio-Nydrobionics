@@ -6,6 +6,7 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.gson.Gson
 import kotlinx.parcelize.Parcelize
 import java.lang.Exception
+import kotlin.math.round
 
 @Parcelize
 data class ScoreLevel(
@@ -27,9 +28,18 @@ data class ScoreLevel(
 
         fun ScoreLevel.toHashMap():HashMap<String,Any?>{
             val output = hashMapOf<String, Any?>()
-            output["min"] = min
-            output["max"] = max
+            output["min"] = min.round()
+            output["max"] = max.round()
             return output
+        }
+
+        private fun Float?.round(): Float? {
+            this?.let {
+                var multiplier = 1.0
+                repeat(2) { multiplier *= 10 }
+                return (round(this * multiplier) / multiplier).toFloat()
+            }
+            return null
         }
 
         fun getLevelModel(string: String?) : ScoreLevel? {

@@ -2,6 +2,7 @@ package com.fdhasna21.nydrobionics.dataclass.model
 
 import android.os.Parcelable
 import android.util.Log
+import com.fdhasna21.nydrobionics.utils.ViewUtility
 import com.google.firebase.firestore.DocumentSnapshot
 import kotlinx.parcelize.Parcelize
 
@@ -10,6 +11,7 @@ data class NoteModel(
     var noteId : String? = null,
     var title: String? = null,
     var description : String? = null,
+    var timestamp : String?=null,
     var date : String? = null,
     var time : String? = null
 ) : Parcelable {
@@ -19,9 +21,8 @@ data class NoteModel(
                 val noteId = getString("noteId")
                 val title = getString("title")
                 val description = getString("description")
-                val date = getString("date")
-                val time = getString("time")
-                val output = NoteModel(noteId, title, description, date, time)
+                val timestamp = getString("timestamp")
+                val output = NoteModel(noteId, title, description, timestamp)
                 Log.i(TAG, "$output")
                 output
             } catch (e : Exception){
@@ -35,8 +36,7 @@ data class NoteModel(
             output["noteId"] = noteId
             output["title"] = title
             output["description"] = description
-            output["date"] = date
-            output["time"] = time
+            output["timestamp"] = ViewUtility().formatTimestampToString(date, time)
             return output
         }
 

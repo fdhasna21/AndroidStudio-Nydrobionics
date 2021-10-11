@@ -15,5 +15,11 @@ enum class NumberPickerType{
     ACID_MIN,
     ACID_MAX,
     TURBIDITY_MIN,
-    TURBIDITY_MAX;
+    TURBIDITY_MAX,
+    TEMPERATURE,
+    HUMIDITY,
+    ACIDITY,
+    WATER_TANK,
+    NUTRIENT_TANK,
+    TURBIDITY;
 }

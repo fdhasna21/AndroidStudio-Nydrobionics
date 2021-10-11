@@ -2,6 +2,7 @@ package com.fdhasna21.nydrobionics.dataclass.model
 
 import android.os.Parcelable
 import android.util.Log
+import com.fdhasna21.nydrobionics.utils.ViewUtility
 import com.google.firebase.firestore.DocumentSnapshot
 import kotlinx.parcelize.Parcelize
 
@@ -11,8 +12,7 @@ data class FeedbackModel(
     var userId : String? = null,
     var content : String? = null,
     var rating : Float? = null,
-    var date : String? = null,
-    var time : String? = null
+    var timestamp: String? = null
 ) : Parcelable {
     companion object {
         fun DocumentSnapshot.toFeedbackModel() : FeedbackModel? {
@@ -21,9 +21,8 @@ data class FeedbackModel(
                 val userId = getString("userId")
                 val content = getString("content")
                 val rating : Double? = get("rating") as Double?
-                val date = getString("date")
-                val time = getString("time")
-                val output = FeedbackModel(feedbackId, userId, content, rating?.toFloat(), date, time)
+                val timestamp = getString("timestamp")
+                val output = FeedbackModel(feedbackId, userId, content, rating?.toFloat(), timestamp)
                 Log.i(TAG, "$output")
                 output
             } catch (e :Exception) {
@@ -38,8 +37,7 @@ data class FeedbackModel(
             output["userId"] = userId
             output["content"] = content
             output["rating"] = rating
-            output["date"] = date
-            output["time"] = time
+            output["timestamp"] = ViewUtility().getCurrentTimestamp()
             return output
         }
 

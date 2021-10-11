@@ -58,11 +58,11 @@
             android:layout_below="@id/kitPlantName"
             android:layout_marginBottom="6dp"
             android:layout_toRightOf="@id/kitPlantPhoto"
+            android:drawablePadding="3dp"
+            android:drawableTint="?android:colorActivatedHighlight"
             android:gravity="left|center_vertical"
             android:text="@string/planted_at"
-            android:drawablePadding="3dp"
-            app:drawableLeftCompat="@drawable/ic_circle"
-            android:drawableTint="?android:colorActivatedHighlight"/>
+            app:drawableLeftCompat="@drawable/ic_circle" />
 
         <TextView
             android:id="@+id/kitPlantHarvest"
@@ -71,11 +71,11 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/kitPlantDate"
             android:layout_toEndOf="@id/kitPlantPhoto"
+            android:drawablePadding="3dp"
+            android:drawableTint="@color/green"
             android:gravity="left|center_vertical"
             android:text="@string/can_be_harvested_at_s"
-            android:drawablePadding="3dp"
-            app:drawableLeftCompat="@drawable/ic_circle"
-            android:drawableTint="@color/green"/>
+            app:drawableLeftCompat="@drawable/ic_circle" />
 
         <TextView
             android:id="@+id/kitPlantHarvestMore"

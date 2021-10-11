@@ -2,9 +2,11 @@ package com.fdhasna21.nydrobionics.dataclass.model
 
 import android.os.Parcelable
 import android.util.Log
+import android.view.View
 import com.fdhasna21.nydrobionics.dataclass.ScoreLevel
 import com.fdhasna21.nydrobionics.dataclass.ScoreLevel.Companion.getLevelModel
 import com.fdhasna21.nydrobionics.dataclass.ScoreLevel.Companion.toHashMap
+import com.fdhasna21.nydrobionics.utils.ViewUtility
 import com.google.firebase.firestore.DocumentSnapshot
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
@@ -18,7 +20,11 @@ data class KitModel(
     var width : Int? = null,
     var waterLv : @RawValue ScoreLevel? = null,
     var nutrientLv : @RawValue ScoreLevel? = null,
-    var turbidityLv: @RawValue ScoreLevel? = null
+    var turbidityLv: @RawValue ScoreLevel? = null,
+    var isPlanted : Boolean? = false,
+    var timestamp : String? = null,
+    var lastMonitoring : DataMonitoringModel? = null,
+    var lastCrops : CropsModel? = null
 )  : Parcelable {
     companion object{
         fun DocumentSnapshot.toKitModel() : KitModel?{
@@ -26,12 +32,19 @@ data class KitModel(
                 val kitId = getString("kitId")
                 val name = getString("name")
                 val position = getString("position")
-                val length : Int? = get("length") as Int?
-                val width : Int? = get("width") as Int?
-                val waterLv = getString("waterLv")
-                val nutrientLv = getString("nutrientLv")
-                val turbidityLv = getString("turbidityLv")
-                val output = KitModel(kitId, name, position, length, width, getLevelModel(waterLv), getLevelModel(nutrientLv), getLevelModel(turbidityLv))
+                val length : Long? = get("length") as Long?
+                val width : Long? = get("width") as Long?
+                val waterLv : HashMap<*, *>? = get("waterLv") as HashMap<*, *>?
+                val nutrientLv : HashMap<*, *>? = get("nutrientLv") as HashMap<*, *>?
+                val turbidityLv : HashMap<*, *>?= get("turbidityLv") as HashMap<*, *>?
+                val isPlanted = getBoolean("isPlanted")
+                val timestamp = getString("timestamp")
+                val output = KitModel(kitId, name, position,
+                    length?.toInt(), width?.toInt(),
+                    getLevelModel(waterLv.toString()),
+                    getLevelModel(nutrientLv.toString()),
+                    getLevelModel(turbidityLv.toString()),
+                    isPlanted, timestamp)//, DataMonitoringModel(), CropsModel())
                 Log.i(TAG, "$output")
                 output
             } catch (e: Exception) {
@@ -50,8 +63,11 @@ data class KitModel(
             output["waterLv"] = waterLv?.toHashMap()
             output["nutrientLv"] = nutrientLv?.toHashMap()
             output["turbidityLv"] = turbidityLv?.toHashMap()
+            output["isPlanted"] = isPlanted
+            output["timestamp"] = ViewUtility().getCurrentTimestamp()
             return output
         }
+
         private const val TAG = "KitModel"
     }
 }

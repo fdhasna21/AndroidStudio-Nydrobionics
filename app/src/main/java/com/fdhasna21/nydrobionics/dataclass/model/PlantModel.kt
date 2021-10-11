@@ -5,6 +5,7 @@ import android.util.Log
 import com.fdhasna21.nydrobionics.dataclass.ScoreLevel
 import com.fdhasna21.nydrobionics.dataclass.ScoreLevel.Companion.getLevelModel
 import com.fdhasna21.nydrobionics.dataclass.ScoreLevel.Companion.toHashMap
+import com.fdhasna21.nydrobionics.utils.ViewUtility
 import com.google.firebase.firestore.DocumentSnapshot
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
@@ -20,7 +21,8 @@ data class PlantModel(
     var humidLv : @RawValue ScoreLevel? = null,
     var phLv : @RawValue ScoreLevel? = null,
     var userId : String? = null,
-    var growthTime : Int? = 0
+    var growthTime : Int? = 0,
+    var timestamp : String? = null
 ) : Parcelable {
     companion object {
         fun DocumentSnapshot.toPlantModel() : PlantModel? {
@@ -29,20 +31,22 @@ data class PlantModel(
                 val name = getString("name")
                 val description = getString("description")
                 val photo_url = getString("photo_url")
-                val tempLv = getString("tempLv")
-                val humidLv = getString("humidLv")
-                val phLv = getString("phLv")
+                val tempLv : HashMap<*, *>? = get("tempLv") as HashMap<*, *>?
+                val humidLv : HashMap<*, *>? = get("humidLv") as HashMap<*, *>?
+                val phLv : HashMap<*, *>? = get("phLv") as HashMap<*, *>?
                 val userId = getString("userId")
-                val growthTime : Int? = get("growthTime") as Int?
+                val growthTime : Long? = get("growthTime") as Long?
+                val timestamp = getString("timestamp")
                 val output = PlantModel(plantId, name, description, photo_url,
-                    getLevelModel(tempLv),
-                    getLevelModel(humidLv),
-                    getLevelModel(phLv),
-                    userId, growthTime)
+                    getLevelModel(tempLv.toString()),
+                    getLevelModel(humidLv.toString()),
+                    getLevelModel(phLv.toString()),
+                    userId, growthTime?.toInt(),
+                    timestamp)
                 Log.i(TAG, "$output")
                 output
             } catch (e : Exception){
-                Log.e(TAG, "Error converting $TAG")
+                Log.e(TAG, "Error converting $TAG", e)
                 null
             }
         }
@@ -58,7 +62,21 @@ data class PlantModel(
             output["phLv"] = phLv?.toHashMap()
             output["userId"] = userId
             output["growthTime"] = growthTime
+            output["timestamp"] = ViewUtility().getCurrentTimestamp()
             return output
+        }
+
+        fun PlantModel.replace(input : PlantModel?){
+            this.plantId = input?.plantId
+            this.description = input?.description
+            this.growthTime = input?.growthTime
+            this.humidLv = input?.humidLv
+            this.name = input?.name
+            this.phLv = input?.phLv
+            this.userId = input?.userId
+            this.timestamp = input?.timestamp
+            this.photo_url = input?.photo_url
+            this.tempLv = input?.tempLv
         }
 
         private const val TAG = "PlantModel"

@@ -17,7 +17,6 @@ import com.fdhasna21.nydrobionics.databinding.ActivityProfileKitBinding
 import com.fdhasna21.nydrobionics.databinding.LayoutPlantedCropsBinding
 import com.fdhasna21.nydrobionics.databinding.RowItemKitMonitoringBinding
 import com.fdhasna21.nydrobionics.dataclass.model.PlantModel
-import com.fdhasna21.nydrobionics.enumclass.AdapterRealTimeType
 import com.fdhasna21.nydrobionics.viewmodel.ProfileKitViewModel
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.android.material.color.MaterialColors
@@ -65,7 +64,7 @@ class ProfileKitActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
+        super.onBackPressed()
         return true
     }
 
@@ -104,28 +103,28 @@ class ProfileKitActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun setupTabLayout(){
         //todo : referencenya! plant dari user yg terkait
-        val reference = Firebase.database.getReference("crops")
-        val options = FirebaseRecyclerOptions.Builder<PlantModel>()
-            .setQuery(reference, PlantModel::class.java)
-            .build()
-
-        val tabLayoutAdapter = ViewPagerAdapter(this, arrayListOf(options, options), AdapterRealTimeType.PLANT)
-        binding.kitViewPager.adapter = tabLayoutAdapter
-        TabLayoutMediator(binding.kitTabLayout, binding.kitViewPager) { tab, position ->
-            tab.text = resources.getString(TAB_TITLES[position])
-        }.attach()
-
-        binding.kitTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                when(tab!!.position){
-                    0 -> {}
-                    1 -> {}
-                }
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {}
-            override fun onTabReselected(tab: TabLayout.Tab?) {}
-        })
+//        val reference = Firebase.database.getReference("crops")
+//        val options = FirebaseRecyclerOptions.Builder<PlantModel>()
+//            .setQuery(reference, PlantModel::class.java)
+//            .build()
+//
+//        val tabLayoutAdapter = ViewPagerAdapter(this, arrayListOf(options, options), AdapterRealTimeType.PLANT)
+//        binding.kitViewPager.adapter = tabLayoutAdapter
+//        TabLayoutMediator(binding.kitTabLayout, binding.kitViewPager) { tab, position ->
+//            tab.text = resources.getString(TAB_TITLES[position])
+//        }.attach()
+//
+//        binding.kitTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
+//            override fun onTabSelected(tab: TabLayout.Tab?) {
+//                when(tab!!.position){
+//                    0 -> {}
+//                    1 -> {}
+//                }
+//            }
+//
+//            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+//            override fun onTabReselected(tab: TabLayout.Tab?) {}
+//        })
     }
 
 }
