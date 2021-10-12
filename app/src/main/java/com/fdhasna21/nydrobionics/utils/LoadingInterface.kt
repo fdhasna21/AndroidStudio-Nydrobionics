@@ -5,6 +5,7 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import androidx.appcompat.app.ActionBar
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import br.com.simplepass.loadingbutton.customViews.CircularProgressButton
 import com.google.android.material.textfield.TextInputEditText
 import pl.polak.clicknumberpicker.ClickNumberPickerView
@@ -17,9 +18,9 @@ interface LoadingInterface {
     var numberPickers : ArrayList<ClickNumberPickerView>?
     var actionBar : ActionBar?
 
-    var initialState : Boolean
+    var initialLoadingState : Boolean
     var isLoading : Boolean
-        get() = initialState
+        get() = initialLoadingState
         set(value) {
             textInputEditTexts?.forEach {
                 it.isCursorVisible = !value
@@ -44,9 +45,19 @@ interface LoadingInterface {
                 }
             }
             actionBar?.setDisplayShowHomeEnabled(value)
-            onLoadingChangeListener{(initialState)}
-            initialState = value
+            onLoadingChangeListener{(initialLoadingState)}
+            initialLoadingState = value
         }
-
     fun onLoadingChangeListener(function: (isLoading:Boolean) -> Unit)
+
+//    var swipeRefreshLayout : SwipeRefreshLayout?
+//    var initialRefreshState : Boolean
+//    var isRefresh : Boolean
+//        get() = initialRefreshState
+//        set(value) {
+//            swipeRefreshLayout?.isRefreshing = value
+//            onRefreshChangeListener { (initialRefreshState) }
+//            initialRefreshState = value
+//        }
+//    fun onRefreshChangeListener(function: (isRefresh:Boolean) -> Unit)
 }

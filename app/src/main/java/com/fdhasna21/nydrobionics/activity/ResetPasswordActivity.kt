@@ -43,7 +43,7 @@ class ResetPasswordActivity : AppCompatActivity(), View.OnClickListener, TextWat
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
+        super.onBackPressed()
         return true
     }
 

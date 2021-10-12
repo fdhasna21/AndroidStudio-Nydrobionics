@@ -11,51 +11,65 @@ enum class AdapterType {
     SEARCH_PLANT {
         override fun getAdapter(
             context: Context,
-            data: ArrayList<*>,
+            adapterData: ArrayList<*>,
+            allUsers: ArrayList<UserModel>?,
+            allPlants: ArrayList<PlantModel>?,
             type: SearchSelectType?
         ): RecyclerView.Adapter<*> {
-            return PlantModelAdapter(context, data as ArrayList<PlantModel>, type!!)
+            return PlantModelAdapter(context, adapterData as ArrayList<PlantModel>, type!!)
         }
     },
     SEARCH_USER {
         override fun getAdapter(
             context: Context,
-            data: ArrayList<*>,
+            adapterData: ArrayList<*>,
+            allUsers: ArrayList<UserModel>?,
+            allPlants: ArrayList<PlantModel>?,
             type: SearchSelectType?
         ): RecyclerView.Adapter<*> {
-            return UserModelAdapter(context, data as ArrayList<UserModel>, type!!)
+            return UserModelAdapter(context, adapterData as ArrayList<UserModel>, type!!)
         }
     },
     POST_PLANT{
         override fun getAdapter(
             context: Context,
-            data: ArrayList<*>,
+            adapterData: ArrayList<*>,
+            allUsers: ArrayList<UserModel>?,
+            allPlants: ArrayList<PlantModel>?,
             type: SearchSelectType?
         ): RecyclerView.Adapter<*> {
-            return PostModelAdapter(context, data as ArrayList<PlantModel>)
+            return PostModelAdapter(context, adapterData as ArrayList<PlantModel>, allUsers ?: arrayListOf())
         }
 
     },
     NOTE{
         override fun getAdapter(
             context: Context,
-            data: ArrayList<*>,
+            adapterData: ArrayList<*>,
+            allUsers: ArrayList<UserModel>?,
+            allPlants: ArrayList<PlantModel>?,
             type: SearchSelectType?
         ): RecyclerView.Adapter<*> {
-            return NoteModelAdapter(data as ArrayList<NoteModel>)
+            return NoteModelAdapter(adapterData as ArrayList<NoteModel>)
         }
     },
     DATA_MONITORING {
         override fun getAdapter(
             context: Context,
-            data: ArrayList<*>,
+            adapterData: ArrayList<*>,
+            allUsers: ArrayList<UserModel>?,
+            allPlants: ArrayList<PlantModel>?,
             type: SearchSelectType?
         ): RecyclerView.Adapter<*> {
-            return DataMonitoringModelAdapter(context, data as ArrayList<DataMonitoringModel>)
+            return DataMonitoringModelAdapter(context, adapterData as ArrayList<DataMonitoringModel>)
         }
     };
 
-    abstract fun getAdapter(context: Context, data:ArrayList<*>, type:SearchSelectType?=null) : RecyclerView.Adapter<*>
+    abstract fun getAdapter(context: Context,
+                            adapterData:ArrayList<*>,
+                            allUsers:ArrayList<UserModel>?=null,
+                            allPlants:ArrayList<PlantModel>?=null,
+                            type:SearchSelectType?=null) : RecyclerView.Adapter<*>
 
     companion object{
         enum class SearchSelectType{

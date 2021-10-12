@@ -34,10 +34,10 @@ open class ViewUtility(
         const val STRING_FORMAT = "dd MMMM yyyy HH:mm"
     }
 
-    override var initialState: Boolean = false
-
+    override var initialLoadingState: Boolean = false
     override fun onLoadingChangeListener(function: (isLoading: Boolean) -> Unit) {}
 
+    /** TIMESTAMP **/
     fun getCurrentDate() : String {
         return formatDateToString(Calendar.getInstance(TimeZone.getDefault()).timeInMillis)!!
     }
@@ -127,6 +127,8 @@ open class ViewUtility(
         return bitmap
     }
 
+
+    /** USER INPUT CHECK **/
     fun isEmpty(textInputEditText: TextInputEditText) : Boolean{
         return textInputEditText.text.toString().count() > 0
     }
@@ -177,19 +179,5 @@ open class ViewUtility(
             }
         }
         return output!!
-    }
-
-    fun isLoading(condition:Boolean, circularProgressButton: CircularProgressButton){
-        circularProgressButton.apply {
-            isEnabled = !condition
-            if(condition){
-                startAnimation()
-            } else {
-                val handler = Handler(Looper.getMainLooper())
-                handler.postDelayed({
-                    revertAnimation()
-                }, 3000)
-            }
-        }
     }
 }

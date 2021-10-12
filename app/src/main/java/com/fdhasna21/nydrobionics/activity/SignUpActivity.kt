@@ -57,7 +57,7 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
+        super.onBackPressed()
         return true
     }
 
@@ -92,7 +92,7 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
                         }
                     })
             }
-            binding.signupSignIn -> onBackPressed()
+            binding.signupSignIn -> super.onBackPressed()
         }
     }
 

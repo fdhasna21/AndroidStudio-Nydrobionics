@@ -61,7 +61,7 @@ class ProfileFarmActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onSupportNavigateUp(): Boolean {
         //todo : klo ada perubahan, simpan data (di view model ada variable awalnya terus dibandingin sama currentnya)
-        onBackPressed()
+        super.onBackPressed()
         return true
     }
 
@@ -83,7 +83,7 @@ class ProfileFarmActivity : AppCompatActivity(), View.OnClickListener {
             }
             bindingFragment.createFarmSubmit -> {
                 //todo : send data
-                onBackPressed()
+                super.onBackPressed()
             }
         }
     }

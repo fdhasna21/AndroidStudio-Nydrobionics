@@ -103,7 +103,7 @@ class AddKitActivity : AppCompatActivity(), TextWatcher{
                     if(it){
                         utility.isLoading = false
                         Toast.makeText(this@AddKitActivity, "New kit created.", Toast.LENGTH_SHORT).show()
-                        onBackPressed()
+                        super.onBackPressed()
                         finish()
                     } else {
                         utility.isLoading = false

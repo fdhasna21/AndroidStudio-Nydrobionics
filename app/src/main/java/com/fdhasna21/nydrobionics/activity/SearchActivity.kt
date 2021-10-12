@@ -65,7 +65,7 @@ class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener, Swip
     private fun setupRecyclerViewPlant(){
         val data : ArrayList<PlantModel> = arrayListOf()
         viewModel.getAllPlants()
-        rowAdapter = AdapterType.SEARCH_PLANT.getAdapter(this, data, AdapterType.Companion.SearchSelectType.SEARCH) as PlantModelAdapter
+        rowAdapter = AdapterType.SEARCH_PLANT.getAdapter(this, data, type = AdapterType.Companion.SearchSelectType.SEARCH) as PlantModelAdapter
         viewModel.getPlants().observe(this, {
             data.clear()
             data.addAll(it ?: arrayListOf())
@@ -98,7 +98,7 @@ class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener, Swip
     private fun setupRecyclerViewUser(){
         val data : ArrayList<UserModel> = arrayListOf()
         viewModel.getAllUsers()
-        rowAdapter = AdapterType.SEARCH_USER.getAdapter(this, data, AdapterType.Companion.SearchSelectType.SEARCH) as UserModelAdapter
+        rowAdapter = AdapterType.SEARCH_USER.getAdapter(this, data, type = AdapterType.Companion.SearchSelectType.SEARCH) as UserModelAdapter
         viewModel.getUsers().observe(this, {
             data.clear()
             data.addAll(it ?: arrayListOf())

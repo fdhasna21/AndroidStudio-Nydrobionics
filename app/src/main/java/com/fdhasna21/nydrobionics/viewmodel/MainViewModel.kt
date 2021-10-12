@@ -31,10 +31,10 @@ class MainViewModel : ViewModel() {
 
     var currentUserModel : MutableLiveData<UserModel> = MutableLiveData(UserModel())
     var currentFarmModel : MutableLiveData<FarmModel> = MutableLiveData(FarmModel())
-    private var currentKitModels : MutableLiveData<ArrayList<KitModel>> = MutableLiveData(arrayListOf())
-    var currentNoteModels : MutableLiveData<ArrayList<NoteModel>?> = MutableLiveData(null)
-    private var allUserModels : MutableLiveData<ArrayList<UserModel>?> = MutableLiveData(null)
-    private var allPlantModels : MutableLiveData<ArrayList<PlantModel>?> = MutableLiveData(null)
+    var currentKitModels : MutableLiveData<ArrayList<KitModel>> = MutableLiveData(arrayListOf()) //good
+    var currentNoteModels : MutableLiveData<ArrayList<NoteModel>?> = MutableLiveData(null) //good
+    var allUserModels : MutableLiveData<ArrayList<UserModel>?> = MutableLiveData(null)
+    var allPlantModels : MutableLiveData<ArrayList<PlantModel>?> = MutableLiveData(null)
     var isCurrentUserExist : MutableLiveData<Boolean?> = MutableLiveData(null)
     var isCurrentFarmExist : MutableLiveData<Boolean?> = MutableLiveData(null)
     var isUserSignOut : MutableLiveData<Boolean> = MutableLiveData(false)
@@ -269,7 +269,7 @@ class MainViewModel : ViewModel() {
 
     /** PLANT **/
     fun getPlantsUpdate(){
-        val db = firestore.collection("plants")
+        val db = firestore.collection("plants").orderBy("timestamp", Query.Direction.DESCENDING)
         try {
             db.addSnapshotListener { plantsSnapshot, error ->
                 plantsSnapshot?.let {
@@ -282,6 +282,7 @@ class MainViewModel : ViewModel() {
                         }
                     }
                     allPlantModels.value = plants
+                    Log.i(TAG, "getPlantsUpdate: ${allPlantModels.value?.size}")
                 }
 
                 error?.let {

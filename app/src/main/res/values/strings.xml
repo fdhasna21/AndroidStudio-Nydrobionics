@@ -139,4 +139,6 @@
     <string name="timestamp">timestamp</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
+    <string name="options">Options</string>
+    <string name="post_from_plant"></string>
 </resources>

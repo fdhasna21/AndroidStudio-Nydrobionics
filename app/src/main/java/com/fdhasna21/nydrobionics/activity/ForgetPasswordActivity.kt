@@ -59,7 +59,7 @@ class ForgetPasswordActivity : AppCompatActivity(), View.OnClickListener, TextWa
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
+        super.onBackPressed()
         return true
     }
 

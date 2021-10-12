@@ -60,7 +60,7 @@ class FeedbackActivity : AppCompatActivity(), TextWatcher, RatingBar.OnRatingBar
                     if(it){
                         utility.isLoading = false
                         Toast.makeText(this@FeedbackActivity, "Thank you for your feedback.", Toast.LENGTH_SHORT).show()
-                        onBackPressed()
+                        super.onBackPressed()
                         finish()
                     } else {
                         utility.isLoading = false
@@ -78,7 +78,7 @@ class FeedbackActivity : AppCompatActivity(), TextWatcher, RatingBar.OnRatingBar
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
+        super.onBackPressed()
         return true
     }
 

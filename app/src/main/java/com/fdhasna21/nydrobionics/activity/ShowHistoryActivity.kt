@@ -29,7 +29,7 @@ class ShowHistoryActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
+        super.onBackPressed()
         return true
     }
 
