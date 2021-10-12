@@ -2,11 +2,10 @@ package com.fdhasna21.nydrobionics.dataclass.model
 
 import android.os.Parcelable
 import android.util.Log
-import android.view.View
 import com.fdhasna21.nydrobionics.dataclass.ScoreLevel
 import com.fdhasna21.nydrobionics.dataclass.ScoreLevel.Companion.getLevelModel
 import com.fdhasna21.nydrobionics.dataclass.ScoreLevel.Companion.toHashMap
-import com.fdhasna21.nydrobionics.utils.ViewUtility
+import com.fdhasna21.nydrobionics.utility.ViewUtility
 import com.google.firebase.firestore.DocumentSnapshot
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
@@ -44,8 +43,8 @@ data class KitModel(
                     getLevelModel(waterLv.toString()),
                     getLevelModel(nutrientLv.toString()),
                     getLevelModel(turbidityLv.toString()),
-                    isPlanted, timestamp)//, DataMonitoringModel(), CropsModel())
-                Log.i(TAG, "$output")
+                    isPlanted, timestamp, null, null)
+//                Log.i(TAG, "$output")
                 output
             } catch (e: Exception) {
                 Log.e(TAG, "Error converting $TAG", e)

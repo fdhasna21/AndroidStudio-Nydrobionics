@@ -9,7 +9,7 @@ import com.fdhasna21.nydrobionics.dataclass.model.KitModel
 import com.fdhasna21.nydrobionics.dataclass.model.KitModel.Companion.toHashMap
 import com.fdhasna21.nydrobionics.dataclass.model.UserModel
 import com.fdhasna21.nydrobionics.enumclass.NumberPickerType
-import com.fdhasna21.nydrobionics.utils.ViewUtility
+import com.fdhasna21.nydrobionics.utility.ViewUtility
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore

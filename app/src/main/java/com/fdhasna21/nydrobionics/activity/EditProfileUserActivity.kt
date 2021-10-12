@@ -2,7 +2,6 @@ package com.fdhasna21.nydrobionics.activity
 
 import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -18,20 +17,18 @@ import androidx.lifecycle.ViewModelProvider
 import com.addisonelliott.segmentedbutton.SegmentedButtonGroup
 import com.bumptech.glide.Glide
 import com.canhub.cropper.CropImage
+import com.fdhasna21.nydrobionics.BuildConfig
 import com.fdhasna21.nydrobionics.R
 import com.fdhasna21.nydrobionics.databinding.ActivityEditProfileUserBinding
 import com.fdhasna21.nydrobionics.databinding.FragmentCreateUserBinding
 import com.fdhasna21.nydrobionics.dataclass.model.UserModel
 import com.fdhasna21.nydrobionics.enumclass.Gender
 import com.fdhasna21.nydrobionics.enumclass.ProfileType
-import com.fdhasna21.nydrobionics.utils.IntentUtility
-import com.fdhasna21.nydrobionics.utils.RequestPermission
-import com.fdhasna21.nydrobionics.utils.ViewUtility
+import com.fdhasna21.nydrobionics.utility.ViewUtility
 import com.fdhasna21.nydrobionics.viewmodel.CreateProfileViewModel
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.MaterialDatePicker
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -56,7 +53,7 @@ class EditProfileUserActivity : AppCompatActivity(), View.OnClickListener, Segme
         setContentView(binding.root)
 
         viewModel = ViewModelProvider(this).get(CreateProfileViewModel::class.java)
-        viewModel.setCurrentUser(intent.getParcelableExtra<UserModel>("currentUserModel"))
+        viewModel.setCurrentUser(intent.getParcelableExtra<UserModel>(BuildConfig.CURRENT_USER))
         supportActionBar?.title = getString(R.string.edit_profile)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(false)
@@ -69,7 +66,8 @@ class EditProfileUserActivity : AppCompatActivity(), View.OnClickListener, Segme
                 createUserName,
                 createUserPhone,
                 createUserAddress,
-                createUserDOB)
+                createUserDOB,
+                createUserBio)
             viewsAsButton = arrayListOf(createUserDOB,
                                         createUserSubmit,
                                         createUserEditPhoto,
@@ -82,10 +80,10 @@ class EditProfileUserActivity : AppCompatActivity(), View.OnClickListener, Segme
                 actionBar = supportActionBar
             )
 
-            setupDefaultData()
             editTexts.forEach { it.addTextChangedListener(this@EditProfileUserActivity) }
             viewsAsButton.forEach { it.setOnClickListener(this@EditProfileUserActivity) }
             createUserPhoto.setOnLongClickListener { createUserEditPhoto.performClick() }
+            setupDefaultData()
             checkUpdate()
         }
 
@@ -182,30 +180,27 @@ class EditProfileUserActivity : AppCompatActivity(), View.OnClickListener, Segme
         bindingFragment.apply {
             createUserRoleGroup.visibility = View.GONE
             createUserSubmit.text = getString(R.string.save)
-            utility.isLoading = false
 
-            viewModel.getCurrentUser()?.let {
-                bindingFragment.apply {
-                    createUserEmail.setText(Firebase.auth.currentUser?.email)
-                    createUserName.setText(it.name)
-                    createUserPhone.setText(it.phone)
-                    createUserAddress.setText(it.address)
-                    createUserBio.setText(it.bio)
-                    createUserDOB.setText(it.dob)
-                    it.photo_url?.let {
-                        Glide.with(this@EditProfileUserActivity)
-                            .load(it)
-                            .centerCrop()
-                            .into(createUserPhoto)
-                    }
-                    createUserGender.setPosition(Gender.getType(it.gender!!)!!.getPosition(), false)
-
-                    strEdt[it.name!!] = createUserName
-                    strEdt[it.phone!!] = createUserPhone
-                    strEdt[it.address!!] = createUserAddress
-                    strEdt[it.bio!!] = createUserBio
-                    strEdt[it.dob!!] = createUserDOB
+            viewModel.getCurrentUserModel()?.let {
+                createUserEmail.setText(Firebase.auth.currentUser?.email)
+                createUserName.setText(it.name)
+                createUserPhone.setText(it.phone)
+                createUserAddress.setText(it.address)
+                createUserBio.setText(it.bio)
+                createUserDOB.setText(it.dob)
+                it.photo_url?.let {
+                    Glide.with(this@EditProfileUserActivity)
+                        .load(it)
+                        .centerCrop()
+                        .into(createUserPhoto)
                 }
+                createUserGender.setPosition(Gender.getType(it.gender!!)!!.getPosition(), false)
+
+                strEdt[it.name ?: ""] = createUserName
+                strEdt[it.phone ?: ""] = createUserPhone
+                strEdt[it.address ?: ""] = createUserAddress
+                strEdt[it.bio ?: ""] = createUserBio
+                strEdt[it.dob ?: ""] = createUserDOB
             }
         }
     }
@@ -219,7 +214,7 @@ class EditProfileUserActivity : AppCompatActivity(), View.OnClickListener, Segme
     override fun afterTextChanged(s: Editable?) {}
 
     private fun checkUpdate() {
-        if(viewModel.getCurrentUser() == null){
+        if(viewModel.getCurrentUserModel() == null){
             viewModel.checkNotEmpty(
                 utility.isEmpties(editTexts)
             ).observe(this, {
@@ -234,7 +229,6 @@ class EditProfileUserActivity : AppCompatActivity(), View.OnClickListener, Segme
                 bindingFragment.createUserSubmit.isEnabled = it
             })
         }
-
     }
 
     val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { data ->

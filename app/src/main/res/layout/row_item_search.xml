@@ -59,6 +59,6 @@
         android:layout_height="match_parent"
         android:layout_weight="0.25"
         android:src="@drawable/ic_close"
-        android:backgroundTint="@null"
-        android:contentDescription="@string/close"/>
+        android:background="?selectableItemBackground"
+        android:contentDescription="@string/close" />
 </LinearLayout>

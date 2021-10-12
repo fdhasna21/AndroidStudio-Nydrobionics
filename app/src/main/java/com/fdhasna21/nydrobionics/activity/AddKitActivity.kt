@@ -11,13 +11,14 @@ import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.fdhasna21.nydrobionics.BuildConfig
 import com.fdhasna21.nydrobionics.R
 import com.fdhasna21.nydrobionics.databinding.ActivityAddKitBinding
 import com.fdhasna21.nydrobionics.dataclass.model.FarmModel
 import com.fdhasna21.nydrobionics.dataclass.model.KitModel
 import com.fdhasna21.nydrobionics.enumclass.NumberPickerType
 import com.fdhasna21.nydrobionics.fragment.CreateFarmFragment
-import com.fdhasna21.nydrobionics.utils.ViewUtility
+import com.fdhasna21.nydrobionics.utility.ViewUtility
 import com.fdhasna21.nydrobionics.viewmodel.AddKitViewModel
 import com.google.android.material.textfield.TextInputEditText
 import pl.polak.clicknumberpicker.ClickNumberPickerView
@@ -40,8 +41,8 @@ class AddKitActivity : AppCompatActivity(), TextWatcher{
         setContentView(binding.root)
 
         viewModel = ViewModelProvider(this).get(AddKitViewModel::class.java)
-        viewModel.setCurrentData(intent.getParcelableExtra("currentUserModel"),
-            intent.getParcelableExtra<FarmModel>("currentFarmModel"),
+        viewModel.setCurrentData(intent.getParcelableExtra(BuildConfig.CURRENT_USER),
+            intent.getParcelableExtra<FarmModel>(BuildConfig.CURRENT_FARM),
             intent.getParcelableExtra<KitModel>("currentKitModel"))
 
         supportActionBar?.title = getString(R.string.create_new_kit)

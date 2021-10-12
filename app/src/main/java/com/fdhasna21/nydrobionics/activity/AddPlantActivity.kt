@@ -18,16 +18,14 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.canhub.cropper.CropImage
-import com.canhub.cropper.CropImageView
+import com.fdhasna21.nydrobionics.BuildConfig
 import com.fdhasna21.nydrobionics.R
 import com.fdhasna21.nydrobionics.databinding.ActivityAddPlantBinding
 import com.fdhasna21.nydrobionics.dataclass.model.PlantModel
-import com.fdhasna21.nydrobionics.dataclass.model.UserModel
 import com.fdhasna21.nydrobionics.enumclass.NumberPickerType
 import com.fdhasna21.nydrobionics.enumclass.ProfileType
 import com.fdhasna21.nydrobionics.fragment.CreateFarmFragment
-import com.fdhasna21.nydrobionics.utils.IntentUtility
-import com.fdhasna21.nydrobionics.utils.ViewUtility
+import com.fdhasna21.nydrobionics.utility.ViewUtility
 import com.fdhasna21.nydrobionics.viewmodel.AddPlantViewModel
 import com.google.android.material.textfield.TextInputEditText
 import pl.polak.clicknumberpicker.ClickNumberPickerView
@@ -53,7 +51,7 @@ class AddPlantActivity : AppCompatActivity(), TextWatcher, View.OnClickListener 
         setContentView(binding.root)
 
         viewModel = ViewModelProvider(this).get(AddPlantViewModel::class.java)
-        viewModel.setCurrentData(intent.getParcelableExtra<PlantModel>("currentPlantModel"))
+        viewModel.setCurrentData(intent.getParcelableExtra<PlantModel>(BuildConfig.SELECTED_PLANT))
 
         supportActionBar?.title = getString(R.string.add_new_plant)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -186,7 +184,7 @@ class AddPlantActivity : AppCompatActivity(), TextWatcher, View.OnClickListener 
                         utility.isLoading = false
                         if(intent.getStringExtra("from") != null){
                             val intent = Intent()
-                            intent.putExtra("selectedPlantModel", viewModel.plantModel.value)
+                            intent.putExtra(BuildConfig.SELECTED_PLANT, viewModel.plantModel.value)
                             setResult(RESULT_OK, intent)
                         } else {
                             super.onBackPressed()

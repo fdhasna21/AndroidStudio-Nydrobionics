@@ -37,7 +37,7 @@ enum class ProfileType {
     companion object{
         fun getType(tag:String) : ProfileType {
             return when (tag) {
-                "user", "createProfile", "profileFarm" -> USER
+                "user", "createProfile", "editProfileFarm" -> USER
                 "plant", "crops", "addCrops", "addDataMonitoring" -> PLANT
                 else -> NONE
             }

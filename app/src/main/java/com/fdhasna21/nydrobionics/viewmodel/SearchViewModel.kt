@@ -7,6 +7,7 @@ import com.fdhasna21.nydrobionics.dataclass.model.PlantModel
 import com.fdhasna21.nydrobionics.dataclass.model.PlantModel.Companion.toPlantModel
 import com.fdhasna21.nydrobionics.dataclass.model.UserModel
 import com.fdhasna21.nydrobionics.dataclass.model.UserModel.Companion.toUserModel
+import com.fdhasna21.nydrobionics.enumclass.Role
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
@@ -18,6 +19,7 @@ class SearchViewModel : ViewModel(){
     private var plantModels : MutableLiveData<ArrayList<PlantModel>> = MutableLiveData()
     private var searchUsers : MutableLiveData<ArrayList<UserModel>> = MutableLiveData()
     private var searchPlants : MutableLiveData<ArrayList<PlantModel>> = MutableLiveData()
+    private var exceptUsers : MutableLiveData<ArrayList<UserModel>> = MutableLiveData(null)
 
     var isSearchSuccess : MutableLiveData<Boolean> = MutableLiveData(false)
     var searchError : MutableLiveData<String> = MutableLiveData("")
@@ -25,6 +27,17 @@ class SearchViewModel : ViewModel(){
     companion object {
         const val TAG = "searchViewModel"
     }
+    init {
+        getAllUsers(null)
+    }
+
+    fun setExceptUsers(userModels : ArrayList<UserModel>?){
+        exceptUsers.value = userModels
+        Log.i(TAG, "setExceptUsers: ${exceptUsers.value}")
+    }
+
+    fun getAllUsers() : MutableLiveData<ArrayList<UserModel>> = userModels
+
     fun getAllUsers(lastKey : String? = null){
         val db = firestore.collection("users")
         try {
@@ -83,29 +96,56 @@ class SearchViewModel : ViewModel(){
     fun searchUsers(key:String?) {
         if(key != null){
             val results : ArrayList<UserModel> = arrayListOf()
-            for(user in userModels.value!!){
-                if(user.name?.contains(key) == true){
-                    results.add(user)
+            userModels.value?.let {
+                for (user in it) {
+                    if (user.name?.contains(key) == true || user.email?.contains(key) == true) {
+                        exceptUsers.value?.let {
+                            for (exUser in it) {
+                                if (exUser.uid != user.uid){ //|| user.role != Role.OWNER.toString()) {
+                                    results.add(user)
+                                }
+                            }
+                        } ?: kotlin.run {
+                            results.add(user)
+                        }
+                    }
                 }
+                searchUsers.value = results
             }
-            searchUsers.value = results
         }
         else {
-            searchUsers.value = userModels.value
+            userModels.value?.let { allUsers ->
+                exceptUsers.value?.let {
+                    val results : ArrayList<UserModel> = arrayListOf()
+                    for(user in allUsers) {
+                        for (exUser in it) {
+                            if (exUser.uid != user.uid) {
+                                results.add(user)
+                            }
+                        }
+                    }
+                    searchUsers.value = results
+                } ?: kotlin.run {
+                    searchUsers.value = userModels.value
+                }
+            }
         }
     }
     fun searchPlants(key:String?) {
         if(key != null && plantModels.value != null){
             val results : ArrayList<PlantModel> = arrayListOf()
-            for(user in plantModels.value!!){
-                if(user.name?.contains(key) == true){
-                    results.add(user)
+            plantModels.value?.let {
+                for (user in it) {
+                    if (user.name?.contains(key) == true) {
+                        results.add(user)
+                    }
                 }
+                searchPlants.value = results
             }
-            searchPlants.value = results
         }
         else {
             searchPlants.value = plantModels.value
         }
     }
+
 }

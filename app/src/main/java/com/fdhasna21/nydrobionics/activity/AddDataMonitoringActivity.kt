@@ -16,6 +16,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.fdhasna21.nydrobionics.BuildConfig
 import com.fdhasna21.nydrobionics.R
 import com.fdhasna21.nydrobionics.databinding.ActivityAddCropsBinding
 import com.fdhasna21.nydrobionics.databinding.ActivityAddDataMonitoringBinding
@@ -24,7 +25,7 @@ import com.fdhasna21.nydrobionics.dataclass.model.PlantModel
 import com.fdhasna21.nydrobionics.dataclass.model.UserModel
 import com.fdhasna21.nydrobionics.enumclass.NumberPickerType
 import com.fdhasna21.nydrobionics.fragment.CreateFarmFragment
-import com.fdhasna21.nydrobionics.utils.ViewUtility
+import com.fdhasna21.nydrobionics.utility.ViewUtility
 import com.fdhasna21.nydrobionics.viewmodel.AddDataMonitoringViewModel
 import pl.polak.clicknumberpicker.ClickNumberPickerView
 import kotlin.Exception
@@ -50,8 +51,8 @@ class AddDataMonitoringActivity : AppCompatActivity(), View.OnClickListener {
 
         viewModel = ViewModelProvider(this).get(AddDataMonitoringViewModel::class.java)
         supportActionBar?.title = getString(R.string.add_recent_data_monitoring)
-        viewModel.setCurrentData(intent.getParcelableExtra<UserModel>("currentUserModel"),
-            intent.getParcelableExtra<FarmModel>("currentFarmModel"),
+        viewModel.setCurrentData(intent.getParcelableExtra<UserModel>(BuildConfig.CURRENT_USER),
+            intent.getParcelableExtra<FarmModel>(BuildConfig.CURRENT_FARM),
             isAddCrops = false)
         supportActionBar?.subtitle = viewModel.currentFarmModel.value?.name
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -277,7 +278,7 @@ class AddDataMonitoringActivity : AppCompatActivity(), View.OnClickListener {
         Log.i(CreateProfileActivity.TAG, "$data")
         try{
             if(data?.resultCode == Activity.RESULT_OK){
-                data.data?.getParcelableExtra<PlantModel>("selectedPlantModel")?.let {
+                data.data?.getParcelableExtra<PlantModel>(BuildConfig.SELECTED_PLANT)?.let {
                     bindingFragment.acPlantSelector.visibility = View.GONE
                     bindingFragment.acCropsContent.visibility = View.VISIBLE
                     viewModel.setCurrentPlant(it)

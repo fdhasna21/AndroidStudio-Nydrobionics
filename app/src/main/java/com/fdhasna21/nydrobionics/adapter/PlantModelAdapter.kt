@@ -8,8 +8,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.fdhasna21.nydrobionics.databinding.RowItemSearchBinding
+import com.fdhasna21.nydrobionics.dataclass.model.NoteModel
 import com.fdhasna21.nydrobionics.dataclass.model.PlantModel
+import com.fdhasna21.nydrobionics.dataclass.model.UserModel
 import com.fdhasna21.nydrobionics.dataclass.model.UserModel.Companion.toUserModel
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -17,10 +20,21 @@ import com.google.firebase.ktx.Firebase
 class PlantModelAdapter(
     private val context: Context,
     private var plantModel: ArrayList<PlantModel>,
-    private val type: AdapterType.Companion.SearchSelectType
+    private val type: AdapterType.Companion.SearchSelectType,
+    private val userModel : ArrayList<UserModel>
 )
     : RecyclerView.Adapter<PlantModelAdapter.ViewHolder>(){
-    inner class ViewHolder(val binding: RowItemSearchBinding):RecyclerView.ViewHolder(binding.root)
+    inner class ViewHolder(val binding: RowItemSearchBinding):RecyclerView.ViewHolder(binding.root){
+        fun getUser(userId:String?) : UserModel?{
+            var output : UserModel? = null
+            userModel.forEach {
+                if(it.uid == userId){
+                    output = it
+                }
+            }
+            return output
+        }
+    }
     private var firestore : FirebaseFirestore = Firebase.firestore
     private lateinit var onItemClickListener : OnItemClickListener
     companion object {
@@ -60,24 +74,10 @@ class PlantModelAdapter(
                 onItemClickListener.onItemClicked(position, it, holder.binding)
             }
 
-            item.userId?.let {
-                val db = firestore.collection("users").document(it)
-                try{
-                    db.addSnapshotListener { snapshot, error ->
-                        snapshot?.let {
-                            val email = it.toUserModel()?.email
-                            if(email == null){
-                                searchTextSubtitle.visibility = View.GONE
-                            } else {
-                                searchTextSubtitle.text = email
-                            }
-                        }
-                    }
-                } catch (e:Exception){
-                    Log.e(TAG, "Error getting user $it", e)
-                }
+            val user = holder.getUser(item.userId)
+            user?.let {
+                searchTextSubtitle.text = it.email
             }
-
         }
     }
 

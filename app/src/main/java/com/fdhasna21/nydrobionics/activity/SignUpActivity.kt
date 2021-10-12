@@ -13,7 +13,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.fdhasna21.nydrobionics.databinding.ActivitySignUpBinding
-import com.fdhasna21.nydrobionics.utils.ViewUtility
+import com.fdhasna21.nydrobionics.utility.ViewUtility
 import com.fdhasna21.nydrobionics.viewmodel.SignUpViewModel
 import com.google.android.material.textfield.TextInputEditText
 
@@ -83,10 +83,13 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
                         } else {
                             utility.isLoading = false
                             viewModel.signUpError.observe(this, {
-                                if(it.isNotEmpty()){
-                                    Toast.makeText(this@SignUpActivity, it, Toast.LENGTH_SHORT).show()
-                                    Log.i(TAG, it)
-                                    viewModel.signUpError.value = ""
+                                it?.let {
+                                    if (it.isNotEmpty()) {
+                                        Toast.makeText(this@SignUpActivity, it, Toast.LENGTH_SHORT)
+                                            .show()
+                                        Log.i(TAG, it)
+                                        viewModel.signUpError.value = ""
+                                    }
                                 }
                             })
                         }

@@ -16,7 +16,7 @@ enum class AdapterType {
             allPlants: ArrayList<PlantModel>?,
             type: SearchSelectType?
         ): RecyclerView.Adapter<*> {
-            return PlantModelAdapter(context, adapterData as ArrayList<PlantModel>, type!!)
+            return PlantModelAdapter(context, adapterData as ArrayList<PlantModel>, type!!, allUsers ?: arrayListOf())
         }
     },
     SEARCH_USER {

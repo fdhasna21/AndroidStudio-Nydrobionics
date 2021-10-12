@@ -1,11 +1,10 @@
-package com.fdhasna21.nydrobionics.utils
+package com.fdhasna21.nydrobionics.utility
 
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.os.Handler
-import android.os.Looper
 import android.view.View
+import android.widget.CheckBox
 import androidx.appcompat.app.ActionBar
 import br.com.simplepass.loadingbutton.customViews.CircularProgressButton
 import com.google.android.material.textfield.TextInputEditText
@@ -22,7 +21,8 @@ open class ViewUtility(
     override var textInputEditTexts: ArrayList<TextInputEditText>? = null,
     override var viewsAsButton: ArrayList<View>? = null,
     override var numberPickers: ArrayList<ClickNumberPickerView>? = null,
-    override var actionBar: ActionBar?
+    override var actionBar: ActionBar?,
+    override var checkBoxes: ArrayList<CheckBox>? = null
 ) : LoadingInterface, IntentUtility(context) {
     constructor() : this(context = null, actionBar = null)
 

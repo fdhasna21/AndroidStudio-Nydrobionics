@@ -14,7 +14,8 @@ import android.widget.CompoundButton
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.fdhasna21.nydrobionics.databinding.ActivitySignInBinding
-import com.fdhasna21.nydrobionics.utils.ViewUtility
+import com.fdhasna21.nydrobionics.utility.ViewUtility
+import com.fdhasna21.nydrobionics.utility.local.DatabaseHandler
 import com.fdhasna21.nydrobionics.viewmodel.SignInViewModel
 import com.google.android.material.textfield.TextInputEditText
 
@@ -45,6 +46,7 @@ class SignInActivity : AppCompatActivity(), View.OnClickListener, TextWatcher, C
                 circularProgressButton = signinSubmit,
                 textInputEditTexts = editTexts,
                 viewsAsButton = viewsAsButton,
+                checkBoxes = arrayListOf(signinRemember),
                 actionBar = supportActionBar)
 
             signinRemember.setOnCheckedChangeListener(this@SignInActivity)
@@ -70,16 +72,20 @@ class SignInActivity : AppCompatActivity(), View.OnClickListener, TextWatcher, C
                 viewModel.signIn(binding.signinEmail.text.toString(), binding.signinPassword.text.toString())
                 viewModel.isUserSignIn.observe(this@SignInActivity, {
                     if(it){
+                        DatabaseHandler(this).signIn(viewModel.getDataModel())
                         utility.isLoading = false
                         startActivity(Intent(this@SignInActivity, MainActivity::class.java))
                         finish()
                     } else {
                         utility.isLoading = false
                         viewModel.signInError.observe(this, {
-                            if(it.isNotEmpty()){
-                                Toast.makeText(this@SignInActivity, it, Toast.LENGTH_SHORT).show()
-                                Log.i(TAG, it)
-                                viewModel.signInError.value = ""
+                            it?.let {
+                                if (it.isNotEmpty()) {
+                                    Toast.makeText(this@SignInActivity, it, Toast.LENGTH_SHORT)
+                                        .show()
+                                    Log.i(TAG, it)
+                                    viewModel.signInError.value = null
+                                }
                             }
                         })
                     }
@@ -105,6 +111,6 @@ class SignInActivity : AppCompatActivity(), View.OnClickListener, TextWatcher, C
     }
 
     override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
-        viewModel.setRememberChecked(true)
+        viewModel.setRememberChecked(isChecked)
     }
 }

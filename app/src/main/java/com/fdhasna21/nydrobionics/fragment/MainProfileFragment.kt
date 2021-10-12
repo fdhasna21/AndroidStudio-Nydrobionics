@@ -15,8 +15,8 @@ import com.fdhasna21.nydrobionics.adapter.ViewPagerAdapter
 import com.fdhasna21.nydrobionics.databinding.FragmentMainProfileBinding
 import com.fdhasna21.nydrobionics.dataclass.model.PlantModel
 import com.fdhasna21.nydrobionics.notfixed.AdapterRealTimeType
-import com.fdhasna21.nydrobionics.utils.IntentUtility
-import com.fdhasna21.nydrobionics.utils.RequestPermission
+import com.fdhasna21.nydrobionics.utility.IntentUtility
+import com.fdhasna21.nydrobionics.utility.RequestPermission
 import com.fdhasna21.nydrobionics.viewmodel.MainViewModel
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.android.material.tabs.TabLayout
@@ -60,7 +60,7 @@ class MainProfileFragment : Fragment(), View.OnClickListener {
                                         mainProfilePhoto)
             viewsAsButton.forEach { it.setOnClickListener(this@MainProfileFragment) }
 
-            viewModel.currentUserModel.observe(requireActivity(),{
+            viewModel.getCurrentUser().observe(requireActivity(),{
                 Log.i(TAG, "$it")
                 it?.let {
                     mainProfileName.text = it.name
@@ -71,8 +71,8 @@ class MainProfileFragment : Fragment(), View.OnClickListener {
                     it.performanceRate?.let {
                         mainProfileRate.rating = it
                     }
-                    mainProfileEmail.text = viewModel.currentUserModel.value?.email
-                    mainProfileRole.text = getString(R.string.role_in_profile, it.role!!.replaceFirstChar { it.uppercase() }, viewModel.currentFarmModel.value?.name.toString())
+                    mainProfileEmail.text = it.email
+                    mainProfileRole.text = getString(R.string.role_in_profile, it.role!!.replaceFirstChar { it.uppercase() }, viewModel.getCurrentFarm().value?.name.toString())
                     //todo : operational area
                     it.photo_url?.let {
                         Glide.with(requireActivity())

@@ -58,9 +58,9 @@
             android:id="@+id/postOptions"
             android:layout_width="24dp"
             android:layout_height="24dp"
+            android:layout_alignParentEnd="true"
             android:background="?attr/selectableItemBackground"
             android:contentDescription="@string/options"
-            android:layout_alignParentEnd="true"
             android:src="@drawable/ic_option" />
     </RelativeLayout>
 

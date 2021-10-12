@@ -12,14 +12,11 @@ import android.webkit.MimeTypeMap
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation
 import com.canhub.cropper.CropImage
 import com.canhub.cropper.CropImageView
-import com.fdhasna21.nydrobionics.R
+import com.fdhasna21.nydrobionics.BuildConfig
 import com.fdhasna21.nydrobionics.databinding.ActivityCreateProfileBinding
-import com.fdhasna21.nydrobionics.dataclass.model.FarmModel
 import com.fdhasna21.nydrobionics.dataclass.model.UserModel
-import com.fdhasna21.nydrobionics.utils.ViewUtility
 import com.fdhasna21.nydrobionics.viewmodel.CreateProfileViewModel
 import java.lang.Exception
 
@@ -37,7 +34,7 @@ class CreateProfileActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         viewModel = ViewModelProvider(this).get(CreateProfileViewModel::class.java)
-        viewModel.setCurrentUser(intent.getParcelableExtra<UserModel>("currentUserModel"))
+        viewModel.setCurrentUser(intent.getParcelableExtra<UserModel>(BuildConfig.CURRENT_USER))
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
@@ -59,8 +56,8 @@ class CreateProfileActivity : AppCompatActivity() {
                     viewModel.setPhotoProfile(it.uriContent!!, fileExtension)
                 }
 
-                data.data?.getParcelableExtra<UserModel>("selectedUserModel")?.let {
-                    //todo : update viewModel data nya
+                data.data?.getParcelableExtra<UserModel>(BuildConfig.SELECTED_USER)?.let {
+                    viewModel.addStaff(it)
                 }
             }
 

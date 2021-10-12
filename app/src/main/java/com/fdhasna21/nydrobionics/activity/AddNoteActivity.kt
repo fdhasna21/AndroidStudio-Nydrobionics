@@ -11,11 +11,12 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import com.fdhasna21.nydrobionics.BuildConfig
 import com.fdhasna21.nydrobionics.R
 import com.fdhasna21.nydrobionics.databinding.ActivityAddNoteBinding
 import com.fdhasna21.nydrobionics.dataclass.model.NoteModel
 import com.fdhasna21.nydrobionics.fragment.CreateFarmFragment
-import com.fdhasna21.nydrobionics.utils.ViewUtility
+import com.fdhasna21.nydrobionics.utility.ViewUtility
 import com.fdhasna21.nydrobionics.viewmodel.AddNoteViewModel
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.textfield.TextInputEditText
@@ -41,7 +42,7 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
         setContentView(binding.root)
 
         viewModel = ViewModelProvider(this).get(AddNoteViewModel::class.java)
-        viewModel.setCurrentData(intent.getParcelableExtra<NoteModel>("currentNoteModel"))
+        viewModel.setCurrentData(intent.getParcelableExtra<NoteModel>(BuildConfig.SELECTED_NOTE))
 
         supportActionBar?.title = getString(R.string.add_schedule_or_to_do_list)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)

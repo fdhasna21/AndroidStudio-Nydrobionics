@@ -14,228 +14,179 @@ import com.fdhasna21.nydrobionics.dataclass.model.NoteModel.Companion.toNoteMode
 import com.fdhasna21.nydrobionics.dataclass.model.PlantModel.Companion.toPlantModel
 import com.fdhasna21.nydrobionics.dataclass.model.UserModel.Companion.toUserModel
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.ktx.storage
 
 class MainViewModel : ViewModel() {
     private var auth : FirebaseAuth = Firebase.auth
     private var firestore : FirebaseFirestore = Firebase.firestore
-    private var storage : FirebaseStorage = Firebase.storage
-
-    var currentUserModel : MutableLiveData<UserModel> = MutableLiveData(UserModel())
-    var currentFarmModel : MutableLiveData<FarmModel> = MutableLiveData(FarmModel())
-    var currentKitModels : MutableLiveData<ArrayList<KitModel>> = MutableLiveData(arrayListOf()) //good
-    var currentNoteModels : MutableLiveData<ArrayList<NoteModel>?> = MutableLiveData(null) //good
-    var allUserModels : MutableLiveData<ArrayList<UserModel>?> = MutableLiveData(null)
-    var allPlantModels : MutableLiveData<ArrayList<PlantModel>?> = MutableLiveData(null)
-    var isCurrentUserExist : MutableLiveData<Boolean?> = MutableLiveData(null)
-    var isCurrentFarmExist : MutableLiveData<Boolean?> = MutableLiveData(null)
-    var isUserSignOut : MutableLiveData<Boolean> = MutableLiveData(false)
-    var signOutError : MutableLiveData<String> = MutableLiveData("")
-
-    private lateinit var usersListener : ListenerRegistration
+    private var currentUserModel : MutableLiveData<UserModel?> = MutableLiveData(null)
+    private var currentFarmModel : MutableLiveData<FarmModel?> = MutableLiveData(null)
+    private var currentKitModels : MutableLiveData<ArrayList<KitModel>> = MutableLiveData(arrayListOf()) //good
+    private var currentNoteModels : MutableLiveData<ArrayList<NoteModel>?> = MutableLiveData(null)
+    private var allUserModels : MutableLiveData<ArrayList<UserModel>?> = MutableLiveData(null)
+    private var allPlantModels : MutableLiveData<ArrayList<PlantModel>?> = MutableLiveData(null)
 
     companion object{
         const val TAG = "mainViewModel"
     }
 
-    fun signOut(){
-        signOutError.value = ""
-        try {
-            auth.signOut()
-            isUserSignOut.value = true
-        } catch (e:Exception){
-            isUserSignOut.value = false
-            signOutError.value = e.toString()
-        }
-    }
-
     fun setCurrentData(userModel: UserModel?, farmModel: FarmModel?){
-        getAllData()
-        if(userModel != null){
-            currentUserModel.value = userModel
-            isCurrentUserExist.value = true
-        } else {
-            getUsersUpdate()
-            Log.i(TAG, "currentUser : ${currentUserModel.value}")
-        }
-
-        if(currentUserModel.value != null){
-            if(farmModel  != null) {
-                currentFarmModel.value = farmModel
-                isCurrentFarmExist.value = true
-            } else {
-                getFarmsUpdate(currentUserModel.value?.farmId)
-                Log.i(TAG, "currentFarm : ${currentFarmModel.value}")
-            }
-        }
-    }
-
-    fun getAllData(){
         getUsersUpdate()
         getPlantsUpdate()
+        userModel?.let {
+            currentUserModel.value = it
+            farmModel?.let {
+                currentFarmModel.value = it
+            } ?: kotlin.run {
+                getFarmsUpdate(currentFarmModel.value?.farmId)
+            }
+        } ?: kotlin.run {
+            getUsersUpdate()
+        }
     }
+
+    /** GET DATA **/
+    fun getCurrentUser() : MutableLiveData<UserModel?> = currentUserModel
+    fun getCurrentFarm() : MutableLiveData<FarmModel?> = currentFarmModel
+    fun getCurrentKits() : MutableLiveData<ArrayList<KitModel>> = currentKitModels
+    fun getCurrentNotes() : MutableLiveData<ArrayList<NoteModel>?> = currentNoteModels
+    fun getAllUsers() : MutableLiveData<ArrayList<UserModel>?> = allUserModels
+    fun getAllPosts() : MutableLiveData<ArrayList<PlantModel>?> = allPlantModels
+
+    /** UPDATE DATABASE LISTENER **/
+    private lateinit var usersListener : ListenerRegistration
+    private lateinit var farmsListener : ListenerRegistration
+    private lateinit var plantsListener : ListenerRegistration
 
     private fun getUsersUpdate(){
         val db = firestore.collection("users")
         try {
-            usersListener = db.addSnapshotListener { usersSnapshot, error ->
-                usersSnapshot?.let {
-                    val users : ArrayList<UserModel> = arrayListOf()
-                    for(userDocument in usersSnapshot.documents){
-                        userDocument?.let { user ->
-                            user.toUserModel()?.let { userModel ->
-                                users.add(userModel)
-                                val userId = userDocument.id
-                                if(auth.uid == userId) {
-                                    currentUserModel.value = userModel
-                                    isCurrentUserExist.value = true
-                                    getFarmsUpdate(userModel.farmId)
-                                    val userRef = db.document(userId)
-                                    userRef.collection("notes")
-                                        .orderBy("timestamp", Query.Direction.DESCENDING)
-                                        .addSnapshotListener { notesSnapshot, error ->
-                                        notesSnapshot?.let {
-                                            val notes: ArrayList<NoteModel> = arrayListOf()
-                                            for (noteDocument in notesSnapshot.documents) {
-                                                noteDocument?.let { note ->
-                                                    note.toNoteModel()?.let { noteModel ->
-                                                        notes.add(noteModel)
+            usersListener =
+                db.orderBy("timestamp", Query.Direction.DESCENDING)
+                    .addSnapshotListener { usersSnapshot, error ->
+                        usersSnapshot?.let {
+                            val users : ArrayList<UserModel> = arrayListOf()
+                            for(userDocument in usersSnapshot.documents){
+                                userDocument?.let { user ->
+                                    user.toUserModel()?.let { userModel ->
+                                        users.add(userModel)
+                                        val userId = userDocument.id
+                                        if(auth.uid == userId) {
+                                            currentUserModel.value = userModel
+                                            getFarmsUpdate(userModel.farmId)
+
+                                            val userRef = db.document(userId)
+                                            userRef.collection("notes")
+                                                .orderBy("timestamp", Query.Direction.DESCENDING)
+                                                .addSnapshotListener { notesSnapshot, error ->
+                                                    notesSnapshot?.let {
+                                                        val notes: ArrayList<NoteModel> = arrayListOf()
+                                                        for (noteDocument in notesSnapshot.documents) {
+                                                            noteDocument?.let { note ->
+                                                                note.toNoteModel()?.let { noteModel ->
+                                                                    notes.add(noteModel)
+                                                                }
+                                                            }
+                                                        }
+                                                        currentNoteModels.value = notes
+                                                        Log.i(TAG, "getUsersUpdate ${currentUserModel.value?.uid}" +
+                                                                " \tnotes:${currentNoteModels.value?.size}\n")
+                                                    }
+
+                                                    error?.let {
+                                                        Log.e(TAG, "Listen notes from $userId failed", it)
                                                     }
                                                 }
-                                            }
-                                            currentNoteModels.value = notes
-                                        }
-
-                                        error?.let {
-                                            Log.e(TAG, "Listen notes from $userId failed", it)
                                         }
                                     }
                                 }
                             }
+                            allUserModels.value = users
+                            Log.i(TAG, "getUsersUpdate: ${allUserModels.value?.size}\n")
+                        }
+
+                        error?.let {
+                            Log.e(TAG, "Listen users failed", it)
                         }
                     }
-                    allUserModels.value = users
-                    if(isCurrentUserExist.value != true) {
-                        isCurrentUserExist.value = false
-                    }
-                } ?: kotlin.run {
-                    isCurrentUserExist.value = false
-                }
-
-                error?.let {
-                    Log.e(TAG, "Listen users failed", it)
-                }
-            }
         } catch (e:Exception){
-            Log.e(TAG, "real time user error", e)
+            Log.e(TAG, "getUsersUpdate() error", e)
         }
     }
 
-    /** FARM **/
     private fun getFarmsUpdate(farmId: String?){
         if(farmId == null){
-            isCurrentFarmExist.value = false
+            currentFarmModel.value = null
         } else {
-            val db = firestore.collection("farms").document(farmId)
             try{
-                db.addSnapshotListener { farmSnapshot, error ->
+                val db = firestore.collection("farms").document(farmId)
+                farmsListener = db.addSnapshotListener { farmSnapshot, error ->
                     farmSnapshot?.let { farm ->
                         farm.toFarmModel()?.let { farmModel ->
                             currentFarmModel.value = farmModel
+
                             val kitsRef = db.collection("kits")
                             kitsRef.addSnapshotListener{ kitSnapshot, error ->
                                 kitSnapshot?.let { kitDocuments ->
+                                    val kits : ArrayList<KitModel> = arrayListOf()
                                     kitDocuments.documents.forEachIndexed { index, kitDocument ->
                                         kitDocument?.toKitModel().let { kit ->
                                             kit?.let { kitModel ->
                                                 val kitId = kitDocument.id
                                                 val kitRef = kitsRef.document(kitId)
 
-                                                val lastMonitoring : DataMonitoringModel = DataMonitoringModel()
+                                                var lastMonitoring : DataMonitoringModel? = null
+                                                var lastCropsModel : CropsModel? = null
                                                 kitRef.collection("dataMonitorings")
                                                     .orderBy("timestamp", Query.Direction.DESCENDING)
-                                                    .addSnapshotListener { dataMonitoringSnapshot, error ->
-                                                        dataMonitoringSnapshot?.let { dataMonitoringDocuments ->
-                                                            val dataMonitorings : ArrayList<DataMonitoringModel> = arrayListOf()
-                                                            dataMonitoringDocuments.documents.let {
-                                                                if (it.size > 0) {
-                                                                    it.get(0)?.let {
-                                                                        lastMonitoring.replace(it.toDataMonitoringModel())
-                                                                        updateKitModel(index, monitoringModel = lastMonitoring)
-//                                                                        Log.i(TAG, "monitoring: $lastMonitoring")
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-
-                                                        error?.let {
-                                                            Log.e(TAG, "Listen data monitoring from kit $kitId failed", it)
-                                                        }
-
-                                                    }
-
-                                                val lastCropsModel : CropsModel = CropsModel()
-                                                kitRef.collection("crops")
-                                                    .orderBy("timestamp", Query.Direction.DESCENDING)
-                                                    .addSnapshotListener { cropsSnapshot, error ->
-                                                        cropsSnapshot?.let { cropsDocuments ->
-                                                            val crops : ArrayList<CropsModel> = arrayListOf()
-                                                            cropsDocuments.documents.let{
-                                                                if(it.size > 0){
-                                                                    it.get(0)?.let{
-                                                                        lastCropsModel.replace(it.toCropsModel())
-                                                                        allPlantModels.value?.forEach {
-                                                                            if(it.plantId == lastCropsModel.plantId){
-                                                                                lastCropsModel.plantModel = it
-                                                                                updateKitModel(index, cropsModel = lastCropsModel)
+                                                    .get()
+                                                    .addOnCompleteListener {
+                                                        if (it.isSuccessful) {
+                                                            val docSize = it.result.documents.size
+                                                            if (docSize > 0) {
+                                                                lastMonitoring = it.result.documents[0].toDataMonitoringModel()
+                                                                updateKitModel(index, monitoringModel = lastMonitoring)
+//                                                                Log.i(TAG, "getFarmsUpdate: $lastMonitoring")
+                                                                if (kitModel.isPlanted == true) {
+                                                                    kitRef.collection("crops")
+                                                                        .orderBy("timestamp", Query.Direction.DESCENDING)
+                                                                        .get()
+                                                                        .addOnCompleteListener {
+                                                                            if (it.isSuccessful) {
+                                                                                val cropSize = it.result.documents.size
+                                                                                if(cropSize > 0) {
+                                                                                    lastCropsModel = it.result.documents[0].toCropsModel()
+                                                                                    lastCropsModel?.let {
+                                                                                        allPlantModels.value?.forEach { eachPlantModel ->
+                                                                                            if (it.plantId == eachPlantModel.plantId) {
+                                                                                                it.plantModel = eachPlantModel
+//                                                                                                Log.i(TAG, "getFarmsUpdate: $lastCropsModel")
+                                                                                                updateKitModel(index, cropsModel = lastCropsModel)
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }
                                                                             }
-//                                                                            Log.i(TAG, "crops: $lastCropsModel")
                                                                         }
-                                                                    }
                                                                 }
                                                             }
                                                         }
-
-                                                        error?.let {
-                                                            Log.e(TAG, "Listen crops from kit $kitId failed", it)
-                                                        }
                                                     }
-
-                                                if(currentKitModels.value?.size!! > index){
-                                                    updateKitModel(index, lastCropsModel, lastMonitoring)
-                                                } else {
-                                                    kitModel.apply {
-                                                        currentKitModels.value?.add(
-                                                            KitModel(
-                                                                this.kitId,
-                                                                this.name,
-                                                                this.position,
-                                                                this.length,
-                                                                this.width,
-                                                                this.waterLv,
-                                                                this.nutrientLv,
-                                                                this.turbidityLv,
-                                                                this.isPlanted,
-                                                                this.timestamp,
-                                                                lastMonitoring,
-                                                                lastCrops
-                                                            )
-                                                        )
-                                                    }
-                                                }
+                                                kits.add(kitModel)
                                             }
                                         }
                                     }
+                                    currentKitModels.value = kits
+                                    currentFarmModel.value?.kitModels = currentKitModels.value
+                                    Log.i(TAG, "getFarmsUpdate ${currentFarmModel.value?.farmId}" +
+                                            " \tkits:${currentKitModels.value?.size}\n\n" +
+                                            "${currentKitModels.value}")
                                 }
-
 
                                 error?.let {
                                     Log.e(TAG, "Listen kits from farm $farmId failed", it)
@@ -255,23 +206,10 @@ class MainViewModel : ViewModel() {
 
     }
 
-    private fun updateKitModel(index:Int, cropsModel: CropsModel?=null, monitoringModel: DataMonitoringModel? = null){
-        if(cropsModel!=null){
-            currentKitModels.value!![index].lastCrops = cropsModel
-            isCurrentFarmExist.value = true
-        }
-        if (monitoringModel!=null) {
-            currentKitModels.value!![index].lastMonitoring = monitoringModel
-        }
-        currentFarmModel.value?.kitModels = currentKitModels.value
-//        Log.i(TAG, "currentkit ${currentKitModels.value}, currentfarm ${currentFarmModel.value}")
-    }
-
-    /** PLANT **/
-    fun getPlantsUpdate(){
+    private fun getPlantsUpdate(){
         val db = firestore.collection("plants").orderBy("timestamp", Query.Direction.DESCENDING)
         try {
-            db.addSnapshotListener { plantsSnapshot, error ->
+            plantsListener = db.addSnapshotListener { plantsSnapshot, error ->
                 plantsSnapshot?.let {
                     val plants : ArrayList<PlantModel> = arrayListOf()
                     for(plantDocument in plantsSnapshot.documents){
@@ -294,9 +232,28 @@ class MainViewModel : ViewModel() {
         }
     }
 
+    private fun updateKitModel(index:Int, cropsModel: CropsModel?=null, monitoringModel: DataMonitoringModel? = null){
+        try {
+            currentKitModels.value?.get(index).let{ kit->
+                cropsModel?.let {
+                    kit?.lastCrops = it
+                }
+                monitoringModel?.let {
+                    kit?.lastMonitoring = it
+                }
+            }
+            currentFarmModel.value?.kitModels = currentKitModels.value
+        } catch (e:Exception){
+            Log.e(TAG, "updateKitModel ${currentKitModels.value!![index]}\n", e)
+        }
+
+        Log.i(TAG, "currentkit ${currentKitModels.value}")//, currentfarm ${currentFarmModel.value}")
+    }
+
     /** NOTES **/
     var isNoteDeleted : MutableLiveData<Boolean?> = MutableLiveData(null)
-    var deleteNoteError : MutableLiveData<String> = MutableLiveData("")
+    var deleteNoteError : MutableLiveData<String> = MutableLiveData(null)
+
     fun getNote(position:Int) : NoteModel?{
         return currentNoteModels.value?.get(position)
     }
@@ -304,24 +261,89 @@ class MainViewModel : ViewModel() {
     fun deleteNote(position:Int){
         val noteId = getNote(position)?.noteId
         try {
-            val db = firestore.collection("users").document(auth.uid!!)
-                .collection("notes").document(noteId!!)
-            db.delete().addOnCompleteListener {
-                if(it.isSuccessful){
-                    isNoteDeleted.value = true
-                } else {
-                    isNoteDeleted.value = false
-                    deleteNoteError.value = it.exception.toString()
-                }
+            if(noteId == auth.uid!!) {
+                firestore.collection("users").document(auth.uid!!)
+                    .collection("notes").document(noteId!!)
+                    .delete().addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            isNoteDeleted.value = true
+                        } else {
+                            isNoteDeleted.value = false
+                            deleteNoteError.value = it.exception.toString()
+                            Log.e(TAG, "deleteNote $noteId\n ${it.exception}")
+                        }
+                    }
             }
         } catch (e:Exception){
-            Log.e(TAG, "deleteNote $noteId: failed", e)
+            Log.e(TAG, "deleteNote $noteId failed", e)
+            isNoteDeleted.value = false
+            deleteNoteError.value = e.toString()
         }
     }
 
-    fun refreshNote(){
+    fun refreshNotes(){
         usersListener.remove()
         currentNoteModels.value?.clear()
         getUsersUpdate()
+    }
+
+    /** POSTS **/
+    var isPostDeleted : MutableLiveData<Boolean?> = MutableLiveData(null)
+    var deletePostError : MutableLiveData<String> = MutableLiveData(null)
+
+    fun getPost(position: Int) : PlantModel?{
+        return allPlantModels.value?.get(position)
+    }
+
+    fun deletePost(position: Int){
+        val plantModel = getPost(position)
+        val plantId = plantModel?.plantId
+        try {
+            if(plantModel?.userId == auth.uid) {
+                firestore.collection("plants").document(plantId!!)
+                    .delete().addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            isPostDeleted.value = true
+                        } else {
+                            isPostDeleted.value = false
+                            deletePostError.value = it.exception.toString()
+                            Log.e(TAG, "deletePost $plantId\n ${it.exception}")
+                        }
+                    }
+            }
+        } catch (e:Exception){
+            Log.e(TAG, "deletePost $plantId failed", e)
+        }
+    }
+
+    fun refreshPosts(){
+        plantsListener.remove()
+        allPlantModels.value?.clear()
+        getPlantsUpdate()
+    }
+
+    /** FARM DASHBOARD **/
+    fun getKit(position: Int) : KitModel? {
+        return currentKitModels.value?.get(position)
+    }
+
+    fun refreshFarm(){
+        farmsListener.remove()
+        currentKitModels.value?.clear()
+        getFarmsUpdate(currentUserModel.value?.farmId)
+    }
+
+    /** SIGN OUT **/
+    var isUserSignOut : MutableLiveData<Boolean?> = MutableLiveData(null)
+    var signOutError : MutableLiveData<String?> = MutableLiveData(null)
+
+    fun signOut(){
+        try {
+            auth.signOut()
+            isUserSignOut.value = true
+        } catch (e:Exception){
+            isUserSignOut.value = false
+            signOutError.value = e.toString()
+        }
     }
 }

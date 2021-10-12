@@ -1,6 +1,5 @@
 package com.fdhasna21.nydrobionics.fragment
 
-import android.Manifest
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -11,10 +10,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.navigation.Navigation
 import com.addisonelliott.segmentedbutton.SegmentedButtonGroup
 import com.bumptech.glide.Glide
+import com.fdhasna21.nydrobionics.BuildConfig
 import com.fdhasna21.nydrobionics.R
 import com.fdhasna21.nydrobionics.activity.CreateProfileActivity
 import com.fdhasna21.nydrobionics.activity.MainActivity
@@ -22,15 +21,14 @@ import com.fdhasna21.nydrobionics.databinding.FragmentCreateUserBinding
 import com.fdhasna21.nydrobionics.enumclass.Gender
 import com.fdhasna21.nydrobionics.enumclass.ProfileType
 import com.fdhasna21.nydrobionics.enumclass.Role
-import com.fdhasna21.nydrobionics.utils.IntentUtility
-import com.fdhasna21.nydrobionics.utils.RequestPermission
-import com.fdhasna21.nydrobionics.utils.ViewUtility
+import com.fdhasna21.nydrobionics.utility.ViewUtility
 import com.fdhasna21.nydrobionics.viewmodel.CreateProfileViewModel
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.MaterialDatePicker
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -43,7 +41,7 @@ class CreateUserFragment : Fragment(), View.OnClickListener, SegmentedButtonGrou
     private lateinit var viewsAsButton : ArrayList<View>
 
     companion object {
-        const val TAG = "createUser"
+        const val TAG = "createUserFragment"
     }
 
     override fun onCreateView(
@@ -88,11 +86,11 @@ class CreateUserFragment : Fragment(), View.OnClickListener, SegmentedButtonGrou
             createUserPhoto.setOnLongClickListener { createUserEditPhoto.performClick() }
             createUserGender.onPositionChangedListener = this@CreateUserFragment
             checkEmpty()
+
+            createUserEmail.setText(Firebase.auth.currentUser?.email)
         }
 
-        viewModel.getEmail().observe(requireActivity(), {
-            binding.createUserEmail.setText(it)
-        })
+
 
         viewModel.getPhotoProfile().observe(requireActivity(), {
             it?.let {
@@ -107,11 +105,11 @@ class CreateUserFragment : Fragment(), View.OnClickListener, SegmentedButtonGrou
             if(it){
                 utility.isLoading = false
                 Toast.makeText(requireContext(), "User created", Toast.LENGTH_SHORT).show()
-                if (Role.getType(viewModel.getCurrentUser()?.role!!) == Role.OWNER) {
+                if (Role.getType(viewModel.getCurrentUserModel()?.role!!) == Role.OWNER) {
                     Navigation.findNavController(binding.root).navigate(R.id.action_createUserFragment_to_createFarmFragment)
                 } else {
                     val intent = Intent(requireContext(), MainActivity::class.java)
-                    intent.putExtra("currentUserModel", viewModel.getCurrentUser())
+                    intent.putExtra(BuildConfig.CURRENT_USER, viewModel.getCurrentUserModel())
                     startActivity(intent)
                     requireActivity().finish()
                 }
@@ -198,8 +196,12 @@ class CreateUserFragment : Fragment(), View.OnClickListener, SegmentedButtonGrou
     override fun afterTextChanged(s: Editable?) {}
 
     private fun checkEmpty() {
+        val checkerEditText = arrayListOf<TextInputEditText>(binding.createUserName,
+            binding.createUserPhone,
+            binding.createUserAddress,
+            binding.createUserDOB)
         viewModel.checkNotEmpty(
-            utility.isEmpties(editTexts) && (binding.roleOwner.isChecked || binding.roleStaff.isChecked)
+            utility.isEmpties(checkerEditText) && (binding.roleOwner.isChecked || binding.roleStaff.isChecked)
         ).observe(viewLifecycleOwner, {
             binding.createUserSubmit.isEnabled = it
         })

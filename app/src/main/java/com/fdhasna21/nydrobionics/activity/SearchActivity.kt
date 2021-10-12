@@ -1,6 +1,5 @@
 package com.fdhasna21.nydrobionics.activity
 
-import android.annotation.SuppressLint
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
@@ -11,11 +10,13 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.fdhasna21.nydrobionics.BuildConfig
 import com.fdhasna21.nydrobionics.R
 import com.fdhasna21.nydrobionics.adapter.AdapterType
 import com.fdhasna21.nydrobionics.adapter.PlantModelAdapter
@@ -63,12 +64,15 @@ class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener, Swip
     }
 
     private fun setupRecyclerViewPlant(){
-        val data : ArrayList<PlantModel> = arrayListOf()
+        val plantModels : ArrayList<PlantModel> = arrayListOf()
+        val allUsers : ArrayList<UserModel> = viewModel.getAllUsers().value ?: arrayListOf()
         viewModel.getAllPlants()
-        rowAdapter = AdapterType.SEARCH_PLANT.getAdapter(this, data, type = AdapterType.Companion.SearchSelectType.SEARCH) as PlantModelAdapter
+        rowAdapter = AdapterType.SEARCH_PLANT.getAdapter(this, plantModels,
+            allUsers = allUsers,
+            type = AdapterType.Companion.SearchSelectType.SEARCH) as PlantModelAdapter
         viewModel.getPlants().observe(this, {
-            data.clear()
-            data.addAll(it ?: arrayListOf())
+            plantModels.clear()
+            plantModels.addAll(it ?: arrayListOf())
             rowAdapter.notifyDataSetChanged()
             (rowAdapter as PlantModelAdapter).setOnItemClickListener(
                 object : PlantModelAdapter.OnItemClickListener{
@@ -80,7 +84,7 @@ class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener, Swip
                         when(itemView){
                             v.searchRoot -> {
                                 val intent = Intent()
-                                intent.putExtra("selectedPlantModel", viewModel.getPlant(position))
+                                intent.putExtra(BuildConfig.SELECTED_PLANT, viewModel.getPlant(position))
                                 setResult(RESULT_OK, intent)
                                 this@SearchActivity.onBackPressed()
                                 finish()
@@ -91,14 +95,21 @@ class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener, Swip
                 }
             )
             binding.searchRefresh.isRefreshing = false
+            Log.i(TAG, "setupRecyclerViewPlant: ${rowAdapter.itemCount}")
+        })
+        viewModel.getAllUsers().observe(this, {
+            allUsers.clear()
+            allUsers.addAll(it ?: arrayListOf())
+            rowAdapter.notifyDataSetChanged()
         })
         setupRecyclerView()
     }
 
     private fun setupRecyclerViewUser(){
+        viewModel.setExceptUsers(intent.getParcelableArrayListExtra<UserModel>(BuildConfig.EXCEPT_USERS))
         val data : ArrayList<UserModel> = arrayListOf()
-        viewModel.getAllUsers()
-        rowAdapter = AdapterType.SEARCH_USER.getAdapter(this, data, type = AdapterType.Companion.SearchSelectType.SEARCH) as UserModelAdapter
+        rowAdapter = AdapterType.SEARCH_USER.getAdapter(this, data,
+            type = AdapterType.Companion.SearchSelectType.SEARCH) as UserModelAdapter
         viewModel.getUsers().observe(this, {
             data.clear()
             data.addAll(it ?: arrayListOf())
@@ -106,6 +117,7 @@ class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener, Swip
             (rowAdapter as UserModelAdapter).setOnItemClickListener(
                 object : UserModelAdapter.OnItemClickListener{
                     override fun onItemClicked(
+                        userModel: UserModel,
                         position: Int,
                         itemView: View,
                         v: RowItemSearchBinding
@@ -113,7 +125,7 @@ class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener, Swip
                         when(itemView){
                             v.searchRoot -> {
                                 val intent = Intent()
-                                intent.putExtra("selectedUserModel", viewModel.getUser(position))
+                                intent.putExtra(BuildConfig.SELECTED_USER, viewModel.getUser(position))
                                 setResult(RESULT_OK, intent)
                                 this@SearchActivity.onBackPressed()
                                 finish()
@@ -122,6 +134,7 @@ class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener, Swip
                     }
                 })
             binding.searchRefresh.isRefreshing = false
+            Log.i(TAG, "setupRecyclerViewUser: ${rowAdapter.itemCount}")
         })
         setupRecyclerView()
     }

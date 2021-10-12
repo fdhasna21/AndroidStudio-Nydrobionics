@@ -47,7 +47,7 @@ class MainSocialFragment : Fragment() {
         val plantModels : ArrayList<PlantModel> = arrayListOf()
         val userModels : ArrayList<UserModel> = arrayListOf()
         val rowAdapter = AdapterType.POST_PLANT.getAdapter(requireContext(), plantModels, allUsers = userModels)
-        viewModel.allPlantModels.observe(viewLifecycleOwner,{
+        viewModel.getAllPosts().observe(viewLifecycleOwner,{
             plantModels.clear()
             plantModels.addAll(it ?: arrayListOf())
             rowAdapter.notifyDataSetChanged()
@@ -69,7 +69,7 @@ class MainSocialFragment : Fragment() {
             Log.i(TAG, "${rowAdapter.itemCount}")
         })
 
-        viewModel.allUserModels.observe(viewLifecycleOwner, {
+        viewModel.getAllUsers().observe(viewLifecycleOwner, {
             userModels.clear()
             userModels.addAll(it ?: arrayListOf())
             rowAdapter.notifyDataSetChanged()

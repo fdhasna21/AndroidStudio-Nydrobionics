@@ -1,11 +1,11 @@
-package com.fdhasna21.nydrobionics.utils
+package com.fdhasna21.nydrobionics.utility
 
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.view.View
+import android.widget.CheckBox
 import androidx.appcompat.app.ActionBar
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import br.com.simplepass.loadingbutton.customViews.CircularProgressButton
 import com.google.android.material.textfield.TextInputEditText
 import pl.polak.clicknumberpicker.ClickNumberPickerView
@@ -16,6 +16,7 @@ interface LoadingInterface {
     var textInputEditTexts : ArrayList<TextInputEditText>?
     var viewsAsButton : ArrayList<View>?
     var numberPickers : ArrayList<ClickNumberPickerView>?
+    var checkBoxes : ArrayList<CheckBox>?
     var actionBar : ActionBar?
 
     var initialLoadingState : Boolean
@@ -43,6 +44,9 @@ interface LoadingInterface {
                         revertAnimation()
                     }, 3000)
                 }
+            }
+            checkBoxes?.forEach {
+                it.isClickable = !value
             }
             actionBar?.setDisplayShowHomeEnabled(value)
             onLoadingChangeListener{(initialLoadingState)}

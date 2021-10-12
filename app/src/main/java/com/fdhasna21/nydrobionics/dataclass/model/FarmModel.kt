@@ -2,7 +2,7 @@ package com.fdhasna21.nydrobionics.dataclass.model
 
 import android.os.Parcelable
 import android.util.Log
-import com.fdhasna21.nydrobionics.utils.ViewUtility
+import com.fdhasna21.nydrobionics.utility.ViewUtility
 import com.google.firebase.firestore.DocumentSnapshot
 import kotlinx.parcelize.Parcelize
 
@@ -26,7 +26,7 @@ data class FarmModel(
                 val farmId = getString("farmId")
                 val timestamp = getString("timestamp")
                 val output = FarmModel(farmId, name, description, location, gps, timestamp, arrayListOf())
-                Log.i(TAG, "$output")
+//                Log.i(TAG, "$output")
                 return output
             }
             catch (e: Exception) {

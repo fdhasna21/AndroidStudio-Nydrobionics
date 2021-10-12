@@ -11,9 +11,8 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.lifecycle.ViewModelProvider
 import com.fdhasna21.nydrobionics.databinding.ActivityForgetPasswordBinding
-import com.fdhasna21.nydrobionics.utils.ViewUtility
+import com.fdhasna21.nydrobionics.utility.ViewUtility
 import com.fdhasna21.nydrobionics.viewmodel.ForgetPasswordViewModel
-import com.google.android.material.textfield.TextInputEditText
 import java.util.ArrayList
 
 class ForgetPasswordActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {

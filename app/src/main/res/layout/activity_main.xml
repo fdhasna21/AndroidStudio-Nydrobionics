@@ -14,12 +14,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.core.widget.NestedScrollView
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:fillViewport="true"
-            android:layout_marginBottom="?attr/actionBarSize">
+            android:layout_marginBottom="?attr/actionBarSize"
+            android:id="@+id/mainSwipeRefresh">
 
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/mainFragmentContainer"
@@ -28,7 +29,7 @@
                 android:layout_height="match_parent"
                 app:defaultNavHost="true"
                 app:navGraph="@navigation/nav_main_activity"/>
-        </androidx.core.widget.NestedScrollView>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <com.google.android.material.bottomappbar.BottomAppBar
             android:id="@+id/mainBottomAppBar"
@@ -39,8 +40,7 @@
             app:contentInsetEnd="0dp"
             app:contentInsetStart="0dp"
             app:contentInsetLeft="0dp"
-            app:fabAlignmentMode="center"
-    >
+            app:fabAlignmentMode="center">
             <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/mainBottomNavigation"
                 android:layout_width="match_parent"
@@ -48,7 +48,6 @@
                 app:menu="@menu/menu_main_bottom_navigation"/>
         </com.google.android.material.bottomappbar.BottomAppBar>
 
-<!--       todo : fab tint gak berubah -->
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/mainAddFragment"
             android:layout_width="wrap_content"
@@ -57,7 +56,7 @@
             app:layout_anchor="@id/mainBottomAppBar"
             android:backgroundTint="?attr/colorPrimary"
             android:contentDescription="@string/add"
-            android:tint="@android:color/white"
+            app:tint="@color/white"
             app:maxImageSize="30dp"/>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

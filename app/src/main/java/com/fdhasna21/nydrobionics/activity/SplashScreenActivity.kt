@@ -8,17 +8,18 @@ import android.os.Looper
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import com.fdhasna21.nydrobionics.BuildConfig
 import com.fdhasna21.nydrobionics.databinding.ActivitySplashScreenBinding
 import com.fdhasna21.nydrobionics.enumclass.Role
-import com.fdhasna21.nydrobionics.utils.RequestPermission
-import com.fdhasna21.nydrobionics.viewmodel.MainViewModel
+import com.fdhasna21.nydrobionics.utility.RequestPermission
+import com.fdhasna21.nydrobionics.viewmodel.SplashScreenViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 class SplashScreenActivity : AppCompatActivity() {
     private lateinit var binding : ActivitySplashScreenBinding
-    private lateinit var viewModel : MainViewModel
+    private lateinit var viewModel : SplashScreenViewModel
     private var auth : FirebaseAuth = Firebase.auth
 
     companion object{
@@ -29,13 +30,13 @@ class SplashScreenActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySplashScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(SplashScreenViewModel::class.java)
         RequestPermission().requestAllPermissions(this)
     }
 
     fun splashIsDone(){
         if(auth.currentUser != null){
-            viewModel.getAllData()
+            viewModel.getCurrentData()
             viewModel.isCurrentUserExist.observe(this,{
                 when(it){
                     true -> {
@@ -45,8 +46,8 @@ class SplashScreenActivity : AppCompatActivity() {
                                 true -> {
                                     Log.i(TAG, "farm ${viewModel.currentFarmModel.value}")
                                     val intent = Intent(this, MainActivity::class.java)
-                                    intent.putExtra("currentUserModel", viewModel.currentUserModel.value)
-                                    intent.putExtra("currentFarmModel", viewModel.currentFarmModel.value)
+                                    intent.putExtra(BuildConfig.CURRENT_USER, viewModel.currentUserModel.value)
+                                    intent.putExtra(BuildConfig.CURRENT_FARM, viewModel.currentFarmModel.value)
                                     startActivity(intent)
                                     finish()
                                 }
@@ -54,7 +55,7 @@ class SplashScreenActivity : AppCompatActivity() {
                                     Log.i(TAG, "currentFarm not exist")
                                     if(Role.getType(viewModel.currentUserModel.value?.role!!) == Role.OWNER){
                                         val intent = Intent(this, CreateProfileActivity::class.java)
-                                        intent.putExtra("currentUserModel", viewModel.currentUserModel.value)
+                                        intent.putExtra(BuildConfig.SELECTED_USER, viewModel.currentUserModel.value)
                                         startActivity(intent)
                                         finish()
                                     } else {
@@ -82,7 +83,6 @@ class SplashScreenActivity : AppCompatActivity() {
         } else {
             val handler = Handler(Looper.getMainLooper())
             handler.postDelayed({
-                Toast.makeText(this, "here", Toast.LENGTH_SHORT).show()
                 startActivity(Intent(this, SignInActivity::class.java))
             }, 3000)
         }

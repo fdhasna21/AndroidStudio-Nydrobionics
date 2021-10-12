@@ -9,7 +9,7 @@ class SignUpViewModel : ViewModel() {
     private var auth = Firebase.auth
     private var isNotEmpties : MutableLiveData<Boolean> = MutableLiveData(false)
     var isUserSignUp : MutableLiveData<Boolean> = MutableLiveData(false)
-    var signUpError : MutableLiveData<String> = MutableLiveData("")
+    var signUpError : MutableLiveData<String?> = MutableLiveData(null)
 
     fun checkNotEmpty(boolean: Boolean) : MutableLiveData<Boolean> {
         isNotEmpties.value = boolean
@@ -17,7 +17,7 @@ class SignUpViewModel : ViewModel() {
     }
 
     fun signUp(email:String, password:String){
-        signUpError.value = ""
+        signUpError.value = null
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
             if(it.isSuccessful){
                 isUserSignUp.value = true

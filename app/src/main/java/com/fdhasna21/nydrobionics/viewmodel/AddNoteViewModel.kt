@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.fdhasna21.nydrobionics.dataclass.model.NoteModel
 import com.fdhasna21.nydrobionics.dataclass.model.NoteModel.Companion.toHashMap
-import com.fdhasna21.nydrobionics.utils.ViewUtility
+import com.fdhasna21.nydrobionics.utility.ViewUtility
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentReference
@@ -13,9 +13,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.lang.Exception
-import java.text.ParsePosition
-import java.text.SimpleDateFormat
-import java.util.*
 
 class AddNoteViewModel : ViewModel(){
     private var auth : FirebaseAuth = Firebase.auth

@@ -9,13 +9,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.fdhasna21.nydrobionics.BuildConfig
 import com.fdhasna21.nydrobionics.R
 import com.fdhasna21.nydrobionics.activity.AddNoteActivity
+import com.fdhasna21.nydrobionics.activity.MainActivity
 import com.fdhasna21.nydrobionics.adapter.AdapterType
 import com.fdhasna21.nydrobionics.adapter.NoteModelAdapter
 import com.fdhasna21.nydrobionics.databinding.FragmentMainNotesBinding
@@ -51,7 +51,7 @@ class MainNotesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     private fun setupRecyclerView() {
         val data : ArrayList<NoteModel> = arrayListOf()
         val rowAdapter = AdapterType.NOTE.getAdapter(requireContext(), data)
-        viewModel.currentNoteModels.observe(viewLifecycleOwner,{
+        viewModel.getCurrentNotes().observe(viewLifecycleOwner,{
             data.clear()
             data.addAll(it ?: arrayListOf())
             rowAdapter.notifyDataSetChanged()
@@ -91,7 +91,7 @@ class MainNotesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
                 }
             )
             Log.i(TAG, "${rowAdapter.itemCount}")
-//            binding.mainNotesRefresh.isRefreshing = false
+            (requireActivity() as MainActivity).swipeRefresh.isRefreshing = false
         })
 
         binding.mainNotesRecyclerView.adapter = rowAdapter
@@ -99,12 +99,12 @@ class MainNotesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     override fun onRefresh() {
-        viewModel.refreshNote()
+        viewModel.refreshNotes()
     }
 
     private fun gotoNote(position:Int){
         val intent = Intent(requireContext(), AddNoteActivity::class.java)
-        intent.putExtra("selectedNoteModel", viewModel.getNote(position))
+        intent.putExtra(BuildConfig.SELECTED_NOTE, viewModel.getNote(position))
         startActivity(intent)
     }
 }

@@ -2,7 +2,7 @@ package com.fdhasna21.nydrobionics.dataclass.model
 
 import android.os.Parcelable
 import android.util.Log
-import com.fdhasna21.nydrobionics.utils.ViewUtility
+import com.fdhasna21.nydrobionics.utility.ViewUtility
 import com.google.firebase.firestore.DocumentSnapshot
 import kotlinx.parcelize.Parcelize
 

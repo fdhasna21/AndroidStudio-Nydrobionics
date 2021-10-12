@@ -1,6 +1,6 @@
 package com.fdhasna21.nydrobionics.enumclass
 
-import com.fdhasna21.nydrobionics.utils.ViewUtility
+import com.fdhasna21.nydrobionics.utility.ViewUtility
 
 enum class Rating {
     VERY_BAD,

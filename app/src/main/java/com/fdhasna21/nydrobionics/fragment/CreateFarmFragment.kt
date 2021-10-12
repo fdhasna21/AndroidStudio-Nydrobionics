@@ -14,7 +14,7 @@ import androidx.navigation.Navigation
 import com.fdhasna21.nydrobionics.R
 import com.fdhasna21.nydrobionics.activity.CreateProfileActivity
 import com.fdhasna21.nydrobionics.databinding.FragmentCreateFarmBinding
-import com.fdhasna21.nydrobionics.utils.ViewUtility
+import com.fdhasna21.nydrobionics.utility.ViewUtility
 import com.fdhasna21.nydrobionics.viewmodel.CreateProfileViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.OnMapReadyCallback

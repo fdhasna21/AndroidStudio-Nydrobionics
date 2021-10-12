@@ -33,7 +33,7 @@
             android:name=".activity.ShowPictureActivity"
             android:exported="true" />
         <activity
-            android:name=".activity.ProfileFarmActivity"
+            android:name=".activity.EditProfileFarmActivity"
             android:exported="true" />
         <activity
             android:name=".activity.ProfileKitActivity"

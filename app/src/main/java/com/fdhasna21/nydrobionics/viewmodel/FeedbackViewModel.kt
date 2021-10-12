@@ -5,12 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.fdhasna21.nydrobionics.dataclass.model.FeedbackModel
 import com.fdhasna21.nydrobionics.dataclass.model.FeedbackModel.Companion.toHashMap
-import com.fdhasna21.nydrobionics.dataclass.model.UserModel
-import com.fdhasna21.nydrobionics.utils.ViewUtility
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.lang.Exception

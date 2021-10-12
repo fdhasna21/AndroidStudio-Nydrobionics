@@ -2,7 +2,7 @@ package com.fdhasna21.nydrobionics.dataclass.model
 
 import android.os.Parcelable
 import android.util.Log
-import com.fdhasna21.nydrobionics.utils.ViewUtility
+import com.fdhasna21.nydrobionics.utility.ViewUtility
 import com.google.firebase.firestore.DocumentSnapshot
 import kotlinx.parcelize.Parcelize
 
@@ -40,7 +40,7 @@ data class DataMonitoringModel(
                     turbidity?.toFloat(),
                     ph?.toFloat(),
                     userId, cropsId, timestamp)
-                Log.i(TAG, "$output")
+//                Log.i(TAG, "$output")
                 output
             } catch (e:Exception){
                 Log.e(TAG, "Error converting $TAG", e)

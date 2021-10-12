@@ -1,7 +1,6 @@
 package com.fdhasna21.nydrobionics.viewmodel
 
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.fdhasna21.nydrobionics.dataclass.model.*
@@ -9,7 +8,7 @@ import com.fdhasna21.nydrobionics.dataclass.model.CropsModel.Companion.toHashMap
 import com.fdhasna21.nydrobionics.dataclass.model.DataMonitoringModel.Companion.toHashMap
 import com.fdhasna21.nydrobionics.dataclass.model.KitModel.Companion.toHashMap
 import com.fdhasna21.nydrobionics.enumclass.NumberPickerType
-import com.fdhasna21.nydrobionics.utils.ViewUtility
+import com.fdhasna21.nydrobionics.utility.ViewUtility
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentReference

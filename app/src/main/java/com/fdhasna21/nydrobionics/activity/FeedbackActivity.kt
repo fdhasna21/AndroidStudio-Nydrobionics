@@ -1,11 +1,8 @@
 package com.fdhasna21.nydrobionics.activity
 
 import android.content.Context
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -14,13 +11,10 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.RatingBar
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
-import br.com.simplepass.loadingbutton.customViews.CircularProgressButton
 import com.fdhasna21.nydrobionics.R
 import com.fdhasna21.nydrobionics.databinding.ActivityFeedbackBinding
-import com.fdhasna21.nydrobionics.dataclass.model.UserModel
 import com.fdhasna21.nydrobionics.enumclass.Rating
-import com.fdhasna21.nydrobionics.utils.ViewUtility
-import com.fdhasna21.nydrobionics.viewmodel.AddPlantViewModel
+import com.fdhasna21.nydrobionics.utility.ViewUtility
 import com.fdhasna21.nydrobionics.viewmodel.FeedbackViewModel
 
 class FeedbackActivity : AppCompatActivity(), TextWatcher, RatingBar.OnRatingBarChangeListener {

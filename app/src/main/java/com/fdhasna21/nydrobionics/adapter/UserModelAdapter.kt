@@ -8,6 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.fdhasna21.nydrobionics.databinding.RowItemSearchBinding
 import com.fdhasna21.nydrobionics.dataclass.model.UserModel
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class UserModelAdapter(
     private val context: Context,
@@ -16,7 +19,7 @@ class UserModelAdapter(
 )
     : RecyclerView.Adapter<UserModelAdapter.ViewHolder>(){
     inner class ViewHolder(val binding: RowItemSearchBinding):RecyclerView.ViewHolder(binding.root)
-
+    private var auth : FirebaseAuth = Firebase.auth
     private lateinit var onItemClickListener : OnItemClickListener
 
     fun setOnItemClickListener(onItemClickListener : OnItemClickListener) {
@@ -24,7 +27,7 @@ class UserModelAdapter(
     }
 
     interface OnItemClickListener {
-        fun onItemClicked(position: Int, itemView:View, v:RowItemSearchBinding)
+        fun onItemClicked(userModel:UserModel, position: Int, itemView:View, v:RowItemSearchBinding)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -35,11 +38,9 @@ class UserModelAdapter(
         val item = userModel[position]
 
         holder.binding.apply {
-            when(type){
-                AdapterType.Companion.SearchSelectType.SEARCH -> {
-                    searchClose.visibility = View.GONE
-                }
-                AdapterType.Companion.SearchSelectType.SELECT-> {
+            searchClose.visibility = View.GONE
+            if(type == AdapterType.Companion.SearchSelectType.SELECT){
+                if(item.uid != auth.uid){
                     searchClose.visibility = View.VISIBLE
                 }
             }
@@ -51,7 +52,10 @@ class UserModelAdapter(
                 .circleCrop()
                 .into(searchPicture)
             searchRoot.setOnClickListener {
-                onItemClickListener.onItemClicked(position, it, holder.binding)
+                onItemClickListener.onItemClicked(item, position, it, holder.binding)
+            }
+            searchClose.setOnClickListener {
+                onItemClickListener.onItemClicked(item, position, it, holder.binding)
             }
         }
     }

@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import com.fdhasna21.nydrobionics.BuildConfig
 import com.fdhasna21.nydrobionics.R
 import com.fdhasna21.nydrobionics.activity.*
 import com.fdhasna21.nydrobionics.databinding.FragmentMainAddBinding
@@ -38,7 +39,7 @@ class MainAddFragment : BottomSheetDialogFragment(), NavigationView.OnNavigation
         return when(item.itemId){
             R.id.addDataMonitoring  -> gotoActivity(AddDataMonitoringActivity::class.java)
             R.id.addCrops           -> gotoActivity(AddCropsActivity::class.java)
-            R.id.addNote        -> gotoActivity(AddNoteActivity::class.java)
+            R.id.addNote            -> gotoActivity(AddNoteActivity::class.java)
             R.id.addKit             -> gotoActivity(AddKitActivity::class.java)
             R.id.addPlant           -> gotoActivity(AddPlantActivity::class.java)
             else                    -> false
@@ -48,8 +49,8 @@ class MainAddFragment : BottomSheetDialogFragment(), NavigationView.OnNavigation
     private fun gotoActivity(destination : Class<*>) : Boolean{
         dismiss()
         val intent = Intent(requireActivity(), destination)
-        intent.putExtra("currentUserModel", viewModel.currentUserModel.value)
-        intent.putExtra("currentFarmModel", viewModel.currentFarmModel.value)
+        intent.putExtra(BuildConfig.CURRENT_USER, viewModel.getCurrentUser().value)
+        intent.putExtra(BuildConfig.CURRENT_FARM, viewModel.getCurrentFarm().value)
         startActivity(intent)
         return true
     }

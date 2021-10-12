@@ -1,4 +1,4 @@
-package com.fdhasna21.nydrobionics.utils
+package com.fdhasna21.nydrobionics.utility
 
 import android.Manifest
 import android.app.Activity

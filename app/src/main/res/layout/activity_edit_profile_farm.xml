@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.ProfileFarmActivity">
+    tools:context=".activity.EditProfileFarmActivity">
 
     <include
         android:id="@+id/editFarmFragment"

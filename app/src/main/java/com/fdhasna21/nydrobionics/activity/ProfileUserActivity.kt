@@ -8,11 +8,13 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.fdhasna21.nydrobionics.BuildConfig
 import com.fdhasna21.nydrobionics.R
 import com.fdhasna21.nydrobionics.databinding.ActivityProfileUserBinding
 import com.fdhasna21.nydrobionics.databinding.FragmentMainProfileBinding
-import com.fdhasna21.nydrobionics.utils.IntentUtility
-import com.fdhasna21.nydrobionics.utils.RequestPermission
+import com.fdhasna21.nydrobionics.dataclass.model.UserModel
+import com.fdhasna21.nydrobionics.utility.IntentUtility
+import com.fdhasna21.nydrobionics.utility.RequestPermission
 import com.fdhasna21.nydrobionics.viewmodel.ProfileUserViewModel
 
 class ProfileUserActivity : AppCompatActivity(), View.OnClickListener {
@@ -33,8 +35,7 @@ class ProfileUserActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(binding.root)
 
         viewModel = ViewModelProvider(this).get(ProfileUserViewModel::class.java)
-        //todo : user name (get data default)
-        supportActionBar?.title = getString(R.string.profile)
+        viewModel.setUserModel(intent.getParcelableExtra<UserModel>(BuildConfig.SELECTED_USER))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(false)
 
@@ -46,6 +47,10 @@ class ProfileUserActivity : AppCompatActivity(), View.OnClickListener {
                                         mainProfilePhoto)
             viewsAsButton.forEach { it.setOnClickListener(this@ProfileUserActivity) }
         }
+
+        viewModel.getUserModel().observe(this,{
+            supportActionBar?.title = it.name
+        })
         setupTabLayout()
     }
 

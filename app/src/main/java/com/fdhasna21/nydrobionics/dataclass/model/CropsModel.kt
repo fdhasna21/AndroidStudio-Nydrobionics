@@ -5,7 +5,7 @@ import android.util.Log
 import com.fdhasna21.nydrobionics.dataclass.ScoreLevel
 import com.fdhasna21.nydrobionics.dataclass.ScoreLevel.Companion.getLevelModel
 import com.fdhasna21.nydrobionics.dataclass.ScoreLevel.Companion.toHashMap
-import com.fdhasna21.nydrobionics.utils.ViewUtility
+import com.fdhasna21.nydrobionics.utility.ViewUtility
 import com.google.firebase.firestore.DocumentSnapshot
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
@@ -36,7 +36,7 @@ data class CropsModel(
                     getLevelModel(humidLv.toString()),
                     getLevelModel(phLv.toString()),
                     timestamp)//, PlantModel())
-                Log.i(TAG, "$output")
+//                Log.i(TAG, "$output")
                 output
             }catch (e:Exception){
                 Log.e(TAG, "Error converting $TAG profile", e)
