@@ -25,9 +25,4 @@
         android:name="com.fdhasna21.nydrobionics.fragment.MainProfileFragment"
         android:label="fragment_main_profile"
         tools:layout="@layout/fragment_main_profile"/>
-<!--    <dialog-->
-<!--        android:id="@+id/mainAddFragment"-->
-<!--        android:name="com.fdhasna21.nydrobionics.fragment.MainAddFragment"-->
-<!--        android:label="fragment_main_add"-->
-<!--        tools:layout="@layout/fragment_main_add" />-->
 </navigation>

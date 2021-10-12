@@ -61,6 +61,12 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
                 it.addTextChangedListener(this@AddNoteActivity)
             }
             addNoteSubmit.setOnClickListener(this@AddNoteActivity)
+
+            viewModel.getCurrentNoteModel().observe(this@AddNoteActivity, {
+                addNoteTitle.setText(it.title)
+                addNoteDesc.setText(it.description)
+                //todo : kurang date time
+            })
             checkEmpty()
         }
     }

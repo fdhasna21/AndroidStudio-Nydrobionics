@@ -135,4 +135,8 @@
     <string name="app_permission">App Permission</string>
     <string name="temp_value">%.2f °C</string>
     <string name="humid_value">%.2f\%% RH</string>
+    <string name="year">Year</string>
+    <string name="timestamp">timestamp</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
 </resources>

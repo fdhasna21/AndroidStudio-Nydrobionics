@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -31,13 +32,15 @@ class MainViewModel : ViewModel() {
     var currentUserModel : MutableLiveData<UserModel> = MutableLiveData(UserModel())
     var currentFarmModel : MutableLiveData<FarmModel> = MutableLiveData(FarmModel())
     private var currentKitModels : MutableLiveData<ArrayList<KitModel>> = MutableLiveData(arrayListOf())
-    private var currentNoteModels : MutableLiveData<ArrayList<NoteModel>?> = MutableLiveData(null)
+    var currentNoteModels : MutableLiveData<ArrayList<NoteModel>?> = MutableLiveData(null)
     private var allUserModels : MutableLiveData<ArrayList<UserModel>?> = MutableLiveData(null)
     private var allPlantModels : MutableLiveData<ArrayList<PlantModel>?> = MutableLiveData(null)
     var isCurrentUserExist : MutableLiveData<Boolean?> = MutableLiveData(null)
     var isCurrentFarmExist : MutableLiveData<Boolean?> = MutableLiveData(null)
     var isUserSignOut : MutableLiveData<Boolean> = MutableLiveData(false)
     var signOutError : MutableLiveData<String> = MutableLiveData("")
+
+    private lateinit var usersListener : ListenerRegistration
 
     companion object{
         const val TAG = "mainViewModel"
@@ -48,9 +51,6 @@ class MainViewModel : ViewModel() {
         try {
             auth.signOut()
             isUserSignOut.value = true
-        } catch (e:FirebaseAuthException){
-            isUserSignOut.value = false
-            signOutError.value = e.toString()
         } catch (e:Exception){
             isUserSignOut.value = false
             signOutError.value = e.toString()
@@ -86,7 +86,7 @@ class MainViewModel : ViewModel() {
     private fun getUsersUpdate(){
         val db = firestore.collection("users")
         try {
-            db.addSnapshotListener { usersSnapshot, error ->
+            usersListener = db.addSnapshotListener { usersSnapshot, error ->
                 usersSnapshot?.let {
                     val users : ArrayList<UserModel> = arrayListOf()
                     for(userDocument in usersSnapshot.documents){
@@ -99,7 +99,9 @@ class MainViewModel : ViewModel() {
                                     isCurrentUserExist.value = true
                                     getFarmsUpdate(userModel.farmId)
                                     val userRef = db.document(userId)
-                                    userRef.collection("notes").addSnapshotListener { notesSnapshot, error ->
+                                    userRef.collection("notes")
+                                        .orderBy("timestamp", Query.Direction.DESCENDING)
+                                        .addSnapshotListener { notesSnapshot, error ->
                                         notesSnapshot?.let {
                                             val notes: ArrayList<NoteModel> = arrayListOf()
                                             for (noteDocument in notesSnapshot.documents) {
@@ -137,6 +139,7 @@ class MainViewModel : ViewModel() {
         }
     }
 
+    /** FARM **/
     private fun getFarmsUpdate(farmId: String?){
         if(farmId == null){
             isCurrentFarmExist.value = false
@@ -167,7 +170,7 @@ class MainViewModel : ViewModel() {
                                                                     it.get(0)?.let {
                                                                         lastMonitoring.replace(it.toDataMonitoringModel())
                                                                         updateKitModel(index, monitoringModel = lastMonitoring)
-                                                                        Log.i(TAG, "monitoring: $lastMonitoring")
+//                                                                        Log.i(TAG, "monitoring: $lastMonitoring")
                                                                     }
                                                                 }
                                                             }
@@ -194,7 +197,7 @@ class MainViewModel : ViewModel() {
                                                                                 lastCropsModel.plantModel = it
                                                                                 updateKitModel(index, cropsModel = lastCropsModel)
                                                                             }
-                                                                            Log.i(TAG, "crops: $lastCropsModel")
+//                                                                            Log.i(TAG, "crops: $lastCropsModel")
                                                                         }
                                                                     }
                                                                 }
@@ -252,8 +255,6 @@ class MainViewModel : ViewModel() {
 
     }
 
-
-
     private fun updateKitModel(index:Int, cropsModel: CropsModel?=null, monitoringModel: DataMonitoringModel? = null){
         if(cropsModel!=null){
             currentKitModels.value!![index].lastCrops = cropsModel
@@ -263,9 +264,10 @@ class MainViewModel : ViewModel() {
             currentKitModels.value!![index].lastMonitoring = monitoringModel
         }
         currentFarmModel.value?.kitModels = currentKitModels.value
-        Log.i(TAG, "currentkit ${currentKitModels.value}, currentfarm ${currentFarmModel.value}")
+//        Log.i(TAG, "currentkit ${currentKitModels.value}, currentfarm ${currentFarmModel.value}")
     }
 
+    /** PLANT **/
     fun getPlantsUpdate(){
         val db = firestore.collection("plants")
         try {
@@ -289,5 +291,36 @@ class MainViewModel : ViewModel() {
         } catch (e:Exception){
             Log.e(TAG, "real time plant error", e)
         }
+    }
+
+    /** NOTES **/
+    var isNoteDeleted : MutableLiveData<Boolean?> = MutableLiveData(null)
+    var deleteNoteError : MutableLiveData<String> = MutableLiveData("")
+    fun getNote(position:Int) : NoteModel?{
+        return currentNoteModels.value?.get(position)
+    }
+
+    fun deleteNote(position:Int){
+        val noteId = getNote(position)?.noteId
+        try {
+            val db = firestore.collection("users").document(auth.uid!!)
+                .collection("notes").document(noteId!!)
+            db.delete().addOnCompleteListener {
+                if(it.isSuccessful){
+                    isNoteDeleted.value = true
+                } else {
+                    isNoteDeleted.value = false
+                    deleteNoteError.value = it.exception.toString()
+                }
+            }
+        } catch (e:Exception){
+            Log.e(TAG, "deleteNote $noteId: failed", e)
+        }
+    }
+
+    fun refreshNote(){
+        usersListener.remove()
+        currentNoteModels.value?.clear()
+        getUsersUpdate()
     }
 }

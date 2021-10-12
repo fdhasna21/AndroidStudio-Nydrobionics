@@ -1,6 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:id="@+id/noteRoot"
+    android:nestedScrollingEnabled="false"
+    android:orientation="vertical">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/noteYear"
+        style="?attr/textAppearanceSubtitle1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginVertical="10dp"
+        android:drawableLeft="@drawable/ic_circle"
+        android:drawablePadding="12dp"
+        android:drawableTint="@android:color/darker_gray"
+        android:gravity="center_vertical"
+        android:padding="4dp"
+        android:text="@string/year"/>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/noteContentRoot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:layout_marginVertical="10dp"
+        android:elevation="12dp"
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp">
+
+            <TextView
+                android:id="@+id/noteTitle"
+                style="?attr/textAppearanceBody2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginHorizontal="4dp"
+                android:layout_marginBottom="6dp"
+                android:gravity="left|center_vertical"
+                android:maxLines="1"
+                android:text="@string/title"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/noteSubtitle"
+                style="?attr/textAppearanceBody2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginHorizontal="4dp"
+                android:layout_marginBottom="6dp"
+                android:gravity="left|center_vertical"
+                android:maxLines="3"
+                android:text="@string/subtitle"
+                android:layout_below="@id/noteTitle"
+                android:textSize="12dp"/>
+
+            <TextView
+                android:id="@+id/noteTimestamp"
+                style="?attr/textAppearanceSubtitle1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginHorizontal="4dp"
+                android:layout_marginBottom="6dp"
+                android:gravity="left|center_vertical"
+                android:maxLines="3"
+                android:text="@string/timestamp"
+                android:layout_below="@id/noteSubtitle"
+                android:textSize="10dp"
+                android:textColor="@android:color/darker_gray"/>
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+</LinearLayout>

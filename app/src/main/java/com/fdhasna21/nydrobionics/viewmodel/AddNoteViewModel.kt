@@ -37,6 +37,8 @@ class AddNoteViewModel : ViewModel(){
         }
     }
 
+    fun getCurrentNoteModel() : MutableLiveData<NoteModel> = noteModel
+
     fun checkNotEmpty(boolean: Boolean) : MutableLiveData<Boolean> {
         isNotEmpties.value = boolean
         return isNotEmpties

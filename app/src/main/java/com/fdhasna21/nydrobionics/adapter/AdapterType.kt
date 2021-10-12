@@ -42,7 +42,7 @@ enum class AdapterType {
             data: ArrayList<*>,
             type: SearchSelectType?
         ): RecyclerView.Adapter<*> {
-            return NoteModelAdapter(context, data as ArrayList<NoteModel>)
+            return NoteModelAdapter(data as ArrayList<NoteModel>)
         }
     },
     DATA_MONITORING {
