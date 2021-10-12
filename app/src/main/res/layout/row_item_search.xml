@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="10dp"
     android:background="?attr/selectableItemBackground"
-    android:id="@+id/rowSearch"
+    android:id="@+id/searchRoot"
     android:orientation="horizontal"
     android:divider="@drawable/divider_6dp"
     android:showDividers="middle"

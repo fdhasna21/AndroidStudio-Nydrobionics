@@ -1,5 +1,6 @@
 package com.fdhasna21.nydrobionics.activity
 
+import android.annotation.SuppressLint
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
@@ -7,25 +8,31 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.fdhasna21.nydrobionics.R
 import com.fdhasna21.nydrobionics.adapter.AdapterType
 import com.fdhasna21.nydrobionics.adapter.PlantModelAdapter
 import com.fdhasna21.nydrobionics.adapter.UserModelAdapter
 import com.fdhasna21.nydrobionics.databinding.ActivitySearchBinding
+import com.fdhasna21.nydrobionics.databinding.RowItemSearchBinding
 import com.fdhasna21.nydrobionics.dataclass.model.PlantModel
 import com.fdhasna21.nydrobionics.dataclass.model.UserModel
 import com.fdhasna21.nydrobionics.enumclass.ProfileType
 import com.fdhasna21.nydrobionics.viewmodel.SearchViewModel
+import com.google.firebase.firestore.auth.User
 
-class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
+class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener, SwipeRefreshLayout.OnRefreshListener {
     private lateinit var binding : ActivitySearchBinding
     private lateinit var viewModel : SearchViewModel
     private lateinit var objectSearch : ProfileType
+    private lateinit var rowAdapter : RecyclerView.Adapter<*>
 
     companion object {
         const val TAG = "searchActivity"
@@ -47,46 +54,80 @@ class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         val searchManager : SearchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
         binding.searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
         binding.searchView.setOnQueryTextListener(this)
+        binding.searchRefresh.setOnRefreshListener(this)
+
+        when(objectSearch){
+            ProfileType.PLANT -> setupRecyclerViewPlant()
+            ProfileType.USER -> setupRecyclerViewUser()
+        }
+    }
+
+    private fun setupRecyclerViewPlant(){
+        val data : ArrayList<PlantModel> = arrayListOf()
+        viewModel.getAllPlants()
+        rowAdapter = AdapterType.SEARCH_PLANT.getAdapter(this, data, AdapterType.Companion.SearchSelectType.SEARCH) as PlantModelAdapter
+        viewModel.getPlants().observe(this, {
+            data.clear()
+            data.addAll(it ?: arrayListOf())
+            rowAdapter.notifyDataSetChanged()
+            (rowAdapter as PlantModelAdapter).setOnItemClickListener(
+                object : PlantModelAdapter.OnItemClickListener{
+                    override fun onItemClicked(
+                        position: Int,
+                        itemView: View,
+                        v: RowItemSearchBinding
+                    ) {
+                        when(itemView){
+                            v.searchRoot -> {
+                                val intent = Intent()
+                                intent.putExtra("selectedPlantModel", viewModel.getPlant(position))
+                                setResult(RESULT_OK, intent)
+                                this@SearchActivity.onBackPressed()
+                                finish()
+                            }
+                        }
+
+                    }
+                }
+            )
+            binding.searchRefresh.isRefreshing = false
+        })
+        setupRecyclerView()
+    }
+
+    private fun setupRecyclerViewUser(){
+        val data : ArrayList<UserModel> = arrayListOf()
+        viewModel.getAllUsers()
+        rowAdapter = AdapterType.SEARCH_USER.getAdapter(this, data, AdapterType.Companion.SearchSelectType.SEARCH) as UserModelAdapter
+        viewModel.getUsers().observe(this, {
+            data.clear()
+            data.addAll(it ?: arrayListOf())
+            rowAdapter.notifyDataSetChanged()
+            (rowAdapter as UserModelAdapter).setOnItemClickListener(
+                object : UserModelAdapter.OnItemClickListener{
+                    override fun onItemClicked(
+                        position: Int,
+                        itemView: View,
+                        v: RowItemSearchBinding
+                    ) {
+                        when(itemView){
+                            v.searchRoot -> {
+                                val intent = Intent()
+                                intent.putExtra("selectedUserModel", viewModel.getUser(position))
+                                setResult(RESULT_OK, intent)
+                                this@SearchActivity.onBackPressed()
+                                finish()
+                            }
+                        }
+                    }
+                })
+            binding.searchRefresh.isRefreshing = false
+        })
         setupRecyclerView()
     }
 
     private fun setupRecyclerView(){
-        if (objectSearch == ProfileType.PLANT) {
-            viewModel.getAllUsers()
-            viewModel.getPlants().observe(this, {
-                val rowAdapter = AdapterType.SEARCH_PLANT.getAdapter(this, it, AdapterType.Companion.SearchSelectType.SEARCH)
-                (rowAdapter as PlantModelAdapter).setOnItemClickListener(
-                    object : PlantModelAdapter.OnItemClickListener{
-                        override fun onItemClicked(data: PlantModel) {
-                            val intent = Intent()
-                            intent.putExtra("selectedPlantModel", data)
-                            setResult(RESULT_OK, intent)
-                            this@SearchActivity.onBackPressed()
-                            finish()
-                        }
-                    }
-                )
-                binding.searchRecyclerView.adapter = rowAdapter
-            })
-        }
-        else if (objectSearch == ProfileType.USER) {
-            viewModel.getAllPlants()
-            viewModel.getUsers().observe(this, {
-                val rowAdapter = AdapterType.SEARCH_USER.getAdapter(this, it, AdapterType.Companion.SearchSelectType.SEARCH)
-                (rowAdapter as UserModelAdapter).setOnItemClickListener(
-                    object : UserModelAdapter.OnItemClickListener{
-                        override fun onItemClicked(data: UserModel) {
-                            val intent = Intent()
-                            intent.putExtra("selectedUserModel", data)
-                            setResult(RESULT_OK, intent)
-                            this@SearchActivity.onBackPressed()
-                            finish()
-                        }
-                })
-                binding.searchRecyclerView.adapter = rowAdapter
-            })
-        }
-
+        binding.searchRecyclerView.adapter = rowAdapter
         binding.searchRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.searchRecyclerView.addItemDecoration(object : DividerItemDecoration(this, VERTICAL) {})
         binding.searchRecyclerView.setHasFixedSize(true)
@@ -122,5 +163,15 @@ class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
 
     override fun onQueryTextChange(newText: String?): Boolean {
         return searchKeyword(newText)
+    }
+
+    override fun onRefresh() {
+        when(objectSearch){
+            ProfileType.PLANT -> {
+                viewModel.getAllPlants(binding.searchView.query.toString())
+            }
+            ProfileType.USER -> viewModel.getAllUsers(binding.searchView.query.toString())
+            else -> Log.i(TAG, "enum class not found")
+        }
     }
 }

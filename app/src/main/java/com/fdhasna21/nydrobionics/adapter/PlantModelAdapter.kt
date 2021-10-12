@@ -32,7 +32,7 @@ class PlantModelAdapter(
     }
 
     interface OnItemClickListener {
-        fun onItemClicked(data:PlantModel)
+        fun onItemClicked(position: Int, itemView:View, v:RowItemSearchBinding)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -56,8 +56,8 @@ class PlantModelAdapter(
                 .load(item.photo_url)
                 .circleCrop()
                 .into(searchPicture)
-            rowSearch.setOnClickListener {
-                onItemClickListener.onItemClicked(item)
+            searchRoot.setOnClickListener {
+                onItemClickListener.onItemClicked(position, it, holder.binding)
             }
 
             item.userId?.let {
