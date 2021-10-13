@@ -51,6 +51,8 @@ class CreateProfileViewModel : ViewModel() {
     var isStaffAdded : MutableLiveData<Boolean> = MutableLiveData(false)
     var createProfileError : MutableLiveData<String> = MutableLiveData("")
 
+    private var updateUser : MutableLiveData<UserModel> = MutableLiveData(null)
+
     companion object{
         const val TAG = "createProfileViewModel"
     }
@@ -64,6 +66,7 @@ class CreateProfileViewModel : ViewModel() {
     fun setCurrentUser(userModel: UserModel?){
         this.userModel.value = userModel
         isUserCreated.value = true
+        updateUserGender.value  = Gender.getType(userModel?.gender!!)?.getPosition()!!
     }
 
     fun setCurrentFarm(farmModel : FarmModel?){
@@ -276,4 +279,8 @@ class CreateProfileViewModel : ViewModel() {
             Log.e(TAG, "updateCurrentStaff for farm ${farmModel.value?.farmId}: ", e)
         }
     }
+
+    /** EDIT USER **/
+    private var updateUserGender : MutableLiveData<Int> = MutableLiveData(0)
+    fun getUpdateGender() : Int? = updateUserGender.value
 }

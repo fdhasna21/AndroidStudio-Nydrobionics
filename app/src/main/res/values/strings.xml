@@ -109,7 +109,7 @@
     <string name="nutrient_level_only">Nutrient Level</string>
     <string name="turbidity_only">Turbidity</string>
     <string name="last_condition">Last Condition</string>
-    <string name="show_more"><![CDATA[Show More >]]></string>
+    <string name="show_more">Show more</string>
     <string name="planted_crops">Planted Crops</string>
     <string name="data_monitoring">Data Monitoring</string>
     <string name="crops">Crops</string>
@@ -141,4 +141,9 @@
     <string name="delete">Delete</string>
     <string name="options">Options</string>
     <string name="post_from_plant"></string>
+    <string name="updated_on_s">Updated on %s</string>
+    <string name="temperature_unit">°C</string>
+    <string name="kit_example">20.02</string>
+    <string name="kit_value">%2$.2f</string>
+    <string name="previous">Previous</string>
 </resources>

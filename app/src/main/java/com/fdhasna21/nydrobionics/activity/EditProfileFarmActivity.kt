@@ -140,7 +140,7 @@ class EditProfileFarmActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun checkUpdate(){
-        if(viewModel.getCurrentUserModel() == null){
+        if(viewModel.getCurrentUserModel() != null){
             viewModel.checkNotEmpty(
                 utility.isEmpties(editTexts) ||
                         viewModel.getCurrentStaff().value != viewModel.getStaff().value

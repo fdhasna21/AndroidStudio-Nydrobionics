@@ -2,10 +2,7 @@ package com.fdhasna21.nydrobionics.adapter
 
 import android.content.Context
 import androidx.recyclerview.widget.RecyclerView
-import com.fdhasna21.nydrobionics.dataclass.model.DataMonitoringModel
-import com.fdhasna21.nydrobionics.dataclass.model.NoteModel
-import com.fdhasna21.nydrobionics.dataclass.model.PlantModel
-import com.fdhasna21.nydrobionics.dataclass.model.UserModel
+import com.fdhasna21.nydrobionics.dataclass.model.*
 
 enum class AdapterType {
     SEARCH_PLANT {
@@ -61,7 +58,7 @@ enum class AdapterType {
             allPlants: ArrayList<PlantModel>?,
             type: SearchSelectType?
         ): RecyclerView.Adapter<*> {
-            return DataMonitoringModelAdapter(context, adapterData as ArrayList<DataMonitoringModel>)
+            return KitModelAdapter(context, adapterData as ArrayList<KitModel>)
         }
     };
 

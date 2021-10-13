@@ -94,8 +94,10 @@ class MainNotesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
             (requireActivity() as MainActivity).swipeRefresh.isRefreshing = false
         })
 
-        binding.mainNotesRecyclerView.adapter = rowAdapter
-        binding.mainNotesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.mainNotesRecyclerView.apply {
+            adapter = rowAdapter
+            layoutManager = LinearLayoutManager(requireContext())
+        }
     }
 
     override fun onRefresh() {

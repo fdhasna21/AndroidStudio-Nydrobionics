@@ -26,7 +26,7 @@ class MainViewModel : ViewModel() {
     private var firestore : FirebaseFirestore = Firebase.firestore
     private var currentUserModel : MutableLiveData<UserModel?> = MutableLiveData(null)
     private var currentFarmModel : MutableLiveData<FarmModel?> = MutableLiveData(null)
-    private var currentKitModels : MutableLiveData<ArrayList<KitModel>> = MutableLiveData(arrayListOf()) //good
+    private var currentKitModels : MutableLiveData<ArrayList<KitModel>?> = MutableLiveData(null)
     private var currentNoteModels : MutableLiveData<ArrayList<NoteModel>?> = MutableLiveData(null)
     private var allUserModels : MutableLiveData<ArrayList<UserModel>?> = MutableLiveData(null)
     private var allPlantModels : MutableLiveData<ArrayList<PlantModel>?> = MutableLiveData(null)
@@ -53,7 +53,7 @@ class MainViewModel : ViewModel() {
     /** GET DATA **/
     fun getCurrentUser() : MutableLiveData<UserModel?> = currentUserModel
     fun getCurrentFarm() : MutableLiveData<FarmModel?> = currentFarmModel
-    fun getCurrentKits() : MutableLiveData<ArrayList<KitModel>> = currentKitModels
+    fun getCurrentKits() : MutableLiveData<ArrayList<KitModel>?> = currentKitModels
     fun getCurrentNotes() : MutableLiveData<ArrayList<NoteModel>?> = currentNoteModels
     fun getAllUsers() : MutableLiveData<ArrayList<UserModel>?> = allUserModels
     fun getAllPosts() : MutableLiveData<ArrayList<PlantModel>?> = allPlantModels
@@ -61,6 +61,9 @@ class MainViewModel : ViewModel() {
     /** UPDATE DATABASE LISTENER **/
     private lateinit var usersListener : ListenerRegistration
     private lateinit var farmsListener : ListenerRegistration
+    private lateinit var kitsListener : ListenerRegistration
+    private var monitoringsListeners : ArrayList<ListenerRegistration> = arrayListOf()
+    private var cropsListeners : ArrayList<ListenerRegistration> = arrayListOf()
     private lateinit var plantsListener : ListenerRegistration
 
     private fun getUsersUpdate(){
@@ -131,7 +134,7 @@ class MainViewModel : ViewModel() {
                             currentFarmModel.value = farmModel
 
                             val kitsRef = db.collection("kits")
-                            kitsRef.addSnapshotListener{ kitSnapshot, error ->
+                            kitsListener = kitsRef.addSnapshotListener{ kitSnapshot, error ->
                                 kitSnapshot?.let { kitDocuments ->
                                     val kits : ArrayList<KitModel> = arrayListOf()
                                     kitDocuments.documents.forEachIndexed { index, kitDocument ->
@@ -139,53 +142,45 @@ class MainViewModel : ViewModel() {
                                             kit?.let { kitModel ->
                                                 val kitId = kitDocument.id
                                                 val kitRef = kitsRef.document(kitId)
+                                                kits.add(kitModel)
 
-                                                var lastMonitoring : DataMonitoringModel? = null
-                                                var lastCropsModel : CropsModel? = null
-                                                kitRef.collection("dataMonitorings")
+                                                val monitorListener = kitRef.collection("dataMonitorings")
                                                     .orderBy("timestamp", Query.Direction.DESCENDING)
-                                                    .get()
-                                                    .addOnCompleteListener {
-                                                        if (it.isSuccessful) {
-                                                            val docSize = it.result.documents.size
-                                                            if (docSize > 0) {
-                                                                lastMonitoring = it.result.documents[0].toDataMonitoringModel()
+                                                    .addSnapshotListener { monitoringSnapshot, error ->
+                                                        monitoringSnapshot?.let { monitoringDocuments ->
+                                                            if(monitoringDocuments.documents.size > 0){
+                                                                val lastMonitoring : DataMonitoringModel? = monitoringDocuments.documents[0].toDataMonitoringModel()
                                                                 updateKitModel(index, monitoringModel = lastMonitoring)
-//                                                                Log.i(TAG, "getFarmsUpdate: $lastMonitoring")
-                                                                if (kitModel.isPlanted == true) {
-                                                                    kitRef.collection("crops")
-                                                                        .orderBy("timestamp", Query.Direction.DESCENDING)
-                                                                        .get()
-                                                                        .addOnCompleteListener {
-                                                                            if (it.isSuccessful) {
-                                                                                val cropSize = it.result.documents.size
-                                                                                if(cropSize > 0) {
-                                                                                    lastCropsModel = it.result.documents[0].toCropsModel()
-                                                                                    lastCropsModel?.let {
-                                                                                        allPlantModels.value?.forEach { eachPlantModel ->
-                                                                                            if (it.plantId == eachPlantModel.plantId) {
-                                                                                                it.plantModel = eachPlantModel
-//                                                                                                Log.i(TAG, "getFarmsUpdate: $lastCropsModel")
-                                                                                                updateKitModel(index, cropsModel = lastCropsModel)
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                }
                                                             }
                                                         }
+
+                                                        error?.let {
+                                                            Log.e(TAG, "Listen dataMonitoring from kit $kitId failed", it)
+                                                        }
                                                     }
-                                                kits.add(kitModel)
+
+                                                val cropsListener = kitRef.collection("crops")
+                                                    .orderBy("timestamp", Query.Direction.DESCENDING)
+                                                    .addSnapshotListener { cropsSnapshot, error ->
+                                                        cropsSnapshot?.let { cropsDocuments ->
+                                                            if(cropsDocuments.documents.size > 0){
+                                                                val lastCropsModel : CropsModel? = cropsDocuments.documents[0].toCropsModel()
+                                                                updateKitModel(index, cropsModel = lastCropsModel)
+                                                            }
+                                                        }
+
+                                                        error?.let {
+                                                            Log.e(TAG, "Listen crops from kit $kitId failed", it)
+                                                        }
+                                                    }
+
+                                                monitoringsListeners.add(monitorListener)
+                                                cropsListeners.add(cropsListener)
                                             }
                                         }
                                     }
                                     currentKitModels.value = kits
-                                    currentFarmModel.value?.kitModels = currentKitModels.value
-                                    Log.i(TAG, "getFarmsUpdate ${currentFarmModel.value?.farmId}" +
-                                            " \tkits:${currentKitModels.value?.size}\n\n" +
-                                            "${currentKitModels.value}")
+                                    updateKitModel(0)
                                 }
 
                                 error?.let {
@@ -234,20 +229,33 @@ class MainViewModel : ViewModel() {
 
     private fun updateKitModel(index:Int, cropsModel: CropsModel?=null, monitoringModel: DataMonitoringModel? = null){
         try {
-            currentKitModels.value?.get(index).let{ kit->
-                cropsModel?.let {
-                    kit?.lastCrops = it
+            currentKitModels.value?.let {
+                val kitModels = it
+                kitModels.forEachIndexed { kitIndex, kitModel ->
+                    if(kitIndex == index){
+                        cropsModel?.let {
+                            kitModel.lastCrops = it
+                        }
+                        monitoringModel?.let {
+                            kitModel.lastMonitoring = it
+                        }
+                    }
                 }
-                monitoringModel?.let {
-                    kit?.lastMonitoring = it
-                }
+                currentKitModels.value = kitModels
             }
-            currentFarmModel.value?.kitModels = currentKitModels.value
-        } catch (e:Exception){
+
+            currentFarmModel.value?.let {
+                val farmModel = it
+                farmModel.kitModels = currentKitModels.value
+                currentFarmModel.value = farmModel
+            }
+        }catch (e:Exception) {
             Log.e(TAG, "updateKitModel ${currentKitModels.value!![index]}\n", e)
         }
 
-        Log.i(TAG, "currentkit ${currentKitModels.value}")//, currentfarm ${currentFarmModel.value}")
+        Log.i(TAG, "getFarmsUpdate ${currentFarmModel.value?.farmId}" +
+                " \tkits:${currentKitModels.value?.size}\n\n" +
+                "${currentFarmModel.value}")
     }
 
     /** NOTES **/
@@ -329,6 +337,15 @@ class MainViewModel : ViewModel() {
 
     fun refreshFarm(){
         farmsListener.remove()
+        kitsListener.remove()
+        monitoringsListeners.forEach { it.remove() }
+        cropsListeners.forEach { it.remove() }
+
+        currentFarmModel.value?.let {
+            val farmModel = it
+            farmModel.kitModels?.clear()
+            currentFarmModel.value = farmModel
+        }
         currentKitModels.value?.clear()
         getFarmsUpdate(currentUserModel.value?.farmId)
     }

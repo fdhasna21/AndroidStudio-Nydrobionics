@@ -124,11 +124,11 @@ class AddDataMonitoringActivity : AppCompatActivity(), View.OnClickListener {
                         addMonitoringNewCrops.visibility = View.GONE
                         addMonitoringCropsPlanted.apply {
                             //todo kurang moreday
-                            val plantedDate : String = utility.formatTimestampToDate(it.timestamp)
-                            val estimateDate : Long = utility.formatStringToDate(plantedDate, it.plantModel?.growthTime)
+//                            val plantedDate : String = utility.formatTimestampToDate(it.timestamp)
+//                            val estimateDate : Long = utility.formatStringToDate(plantedDate, it.plantModel?.growthTime)
                             this.kitPlantName.text = it.plantModel?.name.toString()
-                            this.kitPlantDate.text = plantedDate
-                            this.kitPlantHarvest.text = getString(R.string.can_be_harvested_at_s, utility.formatDateToString(estimateDate))
+//                            this.kitPlantDate.text = plantedDate
+                            this.kitPlantHarvest.text = getString(R.string.can_be_harvested_at_s, "now")//utility.formatDateToString(estimateDate))
                             Glide.with(this@AddDataMonitoringActivity)
                                 .load(it.plantModel?.photo_url)
                                 .circleCrop()

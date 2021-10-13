@@ -149,14 +149,16 @@ open class ViewUtility(
         return textInputEditText.text.toString() != lastString
     }
 
-    fun isChanges(hashMap: HashMap<String, TextInputEditText>) : Boolean{
+    fun isChanges(hashMap: HashMap<String, TextInputEditText>?) : Boolean{
         var output : Boolean? = null
-        hashMap.forEach {
+        hashMap?.forEach {
             output = if(output == null){
                 isChange(it.key, it.value)
             } else {
                 output as Boolean || isChange(it.key, it.value)
             }
+        } ?: kotlin.run {
+            return false
         }
         return output!!
     }

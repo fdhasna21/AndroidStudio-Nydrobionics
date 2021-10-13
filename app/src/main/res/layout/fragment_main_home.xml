@@ -1,14 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".fragment.MainHomeFragment">
+    android:layout_height="wrap_content"
+    tools:context=".fragment.MainHomeFragment"
+    android:orientation="vertical"
+    android:showDividers="middle"
+    android:divider="@drawable/divider_12dp">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:id="@+id/mainHomeFarmName"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/home" />
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/farm"
+        style="?attr/textAppearanceHeadline6"
+        android:layout_marginTop="24dp"/>
 
-</FrameLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageButton
+            android:id="@+id/mainCardNext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackground"
+            android:backgroundTint="@android:color/darker_gray"
+            android:src="@drawable/ic_next"
+            app:tint="@color/default_gray"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/next" />
+
+        <ImageButton
+            android:id="@+id/mainCardPrevious"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackground"
+            android:backgroundTint="@android:color/darker_gray"
+            android:src="@drawable/ic_next"
+            android:rotation="180"
+            app:tint="@color/default_gray"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/previous" />
+
+        <com.yuyakaido.android.cardstackview.CardStackView
+            android:id="@+id/mainHomeCardStack"
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:paddingVertical="20dp"
+            android:layout_toLeftOf="@id/mainCardNext"
+            android:layout_toRightOf="@id/mainCardPrevious"/>
+    </RelativeLayout>
+</LinearLayout>

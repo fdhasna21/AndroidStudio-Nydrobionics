@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="4dp"
+    android:elevation="12dp"
+    app:cardCornerRadius="8dp"
+    android:id="@+id/kitRoot">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="12dp"
+        android:orientation="vertical"
+        android:showDividers="middle"
+        android:divider="@drawable/divider_6dp"
+        android:background="@drawable/bg_card_stroke">
+
+        <TextView
+            android:id="@+id/kitName"
+            style="?attr/textAppearanceBody1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/kit_name"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/kitTimestamp"
+            style="?attr/textAppearanceBody2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:layout_marginBottom="6dp"
+            android:gravity="center"
+            android:text="@string/updated_on_s"
+            android:textSize="12sp" />
+
+        <GridLayout
+            android:id="@+id/kitLastMonitoring"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:columnCount="3"
+            android:layout_marginVertical="6dp">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"
+                app:cardCornerRadius="8dp"
+                android:elevation="4dp">
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:padding="12dp">
+
+                    <ImageView
+                        android:id="@+id/kitTempIcon"
+                        android:layout_width="50dp"
+                        android:layout_height="40dp"
+                        android:layout_margin="5dp"
+                        android:src="@drawable/ic_temperature"
+                        android:layout_gravity="center" />
+
+                    <TextView
+                        android:id="@+id/kitTempTitle"
+                        style="?attr/textAppearanceOverline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:paddingVertical="4dp"
+                        android:text="@string/temperature_only"
+                        android:layout_gravity="center" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_gravity="center">
+
+                        <TextView
+                            android:id="@+id/kitTemp"
+                            style="?attr/textAppearanceHeadline5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/kit_example"
+                            android:textColor="?attr/colorPrimary"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/kitTempUnit"
+                            style="?attr/textAppearanceOverline"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="top"
+                            android:text="@string/temperature_unit"
+                            android:layout_marginHorizontal="2dp"
+                            app:layout_constraintStart_toEndOf="@+id/kitTemp"
+                            app:layout_constraintTop_toTopOf="@+id/kitTemp"
+                            android:textColor="?attr/colorPrimary"
+                            android:textStyle="bold"/>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"
+                app:cardCornerRadius="8dp"
+                android:elevation="4dp">
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:padding="12dp">
+
+                    <ImageView
+                        android:id="@+id/kitHumidIcon"
+                        android:layout_width="40dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/ic_humidity"
+                        android:layout_gravity="center"/>
+
+                    <TextView
+                        android:id="@+id/kitHumidTitle"
+                        style="?attr/textAppearanceOverline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:paddingVertical="4dp"
+                        android:text="@string/humidity_only"
+                        android:layout_gravity="center" />
+
+                    <TextView
+                        android:id="@+id/kitHumid"
+                        style="?attr/textAppearanceHeadline5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/kit_example"
+                        android:textColor="?attr/colorPrimary"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"
+                app:cardCornerRadius="8dp"
+                android:elevation="4dp">
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:padding="12dp">
+
+                    <ImageView
+                        android:id="@+id/kitAcidityIcon"
+                        android:layout_width="40dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/ic_acidity"
+                        android:layout_gravity="center" />
+
+                    <TextView
+                        android:id="@+id/kitAcidityTitle"
+                        style="?attr/textAppearanceOverline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:paddingVertical="4dp"
+                        android:text="@string/acidity_only"
+                        android:layout_gravity="center" />
+
+                        <TextView
+                            android:id="@+id/kitAcidity"
+                            style="?attr/textAppearanceHeadline5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/kit_example"
+                            android:textColor="?attr/colorPrimary"
+                            android:textStyle="bold"
+                            android:layout_gravity="center"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"
+                app:cardCornerRadius="8dp"
+                android:elevation="4dp">
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:padding="12dp">
+
+                    <ImageView
+                        android:id="@+id/kitWaterTankIcon"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_margin="5dp"
+                        android:src="@drawable/ic_water_tank"
+                        android:layout_gravity="center" />
+
+                    <TextView
+                        android:id="@+id/kitWaterTankTitle"
+                        style="?attr/textAppearanceOverline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:paddingVertical="4dp"
+                        android:text="@string/water_level_only"
+                        android:layout_gravity="center" />
+                    
+                    <TextView
+                        android:id="@+id/kitWaterTank"
+                        style="?attr/textAppearanceHeadline5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/kit_example"
+                        android:textColor="?attr/colorPrimary"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"
+                app:cardCornerRadius="8dp"
+                android:elevation="4dp">
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:padding="12dp">
+
+                    <ImageView
+                        android:id="@+id/kitNutrientTankIcon"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/ic_nutrient_tank"
+                        android:layout_gravity="center" />
+
+                    <TextView
+                        android:id="@+id/kitNutrientTankTitle"
+                        style="?attr/textAppearanceOverline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:paddingVertical="4dp"
+                        android:text="@string/nutrient_level_only"
+                        android:layout_gravity="center" />
+
+                    <TextView
+                        android:id="@+id/kitNutrientTank"
+                        style="?attr/textAppearanceHeadline5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/kit_example"
+                        android:textColor="?attr/colorPrimary"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"
+                app:cardCornerRadius="8dp"
+                android:elevation="4dp">
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:padding="12dp">
+
+                    <ImageView
+                        android:id="@+id/kitTurbidityIcon"
+                        android:layout_width="45dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/ic_turbidity"
+                        android:layout_gravity="center" />
+
+                    <TextView
+                        android:id="@+id/kitTurbidityTitle"
+                        style="?attr/textAppearanceOverline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:paddingVertical="4dp"
+                        android:text="@string/turbidity_only"
+                        android:layout_gravity="center" />
+
+                        <TextView
+                            android:id="@+id/kitTurbidity"
+                            style="?attr/textAppearanceHeadline5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="@string/kit_example"
+                            android:textColor="?attr/colorPrimary"
+                            android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </GridLayout>
+
+        <Button
+            android:id="@+id/kitShowDetail"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/bg_rectangle"
+            android:text="@string/show_more"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+            android:theme="@style/Widget.MaterialComponents.Button"
+            android:layout_marginTop="6dp"/>
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

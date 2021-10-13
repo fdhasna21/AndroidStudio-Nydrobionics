@@ -75,9 +75,11 @@ class MainSocialFragment : Fragment() {
             rowAdapter.notifyDataSetChanged()
         })
 
-        binding.mainSocialsRecyclerView.adapter = rowAdapter
-        binding.mainSocialsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.mainSocialsRecyclerView.addItemDecoration(object : DividerItemDecoration(requireContext(), VERTICAL) {})
-        binding.mainSocialsRecyclerView.setHasFixedSize(true)
+        binding.mainSocialsRecyclerView.apply {
+            adapter = rowAdapter
+            layoutManager = LinearLayoutManager(requireContext())
+            addItemDecoration(object : DividerItemDecoration(requireContext(), VERTICAL) {})
+            setHasFixedSize(true)
+        }
     }
 }

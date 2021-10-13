@@ -109,6 +109,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener,
             R.id.drawer_edit -> {
                 val intent = Intent(this, EditProfileUserActivity::class.java)
                 intent.putExtra(BuildConfig.CURRENT_USER, viewModel.getCurrentUser().value)
+                Log.i(TAG, "onNavigationItemSelected: ${viewModel.getCurrentUser().value}")
                 startActivity(intent)
                 drawerLayout.closeDrawer(GravityCompat.END)
                 true

@@ -60,8 +60,7 @@ class EditProfileUserActivity : AppCompatActivity(), View.OnClickListener, Segme
 
         bindingFragment = binding.editProfileFragment
         bindingFragment.apply {
-            createUserGender.onPositionChangedListener = this@EditProfileUserActivity
-
+            setupDefaultData()
             editTexts = arrayListOf(
                 createUserName,
                 createUserPhone,
@@ -80,10 +79,11 @@ class EditProfileUserActivity : AppCompatActivity(), View.OnClickListener, Segme
                 actionBar = supportActionBar
             )
 
+            createUserGender.onPositionChangedListener = this@EditProfileUserActivity
             editTexts.forEach { it.addTextChangedListener(this@EditProfileUserActivity) }
             viewsAsButton.forEach { it.setOnClickListener(this@EditProfileUserActivity) }
             createUserPhoto.setOnLongClickListener { createUserEditPhoto.performClick() }
-            setupDefaultData()
+
             checkUpdate()
         }
 
@@ -174,6 +174,7 @@ class EditProfileUserActivity : AppCompatActivity(), View.OnClickListener, Segme
             0 -> viewModel.setGender(Gender.MALE)
             1 -> viewModel.setGender(Gender.FEMALE)
         }
+        checkUpdate()
     }
 
     private fun setupDefaultData(){
@@ -183,11 +184,11 @@ class EditProfileUserActivity : AppCompatActivity(), View.OnClickListener, Segme
 
             viewModel.getCurrentUserModel()?.let {
                 createUserEmail.setText(Firebase.auth.currentUser?.email)
-                createUserName.setText(it.name)
-                createUserPhone.setText(it.phone)
-                createUserAddress.setText(it.address)
-                createUserBio.setText(it.bio)
-                createUserDOB.setText(it.dob)
+                createUserName.setText(it.name ?: "")
+                createUserPhone.setText(it.phone ?: "")
+                createUserAddress.setText(it.address ?: "")
+                createUserBio.setText(it.bio ?: "")
+                createUserDOB.setText(it.dob ?: "")
                 it.photo_url?.let {
                     Glide.with(this@EditProfileUserActivity)
                         .load(it)
@@ -223,11 +224,12 @@ class EditProfileUserActivity : AppCompatActivity(), View.OnClickListener, Segme
         } else {
             viewModel.checkNotEmpty(
                 utility.isChanges(strEdt) ||
-                        viewModel.getGenderPosition() != bindingFragment.createUserGender.position ||
+                        viewModel.getUpdateGender() != bindingFragment.createUserGender.position ||
                         viewModel.getPhotoProfile().value != null
             ).observe(this, {
                 bindingFragment.createUserSubmit.isEnabled = it
             })
+            Log.i(TAG, "checkUpdate: ${viewModel.getUpdateGender()} ${bindingFragment.createUserGender.position}")
         }
     }
 
