@@ -17,7 +17,7 @@ import com.fdhasna21.nydrobionics.databinding.ActivityAddKitBinding
 import com.fdhasna21.nydrobionics.dataclass.model.FarmModel
 import com.fdhasna21.nydrobionics.dataclass.model.KitModel
 import com.fdhasna21.nydrobionics.enumclass.NumberPickerType
-import com.fdhasna21.nydrobionics.fragment.CreateFarmFragment
+import com.fdhasna21.nydrobionics.fragment.createprofile.CreateFarmFragment
 import com.fdhasna21.nydrobionics.utility.ViewUtility
 import com.fdhasna21.nydrobionics.viewmodel.AddKitViewModel
 import com.google.android.material.textfield.TextInputEditText

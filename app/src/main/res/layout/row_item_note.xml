@@ -46,8 +46,8 @@
                 android:gravity="left|center_vertical"
                 android:maxLines="1"
                 android:text="@string/title"
-                android:textStyle="bold"
-                android:textSize="16sp"/>
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/noteSubtitle"

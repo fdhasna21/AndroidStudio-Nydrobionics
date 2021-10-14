@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.profilekit.KitOverviewFragment"
+    android:focusableInTouchMode="true"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    android:divider="@drawable/divider_6dp"
+    android:showDividers="middle|end"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <include
+        android:id="@+id/kitCondition"
+        layout="@layout/row_item_kit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp" />
+
+    <RelativeLayout
+        android:id="@+id/kitPlantedRoot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:background="@drawable/bg_card_stroke">
+        <include
+            android:id="@+id/kitPlantedCrops"
+            layout="@layout/layout_planted_crops"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+</LinearLayout>

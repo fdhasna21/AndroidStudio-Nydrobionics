@@ -3,7 +3,6 @@ package com.fdhasna21.nydrobionics.activity
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -15,6 +14,7 @@ import android.webkit.MimeTypeMap
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.canhub.cropper.CropImage
@@ -24,12 +24,11 @@ import com.fdhasna21.nydrobionics.databinding.ActivityAddPlantBinding
 import com.fdhasna21.nydrobionics.dataclass.model.PlantModel
 import com.fdhasna21.nydrobionics.enumclass.NumberPickerType
 import com.fdhasna21.nydrobionics.enumclass.ProfileType
-import com.fdhasna21.nydrobionics.fragment.CreateFarmFragment
+import com.fdhasna21.nydrobionics.fragment.createprofile.CreateFarmFragment
 import com.fdhasna21.nydrobionics.utility.ViewUtility
 import com.fdhasna21.nydrobionics.viewmodel.AddPlantViewModel
 import com.google.android.material.textfield.TextInputEditText
 import pl.polak.clicknumberpicker.ClickNumberPickerView
-import java.lang.Exception
 
 class AddPlantActivity : AppCompatActivity(), TextWatcher, View.OnClickListener {
     private lateinit var binding : ActivityAddPlantBinding

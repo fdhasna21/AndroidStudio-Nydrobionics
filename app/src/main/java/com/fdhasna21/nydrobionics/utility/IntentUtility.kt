@@ -87,6 +87,18 @@ open class IntentUtility(open val context: Context?){
             .show()
     }
 
+    fun openOptions(edit:(() -> Unit), delete:(() -> Unit)){
+        val items = arrayOf("Edit", "Delete")
+        MaterialAlertDialogBuilder(context!!)
+            .setItems(items){_, which ->
+                when(which){
+                    0 -> edit
+                    1 -> delete
+                }
+            }
+            .show()
+    }
+
     fun openImage(imageView:View, title:String="Photo Profile"){
         try {
             val filename = "image_preview.png"

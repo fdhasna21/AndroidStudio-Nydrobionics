@@ -1,14 +1,13 @@
-package com.fdhasna21.nydrobionics.fragment
+package com.fdhasna21.nydrobionics.fragment.mainactivity
 
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.PopupMenu
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -21,6 +20,7 @@ import com.fdhasna21.nydrobionics.adapter.NoteModelAdapter
 import com.fdhasna21.nydrobionics.databinding.FragmentMainNotesBinding
 import com.fdhasna21.nydrobionics.databinding.RowItemNoteBinding
 import com.fdhasna21.nydrobionics.dataclass.model.NoteModel
+import com.fdhasna21.nydrobionics.utility.IntentUtility
 import com.fdhasna21.nydrobionics.viewmodel.MainViewModel
 
 class MainNotesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
@@ -66,27 +66,40 @@ class MainNotesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
                     }
 
                     override fun onItemLongClicked(position: Int) {
-                        val popUpMenu = PopupMenu(context, view)
-                        popUpMenu.menuInflater.inflate(R.menu.menu_popup, popUpMenu.menu)
-                        popUpMenu.setOnMenuItemClickListener {
-                            when (it.itemId) {
-                                R.id.popipEdit -> {
-                                    gotoNote(position)
-                                    true
-                                }
-                                R.id.popupDelete -> {
-                                    viewModel.deleteNote(position)
-                                    viewModel.isNoteDeleted.observe(requireActivity(), {
-                                        when(it){
-                                            true -> Toast.makeText(requireContext(), "Note deleted.", Toast.LENGTH_SHORT).show()
-                                        }
-                                    })
-                                    true
-                                }
-                                else -> true
+                        IntentUtility(requireContext()).openOptions(
+                            edit = {
+                                gotoNote(position)
+                            },
+                            delete = {
+                                viewModel.deleteNote(position)
+                                viewModel.isNoteDeleted.observe(requireActivity(), {
+                                    when(it){
+                                        true -> Toast.makeText(requireContext(), "Note deleted.", Toast.LENGTH_SHORT).show()
+                                    }
+                                })
                             }
-                        }
-                        popUpMenu.show()
+                        )
+//                        val popUpMenu = PopupMenu(context, view)
+//                        popUpMenu.menuInflater.inflate(R.menu.menu_popup, popUpMenu.menu)
+//                        popUpMenu.setOnMenuItemClickListener {
+//                            when (it.itemId) {
+//                                R.id.popipEdit -> {
+//                                    gotoNote(position)
+//                                    true
+//                                }
+//                                R.id.popupDelete -> {
+//                                    viewModel.deleteNote(position)
+//                                    viewModel.isNoteDeleted.observe(requireActivity(), {
+//                                        when(it){
+//                                            true -> Toast.makeText(requireContext(), "Note deleted.", Toast.LENGTH_SHORT).show()
+//                                        }
+//                                    })
+//                                    true
+//                                }
+//                                else -> true
+//                            }
+//                        }
+//                        popUpMenu.show()
                     }
                 }
             )

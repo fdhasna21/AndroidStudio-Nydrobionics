@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView android:id="@+id/noteContentRoot"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="20dp"
+    android:layout_marginVertical="10dp"
+    android:elevation="12dp"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:backgroundTint="?attr/colorPrimary"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        
+        <LinearLayout
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="6dp">
+            <TextView
+                android:id="@+id/cropsDate"
+                style="?attr/textAppearanceHeadline5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
+                android:layout_marginBottom="6dp"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="@string/date"
+                android:textStyle="bold"
+                android:textColor="@color/white"/>
+
+            <TextView
+                android:id="@+id/cropsMonth"
+                style="?attr/textAppearanceCaption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
+                android:layout_marginBottom="6dp"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="@string/month"
+                android:textColor="@color/white"
+                android:textAllCaps="true"/>
+        </LinearLayout>
+        
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp">
+
+                <TextView
+                    android:id="@+id/cropsPlantTitle"
+                    style="?attr/textAppearanceBody1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginBottom="6dp"
+                    android:gravity="left|center_vertical"
+                    android:text="@string/planted_crops"
+                    android:textColor="?attr/colorPrimary"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/cropsPlantPhoto"
+                    android:layout_width="85dp"
+                    android:layout_height="85dp"
+                    android:layout_below="@id/cropsPlantTitle"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="6dp"
+                    android:contentDescription="@string/user_photo_profile"
+                    android:elevation="12dp"
+                    android:src="@drawable/ic_farmer"
+                    app:shapeAppearanceOverlay="@style/circular_image"
+                    tools:ignore="ImageContrastCheck" />
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

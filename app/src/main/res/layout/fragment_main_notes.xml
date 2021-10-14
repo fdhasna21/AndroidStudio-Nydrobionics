@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragment.MainNotesFragment">
+    tools:context=".fragment.mainactivity.MainNotesFragment">
     <View
         android:id="@+id/noteLine"
         android:layout_width="2dp"

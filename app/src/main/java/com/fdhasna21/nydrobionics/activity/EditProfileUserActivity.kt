@@ -43,7 +43,7 @@ class EditProfileUserActivity : AppCompatActivity(), View.OnClickListener, Segme
     private lateinit var editTexts : ArrayList<TextInputEditText>
     private var strEdt : HashMap<String, TextInputEditText> = hashMapOf()
 
-    companion object{
+    companion object {
         const val TAG = "editProfileUser"
     }
 
@@ -83,7 +83,6 @@ class EditProfileUserActivity : AppCompatActivity(), View.OnClickListener, Segme
             editTexts.forEach { it.addTextChangedListener(this@EditProfileUserActivity) }
             viewsAsButton.forEach { it.setOnClickListener(this@EditProfileUserActivity) }
             createUserPhoto.setOnLongClickListener { createUserEditPhoto.performClick() }
-
             checkUpdate()
         }
 
@@ -95,7 +94,6 @@ class EditProfileUserActivity : AppCompatActivity(), View.OnClickListener, Segme
                     .into(bindingFragment.createUserPhoto)
             }
         })
-
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -215,22 +213,13 @@ class EditProfileUserActivity : AppCompatActivity(), View.OnClickListener, Segme
     override fun afterTextChanged(s: Editable?) {}
 
     private fun checkUpdate() {
-        if(viewModel.getCurrentUserModel() == null){
-            viewModel.checkNotEmpty(
-                utility.isEmpties(editTexts)
-            ).observe(this, {
-                bindingFragment.createUserSubmit.isEnabled = it
-            })
-        } else {
-            viewModel.checkNotEmpty(
-                utility.isChanges(strEdt) ||
-                        viewModel.getUpdateGender() != bindingFragment.createUserGender.position ||
-                        viewModel.getPhotoProfile().value != null
-            ).observe(this, {
-                bindingFragment.createUserSubmit.isEnabled = it
-            })
-            Log.i(TAG, "checkUpdate: ${viewModel.getUpdateGender()} ${bindingFragment.createUserGender.position}")
-        }
+        viewModel.checkNotEmpty(
+            utility.isChanges(strEdt) ||
+                    viewModel.getUpdateGender() != bindingFragment.createUserGender.position ||
+                    viewModel.getPhotoProfile().value != null
+        ).observe(this, {
+            bindingFragment.createUserSubmit.isEnabled = it
+        })
     }
 
     val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { data ->

@@ -1,22 +1,26 @@
-package com.fdhasna21.nydrobionics.fragment
+package com.fdhasna21.nydrobionics.fragment.mainactivity
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.fdhasna21.nydrobionics.BuildConfig
 import com.fdhasna21.nydrobionics.R
+import com.fdhasna21.nydrobionics.activity.ProfileUserActivity
 import com.fdhasna21.nydrobionics.adapter.AdapterType
 import com.fdhasna21.nydrobionics.adapter.PostModelAdapter
 import com.fdhasna21.nydrobionics.databinding.FragmentMainSocialBinding
 import com.fdhasna21.nydrobionics.databinding.RowItemPostBinding
 import com.fdhasna21.nydrobionics.dataclass.model.PlantModel
 import com.fdhasna21.nydrobionics.dataclass.model.UserModel
+import com.fdhasna21.nydrobionics.utility.IntentUtility
 import com.fdhasna21.nydrobionics.viewmodel.MainViewModel
 
 class MainSocialFragment : Fragment() {
@@ -59,8 +63,29 @@ class MainSocialFragment : Fragment() {
                         v: RowItemPostBinding
                     ) {
                         when(itemView){
-                            v.postRoot -> Toast.makeText(requireContext(), "clicked", Toast.LENGTH_SHORT).show()
-                            v.postOptions -> Toast.makeText(requireContext(), "option", Toast.LENGTH_SHORT).show()
+                            v.postImageContent -> {
+                                IntentUtility(requireContext()).openImage(itemView, viewModel.getPostUser(position)?.name ?: "Photo Profile" )
+                            }
+                            v.postRoot -> {
+                                val intent = Intent(requireContext(), ProfileUserActivity::class.java)
+                                intent.putExtra(BuildConfig.SELECTED_USER, viewModel.getPostUser(position))
+                                startActivity(intent)
+                            }
+                            v.postOptions -> {
+                                IntentUtility(requireContext()).openOptions(
+                                    edit = {
+                                        Toast.makeText(requireContext(), "edit", Toast.LENGTH_SHORT).show()
+                                    },
+                                    delete = {
+                                        viewModel.deletePost(position)
+                                        viewModel.isPostDeleted.observe(requireActivity(), {
+                                            when(it){
+                                                true -> Toast.makeText(requireContext(), "Note deleted.", Toast.LENGTH_SHORT).show()
+                                            }
+                                        })
+                                    }
+                                )
+                            }
                         }
                     }
 

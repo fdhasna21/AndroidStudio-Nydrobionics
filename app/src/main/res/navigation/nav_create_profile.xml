@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/createUserFragment"
-        android:name="com.fdhasna21.nydrobionics.fragment.CreateUserFragment"
+        android:name="com.fdhasna21.nydrobionics.fragment.createprofile.CreateUserFragment"
         android:label="fragment_create_user"
         tools:layout="@layout/fragment_create_user" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/createFarmFragment"
-        android:name="com.fdhasna21.nydrobionics.fragment.CreateFarmFragment"
+        android:name="com.fdhasna21.nydrobionics.fragment.createprofile.CreateFarmFragment"
         android:label="fragment_create_garden"
         tools:layout="@layout/fragment_create_farm" >
         <action
@@ -25,7 +25,7 @@
     </fragment>
     <fragment
         android:id="@+id/createStaffFragment"
-        android:name="com.fdhasna21.nydrobionics.fragment.CreateStaffFragment"
+        android:name="com.fdhasna21.nydrobionics.fragment.createprofile.CreateStaffFragment"
         android:label="fragment_create_staff"
         tools:layout="@layout/fragment_create_staff" />
 </navigation>

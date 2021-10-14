@@ -4,9 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.fdhasna21.nydrobionics.dataclass.model.*
-import com.fdhasna21.nydrobionics.dataclass.model.CropsModel.Companion.replace
 import com.fdhasna21.nydrobionics.dataclass.model.CropsModel.Companion.toCropsModel
-import com.fdhasna21.nydrobionics.dataclass.model.DataMonitoringModel.Companion.replace
 import com.fdhasna21.nydrobionics.dataclass.model.DataMonitoringModel.Companion.toDataMonitoringModel
 import com.fdhasna21.nydrobionics.dataclass.model.FarmModel.Companion.toFarmModel
 import com.fdhasna21.nydrobionics.dataclass.model.KitModel.Companion.toKitModel
@@ -98,7 +96,8 @@ class MainViewModel : ViewModel() {
                                                         }
                                                         currentNoteModels.value = notes
                                                         Log.i(TAG, "getUsersUpdate ${currentUserModel.value?.uid}" +
-                                                                " \tnotes:${currentNoteModels.value?.size}\n")
+                                                                " \tnotes:${currentNoteModels.value?.size}\n" +
+                                                                "${currentUserModel.value}\n")
                                                     }
 
                                                     error?.let {
@@ -254,8 +253,8 @@ class MainViewModel : ViewModel() {
         }
 
         Log.i(TAG, "getFarmsUpdate ${currentFarmModel.value?.farmId}" +
-                " \tkits:${currentKitModels.value?.size}\n\n" +
-                "${currentFarmModel.value}")
+                " \tkits:${currentKitModels.value?.size}\n" +
+                "${currentFarmModel.value}\n")
     }
 
     /** NOTES **/
@@ -267,11 +266,12 @@ class MainViewModel : ViewModel() {
     }
 
     fun deleteNote(position:Int){
+        isNoteDeleted.value = null
         val noteId = getNote(position)?.noteId
         try {
             if(noteId == auth.uid!!) {
                 firestore.collection("users").document(auth.uid!!)
-                    .collection("notes").document(noteId!!)
+                    .collection("notes").document(noteId)
                     .delete().addOnCompleteListener {
                         if (it.isSuccessful) {
                             isNoteDeleted.value = true
@@ -299,11 +299,25 @@ class MainViewModel : ViewModel() {
     var isPostDeleted : MutableLiveData<Boolean?> = MutableLiveData(null)
     var deletePostError : MutableLiveData<String> = MutableLiveData(null)
 
+    fun getPostUser(position: Int) : UserModel? {
+        var output : UserModel? = null
+        val post = getPost(position)?.userId
+        post?.let { postId ->
+            allUserModels.value?.forEach {
+                if (it.uid == postId){
+                    output = it
+                }
+            }
+        }
+        return output
+    }
+
     fun getPost(position: Int) : PlantModel?{
         return allPlantModels.value?.get(position)
     }
 
     fun deletePost(position: Int){
+        isPostDeleted.value = null
         val plantModel = getPost(position)
         val plantId = plantModel?.plantId
         try {

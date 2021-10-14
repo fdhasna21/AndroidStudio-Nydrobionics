@@ -1,11 +1,9 @@
-package com.fdhasna21.nydrobionics.fragment
+package com.fdhasna21.nydrobionics.fragment.mainactivity
 
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.view.animation.AccelerateInterpolator
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
@@ -14,7 +12,6 @@ import com.fdhasna21.nydrobionics.R
 import com.fdhasna21.nydrobionics.activity.EditProfileFarmActivity
 import com.fdhasna21.nydrobionics.activity.MainActivity
 import com.fdhasna21.nydrobionics.activity.ProfileKitActivity
-import com.fdhasna21.nydrobionics.activity.ProfileUserActivity
 import com.fdhasna21.nydrobionics.adapter.AdapterType
 import com.fdhasna21.nydrobionics.adapter.KitModelAdapter
 import com.fdhasna21.nydrobionics.databinding.FragmentMainHomeBinding
@@ -73,7 +70,10 @@ class MainHomeFragment : Fragment(), View.OnClickListener, CardStackListener{
             (cardStackAdapter as KitModelAdapter).setOnItemClickListener(
                 object : KitModelAdapter.OnItemClickListener{
                     override fun onItemClicked(position: Int) {
-                        Toast.makeText(requireContext(), "position $position", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(requireContext(), ProfileKitActivity::class.java)
+                        intent.putExtra(BuildConfig.CURRENT_USER, viewModel.getCurrentUser().value)
+                        intent.putExtra(BuildConfig.SELECTED_KIT, viewModel.getKit(position))
+                        startActivity(intent)
                     }
                 }
             )
@@ -114,15 +114,12 @@ class MainHomeFragment : Fragment(), View.OnClickListener, CardStackListener{
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        //todo : trial aja
         when(item.itemId){
             R.id.farmProfile -> {
                 val intent = Intent(activity, EditProfileFarmActivity::class.java)
                 intent.putExtra(BuildConfig.CURRENT_FARM, viewModel.getCurrentFarm().value)
                 startActivity(intent)
             }
-//            R.id.userProfile -> startActivity(Intent(activity, ProfileUserActivity::class.java))
-            R.id.kitProfile -> startActivity(Intent(activity, ProfileKitActivity::class.java))
         }
         return super.onOptionsItemSelected(item)
     }

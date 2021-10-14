@@ -1,15 +1,15 @@
-package com.fdhasna21.nydrobionics.fragment
+package com.fdhasna21.nydrobionics.fragment.createprofile
 
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.addisonelliott.segmentedbutton.SegmentedButtonGroup
 import com.bumptech.glide.Glide
@@ -30,7 +30,6 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import java.util.*
-import kotlin.collections.ArrayList
 
 class CreateUserFragment : Fragment(), View.OnClickListener, SegmentedButtonGroup.OnPositionChangedListener, TextWatcher {
     private var _binding : FragmentCreateUserBinding? = null
@@ -68,7 +67,6 @@ class CreateUserFragment : Fragment(), View.OnClickListener, SegmentedButtonGrou
                     createUserName,
                     createUserPhone,
                     createUserAddress,
-                    createUserDOB,
                     createUserBio)
             utility = ViewUtility(
                 context = requireContext(),
@@ -89,8 +87,6 @@ class CreateUserFragment : Fragment(), View.OnClickListener, SegmentedButtonGrou
 
             createUserEmail.setText(Firebase.auth.currentUser?.email)
         }
-
-
 
         viewModel.getPhotoProfile().observe(requireActivity(), {
             it?.let {
@@ -196,7 +192,8 @@ class CreateUserFragment : Fragment(), View.OnClickListener, SegmentedButtonGrou
     override fun afterTextChanged(s: Editable?) {}
 
     private fun checkEmpty() {
-        val checkerEditText = arrayListOf<TextInputEditText>(binding.createUserName,
+        val checkerEditText = arrayListOf<TextInputEditText>(
+            binding.createUserName,
             binding.createUserPhone,
             binding.createUserAddress,
             binding.createUserDOB)

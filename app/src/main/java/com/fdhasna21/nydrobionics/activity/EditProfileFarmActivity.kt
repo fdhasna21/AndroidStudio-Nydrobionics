@@ -3,14 +3,16 @@ package com.fdhasna21.nydrobionics.activity
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -31,10 +33,9 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.textfield.TextInputEditText
-import java.lang.Exception
-import java.util.HashMap
+import java.util.*
 
-class EditProfileFarmActivity : AppCompatActivity(), View.OnClickListener {
+class EditProfileFarmActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
     private lateinit var binding : ActivityEditProfileFarmBinding
     private lateinit var bindingFragment : FragmentCreateFarmBinding
     private lateinit var viewModel : CreateProfileViewModel
@@ -42,7 +43,6 @@ class EditProfileFarmActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var utility: ViewUtility
     private lateinit var editTexts : java.util.ArrayList<TextInputEditText>
     private var strEdt : HashMap<String, TextInputEditText> = hashMapOf()
-
 
     companion object {
         const val TAG = "editProfileFarm"
@@ -61,6 +61,7 @@ class EditProfileFarmActivity : AppCompatActivity(), View.OnClickListener {
 
         bindingFragment = binding.editFarmFragment
         bindingFragment.apply {
+            setupDefaultData()
             viewsAsButton = arrayListOf(esAddStaff, createFarmSubmit)
             editTexts = arrayListOf(
                 createFarmName,
@@ -75,10 +76,8 @@ class EditProfileFarmActivity : AppCompatActivity(), View.OnClickListener {
                 actionBar = supportActionBar
             )
 
-            viewsAsButton.forEach {
-                it.setOnClickListener(this@EditProfileFarmActivity)
-            }
-            setupDefaultData()
+            viewsAsButton.forEach { it.setOnClickListener(this@EditProfileFarmActivity) }
+            editTexts.forEach { it.addTextChangedListener(this@EditProfileFarmActivity) }
             setupRecyclerView()
             checkUpdate()
         }
@@ -93,11 +92,11 @@ class EditProfileFarmActivity : AppCompatActivity(), View.OnClickListener {
             editStaff.visibility = View.VISIBLE
 
             viewModel.getCurrentFarmModel()?.let {
-                createFarmName.setText(it.name)
-                createFarmDesc.setText(it.description)
-                createFarmLoc.setText(it.location)
+                createFarmName.setText(it.name ?: "")
+                createFarmDesc.setText(it.description ?: "")
+                createFarmLoc.setText(it.location ?: "")
 
-                strEdt[it.name?: ""] = createFarmName
+                strEdt[it.name ?: ""] = createFarmName
                 strEdt[it.description ?: ""] = createFarmDesc
                 strEdt[it.location ?: ""] = createFarmLoc
             }
@@ -140,20 +139,11 @@ class EditProfileFarmActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun checkUpdate(){
-        if(viewModel.getCurrentUserModel() != null){
-            viewModel.checkNotEmpty(
-                utility.isEmpties(editTexts) ||
-                        viewModel.getCurrentStaff().value != viewModel.getStaff().value
-            ).observe(this, {
-                bindingFragment.createFarmSubmit.isEnabled = it
-            })
-        } else {
-            viewModel.checkNotEmpty(
-                utility.isChanges(strEdt)
-            ).observe(this, {
-                bindingFragment.createFarmSubmit.isEnabled = it
-            })
-        }
+        viewModel.checkNotEmpty(
+            utility.isChanges(strEdt)
+        ).observe(this, {
+            bindingFragment.createFarmSubmit.isEnabled = it
+        })
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -191,6 +181,7 @@ class EditProfileFarmActivity : AppCompatActivity(), View.OnClickListener {
                         utility.isLoading = false
                         Toast.makeText(this, "Farm updated", Toast.LENGTH_SHORT).show()
                         super.onBackPressed()
+                        finish()
                     }
                 })
             }
@@ -210,6 +201,7 @@ class EditProfileFarmActivity : AppCompatActivity(), View.OnClickListener {
             if(data?.resultCode == Activity.RESULT_OK){
                 data.data?.getParcelableExtra<UserModel>(BuildConfig.SELECTED_USER)?.let {
                     viewModel.addStaff(it)
+                    checkUpdate()
                 }
             }
 
@@ -217,4 +209,13 @@ class EditProfileFarmActivity : AppCompatActivity(), View.OnClickListener {
             Toast.makeText(this, e.message.toString(), Toast.LENGTH_SHORT).show()
         }
     }
+
+    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+        checkUpdate()
+        Toast.makeText(this, "ini", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun afterTextChanged(s: Editable?) {}
 }

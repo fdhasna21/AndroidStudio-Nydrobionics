@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.fdhasna21.nydrobionics.activity.ProfileUserActivity
 import com.fdhasna21.nydrobionics.databinding.RowItemPostBinding
 import com.fdhasna21.nydrobionics.dataclass.model.PlantModel
 import com.fdhasna21.nydrobionics.dataclass.model.UserModel
@@ -33,7 +34,9 @@ class PostModelAdapter(private val context: Context,
     }
 
     fun setOnItemClickListener(onItemClickListener : OnItemClickListener) {
-        this.onItemClickListener = onItemClickListener
+        onItemClickListener.let {
+            this.onItemClickListener = onItemClickListener
+        }
     }
 
     interface OnItemClickListener {
@@ -55,7 +58,7 @@ class PostModelAdapter(private val context: Context,
                     .load(it.photo_url)
                     .circleCrop()
                     .into(postUserImage)
-                postOptions.visibility = if(it.uid == Firebase.auth.uid){
+                postOptions.visibility = if(it.uid == Firebase.auth.uid && context !is ProfileUserActivity){
                     View.VISIBLE
                 } else {
                     View.GONE

@@ -60,6 +60,18 @@ enum class AdapterType {
         ): RecyclerView.Adapter<*> {
             return KitModelAdapter(context, adapterData as ArrayList<KitModel>)
         }
+    },
+    PROFILE_CROPS{
+        override fun getAdapter(
+            context: Context,
+            adapterData: ArrayList<*>,
+            allUsers: ArrayList<UserModel>?,
+            allPlants: ArrayList<PlantModel>?,
+            type: SearchSelectType?
+        ): RecyclerView.Adapter<*> {
+            return CropsModelAdapter(context, adapterData as ArrayList<CropsModel>)
+        }
+
     };
 
     abstract fun getAdapter(context: Context,

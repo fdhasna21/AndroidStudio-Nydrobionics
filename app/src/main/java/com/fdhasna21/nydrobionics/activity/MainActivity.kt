@@ -24,7 +24,7 @@ import com.fdhasna21.nydrobionics.R
 import com.fdhasna21.nydrobionics.databinding.ActivityMainBinding
 import com.fdhasna21.nydrobionics.dataclass.model.FarmModel
 import com.fdhasna21.nydrobionics.dataclass.model.UserModel
-import com.fdhasna21.nydrobionics.fragment.MainAddFragment
+import com.fdhasna21.nydrobionics.fragment.mainactivity.MainAddFragment
 import com.fdhasna21.nydrobionics.utility.IntentUtility
 import com.fdhasna21.nydrobionics.utility.local.DatabaseHandler
 import com.fdhasna21.nydrobionics.viewmodel.MainViewModel

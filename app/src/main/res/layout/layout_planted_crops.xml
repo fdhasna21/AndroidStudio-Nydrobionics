@@ -23,8 +23,8 @@
             android:layout_marginBottom="6dp"
             android:gravity="left|center_vertical"
             android:text="@string/planted_crops"
-            android:textStyle="bold"
-            android:textColor="?attr/colorPrimary"/>
+            android:textColor="?attr/colorPrimary"
+            android:textStyle="bold" />
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/kitPlantPhoto"

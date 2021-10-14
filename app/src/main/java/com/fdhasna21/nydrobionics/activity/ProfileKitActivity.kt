@@ -6,36 +6,29 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.MotionEvent
-import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.fdhasna21.nydrobionics.BuildConfig
 import com.fdhasna21.nydrobionics.R
-import com.fdhasna21.nydrobionics.adapter.ViewPagerAdapter
 import com.fdhasna21.nydrobionics.databinding.ActivityProfileKitBinding
-import com.fdhasna21.nydrobionics.databinding.LayoutPlantedCropsBinding
-import com.fdhasna21.nydrobionics.databinding.RowItemKitMonitoringBinding
-import com.fdhasna21.nydrobionics.dataclass.model.PlantModel
+import com.fdhasna21.nydrobionics.dataclass.model.KitModel
+import com.fdhasna21.nydrobionics.dataclass.model.UserModel
+import com.fdhasna21.nydrobionics.fragment.profilekit.KitCropsFragment
+import com.fdhasna21.nydrobionics.fragment.profilekit.KitMonitoringFragment
+import com.fdhasna21.nydrobionics.fragment.profilekit.KitOverviewFragment
 import com.fdhasna21.nydrobionics.viewmodel.ProfileKitViewModel
-import com.firebase.ui.database.FirebaseRecyclerOptions
-import com.google.android.material.color.MaterialColors
-import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 
-class ProfileKitActivity : AppCompatActivity(), View.OnClickListener {
+class ProfileKitActivity : AppCompatActivity() {
     private lateinit var binding : ActivityProfileKitBinding
-    private lateinit var bindingCondition : RowItemKitMonitoringBinding
-    private lateinit var bindingPlanted : LayoutPlantedCropsBinding
-    private lateinit var viewModel : ProfileKitViewModel
+    lateinit var viewModel : ProfileKitViewModel
 
     companion object {
-        val TAB_TITLES = intArrayOf(
-            R.string.data_monitoring,
-            R.string.crops
-        )
+        const val TAG = "kitProfileActivity"
+        val TAB_LAYOUT = arrayListOf<String>("Overview", "Data Monitoring", "Crops")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,27 +37,36 @@ class ProfileKitActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(binding.root)
 
         viewModel = ViewModelProvider(this).get(ProfileKitViewModel::class.java)
-        //todo : title kit name, subtitle last update
+        viewModel.setCurrentKit(intent.getParcelableExtra<UserModel>(BuildConfig.CURRENT_USER),
+            intent.getParcelableExtra<KitModel>(BuildConfig.SELECTED_KIT))
         supportActionBar?.title = getString(R.string.hydroponic_kit)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(false)
+        supportActionBar?.elevation = 0f
 
-        bindingCondition = binding.kitCondition
-        bindingCondition.apply {
-            kitDetail.visibility = View.GONE
-            kitCard.elevation = 0f
-            kitTitle.setTextColor(MaterialColors.getColor(this@ProfileKitActivity, R.attr.colorPrimary, ContextCompat.getColor(this@ProfileKitActivity, R.color.black)))
+        val tabLayoutAdapter = object : FragmentStateAdapter(supportFragmentManager, lifecycle){
+            override fun getItemCount(): Int {
+                return TAB_LAYOUT.size
+            }
+
+            override fun createFragment(position: Int): Fragment {
+                return when(position){
+                    1 -> KitMonitoringFragment()
+                    2 -> KitCropsFragment()
+                    else -> KitOverviewFragment()
+                }
+            }
         }
 
-        bindingPlanted = binding.kitPlantedCrops
-        bindingPlanted.apply {
-            kitPlantCard.elevation = 0f
-        }
-        setupTabLayout()
+        binding.profileKitViewPager.adapter = tabLayoutAdapter
+        TabLayoutMediator(binding.profileKitTabLayout, binding.profileKitViewPager) { tab, position ->
+            tab.text = TAB_LAYOUT[position]
+        }.attach()
     }
 
     override fun onSupportNavigateUp(): Boolean {
         super.onBackPressed()
+        finish()
         return true
     }
 
@@ -86,45 +88,11 @@ class ProfileKitActivity : AppCompatActivity(), View.OnClickListener {
         when(item.itemId){
             R.id.kitSettings -> {
                 val intent = Intent(this, AddKitActivity::class.java)
-//                todo send data default
-//                intent.putExtra("defaultData", CreateProfileActivity.TAG)
+                intent.putExtra(BuildConfig.SELECTED_KIT, viewModel.getCurrentKit().value)
                 startActivity(intent)
             }
             R.id.kitHistory -> startActivity(Intent(this, ShowHistoryActivity::class.java))
         }
         return super.onOptionsItemSelected(item)
     }
-
-    override fun onClick(v: View?) {
-        when(v){
-
-        }
-    }
-
-    private fun setupTabLayout(){
-        //todo : referencenya! plant dari user yg terkait
-//        val reference = Firebase.database.getReference("crops")
-//        val options = FirebaseRecyclerOptions.Builder<PlantModel>()
-//            .setQuery(reference, PlantModel::class.java)
-//            .build()
-//
-//        val tabLayoutAdapter = ViewPagerAdapter(this, arrayListOf(options, options), AdapterRealTimeType.PLANT)
-//        binding.kitViewPager.adapter = tabLayoutAdapter
-//        TabLayoutMediator(binding.kitTabLayout, binding.kitViewPager) { tab, position ->
-//            tab.text = resources.getString(TAB_TITLES[position])
-//        }.attach()
-//
-//        binding.kitTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
-//            override fun onTabSelected(tab: TabLayout.Tab?) {
-//                when(tab!!.position){
-//                    0 -> {}
-//                    1 -> {}
-//                }
-//            }
-//
-//            override fun onTabUnselected(tab: TabLayout.Tab?) {}
-//            override fun onTabReselected(tab: TabLayout.Tab?) {}
-//        })
-    }
-
 }

@@ -2,11 +2,10 @@ package com.fdhasna21.nydrobionics.viewmodel
 
 import android.net.Uri
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.fdhasna21.nydrobionics.dataclass.model.FarmModel
 import com.fdhasna21.nydrobionics.dataclass.UriFileExtensions
+import com.fdhasna21.nydrobionics.dataclass.model.FarmModel
 import com.fdhasna21.nydrobionics.dataclass.model.FarmModel.Companion.toHashMap
 import com.fdhasna21.nydrobionics.dataclass.model.UserModel
 import com.fdhasna21.nydrobionics.dataclass.model.UserModel.Companion.toHashMap
@@ -15,20 +14,14 @@ import com.fdhasna21.nydrobionics.enumclass.Gender
 import com.fdhasna21.nydrobionics.enumclass.Role
 import com.fdhasna21.nydrobionics.utility.ViewUtility
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
-import java.text.ParsePosition
-import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.collections.ArrayList
 
 class CreateProfileViewModel : ViewModel() {
     private val today = ViewUtility().getCurrentDate()
@@ -65,8 +58,10 @@ class CreateProfileViewModel : ViewModel() {
     /** SET MODEL **/
     fun setCurrentUser(userModel: UserModel?){
         this.userModel.value = userModel
-        isUserCreated.value = true
-        updateUserGender.value  = Gender.getType(userModel?.gender!!)?.getPosition()!!
+        userModel?.let {
+            isUserCreated.value = true
+            updateUserGender.value  = Gender.getType(userModel.gender!!)?.getPosition()!!
+        }
     }
 
     fun setCurrentFarm(farmModel : FarmModel?){
@@ -101,26 +96,16 @@ class CreateProfileViewModel : ViewModel() {
         userModel.value?.gender = gender.toString()
     }
 
-    fun getGenderPosition() : Int {
-        return Gender.getType(userModel.value?.gender!!)?.getPosition()!!
-    }
-
     fun setDOB(date:Long?) : String? {
         userModel.value?.dob = ViewUtility().formatDateToString(date)
         return userModel.value?.dob
     }
 
-    fun getDOB() : Long?{
-        return if(userModel.value?.dob == null){
-            null
-        } else {
-            val c = Calendar.getInstance()
-            val pos = ParsePosition(0)
-            val sdf = SimpleDateFormat("dd MMMM yyyy", Locale.US)
-            c.time = sdf.parse(userModel.value!!.dob, pos)
-            c.add(Calendar.DATE, 1)
-            c.timeInMillis
+    fun getDOB() : Long{
+        if(userModel.value?.dob == null){
+            userModel.value?.dob = ViewUtility().getCurrentDate()
         }
+        return ViewUtility().formatStringToDate(userModel.value?.dob)
     }
 
     fun createUserProfile(name:String, phone:String, address:String, bio:String) {
@@ -189,16 +174,11 @@ class CreateProfileViewModel : ViewModel() {
                 this.location = location
             }
 
-            db.document(ref.id).set(farmModel.value!!.toHashMap()).addOnCompleteListener {
+            db.document(farmModel.value!!.farmId!!).set(farmModel.value!!.toHashMap()).addOnCompleteListener {
                 if(it.isSuccessful){
-                    userModel.value?.farmId = ref.id
+                    userModel.value?.farmId = farmModel.value!!.farmId!!
                     sendUserProfile()
-                    if(isUserCreated.value == true){
-                        isFarmCreated.value = true
-                    } else {
-                        createProfileError.value = it.exception.toString()
-                        isFarmCreated.value = false
-                    }
+                    isFarmCreated.value = isUserCreated.value == true
                 } else {
                     createProfileError.value = it.exception.toString()
                     isFarmCreated.value = false
@@ -235,6 +215,11 @@ class CreateProfileViewModel : ViewModel() {
 
     fun createStaff(){
         try {
+            farmModel.value?.let {
+                firestore.collection("farms").document(it.farmId!!)
+                    .set(it.toHashMap())
+            }
+
             currentStaff.value?.let {
                 for (staff in it) {
                     firestore.collection("users").document(staff.uid!!)

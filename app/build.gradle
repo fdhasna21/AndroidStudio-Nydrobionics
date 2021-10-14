@@ -97,4 +97,5 @@ dependencies {
     implementation 'com.github.polok:clicknumberpicker:0.1.2'
     implementation 'com.github.chrisbanes:PhotoView:2.0.0'
     implementation "com.yuyakaido.android:card-stack-view:2.3.4"
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 }

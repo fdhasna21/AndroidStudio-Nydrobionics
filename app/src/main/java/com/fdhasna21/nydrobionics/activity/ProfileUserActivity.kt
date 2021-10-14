@@ -1,6 +1,5 @@
 package com.fdhasna21.nydrobionics.activity
 
-import android.Manifest
 import android.content.Context
 import android.os.Bundle
 import android.view.MotionEvent
@@ -8,25 +7,23 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.fdhasna21.nydrobionics.BuildConfig
-import com.fdhasna21.nydrobionics.R
+import com.fdhasna21.nydrobionics.adapter.AdapterType
 import com.fdhasna21.nydrobionics.databinding.ActivityProfileUserBinding
-import com.fdhasna21.nydrobionics.databinding.FragmentMainProfileBinding
+import com.fdhasna21.nydrobionics.dataclass.model.PlantModel
 import com.fdhasna21.nydrobionics.dataclass.model.UserModel
 import com.fdhasna21.nydrobionics.utility.IntentUtility
-import com.fdhasna21.nydrobionics.utility.RequestPermission
 import com.fdhasna21.nydrobionics.viewmodel.ProfileUserViewModel
 
-class ProfileUserActivity : AppCompatActivity(), View.OnClickListener {
+class ProfileUserActivity : AppCompatActivity() {
     private lateinit var binding : ActivityProfileUserBinding
-    private lateinit var bindingFragment : FragmentMainProfileBinding
     private lateinit var viewModel : ProfileUserViewModel
-    private lateinit var viewsAsButton : ArrayList<View>
 
     companion object {
-        val TAB_TITLES = intArrayOf(
-            R.string.posts
-        )
+        const val TAG = "profileUserActivity"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,24 +35,61 @@ class ProfileUserActivity : AppCompatActivity(), View.OnClickListener {
         viewModel.setUserModel(intent.getParcelableExtra<UserModel>(BuildConfig.SELECTED_USER))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(false)
+        supportActionBar?.elevation= 0f
 
-        bindingFragment = binding.showUserProfile
-        bindingFragment.apply {
-            viewsAsButton = arrayListOf(mainProfileEmailGroup,
-                                        mainProfilePhoneGroup,
-                                        mainProfileAddressGroup,
-                                        mainProfilePhoto)
-            viewsAsButton.forEach { it.setOnClickListener(this@ProfileUserActivity) }
+        binding.apply {
+            viewModel.getUserModel().observe(this@ProfileUserActivity, {
+                it?.let {
+                    supportActionBar?.title = it.name
+                    profileUserName.text = it.name
+                    it.bio?.let{
+                        profileUserBio.text = it
+                    } ?: kotlin.run {
+                        profileUserBio.visibility = View.GONE
+                    }
+                    it.photo_url?.let {
+                        Glide.with(this@ProfileUserActivity)
+                            .load(it)
+                            .circleCrop()
+                            .into(profileUserPhoto)
+                    }
+                }
+            })
+
+            profileUserPhoto.setOnClickListener {
+                IntentUtility(this@ProfileUserActivity).openImage(profileUserPhoto, viewModel.getUserModel().value?.name ?: "Photo Profile")
+            }
         }
+        setupRecyclerView()
+    }
 
-        viewModel.getUserModel().observe(this,{
-            supportActionBar?.title = it.name
+    private fun setupRecyclerView() {
+        val userModel : ArrayList<UserModel> = arrayListOf()
+        val plantModels : ArrayList<PlantModel> = arrayListOf()
+        val rowAdapter = AdapterType.POST_PLANT.getAdapter(this, plantModels, allUsers = userModel)
+        viewModel.getUserPosts().observe(this,{
+            plantModels.clear()
+            plantModels.addAll(it ?: arrayListOf())
+            rowAdapter.notifyDataSetChanged()
         })
-        setupTabLayout()
+
+        viewModel.getUserModel().observe(this, {
+            userModel.clear()
+            userModel.addAll(arrayListOf(it))
+            rowAdapter.notifyDataSetChanged()
+        })
+
+        binding.profileUserRecyclerView.apply {
+            adapter = rowAdapter
+            layoutManager = LinearLayoutManager(this@ProfileUserActivity)
+            addItemDecoration(object : DividerItemDecoration(this@ProfileUserActivity, VERTICAL) {})
+            setHasFixedSize(true)
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
         super.onBackPressed()
+        finish()
         return true
     }
 
@@ -66,40 +100,5 @@ class ProfileUserActivity : AppCompatActivity(), View.OnClickListener {
             imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
         }
         return super.dispatchTouchEvent(ev)
-    }
-
-    override fun onClick(v: View?) {
-        when(v){
-            bindingFragment.mainProfileEmail -> IntentUtility(this).openEmail(bindingFragment.mainProfileEmail.text.toString())
-            bindingFragment.mainProfilePhoneGroup -> RequestPermission().requestPermission(this, Manifest.permission.CALL_PHONE, "Phone call", bindingFragment.mainProfilePhone.text.toString())
-            bindingFragment.mainProfileAddressGroup -> IntentUtility(this).openMaps(bindingFragment.mainProfileAddress.toString())
-            bindingFragment.mainProfilePhoto -> IntentUtility(this).openImage(bindingFragment.mainProfilePhoto, bindingFragment.mainProfileName.text.toString())
-        }
-    }
-
-    private fun setupTabLayout(){
-//        //todo : referencenya! plant dari user yg terkait
-//        val reference = Firebase.database.getReference("posts")
-//        val options = FirebaseRecyclerOptions.Builder<PlantModel>()
-//            .setQuery(reference, PlantModel::class.java)
-//            .build()
-//
-//        val tabLayoutAdapter = ViewPagerAdapter(this, arrayListOf(options), AdapterRealTimeType.PLANT)
-//        bindingFragment.mainProfileViewPager.adapter = tabLayoutAdapter
-//        TabLayoutMediator(bindingFragment.mainProfileTabLayout, bindingFragment.mainProfileViewPager) { tab, position ->
-//            tab.text = resources.getString(TAB_TITLES[position])
-//        }.attach()
-//
-//        bindingFragment.mainProfileTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
-//            override fun onTabSelected(tab: TabLayout.Tab?) {
-//                when(tab!!.position){
-//                    0 -> {}
-//                }
-//            }
-//
-//            override fun onTabUnselected(tab: TabLayout.Tab?) {}
-//
-//            override fun onTabReselected(tab: TabLayout.Tab?) {}
-//        })
     }
 }

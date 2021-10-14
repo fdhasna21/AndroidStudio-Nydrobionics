@@ -12,8 +12,6 @@ import pl.polak.clicknumberpicker.ClickNumberPickerView
 import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 open class ViewUtility(
     override var context : Context?,
@@ -25,6 +23,7 @@ open class ViewUtility(
     override var checkBoxes: ArrayList<CheckBox>? = null
 ) : LoadingInterface, IntentUtility(context) {
     constructor() : this(context = null, actionBar = null)
+    constructor(context: Context?) : this(context=context, actionBar = null)
 
     companion object{
         const val TAG = "viewUtility"

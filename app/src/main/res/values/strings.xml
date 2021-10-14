@@ -146,4 +146,5 @@
     <string name="kit_example">20.02</string>
     <string name="kit_value">%2$.2f</string>
     <string name="previous">Previous</string>
+    <string name="month">Month</string>
 </resources>

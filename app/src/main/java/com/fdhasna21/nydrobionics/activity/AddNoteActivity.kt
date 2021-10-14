@@ -1,7 +1,6 @@
 package com.fdhasna21.nydrobionics.activity
 
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -10,12 +9,13 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.fdhasna21.nydrobionics.BuildConfig
 import com.fdhasna21.nydrobionics.R
 import com.fdhasna21.nydrobionics.databinding.ActivityAddNoteBinding
 import com.fdhasna21.nydrobionics.dataclass.model.NoteModel
-import com.fdhasna21.nydrobionics.fragment.CreateFarmFragment
+import com.fdhasna21.nydrobionics.fragment.createprofile.CreateFarmFragment
 import com.fdhasna21.nydrobionics.utility.ViewUtility
 import com.fdhasna21.nydrobionics.viewmodel.AddNoteViewModel
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -23,7 +23,6 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 class AddNoteActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
     private lateinit var binding : ActivityAddNoteBinding
