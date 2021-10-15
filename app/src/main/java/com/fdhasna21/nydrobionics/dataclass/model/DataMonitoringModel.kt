@@ -51,12 +51,12 @@ data class DataMonitoringModel(
         fun DataMonitoringModel.toHashMap() : HashMap<String, Any?>{
             val output : HashMap<String, Any?> = hashMapOf()
             output["dataId"] = dataId
-            output["temperature"] = temperature.round()
-            output["humidity"] = humidity.round()
-            output["waterTank"] = waterTank.round()
-            output["nutrientTank"] = nutrientTank.round()
-            output["turbidity"] = turbidity.round()
-            output["ph"] = ph.round()
+            output["temperature"] = temperature.round() ?: 0f
+            output["humidity"] = humidity.round() ?: 0f
+            output["waterTank"] = waterTank.round() ?: 0f
+            output["nutrientTank"] = nutrientTank.round() ?: 0f
+            output["turbidity"] = turbidity.round() ?:0f
+            output["ph"] = ph.round() ?: 0f
             output["userId"] = userId
             output["cropsId"] = cropsId
             output["timestamp"] = ViewUtility().getCurrentTimestamp()

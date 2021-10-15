@@ -27,8 +27,8 @@
     <string name="select_your_role">Select your role</string>
     <string name="role_description">Role Description</string>
     <string name="create">Create</string>
-    <string name="staff_description">Staff for...</string>
-    <string name="owner_description">Owner for...</string>
+    <string name="staff_description">Staff is someone who works for the farm.</string>
+    <string name="owner_description">Owner is someone who has the farm.</string>
     <string name="description">Description</string>
     <string name="farm_name">Farm Name</string>
     <string name="farm_description">Farm Description</string>
@@ -140,7 +140,7 @@
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
     <string name="options">Options</string>
-    <string name="post_from_plant"></string>
+    <string name="post_from_plant">%s will ready to harvest in %d days with</string>
     <string name="updated_on_s">Updated on %s</string>
     <string name="temperature_unit">°C</string>
     <string name="kit_example">20.02</string>

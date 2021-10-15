@@ -38,6 +38,11 @@ class SplashScreenViewModel : ViewModel() {
                                     .get().addOnSuccessListener {
                                         if(it.exists()){
                                             currentFarmModel.value = it.toFarmModel()
+                                            Log.i(
+                                                TAG,
+                                                "getCurrentData: ${currentUserModel.value}\n" +
+                                                        "${currentFarmModel.value}"
+                                            )
                                             isCurrentFarmExist.value = true
                                         } else {
                                             isCurrentFarmExist.value = false

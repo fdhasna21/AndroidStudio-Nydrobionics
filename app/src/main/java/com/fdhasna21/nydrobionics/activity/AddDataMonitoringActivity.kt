@@ -119,19 +119,24 @@ class AddDataMonitoringActivity : AppCompatActivity(), View.OnClickListener {
                         addMonitoringCropsPlanted.root.visibility = View.GONE
                         addMonitoringNewCrops.visibility = View.VISIBLE
                     } else { //crops found
-                        addMonitoringCropsPlanted.root.visibility = View.VISIBLE
-                        addMonitoringNewCrops.visibility = View.GONE
-                        addMonitoringCropsPlanted.apply {
-                            //todo kurang moreday
+                        if(it.cropsId != null) {
+                            addMonitoringCropsPlanted.root.visibility = View.VISIBLE
+                            addMonitoringNewCrops.visibility = View.GONE
+                            addMonitoringCropsPlanted.apply {
+                                //todo kurang moreday
 //                            val plantedDate : String = utility.formatTimestampToDate(it.timestamp)
 //                            val estimateDate : Long = utility.formatStringToDate(plantedDate, it.plantModel?.growthTime)
-                            this.kitPlantName.text = it.plantModel?.name.toString()
+                                this.kitPlantName.text = it.plantModel?.name.toString()
 //                            this.kitPlantDate.text = plantedDate
-                            this.kitPlantHarvest.text = getString(R.string.can_be_harvested_at_s, "now")//utility.formatDateToString(estimateDate))
-                            Glide.with(this@AddDataMonitoringActivity)
-                                .load(it.plantModel?.photo_url)
-                                .circleCrop()
-                                .into(this.kitPlantPhoto)
+                                this.kitPlantHarvest.text = getString(
+                                    R.string.can_be_harvested_at_s,
+                                    "now"
+                                )//utility.formatDateToString(estimateDate))
+                                Glide.with(this@AddDataMonitoringActivity)
+                                    .load(it.plantModel?.photo_url)
+                                    .circleCrop()
+                                    .into(this.kitPlantPhoto)
+                            }
                         }
                     }
                 })

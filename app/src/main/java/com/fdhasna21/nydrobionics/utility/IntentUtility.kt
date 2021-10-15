@@ -9,6 +9,7 @@ import android.net.Uri
 import android.provider.Settings
 import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.canhub.cropper.CropImage
@@ -87,9 +88,9 @@ open class IntentUtility(open val context: Context?){
             .show()
     }
 
-    fun openOptions(edit:(() -> Unit), delete:(() -> Unit)){
+    fun openOptions(edit:(() -> Unit), delete:(() -> Unit)): AlertDialog {
         val items = arrayOf("Edit", "Delete")
-        MaterialAlertDialogBuilder(context!!)
+        val materialAlertDialog = MaterialAlertDialogBuilder(context!!)
             .setItems(items){_, which ->
                 when(which){
                     0 -> edit
@@ -97,6 +98,7 @@ open class IntentUtility(open val context: Context?){
                 }
             }
             .show()
+        return materialAlertDialog
     }
 
     fun openImage(imageView:View, title:String="Photo Profile"){

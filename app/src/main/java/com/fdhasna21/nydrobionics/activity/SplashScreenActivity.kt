@@ -1,12 +1,12 @@
 package com.fdhasna21.nydrobionics.activity
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.fdhasna21.nydrobionics.BuildConfig
 import com.fdhasna21.nydrobionics.databinding.ActivitySplashScreenBinding
@@ -23,7 +23,7 @@ class SplashScreenActivity : AppCompatActivity() {
     private var auth : FirebaseAuth = Firebase.auth
 
     companion object{
-        const val TAG = "splashScreen"
+        const val TAG = "splashScreenActivity"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

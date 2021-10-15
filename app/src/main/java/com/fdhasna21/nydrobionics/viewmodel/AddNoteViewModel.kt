@@ -12,7 +12,6 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import java.lang.Exception
 
 class AddNoteViewModel : ViewModel(){
     private var auth : FirebaseAuth = Firebase.auth
@@ -92,7 +91,7 @@ class AddNoteViewModel : ViewModel(){
                 this.description = description
             }
 
-            db.document(ref.id).set(noteModel.value!!.toHashMap()).addOnCompleteListener {
+            db.document(noteModel.value!!.noteId!!).set(noteModel.value!!.toHashMap()).addOnCompleteListener {
                 if(it.isSuccessful){
                     isNoteAdd.value = true
                 } else {

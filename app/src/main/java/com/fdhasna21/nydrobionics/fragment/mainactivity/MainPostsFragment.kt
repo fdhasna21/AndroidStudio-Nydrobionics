@@ -13,18 +13,19 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fdhasna21.nydrobionics.BuildConfig
 import com.fdhasna21.nydrobionics.R
-import com.fdhasna21.nydrobionics.activity.ProfileUserActivity
+import com.fdhasna21.nydrobionics.activity.AddPlantActivity
 import com.fdhasna21.nydrobionics.adapter.AdapterType
 import com.fdhasna21.nydrobionics.adapter.PostModelAdapter
-import com.fdhasna21.nydrobionics.databinding.FragmentMainSocialBinding
+import com.fdhasna21.nydrobionics.databinding.FragmentMainPostsBinding
 import com.fdhasna21.nydrobionics.databinding.RowItemPostBinding
 import com.fdhasna21.nydrobionics.dataclass.model.PlantModel
 import com.fdhasna21.nydrobionics.dataclass.model.UserModel
 import com.fdhasna21.nydrobionics.utility.IntentUtility
 import com.fdhasna21.nydrobionics.viewmodel.MainViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
-class MainSocialFragment : Fragment() {
-    private var _binding : FragmentMainSocialBinding? = null
+class MainPostsFragment : Fragment() {
+    private var _binding : FragmentMainPostsBinding? = null
     private val binding get() = _binding!!
     private lateinit var viewModel : MainViewModel
 
@@ -36,7 +37,7 @@ class MainSocialFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentMainSocialBinding.inflate(layoutInflater, container, false)
+        _binding = FragmentMainPostsBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
@@ -67,24 +68,28 @@ class MainSocialFragment : Fragment() {
                                 IntentUtility(requireContext()).openImage(itemView, viewModel.getPostUser(position)?.name ?: "Photo Profile" )
                             }
                             v.postRoot -> {
-                                val intent = Intent(requireContext(), ProfileUserActivity::class.java)
-                                intent.putExtra(BuildConfig.SELECTED_USER, viewModel.getPostUser(position))
-                                startActivity(intent)
+                                gotoPost(position)
+//                                val intent = Intent(requireContext(), ProfileUserActivity::class.java)
+//                                intent.putExtra(BuildConfig.SELECTED_USER, viewModel.getPostUser(position))
+//                                startActivity(intent)
                             }
                             v.postOptions -> {
-                                IntentUtility(requireContext()).openOptions(
-                                    edit = {
-                                        Toast.makeText(requireContext(), "edit", Toast.LENGTH_SHORT).show()
-                                    },
-                                    delete = {
-                                        viewModel.deletePost(position)
-                                        viewModel.isPostDeleted.observe(requireActivity(), {
-                                            when(it){
-                                                true -> Toast.makeText(requireContext(), "Note deleted.", Toast.LENGTH_SHORT).show()
+                                val items = arrayOf("Edit", "Delete")
+                                MaterialAlertDialogBuilder(context!!)
+                                    .setItems(items){_, which ->
+                                        when(which){
+                                            0 -> gotoPost(position)
+                                            1 -> {
+                                                viewModel.deletePost(position)
+                                                viewModel.isPostDeleted.observe(requireActivity(), {
+                                                    when(it){
+                                                        true -> Toast.makeText(requireContext(), "Post deleted.", Toast.LENGTH_SHORT).show()
+                                                    }
+                                                })
                                             }
-                                        })
+                                        }
                                     }
-                                )
+                                    .show()
                             }
                         }
                     }
@@ -106,5 +111,11 @@ class MainSocialFragment : Fragment() {
             addItemDecoration(object : DividerItemDecoration(requireContext(), VERTICAL) {})
             setHasFixedSize(true)
         }
+    }
+
+    private fun gotoPost(position:Int){
+        val intent = Intent(requireContext(), AddPlantActivity::class.java)
+        intent.putExtra(BuildConfig.SELECTED_PLANT, viewModel.getPost(position))
+        startActivity(intent)
     }
 }

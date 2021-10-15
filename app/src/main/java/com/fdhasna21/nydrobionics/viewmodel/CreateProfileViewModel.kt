@@ -57,8 +57,8 @@ class CreateProfileViewModel : ViewModel() {
 
     /** SET MODEL **/
     fun setCurrentUser(userModel: UserModel?){
-        this.userModel.value = userModel
         userModel?.let {
+            this.userModel.value = userModel
             isUserCreated.value = true
             updateUserGender.value  = Gender.getType(userModel.gender!!)?.getPosition()!!
         }
@@ -97,13 +97,18 @@ class CreateProfileViewModel : ViewModel() {
     }
 
     fun setDOB(date:Long?) : String? {
-        userModel.value?.dob = ViewUtility().formatDateToString(date)
+        val temp : UserModel? = userModel.value
+        temp?.dob =  ViewUtility().formatDateToString(date)
+        userModel.value = temp
+        Log.i(TAG, "setDOB: $date")
         return userModel.value?.dob
     }
 
     fun getDOB() : Long{
         if(userModel.value?.dob == null){
-            userModel.value?.dob = ViewUtility().getCurrentDate()
+            val temp : UserModel? = userModel.value
+            temp?.dob = ViewUtility().getCurrentDate()
+            userModel.value = temp
         }
         return ViewUtility().formatStringToDate(userModel.value?.dob)
     }
@@ -168,7 +173,7 @@ class CreateProfileViewModel : ViewModel() {
             val ref : DocumentReference = db.document()
 
             farmModel.value?.apply {
-                this.farmId = ref.id
+                this.farmId = farmId ?: ref.id
                 this.name = name
                 this.description = description
                 this.location = location

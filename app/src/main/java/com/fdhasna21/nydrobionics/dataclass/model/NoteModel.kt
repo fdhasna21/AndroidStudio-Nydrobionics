@@ -22,7 +22,9 @@ data class NoteModel(
                 val title = getString("title")
                 val description = getString("description")
                 val timestamp = getString("timestamp")
-                val output = NoteModel(noteId, title, description, timestamp)
+                val date = getString("date")
+                val time = getString("time")
+                val output = NoteModel(noteId, title, description, timestamp, date, time)
 //                Log.i(TAG, "$output")
                 output
             } catch (e : Exception){
@@ -36,7 +38,9 @@ data class NoteModel(
             output["noteId"] = noteId
             output["title"] = title
             output["description"] = description
-            output["timestamp"] = ViewUtility().formatTimestampToString(date, time)
+            output["timestamp"] = ViewUtility().getCurrentTimestamp()
+            output["date"] = date
+            output["time"] = time
             return output
         }
 

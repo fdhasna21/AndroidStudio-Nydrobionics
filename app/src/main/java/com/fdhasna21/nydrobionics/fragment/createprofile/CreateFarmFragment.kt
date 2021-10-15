@@ -1,5 +1,6 @@
 package com.fdhasna21.nydrobionics.fragment.createprofile
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,8 +12,10 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import com.fdhasna21.nydrobionics.BuildConfig
 import com.fdhasna21.nydrobionics.R
 import com.fdhasna21.nydrobionics.activity.CreateProfileActivity
+import com.fdhasna21.nydrobionics.activity.MainActivity
 import com.fdhasna21.nydrobionics.databinding.FragmentCreateFarmBinding
 import com.fdhasna21.nydrobionics.utility.ViewUtility
 import com.fdhasna21.nydrobionics.viewmodel.CreateProfileViewModel
@@ -83,6 +86,10 @@ class CreateFarmFragment : Fragment(), View.OnClickListener, TextWatcher {
                     if(it){
                         utility.isLoading = false
                         Toast.makeText(requireContext(), "Farm created", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(requireContext(), MainActivity::class.java)
+                        intent.putExtra(BuildConfig.CURRENT_USER, viewModel.getCurrentUserModel())
+                        intent.putExtra(BuildConfig.CURRENT_FARM, viewModel.getCurrentFarmModel())
+                        startActivity(intent)
                         Navigation.findNavController(binding.root).navigate(R.id.action_createGardenFragment_to_createStaffFragment)
                     } else {
                         utility.isLoading = false

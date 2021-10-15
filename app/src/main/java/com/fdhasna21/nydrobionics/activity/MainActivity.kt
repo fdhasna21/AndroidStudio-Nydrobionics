@@ -125,13 +125,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener,
                     setMessage(getString(R.string.sign_out_warning))
                     setPositiveButton(getString(R.string.sign_out)){ _,_ ->
 //                            dialogButton.forEach { it.isEnabled = false }
+                        val uid = Firebase.auth.uid!!
                         viewModel.signOut()
                         viewModel.isUserSignOut.observe(this@MainActivity, {
                             it?.let {
                                 if(it){
 //                                    dialogButton.forEach { it.isEnabled = true }
                                     drawerLayout.closeDrawer(GravityCompat.END)
-                                    DatabaseHandler(this@MainActivity).signOut(Firebase.auth.uid!!)
+                                    DatabaseHandler(this@MainActivity).signOut(uid)
                                     startActivity(Intent(this@MainActivity, SignInActivity::class.java))
                                     finish()
                                 } else {

@@ -12,9 +12,9 @@
         tools:layout="@layout/fragment_main_home" />
     <fragment
         android:id="@+id/mainSocialFragment"
-        android:name="com.fdhasna21.nydrobionics.fragment.mainactivity.MainSocialFragment"
+        android:name="com.fdhasna21.nydrobionics.fragment.mainactivity.MainPostsFragment"
         android:label="fragment_main_social"
-        tools:layout="@layout/fragment_main_social"/>
+        tools:layout="@layout/fragment_main_posts"/>
     <fragment
         android:id="@+id/mainNotesFragment"
         android:name="com.fdhasna21.nydrobionics.fragment.mainactivity.MainNotesFragment"

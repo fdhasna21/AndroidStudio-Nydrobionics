@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.fdhasna21.nydrobionics.R
 import com.fdhasna21.nydrobionics.activity.ProfileUserActivity
 import com.fdhasna21.nydrobionics.databinding.RowItemPostBinding
 import com.fdhasna21.nydrobionics.dataclass.model.PlantModel
@@ -54,6 +55,7 @@ class PostModelAdapter(private val context: Context,
             user?.let {
                 postUserName.text = it.name
                 postUserEmail.text = it.email
+                postDescription.text = context.getString(R.string.post_from_plant, item.name, item.growthTime)
                 Glide.with(context)
                     .load(it.photo_url)
                     .circleCrop()

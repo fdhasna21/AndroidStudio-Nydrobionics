@@ -43,10 +43,10 @@ class AddKitActivity : AppCompatActivity(), TextWatcher{
         viewModel = ViewModelProvider(this).get(AddKitViewModel::class.java)
         viewModel.setCurrentData(intent.getParcelableExtra(BuildConfig.CURRENT_USER),
             intent.getParcelableExtra<FarmModel>(BuildConfig.CURRENT_FARM),
-            intent.getParcelableExtra<KitModel>("currentKitModel"))
+            intent.getParcelableExtra<KitModel>(BuildConfig.SELECTED_KIT))
 
-        supportActionBar?.title = getString(R.string.create_new_kit)
-        supportActionBar?.subtitle = viewModel.currentFarmModel.value?.name.toString()
+        supportActionBar?.title = viewModel.getCurrentKit().value?.name ?: getString(R.string.create_new_kit)
+        supportActionBar?.subtitle = viewModel.getCurrentFarm().value?.name
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(false)
 
@@ -118,12 +118,31 @@ class AddKitActivity : AppCompatActivity(), TextWatcher{
                     }
                 })
             }
+
+            viewModel.getCurrentKit().observe(this@AddKitActivity, { it ->
+                it.kitId?.let { kitId ->
+                    addKitName.setText(it.name)
+                    addKitPosition.setText(it.position)
+                    addKitWidth.setPickerValue(it.width?.toFloat() ?: 0f)
+                    addKitLength.setPickerValue(it.length?.toFloat() ?: 0f)
+                    addKitWaterMin.setPickerValue(it.waterLv?.min ?: 0f)
+                    addKitWaterMax.setPickerValue(it.waterLv?.max ?: 0f)
+                    addKitNutrientMin.setPickerValue(it.nutrientLv?.min ?: 0f)
+                    addKitNutrientMax.setPickerValue(it.nutrientLv?.max ?: 0f)
+                    addKitTurbidityMin.setPickerValue(it.turbidityLv?.min ?: 0f)
+                    addKitTurbidityMax.setPickerValue(it.turbidityLv?.max ?: 0f)
+                }
+            })
             checkEmpty()
         }
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
+        if(intent.getParcelableExtra<KitModel>(BuildConfig.SELECTED_KIT) != null){
+            binding.addKitSubmit.performClick()
+        } else {
+            super.onBackPressed()
+        }
         return true
     }
 

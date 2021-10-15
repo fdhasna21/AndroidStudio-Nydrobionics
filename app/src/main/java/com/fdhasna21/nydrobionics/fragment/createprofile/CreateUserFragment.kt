@@ -58,7 +58,6 @@ class CreateUserFragment : Fragment(), View.OnClickListener, SegmentedButtonGrou
 
         binding.apply {
             viewsAsButton = arrayListOf(roleOwner,
-                                        roleStaff,
                                         createUserDOB,
                                         createUserSubmit,
                                         createUserEditPhoto,
@@ -81,11 +80,12 @@ class CreateUserFragment : Fragment(), View.OnClickListener, SegmentedButtonGrou
 
             editTexts.forEach { it.addTextChangedListener(this@CreateUserFragment) }
             viewsAsButton.forEach { it.setOnClickListener(this@CreateUserFragment) }
-            createUserPhoto.setOnLongClickListener { createUserEditPhoto.performClick() }
             createUserGender.onPositionChangedListener = this@CreateUserFragment
+            createUserPhoto.setOnLongClickListener { createUserEditPhoto.performClick() }
             checkEmpty()
 
             createUserEmail.setText(Firebase.auth.currentUser?.email)
+            roleOwner.performClick()
         }
 
         viewModel.getPhotoProfile().observe(requireActivity(), {
@@ -131,7 +131,7 @@ class CreateUserFragment : Fragment(), View.OnClickListener, SegmentedButtonGrou
                 calendar[Calendar.MONTH] = Calendar.DECEMBER
                 val constraintBuilder = CalendarConstraints.Builder()
                 constraintBuilder.setValidator(DateValidatorPointBackward.now()).setEnd(calendar.timeInMillis)
-
+                
                 val datePicker = MaterialDatePicker.Builder.datePicker()
                     .setTitleText("Date of Birth")
                     .setSelection(viewModel.getDOB())
@@ -141,6 +141,7 @@ class CreateUserFragment : Fragment(), View.OnClickListener, SegmentedButtonGrou
                 datePicker.show(childFragmentManager, "DATE_PICKER")
                 datePicker.addOnPositiveButtonClickListener{
                     binding.createUserDOB.setText(viewModel.setDOB(datePicker.selection))
+                    checkEmpty()
                 }
                 datePicker.addOnNegativeButtonClickListener{}
                 datePicker.isCancelable = false
@@ -164,6 +165,7 @@ class CreateUserFragment : Fragment(), View.OnClickListener, SegmentedButtonGrou
             0 -> viewModel.setGender(Gender.MALE)
             1 -> viewModel.setGender(Gender.FEMALE)
         }
+        checkEmpty()
     }
 
     private fun setRoleType(role : Role){
@@ -198,7 +200,7 @@ class CreateUserFragment : Fragment(), View.OnClickListener, SegmentedButtonGrou
             binding.createUserAddress,
             binding.createUserDOB)
         viewModel.checkNotEmpty(
-            utility.isEmpties(checkerEditText) && (binding.roleOwner.isChecked || binding.roleStaff.isChecked)
+            utility.isEmpties(checkerEditText) && (binding.roleOwner.isChecked)
         ).observe(viewLifecycleOwner, {
             binding.createUserSubmit.isEnabled = it
         })

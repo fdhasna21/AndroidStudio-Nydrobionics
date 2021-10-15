@@ -64,8 +64,9 @@ class MainHomeFragment : Fragment(), View.OnClickListener, CardStackListener{
         val data : ArrayList<KitModel> = arrayListOf()
         cardStackAdapter = AdapterType.DATA_MONITORING.getAdapter(requireContext(), data)
         viewModel.getCurrentKits().observe(viewLifecycleOwner, {
+            val temp = it ?: arrayListOf()
             data.clear()
-            data.addAll(it ?: arrayListOf())
+            data.addAll(temp)
              cardStackAdapter.notifyDataSetChanged()
             (cardStackAdapter as KitModelAdapter).setOnItemClickListener(
                 object : KitModelAdapter.OnItemClickListener{
@@ -79,6 +80,14 @@ class MainHomeFragment : Fragment(), View.OnClickListener, CardStackListener{
             )
             Log.i(TAG, "adapter count ${cardStackAdapter.itemCount}")
             (requireActivity() as MainActivity).swipeRefresh.isRefreshing = false
+
+            if(temp.size ==0){
+                binding.mainCardPrevious.visibility = View.GONE
+                binding.mainCardNext.visibility = View.GONE
+            } else {
+                binding.mainCardPrevious.visibility = View.VISIBLE
+                binding.mainCardNext.visibility = View.VISIBLE
+            }
         })
 
 

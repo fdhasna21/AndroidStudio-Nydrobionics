@@ -32,10 +32,10 @@ interface LoadingInterface {
                 it.isEnabled = !value
             }
             numberPickers?.forEach {
-                it.isEnabled
+                it.isEnabled = !value
             }
             circularProgressButton?.apply {
-                this.isEnabled = !value
+                this.isEnabled = true
                 if(value){
                     startAnimation()
                 } else {

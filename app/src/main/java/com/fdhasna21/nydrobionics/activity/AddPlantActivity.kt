@@ -28,6 +28,8 @@ import com.fdhasna21.nydrobionics.fragment.createprofile.CreateFarmFragment
 import com.fdhasna21.nydrobionics.utility.ViewUtility
 import com.fdhasna21.nydrobionics.viewmodel.AddPlantViewModel
 import com.google.android.material.textfield.TextInputEditText
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import pl.polak.clicknumberpicker.ClickNumberPickerView
 
 class AddPlantActivity : AppCompatActivity(), TextWatcher, View.OnClickListener {
@@ -38,6 +40,7 @@ class AddPlantActivity : AppCompatActivity(), TextWatcher, View.OnClickListener 
     private lateinit var tooltips : ArrayList<ImageButton>
     private lateinit var numberPickers : ArrayList<ClickNumberPickerView>
     private lateinit var viewsAsButton : ArrayList<View>
+    private var strEdt : HashMap<String, TextInputEditText> = hashMapOf()
 
     companion object{
         const val TAG = "addPlant"
@@ -107,14 +110,49 @@ class AddPlantActivity : AppCompatActivity(), TextWatcher, View.OnClickListener 
                     Glide.with(this@AddPlantActivity)
                         .load(it.uri)
                         .circleCrop()
-                        .into(binding.addPlantPhoto)
+                        .into(addPlantPhoto)
+                }
+            })
+
+            viewModel.getCurrentPlant().observe(this@AddPlantActivity, { it ->
+                it.plantId?.let { plantId ->
+                    supportActionBar?.title = it.name
+                    addPlantName.setText(it.name)
+                    addPlantDescription.setText(it.description)
+                    addPlantGrowthTime.setPickerValue(it.growthTime?.toFloat() ?: 0f)
+                    addPlantTempMin.setPickerValue(it.tempLv?.min ?: 0f)
+                    addPlantTempMax.setPickerValue(it.tempLv?.max ?: 0f)
+                    addPlantHumidMin.setPickerValue(it.humidLv?.min ?: 0f)
+                    addPlantHumidMax.setPickerValue(it.humidLv?.max ?: 0f)
+                    addPlantAcidMin.setPickerValue(it.phLv?.min ?: 0f)
+                    addPlantAcidMax.setPickerValue(it.phLv?.max ?: 0f)
+
+                    Glide.with(this@AddPlantActivity)
+                        .load(it.photo_url)
+                        .circleCrop()
+                        .into(addPlantPhoto)
+
+                    if (it.userId != Firebase.auth.uid){
+                        addPlantSubmit.visibility = View.GONE
+                        utility.isLoading = true
+                        supportActionBar?.setDisplayShowHomeEnabled(false)
+                    }
+                    Log.i(TAG, "onCreate: ${it.userId} ${Firebase.auth.uid}")
+
+                    strEdt[it.name ?: ""] = addPlantName
+                    strEdt[it.description ?: ""] = addPlantDescription
                 }
             })
         }
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        super.onBackPressed()
+        if(intent.getParcelableExtra<PlantModel>(BuildConfig.SELECTED_PLANT) != null &&
+                viewModel.getCurrentPlant().value?.userId != Firebase.auth.uid){
+            binding.addPlantSubmit.performClick()
+        } else {
+            super.onBackPressed()
+        }
         return true
     }
 

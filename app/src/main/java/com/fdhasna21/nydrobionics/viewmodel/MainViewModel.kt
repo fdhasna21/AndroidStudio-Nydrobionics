@@ -269,7 +269,7 @@ class MainViewModel : ViewModel() {
         isNoteDeleted.value = null
         val noteId = getNote(position)?.noteId
         try {
-            if(noteId == auth.uid!!) {
+            noteId?.let{
                 firestore.collection("users").document(auth.uid!!)
                     .collection("notes").document(noteId)
                     .delete().addOnCompleteListener {

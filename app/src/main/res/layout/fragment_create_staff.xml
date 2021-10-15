@@ -69,8 +69,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/createStaffSelectableRecycler"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-<!--    todo : layout recyclerview + adapter -->
+        android:layout_height="wrap_content" />
 
     <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
         android:id="@+id/createStaffSubmit"

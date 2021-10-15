@@ -63,16 +63,27 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
             addNoteSubmit.setOnClickListener(this@AddNoteActivity)
 
             viewModel.getCurrentNoteModel().observe(this@AddNoteActivity, {
-                addNoteTitle.setText(it.title)
-                addNoteDesc.setText(it.description)
-                //todo : kurang date time
+                if(it!=null) {
+                    addNoteTitle.setText(it.title)
+                    addNoteDesc.setText(it.description)
+                    it.date?.let { date->
+                        addNoteDate.setText(date)
+                    }
+                    it.time?.let{ time->
+                        addNoteTime.setText(time)
+                    }
+                }
             })
             checkEmpty()
         }
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        super.onBackPressed()
+        if(intent.getParcelableExtra<NoteModel>(BuildConfig.SELECTED_NOTE) != null){
+            binding.addNoteSubmit.performClick()
+        } else {
+            super.onBackPressed()
+        }
         return true
     }
 
@@ -123,7 +134,12 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
                 viewModel.isNoteAdd.observe(this, {
                     if(it){
                         utility.isLoading = false
-                        Toast.makeText(this, "New note created.", Toast.LENGTH_SHORT).show()
+                        val toastTxt = if(intent.getParcelableExtra<NoteModel>(BuildConfig.SELECTED_NOTE) != null){
+                            "Note updated."
+                        } else {
+                            "New note created."
+                        }
+                        Toast.makeText(this, toastTxt, Toast.LENGTH_SHORT).show()
                         super.onBackPressed()
                         finish()
                     } else {

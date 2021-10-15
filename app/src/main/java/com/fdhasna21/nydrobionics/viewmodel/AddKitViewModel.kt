@@ -4,12 +4,15 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.fdhasna21.nydrobionics.dataclass.ScoreLevel
+import com.fdhasna21.nydrobionics.dataclass.model.DataMonitoringModel
+import com.fdhasna21.nydrobionics.dataclass.model.DataMonitoringModel.Companion.toHashMap
 import com.fdhasna21.nydrobionics.dataclass.model.FarmModel
 import com.fdhasna21.nydrobionics.dataclass.model.KitModel
 import com.fdhasna21.nydrobionics.dataclass.model.KitModel.Companion.toHashMap
 import com.fdhasna21.nydrobionics.dataclass.model.UserModel
 import com.fdhasna21.nydrobionics.enumclass.NumberPickerType
 import com.fdhasna21.nydrobionics.utility.ViewUtility
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
@@ -21,8 +24,9 @@ class AddKitViewModel : ViewModel() {
     var isKitAdd : MutableLiveData<Boolean> = MutableLiveData(false)
     var addKitError : MutableLiveData<String> = MutableLiveData("")
 
-    var currentUserModel : MutableLiveData<UserModel> = MutableLiveData(UserModel())
-    var currentFarmModel : MutableLiveData<FarmModel> = MutableLiveData(FarmModel())
+    private var currentUserModel : MutableLiveData<UserModel> = MutableLiveData(null)
+    private var currentFarmModel : MutableLiveData<FarmModel> = MutableLiveData(null)
+    private var currentKitModel : MutableLiveData<KitModel> = MutableLiveData(KitModel())
 
     private var kitWidth : MutableLiveData<Float> = MutableLiveData(0f)
     private var kitLength : MutableLiveData<Float> = MutableLiveData(0f)
@@ -32,10 +36,10 @@ class AddKitViewModel : ViewModel() {
     private var nutrientMax : MutableLiveData<Float> = MutableLiveData(0f)
     private var turbidityMin : MutableLiveData<Float> = MutableLiveData(0f)
     private var turbidityMax : MutableLiveData<Float> = MutableLiveData(0f)
-    private var kitModel : MutableLiveData<KitModel> = MutableLiveData(KitModel())
+
 
     companion object {
-        const val TAG = "addKit"
+        const val TAG = "addKitViewModel"
     }
 
     fun checkNotEmpty(boolean: Boolean) : MutableLiveData<Boolean> {
@@ -47,9 +51,13 @@ class AddKitViewModel : ViewModel() {
         currentUserModel.value = userModel
         currentFarmModel.value = farmModel
         kitModel?.let{
-            this.kitModel.value = it
+            this.currentKitModel.value = it
         }
     }
+
+    fun getCurrentFarm():MutableLiveData<FarmModel> = currentFarmModel
+    fun getCurrentKit() : MutableLiveData<KitModel> = currentKitModel
+
 
     fun setNumberPickerValue(currentValue : Float, type: NumberPickerType?){
         when(type){
@@ -84,8 +92,9 @@ class AddKitViewModel : ViewModel() {
         val ref : DocumentReference = db.document()
 
         try {
-            kitModel.value?.apply {
+            currentKitModel.value?.apply {
                 this.kitId = kitId ?: ref.id
+                this.isPlanted = isPlanted ?: false
                 this.name = name
                 this.position = position
                 this.length = kitLength.value?.toInt()
@@ -96,9 +105,21 @@ class AddKitViewModel : ViewModel() {
                 this.timestamp = ViewUtility().getCurrentTimestamp()
             }
 
-            db.document(ref.id).set(kitModel.value!!.toHashMap()).addOnCompleteListener {
+            val kitRef = db.document(currentKitModel.value!!.kitId!!)
+                kitRef.set(currentKitModel.value!!.toHashMap()).addOnCompleteListener {
                 if(it.isSuccessful){
-                    isKitAdd.value = true
+                    if(currentKitModel.value!!.kitId == ref.id){
+                        val dataRef = kitRef.collection("dataMonitorings")
+                        val dataId = dataRef.document().id
+                        val initialData = DataMonitoringModel(userId = Firebase.auth.uid, dataId = dataId)
+                        dataRef.document(dataId).set(initialData.toHashMap()).addOnCompleteListener {
+                            if(it.isSuccessful){
+                                isKitAdd.value = true
+                            }
+                        }
+                    } else {
+                        isKitAdd.value = true
+                    }
                 } else {
                     addKitError.value = it.exception.toString()
                     isKitAdd.value = false

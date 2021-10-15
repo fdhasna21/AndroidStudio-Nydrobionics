@@ -11,18 +11,10 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.fdhasna21.nydrobionics.R
 import com.fdhasna21.nydrobionics.activity.MainActivity
-import com.fdhasna21.nydrobionics.adapter.ViewPagerAdapter
 import com.fdhasna21.nydrobionics.databinding.FragmentMainProfileBinding
-import com.fdhasna21.nydrobionics.dataclass.model.PlantModel
-import com.fdhasna21.nydrobionics.notfixed.AdapterRealTimeType
 import com.fdhasna21.nydrobionics.utility.IntentUtility
 import com.fdhasna21.nydrobionics.utility.RequestPermission
 import com.fdhasna21.nydrobionics.viewmodel.MainViewModel
-import com.firebase.ui.database.FirebaseRecyclerOptions
-import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 
 class MainProfileFragment : Fragment(), View.OnClickListener {
     private var _binding : FragmentMainProfileBinding? = null
@@ -32,9 +24,6 @@ class MainProfileFragment : Fragment(), View.OnClickListener {
     private lateinit var viewsAsButton : ArrayList<View>
 
     companion object {
-        val TAB_TITLES = intArrayOf(
-            R.string.posts
-        )
         const val TAG = "mainProfile"
     }
 
@@ -83,7 +72,6 @@ class MainProfileFragment : Fragment(), View.OnClickListener {
                 }
             })
         }
-        setupTabLayout()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -104,32 +92,6 @@ class MainProfileFragment : Fragment(), View.OnClickListener {
             }
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    private fun setupTabLayout(){
-        //todo : referencenya! plant dari user yg terkait
-        val reference = Firebase.database.getReference("posts")
-        val options = FirebaseRecyclerOptions.Builder<PlantModel>()
-            .setQuery(reference, PlantModel::class.java)
-            .build()
-
-        val tabLayoutAdapter = ViewPagerAdapter((requireActivity() as MainActivity), arrayListOf(options), AdapterRealTimeType.PLANT)
-        binding.mainProfileViewPager.adapter = tabLayoutAdapter
-        TabLayoutMediator(binding.mainProfileTabLayout, binding.mainProfileViewPager) { tab, position ->
-            tab.text = resources.getString(TAB_TITLES[position])
-        }.attach()
-
-        binding.mainProfileTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                when(tab!!.position){
-                    0 -> {}
-                }
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {}
-
-            override fun onTabReselected(tab: TabLayout.Tab?) {}
-        })
     }
 
     override fun onClick(v: View?) {

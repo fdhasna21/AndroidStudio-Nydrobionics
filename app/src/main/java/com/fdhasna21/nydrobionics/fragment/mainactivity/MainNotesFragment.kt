@@ -20,8 +20,8 @@ import com.fdhasna21.nydrobionics.adapter.NoteModelAdapter
 import com.fdhasna21.nydrobionics.databinding.FragmentMainNotesBinding
 import com.fdhasna21.nydrobionics.databinding.RowItemNoteBinding
 import com.fdhasna21.nydrobionics.dataclass.model.NoteModel
-import com.fdhasna21.nydrobionics.utility.IntentUtility
 import com.fdhasna21.nydrobionics.viewmodel.MainViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class MainNotesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     private var _binding : FragmentMainNotesBinding? = null
@@ -44,7 +44,6 @@ class MainNotesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         super.onViewCreated(view, savedInstanceState)
         requireActivity().title = getString(R.string.notes)
         viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
-//        binding.mainNotesRefresh.setOnRefreshListener(this)
         setupRecyclerView()
     }
 
@@ -52,8 +51,9 @@ class MainNotesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         val data : ArrayList<NoteModel> = arrayListOf()
         val rowAdapter = AdapterType.NOTE.getAdapter(requireContext(), data)
         viewModel.getCurrentNotes().observe(viewLifecycleOwner,{
+            val currentData : ArrayList<NoteModel> = it ?: arrayListOf()
             data.clear()
-            data.addAll(it ?: arrayListOf())
+            data.addAll(currentData)
             rowAdapter.notifyDataSetChanged()
             (rowAdapter as NoteModelAdapter).setOnItemClickListener(
                 object : NoteModelAdapter.OnItemClickListener{
@@ -66,45 +66,32 @@ class MainNotesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
                     }
 
                     override fun onItemLongClicked(position: Int) {
-                        IntentUtility(requireContext()).openOptions(
-                            edit = {
-                                gotoNote(position)
-                            },
-                            delete = {
-                                viewModel.deleteNote(position)
-                                viewModel.isNoteDeleted.observe(requireActivity(), {
-                                    when(it){
-                                        true -> Toast.makeText(requireContext(), "Note deleted.", Toast.LENGTH_SHORT).show()
+                        val items = arrayOf("Edit", "Delete")
+                        MaterialAlertDialogBuilder(context!!)
+                            .setItems(items){_, which ->
+                                when(which){
+                                    0 -> gotoNote(position)
+                                    1 -> {
+                                        viewModel.deleteNote(position)
+                                        viewModel.isNoteDeleted.observe(requireActivity(), {
+                                            when(it){
+                                                true -> Toast.makeText(requireContext(), "Note deleted.", Toast.LENGTH_SHORT).show()
+                                            }
+                                        })
                                     }
-                                })
+                                }
                             }
-                        )
-//                        val popUpMenu = PopupMenu(context, view)
-//                        popUpMenu.menuInflater.inflate(R.menu.menu_popup, popUpMenu.menu)
-//                        popUpMenu.setOnMenuItemClickListener {
-//                            when (it.itemId) {
-//                                R.id.popipEdit -> {
-//                                    gotoNote(position)
-//                                    true
-//                                }
-//                                R.id.popupDelete -> {
-//                                    viewModel.deleteNote(position)
-//                                    viewModel.isNoteDeleted.observe(requireActivity(), {
-//                                        when(it){
-//                                            true -> Toast.makeText(requireContext(), "Note deleted.", Toast.LENGTH_SHORT).show()
-//                                        }
-//                                    })
-//                                    true
-//                                }
-//                                else -> true
-//                            }
-//                        }
-//                        popUpMenu.show()
+                            .show()
                     }
                 }
             )
             Log.i(TAG, "${rowAdapter.itemCount}")
             (requireActivity() as MainActivity).swipeRefresh.isRefreshing = false
+            binding.noteLine.visibility = if(currentData.size==0){
+                 View.GONE
+            } else {
+                View.VISIBLE
+            }
         })
 
         binding.mainNotesRecyclerView.apply {

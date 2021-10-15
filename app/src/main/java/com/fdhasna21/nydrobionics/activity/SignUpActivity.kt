@@ -2,7 +2,6 @@ package com.fdhasna21.nydrobionics.activity
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,6 +10,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.fdhasna21.nydrobionics.databinding.ActivitySignUpBinding
 import com.fdhasna21.nydrobionics.utility.ViewUtility
@@ -81,7 +81,7 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
                             startActivity(Intent(this, CreateProfileActivity::class.java))
                             finish()
                         } else {
-                            utility.isLoading = false
+
                             viewModel.signUpError.observe(this, {
                                 it?.let {
                                     if (it.isNotEmpty()) {
@@ -89,6 +89,7 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
                                             .show()
                                         Log.i(TAG, it)
                                         viewModel.signUpError.value = ""
+                                        utility.isLoading = false
                                     }
                                 }
                             })

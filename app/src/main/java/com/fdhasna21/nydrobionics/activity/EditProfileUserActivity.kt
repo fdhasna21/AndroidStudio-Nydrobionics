@@ -153,7 +153,6 @@ class EditProfileUserActivity : AppCompatActivity(), View.OnClickListener, Segme
                         super.onBackPressed()
                         finish()
                     } else {
-                        utility.isLoading = false
                         viewModel.createProfileError.observe(this, {
                             if(it.isNotEmpty()){
                                 Toast.makeText(this, it, Toast.LENGTH_SHORT).show()

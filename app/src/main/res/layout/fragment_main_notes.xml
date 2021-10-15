@@ -9,7 +9,7 @@
         android:layout_width="2dp"
         android:layout_height="match_parent"
         android:layout_marginHorizontal="@dimen/layoutPadding"
-        android:background="@android:color/darker_gray"/>
+        android:background="@color/green_primary_200"/>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/mainNotesRecyclerView"
         android:layout_width="match_parent"

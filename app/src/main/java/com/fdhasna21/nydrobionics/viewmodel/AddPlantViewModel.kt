@@ -8,7 +8,6 @@ import com.fdhasna21.nydrobionics.dataclass.ScoreLevel
 import com.fdhasna21.nydrobionics.dataclass.UriFileExtensions
 import com.fdhasna21.nydrobionics.dataclass.model.PlantModel
 import com.fdhasna21.nydrobionics.dataclass.model.PlantModel.Companion.toHashMap
-import com.fdhasna21.nydrobionics.dataclass.model.UserModel
 import com.fdhasna21.nydrobionics.enumclass.NumberPickerType
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -19,7 +18,6 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
-import java.lang.Exception
 
 class AddPlantViewModel : ViewModel() {
     private var auth : FirebaseAuth = Firebase.auth
@@ -126,7 +124,7 @@ class AddPlantViewModel : ViewModel() {
             this.plantId = plantId ?: ref.id
         }
 
-        db.document(ref.id).set(plantModel.value!!.toHashMap()).addOnCompleteListener {
+        db.document(plantModel.value!!.plantId!!).set(plantModel.value!!.toHashMap()).addOnCompleteListener {
             if(it.isSuccessful){
                 isPlantAdd.value = true
             } else {
@@ -147,5 +145,9 @@ class AddPlantViewModel : ViewModel() {
 
     fun getPhotoProfile() : MutableLiveData<UriFileExtensions>{
         return imageUri
+    }
+
+    fun getCurrentPlant() : MutableLiveData<PlantModel>{
+        return plantModel
     }
 }
