@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/about_email"
+        android:title="@string/email"
+        android:icon="@drawable/ic_gmail"/>
+
+    <item
+        android:id="@+id/about_whatsapp"
+        android:title="@string/whatsapp"
+        android:icon="@drawable/ic_whatsapp"/>
+
+    <item
+        android:id="@+id/about_github"
+        android:title="@string/github"
+        android:icon="@drawable/ic_github"
+        android:iconTint="@color/black"/>
+
+    <item
+        android:id="@+id/about_project"
+        android:title="@string/project_source"
+        android:icon="@drawable/ic_github"
+        android:iconTint="@color/black"/>
+</menu>

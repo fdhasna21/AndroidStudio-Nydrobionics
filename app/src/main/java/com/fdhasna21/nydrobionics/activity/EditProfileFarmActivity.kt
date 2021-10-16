@@ -25,6 +25,7 @@ import com.fdhasna21.nydrobionics.databinding.FragmentCreateFarmBinding
 import com.fdhasna21.nydrobionics.databinding.RowItemSearchBinding
 import com.fdhasna21.nydrobionics.dataclass.model.FarmModel
 import com.fdhasna21.nydrobionics.dataclass.model.UserModel
+import com.fdhasna21.nydrobionics.fragment.createprofile.CreateFarmFragment
 import com.fdhasna21.nydrobionics.utility.ViewUtility
 import com.fdhasna21.nydrobionics.viewmodel.CreateProfileViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -54,7 +55,8 @@ class EditProfileFarmActivity : AppCompatActivity(), View.OnClickListener, TextW
         setContentView(binding.root)
 
         viewModel = ViewModelProvider(this).get(CreateProfileViewModel::class.java)
-        viewModel.setCurrentFarm(intent.getParcelableExtra<FarmModel>(BuildConfig.CURRENT_FARM))
+        viewModel.setCurrentFarm(intent.getParcelableExtra<FarmModel>(BuildConfig.CURRENT_FARM),
+                                 intent.getParcelableExtra<UserModel>(BuildConfig.CURRENT_USER))
         supportActionBar?.title = getString(R.string.farm)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(false)
@@ -140,7 +142,7 @@ class EditProfileFarmActivity : AppCompatActivity(), View.OnClickListener, TextW
 
     private fun checkUpdate(){
         viewModel.checkNotEmpty(
-            utility.isChanges(strEdt)
+            utility.isChanges(strEdt) && utility.isEmpties(editTexts)
         ).observe(this, {
             bindingFragment.createFarmSubmit.isEnabled = it
         })
@@ -175,15 +177,34 @@ class EditProfileFarmActivity : AppCompatActivity(), View.OnClickListener, TextW
             }
             bindingFragment.createFarmSubmit -> {
                 utility.isLoading = true
-                viewModel.createStaff()
-                viewModel.isStaffAdded.observe(this, {
+                viewModel.createFarmProfile(bindingFragment.createFarmName.text.toString(),
+                    bindingFragment.createFarmDesc.text.toString(),
+                    bindingFragment.createFarmLoc.text.toString())
+                viewModel.isFarmCreated.observe(this, {
                     if(it){
                         utility.isLoading = false
-                        Toast.makeText(this, "Farm updated", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Farm updated.", Toast.LENGTH_SHORT).show()
                         super.onBackPressed()
-                        finish()
+                    } else {
+                        utility.isLoading = false
+                        viewModel.createProfileError.observe(this, {
+                            if(it.isNotEmpty()){
+                                Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+                                Log.i(CreateFarmFragment.TAG, it)
+                                viewModel.createProfileError.value = ""
+                            }
+                        })
                     }
                 })
+//                viewModel.createStaff()
+//                viewModel.isStaffAdded.observe(this, {
+//                    if(it){
+//                        utility.isLoading = false
+//                        Toast.makeText(this, "Farm updated", Toast.LENGTH_SHORT).show()
+//                        super.onBackPressed()
+//                        finish()
+//                    }
+//                })
             }
         }
     }
@@ -214,7 +235,6 @@ class EditProfileFarmActivity : AppCompatActivity(), View.OnClickListener, TextW
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
         checkUpdate()
-        Toast.makeText(this, "ini", Toast.LENGTH_SHORT).show()
     }
 
     override fun afterTextChanged(s: Editable?) {}

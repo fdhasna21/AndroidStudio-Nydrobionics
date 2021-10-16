@@ -50,25 +50,30 @@ class MainProfileFragment : Fragment(), View.OnClickListener {
             viewsAsButton.forEach { it.setOnClickListener(this@MainProfileFragment) }
 
             viewModel.getCurrentUser().observe(requireActivity(),{
-                Log.i(TAG, "$it")
-                it?.let {
-                    mainProfileName.text = it.name
-                    mainProfilePhone.text = it.phone
-                    mainProfileAddress.text = it.address
-                    mainProfileJoinedSince.text = getString(R.string.joined_company_since, it.joinedSince)
-                    mainProfileBio.text = it.bio
-                    it.performanceRate?.let {
-                        mainProfileRate.rating = it
-                    }
-                    mainProfileEmail.text = it.email
-                    mainProfileRole.text = getString(R.string.role_in_profile, it.role!!.replaceFirstChar { it.uppercase() }, viewModel.getCurrentFarm().value?.name.toString())
-                    //todo : operational area
-                    it.photo_url?.let {
+                try {
+                    it?.let {
+                        mainProfileName.text = it.name
+                        mainProfilePhone.text = it.phone
+                        mainProfileAddress.text = it.address
+                        mainProfileJoinedSince.text =
+                            getString(R.string.joined_company_since, it.joinedSince)
+                        mainProfileBio.text = it.bio
+                        it.performanceRate?.let {
+                            mainProfileRate.rating = it
+                        }
+                        mainProfileEmail.text = it.email
+                        mainProfileRole.text = getString(
+                            R.string.role_in_profile,
+                            it.role!!.replaceFirstChar { it.uppercase() },
+                            viewModel.getCurrentFarm().value?.name.toString()
+                        )
                         Glide.with(requireActivity())
-                            .load(it)
+                            .load(it.photo_url ?: R.drawable.bg_farmer)
                             .centerCrop()
                             .into(mainProfilePhoto)
                     }
+                } catch (e:Exception){
+                    Log.e(TAG, "currentUser value null in some field", e)
                 }
             })
         }

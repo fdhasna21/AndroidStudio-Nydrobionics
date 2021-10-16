@@ -66,7 +66,8 @@
     <string name="what_would_you_like_to_do">What would you like to do?</string>
     <string name="add_recent_data_monitoring">Add recent data monitoring</string>
     <string name="add_new_crops_to_plant">Add new crops to plant</string>
-    <string name="add_schedule_or_to_do_list">Add schedule or to do list</string>
+    <string name="add_notes">Add note</string>
+    <string name="edit_notes">Edit note</string>
     <string name="create_new_hydroponic_kit_to_farm">Create new hydroponic kit to farm</string>
     <string name="add_new_plant_to_nydrodb">Add new plant to NydroDB</string>
     <string name="hydroponic_kit">Hydroponic Kit</string>
@@ -89,6 +90,7 @@
     <string name="plant_description">Plant Description</string>
     <string name="growth_time">Growth Time (days)</string>
     <string name="add_new_plant">Add New Plant</string>
+    <string name="edit_plant">Edit plant</string>
     <string name="or">OR</string>
     <string name="add_new_crops">Add New Crops</string>
     <string name="select_plant">Select Plant</string>
@@ -140,11 +142,36 @@
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
     <string name="options">Options</string>
-    <string name="post_from_plant">%s will ready to harvest in %d days with</string>
+    <string name="post_from_plant">%1$s will ready to harvest in %2$d days with ideal condition :
+        \n • Temperature : %3$.2f - %4$.2f °C
+        \n • Humidity : %5$.2f - %6$.2f RH
+        \n • pH : %7$.2f - %8$.2f</string>
     <string name="updated_on_s">Updated on %s</string>
     <string name="temperature_unit">°C</string>
     <string name="kit_example">20.02</string>
-    <string name="kit_value">%2$.2f</string>
+    <string name="kit_value">%.2f</string>
     <string name="previous">Previous</string>
     <string name="month">Month</string>
+    <string name="created_by">Nydrobionics by Fernanda Daymara Hasna</string>
+    <string name="photo_profile">Photo Profile</string>
+    <string name="about_me">About Me</string>
+    <string name="profile_description">
+        As known as Nanda, I was born in Magelang on August 21, 1998. I am the first of three children who have completed education at Computer Engineering FTEIC Institut Teknologi Sepuluh Nopember Surabaya.
+        I am interested in the field of digital technology, especially in the fields of IT Project Management, User-Oriented Product Development, and Design System Analysis. Currently, I am exploring Mobile Programming with Android Studio.
+    </string>
+    <string name="profile_name" translatable="false">Fernanda Daymara Hasna</string>
+    <string name="tab" translatable="false">\t\t\t\t\t\t</string>
+    <string name="profile_picture">Profile Picture</string>
+    <string name="biography">Biography</string>
+    <string name="find_me">Find Me</string>
+    <string name="credit">Credit</string>
+    <string name="made_for">Made for Final Project
+        \nMobile Application dan Technology
+        \nInformation and Communication Technology
+        \nBBPLK Bekasi 2021</string>
+    <string name="project_source">Project Source</string>
+    <string name="github">GitHub</string>
+    <string name="whatsapp">Whatsapp</string>
+    <string name="icon_by_freepik">Icon by Freepik</string>
+    <string name="splash_screen_animation">Splash Screen by Mvsaffa</string>
 </resources>

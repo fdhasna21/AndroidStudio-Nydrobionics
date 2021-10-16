@@ -79,7 +79,7 @@
                     android:layout_marginRight="6dp"
                     android:contentDescription="@string/user_photo_profile"
                     android:elevation="12dp"
-                    android:src="@drawable/ic_farmer"
+                    android:src="@drawable/default_farmer"
                     app:shapeAppearanceOverlay="@style/circular_image"
                     tools:ignore="ImageContrastCheck" />
             </RelativeLayout>

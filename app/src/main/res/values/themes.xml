@@ -14,6 +14,9 @@
         <item name="android:navigationBarColor">?attr/colorPrimary</item>
         <item name="android:windowBackground">@color/background</item>
         <!-- Customize your theme here. -->
+
+        <item name="pickers_background_color">?attr/colorPrimary</item>
+        <item name="value_background_color">@color/green_primary_200</item>
     </style>
 
     <style name="Theme.Nydrobionics.NoActionBar" parent="Theme.Nydrobionics">

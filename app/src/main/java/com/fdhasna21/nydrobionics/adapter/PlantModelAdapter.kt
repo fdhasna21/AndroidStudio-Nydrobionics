@@ -1,18 +1,15 @@
 package com.fdhasna21.nydrobionics.adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.fdhasna21.nydrobionics.R
 import com.fdhasna21.nydrobionics.databinding.RowItemSearchBinding
-import com.fdhasna21.nydrobionics.dataclass.model.NoteModel
 import com.fdhasna21.nydrobionics.dataclass.model.PlantModel
 import com.fdhasna21.nydrobionics.dataclass.model.UserModel
-import com.fdhasna21.nydrobionics.dataclass.model.UserModel.Companion.toUserModel
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -67,7 +64,7 @@ class PlantModelAdapter(
 
             searchTextTitle.text = item.name
             Glide.with(context)
-                .load(item.photo_url)
+                .load(item.photo_url ?: R.drawable.bg_plant)
                 .circleCrop()
                 .into(searchPicture)
             searchRoot.setOnClickListener {

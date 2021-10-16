@@ -14,11 +14,16 @@
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/drawable-v24/divider_view_6dp.xml" value="0.3828125" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/drawable-v24/divider_view_padding.xml" value="0.3828125" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/drawable-v24/ic_camera.xml" value="0.2203125" />
+        <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/drawable-v24/ic_dicoding.xml" value="0.19315068493150686" />
+        <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/drawable-v24/ic_option.xml" value="0.21197916666666666" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/drawable-v24/ic_password.xml" value="0.3828125" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/drawable/bg_bottomsheet.xml" value="0.1" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/drawable/bg_card.xml" value="0.221875" />
+        <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/drawable/bg_farmer.xml" value="0.19583333333333333" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/drawable/bg_notes.xml" value="0.13796296296296295" />
+        <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/drawable/bg_plant.xml" value="0.1" />
+        <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/drawable/default_farmer.xml" value="0.1" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/drawable/ic_about.xml" value="0.10185185185185185" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/drawable/ic_add.xml" value="0.2203125" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/drawable/ic_add_data.xml" value="0.30277777777777776" />
@@ -35,12 +40,13 @@
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/drawable/selectable_card_view.xml" value="0.3828125" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/drawable/selector_button_color.xml" value="0.22135416666666666" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/font/font.xml" value="0.234375" />
+        <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/activity_about_me.xml" value="0.33" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/activity_add_crops.xml" value="0.1" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/activity_add_data_monitoring.xml" value="0.22" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/activity_add_kit.xml" value="0.22" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/activity_add_monitoring.xml" value="0.36666666666666664" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/activity_add_note.xml" value="0.1" />
-        <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/activity_add_plant.xml" value="0.1518987341772152" />
+        <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/activity_add_plant.xml" value="0.22" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/activity_add_todo_list.xml" value="0.11214953271028037" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/activity_create_profile.xml" value="0.35884509624197986" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/activity_data_monitoring.xml" value="0.36666666666666664" />
@@ -59,7 +65,7 @@
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/activity_show_picture.xml" value="0.16666666666666666" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/activity_sign_in.xml" value="0.33" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/activity_sign_up.xml" value="0.1" />
-        <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/activity_splash_screen.xml" value="0.36666666666666664" />
+        <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/activity_splash_screen.xml" value="0.25" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/fragment_add_staff.xml" value="0.36666666666666664" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/fragment_create_farm.xml" value="0.33" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/fragment_create_garden.xml" value="0.25210084033613445" />
@@ -92,6 +98,8 @@
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/row_item_post.xml" value="0.33" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/row_item_search.xml" value="0.33" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/layout/row_item_select_user.xml" value="0.36666666666666664" />
+        <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/menu/menu_about.xml" value="0.1" />
+        <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/menu/menu_about_credit.xml" value="0.17777777777777778" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/menu/menu_main_add.xml" value="0.18681318681318682" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/menu/menu_main_bottom_navigation.xml" value="0.36666666666666664" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/menu/menu_main_drawer.xml" value="0.36666666666666664" />
@@ -101,6 +109,8 @@
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/menu/menu_main_profile.xml" value="0.36666666666666664" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/menu/menu_popup.xml" value="0.36666666666666664" />
         <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/menu/menu_profile_kit.xml" value="0.36666666666666664" />
+        <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.19583333333333333" />
+        <entry key="..\:/AndroidStudio/nydrobionics/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.19583333333333333" />
       </map>
     </option>
   </component>
@@ -113,7 +123,7 @@
   <component name="VisualizationToolProject">
     <option name="state">
       <ProjectState>
-        <option name="scale" value="0.35884509624197986" />
+        <option name="scale" value="0.33" />
       </ProjectState>
     </option>
   </component>

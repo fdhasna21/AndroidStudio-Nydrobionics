@@ -64,9 +64,11 @@ class CreateProfileViewModel : ViewModel() {
         }
     }
 
-    fun setCurrentFarm(farmModel : FarmModel?){
+    fun setCurrentFarm(farmModel : FarmModel?, userModel: UserModel?){
         this.farmModel.value = farmModel
+        this.userModel.value = userModel
         isFarmCreated.value = true
+        isUserCreated.value = true
     }
 
     fun getCurrentUserModel() : UserModel? = userModel.value
@@ -153,14 +155,19 @@ class CreateProfileViewModel : ViewModel() {
 
     private fun sendUserProfile(){
         createProfileError.value = ""
-        firestore.collection("users").document(auth.uid!!).set(userModel.value!!.toHashMap()).addOnCompleteListener {
-            if(it.isSuccessful){
-                isUserCreated.value = true
-                isNotEmpties.value = false
-            } else {
-                createProfileError.value = it.exception.toString()
-                isUserCreated.value = false
-            }
+        try {
+            firestore.collection("users").document(auth.uid!!).set(userModel.value!!.toHashMap())
+                .addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        isUserCreated.value = true
+                        isNotEmpties.value = false
+                    } else {
+                        createProfileError.value = it.exception.toString()
+                        isUserCreated.value = false
+                    }
+                }
+        } catch (e:Exception){
+            Log.e(TAG, "sendUserProfile failed", e)
         }
     }
 

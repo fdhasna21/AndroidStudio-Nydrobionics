@@ -43,10 +43,9 @@ class AddPlantActivity : AppCompatActivity(), TextWatcher, View.OnClickListener 
     private var strEdt : HashMap<String, TextInputEditText> = hashMapOf()
 
     companion object{
-        const val TAG = "addPlant"
+        const val TAG = "addPlantActivity"
     }
 
-    //todo : kurang edit (tampilin data, check update)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddPlantBinding.inflate(layoutInflater)
@@ -55,7 +54,11 @@ class AddPlantActivity : AppCompatActivity(), TextWatcher, View.OnClickListener 
         viewModel = ViewModelProvider(this).get(AddPlantViewModel::class.java)
         viewModel.setCurrentData(intent.getParcelableExtra<PlantModel>(BuildConfig.SELECTED_PLANT))
 
-        supportActionBar?.title = getString(R.string.add_new_plant)
+        supportActionBar?.title = if(intent.getParcelableExtra<PlantModel>(BuildConfig.SELECTED_PLANT) == null) {
+            getString(R.string.add_new_plant)
+        } else {
+            getString(R.string.edit_plant)
+        }
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(false)
 
@@ -103,7 +106,6 @@ class AddPlantActivity : AppCompatActivity(), TextWatcher, View.OnClickListener 
                     checkEmpty()
                 }
             }
-            checkEmpty()
 
             viewModel.getPhotoProfile().observe(this@AddPlantActivity, {
                 it?.let {
@@ -128,7 +130,7 @@ class AddPlantActivity : AppCompatActivity(), TextWatcher, View.OnClickListener 
                     addPlantAcidMax.setPickerValue(it.phLv?.max ?: 0f)
 
                     Glide.with(this@AddPlantActivity)
-                        .load(it.photo_url)
+                        .load(it.photo_url ?: R.drawable.bg_plant)
                         .circleCrop()
                         .into(addPlantPhoto)
 
@@ -143,13 +145,20 @@ class AddPlantActivity : AppCompatActivity(), TextWatcher, View.OnClickListener 
                     strEdt[it.description ?: ""] = addPlantDescription
                 }
             })
+
+            checkEmpty()
         }
     }
 
     override fun onSupportNavigateUp(): Boolean {
         if(intent.getParcelableExtra<PlantModel>(BuildConfig.SELECTED_PLANT) != null &&
-                viewModel.getCurrentPlant().value?.userId != Firebase.auth.uid){
-            binding.addPlantSubmit.performClick()
+                viewModel.getCurrentPlant().value?.userId == Firebase.auth.uid){
+            viewModel.isNotEmpties.observe(this, {
+                when(it){
+                    true -> binding.addPlantSubmit.performClick()
+                    else -> super.onBackPressed()
+                }
+            })
         } else {
             super.onBackPressed()
         }
@@ -178,21 +187,44 @@ class AddPlantActivity : AppCompatActivity(), TextWatcher, View.OnClickListener 
         val currTempMin : Float? =  viewModel.getNumberPickerValue(getNumberPickerType(binding.addPlantTempMin))?.value
         val currTempMax : Float? =  viewModel.getNumberPickerValue(getNumberPickerType(binding.addPlantTempMax))?.value
         val currHumidMin : Float? =  viewModel.getNumberPickerValue(getNumberPickerType(binding.addPlantHumidMin))?.value
-        val currentHumidMax : Float? =  viewModel.getNumberPickerValue(getNumberPickerType(binding.addPlantHumidMax))?.value
-        val currentAcidMin : Float? = viewModel.getNumberPickerValue(getNumberPickerType(binding.addPlantAcidMin))?.value
-        val currentAcidMax : Float? = viewModel.getNumberPickerValue(getNumberPickerType(binding.addPlantAcidMax))?.value
+        val currHumidMax : Float? =  viewModel.getNumberPickerValue(getNumberPickerType(binding.addPlantHumidMax))?.value
+        val currAcidMin : Float? = viewModel.getNumberPickerValue(getNumberPickerType(binding.addPlantAcidMin))?.value
+        val currAcidMax : Float? = viewModel.getNumberPickerValue(getNumberPickerType(binding.addPlantAcidMax))?.value
         val hashMap : HashMap<Float?, Float?> = hashMapOf()
         hashMap[currTempMin] = currTempMax
-        hashMap[currHumidMin] = currentHumidMax
-        hashMap[currentAcidMin] = currentAcidMax
+        hashMap[currHumidMin] = currHumidMax
+        hashMap[currAcidMin] = currAcidMax
 
-        viewModel.checkNotEmpty(
-            utility.isEmpties(editTexts) &&
-                    currGrowthTime > 0f &&
-                    utility.isInRanges(hashMap)
-        ).observe(this, {
-            binding.addPlantSubmit.isEnabled = it
-        })
+        if(intent.getParcelableExtra<PlantModel>(BuildConfig.SELECTED_PLANT) != null){
+            viewModel.getCurrentPlant().value?.let {
+                val floNumPick: HashMap<Float, Float> = hashMapOf()
+                floNumPick[it.growthTime?.toFloat() ?: 0f] = currGrowthTime
+                floNumPick[it.tempLv?.min ?: 0f] = currTempMin ?: 0f
+                floNumPick[it.tempLv?.max ?: 0f] = currTempMax ?: 0f
+                floNumPick[it.humidLv?.min ?: 0f] = currHumidMin ?: 0f
+                floNumPick[it.humidLv?.max ?: 0f] = currHumidMax ?: 0f
+                floNumPick[it.phLv?.min ?: 0f] = currAcidMin ?: 0f
+                floNumPick[it.phLv?.max ?: 0f] = currAcidMax ?: 0f
+
+                viewModel.checkNotEmpty(utility.isEmpties(editTexts) &&
+                            currGrowthTime > 0f &&
+                            utility.isInRanges(hashMap) &&
+                            (utility.isChanges(strEdt) || utility.isNumberPickerChanges(floNumPick))
+                ).observe(this@AddPlantActivity, {
+                    binding.addPlantSubmit.isEnabled = it
+                })
+                Log.i(TAG, "checkEmpty: ${utility.isEmpties(editTexts)} ${currGrowthTime > 0f} ${utility.isInRanges(hashMap)}" +
+                        " ${utility.isChanges(strEdt)} ${utility.isNumberPickerChanges(floNumPick)}")
+            }
+        } else {
+            viewModel.checkNotEmpty(
+                utility.isEmpties(editTexts) &&
+                        currGrowthTime > 0f &&
+                        utility.isInRanges(hashMap)
+            ).observe(this, {
+                binding.addPlantSubmit.isEnabled = it
+            })
+        }
     }
 
     private fun getNumberPickerType(view: ClickNumberPickerView) : NumberPickerType?{
@@ -211,7 +243,7 @@ class AddPlantActivity : AppCompatActivity(), TextWatcher, View.OnClickListener 
     override fun onClick(v: View?) {
         when(v){
             binding.addPlantPhoto -> utility.openImage(binding.addPlantPhoto)
-            binding.addPlantEditPhoto -> utility.openEditPhoto(binding.addPlantPhoto, ProfileType.PLANT)
+            binding.addPlantEditPhoto -> utility.openEditPhoto(imageView = binding.addPlantPhoto, profileType = ProfileType.PLANT)
             binding.addPlantSubmit -> {
                 utility.isLoading = true
                 viewModel.createPlant(binding.addPlantName.text.toString(),
@@ -224,6 +256,12 @@ class AddPlantActivity : AppCompatActivity(), TextWatcher, View.OnClickListener 
                             intent.putExtra(BuildConfig.SELECTED_PLANT, viewModel.plantModel.value)
                             setResult(RESULT_OK, intent)
                         } else {
+                            val toastTxt = if(intent.getParcelableExtra<PlantModel>(BuildConfig.SELECTED_PLANT) != null){
+                                "Plant updated."
+                            } else {
+                                "New plant added."
+                            }
+                            Toast.makeText(this, toastTxt, Toast.LENGTH_SHORT).show()
                             super.onBackPressed()
                             finish()
                         }

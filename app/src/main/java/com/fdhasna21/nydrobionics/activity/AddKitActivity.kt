@@ -16,6 +16,8 @@ import com.fdhasna21.nydrobionics.R
 import com.fdhasna21.nydrobionics.databinding.ActivityAddKitBinding
 import com.fdhasna21.nydrobionics.dataclass.model.FarmModel
 import com.fdhasna21.nydrobionics.dataclass.model.KitModel
+import com.fdhasna21.nydrobionics.dataclass.model.NoteModel
+import com.fdhasna21.nydrobionics.dataclass.model.UserModel
 import com.fdhasna21.nydrobionics.enumclass.NumberPickerType
 import com.fdhasna21.nydrobionics.fragment.createprofile.CreateFarmFragment
 import com.fdhasna21.nydrobionics.utility.ViewUtility
@@ -30,9 +32,10 @@ class AddKitActivity : AppCompatActivity(), TextWatcher{
     private lateinit var editTexts : ArrayList<TextInputEditText>
     private lateinit var tooltips : ArrayList<ImageButton>
     private lateinit var numberPickers : ArrayList<ClickNumberPickerView>
+    private var strEdt : HashMap<String, TextInputEditText> = hashMapOf()
 
     companion object {
-        const val TAG = "addKit"
+        const val TAG = "addKitActivity"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,7 +44,7 @@ class AddKitActivity : AppCompatActivity(), TextWatcher{
         setContentView(binding.root)
 
         viewModel = ViewModelProvider(this).get(AddKitViewModel::class.java)
-        viewModel.setCurrentData(intent.getParcelableExtra(BuildConfig.CURRENT_USER),
+        viewModel.setCurrentData(intent.getParcelableExtra<UserModel>(BuildConfig.CURRENT_USER),
             intent.getParcelableExtra<FarmModel>(BuildConfig.CURRENT_FARM),
             intent.getParcelableExtra<KitModel>(BuildConfig.SELECTED_KIT))
 
@@ -51,6 +54,7 @@ class AddKitActivity : AppCompatActivity(), TextWatcher{
         supportActionBar?.setDisplayShowHomeEnabled(false)
 
         binding.apply {
+            setupDefaultData()
             editTexts = arrayListOf(addKitName, addKitPosition)
             tooltips = arrayListOf(akSizeInfo,
                                   akWaterLevelInfo,
@@ -103,7 +107,12 @@ class AddKitActivity : AppCompatActivity(), TextWatcher{
                 viewModel.isKitAdd.observe(this@AddKitActivity, {
                     if(it){
                         utility.isLoading = false
-                        Toast.makeText(this@AddKitActivity, "New kit created.", Toast.LENGTH_SHORT).show()
+                        val toastTxt = if(intent.getParcelableExtra<NoteModel>(BuildConfig.SELECTED_NOTE) != null){
+                            "Kit updated."
+                        } else {
+                            "New kit created."
+                        }
+                        Toast.makeText(this@AddKitActivity, toastTxt, Toast.LENGTH_SHORT).show()
                         super.onBackPressed()
                         finish()
                     } else {
@@ -118,7 +127,12 @@ class AddKitActivity : AppCompatActivity(), TextWatcher{
                     }
                 })
             }
+            checkEmpty()
+        }
+    }
 
+    private fun setupDefaultData(){
+        binding.apply {
             viewModel.getCurrentKit().observe(this@AddKitActivity, { it ->
                 it.kitId?.let { kitId ->
                     addKitName.setText(it.name)
@@ -131,15 +145,22 @@ class AddKitActivity : AppCompatActivity(), TextWatcher{
                     addKitNutrientMax.setPickerValue(it.nutrientLv?.max ?: 0f)
                     addKitTurbidityMin.setPickerValue(it.turbidityLv?.min ?: 0f)
                     addKitTurbidityMax.setPickerValue(it.turbidityLv?.max ?: 0f)
+
+                    strEdt[it.name ?: ""] = addKitName
+                    strEdt[it.position ?: ""] = addKitPosition
                 }
             })
-            checkEmpty()
         }
     }
 
     override fun onSupportNavigateUp(): Boolean {
         if(intent.getParcelableExtra<KitModel>(BuildConfig.SELECTED_KIT) != null){
-            binding.addKitSubmit.performClick()
+            viewModel.isNotEmpties.observe(this, {
+                when(it){
+                    true -> binding.addKitSubmit.performClick()
+                    else -> super.onBackPressed()
+                }
+            })
         } else {
             super.onBackPressed()
         }
@@ -177,14 +198,42 @@ class AddKitActivity : AppCompatActivity(), TextWatcher{
         hashMap[currNutrientMin] = currentNutrientMax
         hashMap[currentTurbidityMin] = currentTurbidityMax
 
-        viewModel.checkNotEmpty(
-            utility.isEmpties(editTexts) &&
-                    currWidth > 0f &&
-                    currLength > 0f &&
-                    utility.isInRanges(hashMap)
-        ).observe(this@AddKitActivity, {
-            binding.addKitSubmit.isEnabled = it
-        })
+        if(intent.getParcelableExtra<KitModel>(BuildConfig.SELECTED_KIT) != null){
+            viewModel.getCurrentKit().value?.let {
+                val floNumPick : HashMap<Float, Float> = hashMapOf()
+                floNumPick[it.width?.toFloat() ?: 0f] = currWidth
+                floNumPick[it.length?.toFloat() ?: 0f] = currLength
+                floNumPick[it.waterLv?.min ?: 0f] = currWaterMin ?:0f
+                floNumPick[it.waterLv?.max ?: 0f] = currWaterMax ?:0f
+                floNumPick[it.nutrientLv?.min ?: 0f] = currNutrientMin ?:0f
+                floNumPick[it.nutrientLv?.max ?: 0f] = currentNutrientMax ?:0f
+                floNumPick[it.turbidityLv?.min ?: 0f] = currentTurbidityMin ?:0f
+                floNumPick[it.turbidityLv?.max ?: 0f] = currentTurbidityMax ?:0f
+
+                viewModel.checkNotEmpty(utility.isEmpties(editTexts) &&
+                        currWidth > 0f &&
+                        currLength > 0f &&
+                        utility.isInRanges(hashMap) &&
+                        (utility.isChanges(strEdt) || utility.isNumberPickerChanges(floNumPick))
+                ).observe(this@AddKitActivity, {
+                    binding.addKitSubmit.isEnabled = it
+                })
+
+                Log.i(
+                    TAG,
+                    "checkEmpty: ${utility.isEmpties(editTexts)} ${currWidth > 0f} ${currLength > 0f} ${utility.isInRanges(hashMap)} ${utility.isChanges(strEdt)} ${utility.isNumberPickerChanges(floNumPick)}"
+                )
+            }
+        } else {
+            viewModel.checkNotEmpty(
+                utility.isEmpties(editTexts) &&
+                        currWidth > 0f &&
+                        currLength > 0f &&
+                        utility.isInRanges(hashMap)
+            ).observe(this@AddKitActivity, {
+                binding.addKitSubmit.isEnabled = it
+            })
+        }
     }
 
     private fun getNumberPickerType(view: ClickNumberPickerView) : NumberPickerType?{

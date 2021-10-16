@@ -4,6 +4,8 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.fdhasna21.nydrobionics.R
 import com.fdhasna21.nydrobionics.databinding.RowItemCropsBinding
 import com.fdhasna21.nydrobionics.dataclass.model.CropsModel
 import java.time.Month
@@ -31,6 +33,10 @@ class CropsModelAdapter(
 
             item.plantModel?.let {
                 cropsPlantTitle.text = it.name.toString()
+                Glide.with(context)
+                    .load(it.photo_url ?: R.drawable.bg_plant)
+                    .circleCrop()
+                    .into(cropsPlantPhoto)
             }
         }
     }

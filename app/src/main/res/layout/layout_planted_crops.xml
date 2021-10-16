@@ -26,18 +26,16 @@
             android:textColor="?attr/colorPrimary"
             android:textStyle="bold" />
 
-        <com.google.android.material.imageview.ShapeableImageView
+        <ImageView
             android:id="@+id/kitPlantPhoto"
+            android:contentDescription="@string/photo_profile"
+            android:src="@drawable/bg_plant"
+            style="@style/addImageStyle"
+            tools:ignore="MissingConstraints"
             android:layout_width="85dp"
             android:layout_height="85dp"
-            android:layout_below="@id/kitPlantTitle"
-            android:layout_gravity="center"
             android:layout_marginRight="6dp"
-            android:contentDescription="@string/user_photo_profile"
-            android:elevation="12dp"
-            android:src="@drawable/ic_farmer"
-            app:shapeAppearanceOverlay="@style/circular_image"
-            tools:ignore="ImageContrastCheck" />
+            android:layout_below="@id/kitPlantTitle"/>
 
         <TextView
             android:id="@+id/kitPlantName"
@@ -86,7 +84,6 @@
             android:layout_toEndOf="@id/kitPlantPhoto"
             android:gravity="left|center_vertical"
             android:text="@string/d_more_days"
-            app:drawableLeftCompat="@drawable/bg_circle"
             android:paddingLeft="15dp"/>
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

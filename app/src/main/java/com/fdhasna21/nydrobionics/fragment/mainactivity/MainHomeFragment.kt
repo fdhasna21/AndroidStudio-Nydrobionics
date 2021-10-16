@@ -73,6 +73,7 @@ class MainHomeFragment : Fragment(), View.OnClickListener, CardStackListener{
                     override fun onItemClicked(position: Int) {
                         val intent = Intent(requireContext(), ProfileKitActivity::class.java)
                         intent.putExtra(BuildConfig.CURRENT_USER, viewModel.getCurrentUser().value)
+                        intent.putExtra(BuildConfig.CURRENT_FARM, viewModel.getCurrentFarm().value)
                         intent.putExtra(BuildConfig.SELECTED_KIT, viewModel.getKit(position))
                         startActivity(intent)
                     }
@@ -127,6 +128,7 @@ class MainHomeFragment : Fragment(), View.OnClickListener, CardStackListener{
             R.id.farmProfile -> {
                 val intent = Intent(activity, EditProfileFarmActivity::class.java)
                 intent.putExtra(BuildConfig.CURRENT_FARM, viewModel.getCurrentFarm().value)
+                intent.putExtra(BuildConfig.CURRENT_USER, viewModel.getCurrentUser().value)
                 startActivity(intent)
             }
         }

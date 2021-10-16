@@ -56,9 +56,7 @@
             android:layout_marginBottom="12dp"
             app:decimal_number="1"
             app:picker_corner_radius="10"
-            app:pickers_background_color="@color/purple_500"
             app:step="0.1"
-            app:value_background_color="@color/purple_200"
             app:value_text_color="@color/white" />
 
         <TextView
@@ -92,9 +90,7 @@
             android:layout_marginBottom="12dp"
             app:decimal_number="1"
             app:picker_corner_radius="10"
-            app:pickers_background_color="@color/purple_500"
             app:step="0.1"
-            app:value_background_color="@color/purple_200"
             app:value_text_color="@android:color/white" />
 
         <TextView
@@ -128,9 +124,7 @@
             android:layout_marginBottom="12dp"
             app:decimal_number="1"
             app:picker_corner_radius="10"
-            app:pickers_background_color="@color/purple_500"
             app:step="0.1"
-            app:value_background_color="@color/purple_200"
             app:value_text_color="@android:color/white"
             app:min_value="0"
             app:max_value="14"/>
@@ -166,9 +160,7 @@
             android:layout_marginBottom="12dp"
             app:decimal_number="1"
             app:picker_corner_radius="10"
-            app:pickers_background_color="@color/purple_500"
             app:step="0.1"
-            app:value_background_color="@color/purple_200"
             app:value_text_color="@android:color/white" />
 
         <TextView
@@ -202,9 +194,7 @@
             android:layout_marginBottom="12dp"
             app:decimal_number="1"
             app:picker_corner_radius="10"
-            app:pickers_background_color="@color/purple_500"
             app:step="0.1"
-            app:value_background_color="@color/purple_200"
             app:value_text_color="@android:color/white" />
 
         <TextView
@@ -238,9 +228,7 @@
             android:layout_marginBottom="12dp"
             app:decimal_number="1"
             app:picker_corner_radius="10"
-            app:pickers_background_color="@color/purple_500"
             app:step="0.1"
-            app:value_background_color="@color/purple_200"
             app:value_text_color="@android:color/white" />
 
         <include

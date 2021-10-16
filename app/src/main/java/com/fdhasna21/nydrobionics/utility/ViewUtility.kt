@@ -3,6 +3,7 @@ package com.fdhasna21.nydrobionics.utility
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.util.Log
 import android.view.View
 import android.widget.CheckBox
 import androidx.appcompat.app.ActionBar
@@ -159,7 +160,7 @@ open class ViewUtility(
         } ?: kotlin.run {
             return false
         }
-        return output!!
+        return output ?: false
     }
 
     private fun isInRange(min : Float?, max: Float?) : Boolean{
@@ -180,5 +181,22 @@ open class ViewUtility(
             }
         }
         return output!!
+    }
+
+    private fun isNumberPickerChange(lastValue:Float, currentValue: Float) : Boolean{
+        return lastValue != currentValue
+    }
+
+    fun isNumberPickerChanges(values:HashMap<Float, Float>) : Boolean{
+        var output : Boolean? = null
+        values.forEach {
+            output = if(output==null){
+                isNumberPickerChange(it.key, it.value)
+            } else {
+                output as Boolean || isNumberPickerChange(it.key, it.value)
+            }
+            Log.i(TAG, "isNumberPickerChanges: ${it.key} ${it.value} $output")
+        }
+        return output ?: false
     }
 }

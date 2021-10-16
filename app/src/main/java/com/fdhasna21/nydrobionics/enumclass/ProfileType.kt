@@ -5,7 +5,7 @@ import com.fdhasna21.nydrobionics.R
 enum class ProfileType {
     USER {
         override fun getDefaultPicture(): Int {
-            return R.drawable.ic_farmer
+            return R.drawable.bg_farmer
         }
 
         override fun toString(): String {
@@ -14,8 +14,7 @@ enum class ProfileType {
     },
     PLANT{
         override fun getDefaultPicture(): Int {
-            //todo : default plant photo
-            return R.drawable.ic_launcher_foreground
+            return R.drawable.bg_plant
         }
 
         override fun toString(): String {
@@ -24,7 +23,7 @@ enum class ProfileType {
     },
     NONE{
         override fun getDefaultPicture(): Int {
-            return R.drawable.ic_launcher_foreground
+            return R.mipmap.ic_launcher
         }
 
         override fun toString(): String {

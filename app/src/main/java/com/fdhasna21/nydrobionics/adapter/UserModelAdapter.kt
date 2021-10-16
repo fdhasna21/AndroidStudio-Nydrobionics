@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.fdhasna21.nydrobionics.R
 import com.fdhasna21.nydrobionics.databinding.RowItemSearchBinding
 import com.fdhasna21.nydrobionics.dataclass.model.UserModel
 import com.google.firebase.auth.FirebaseAuth
@@ -48,7 +49,7 @@ class UserModelAdapter(
             searchTextTitle.text = item.name
             searchTextSubtitle.text = item.email
             Glide.with(context)
-                .load(item.photo_url)
+                .load(item.photo_url ?: R.drawable.bg_farmer)
                 .circleCrop()
                 .into(searchPicture)
             searchRoot.setOnClickListener {

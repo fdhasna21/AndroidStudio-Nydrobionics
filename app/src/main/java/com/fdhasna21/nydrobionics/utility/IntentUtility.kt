@@ -9,6 +9,7 @@ import android.net.Uri
 import android.provider.Settings
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -21,7 +22,6 @@ import com.fdhasna21.nydrobionics.activity.EditProfileUserActivity
 import com.fdhasna21.nydrobionics.activity.ShowPictureActivity
 import com.fdhasna21.nydrobionics.enumclass.ProfileType
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.imageview.ShapeableImageView
 
 open class IntentUtility(open val context: Context?){
     companion object {
@@ -75,14 +75,14 @@ open class IntentUtility(open val context: Context?){
         }
     }
 
-    fun openEditPhoto(shapeableImageView: ShapeableImageView, profileType: ProfileType){
+    fun openEditPhoto(imageView: ImageView, profileType: ProfileType){
         val items = arrayOf("Select photo", "Delete profile picture")
         MaterialAlertDialogBuilder(context!!)
             .setItems(items) { _, which ->
                 when(which){
                     0 -> RequestPermission().requestMultiplePermissions((context!! as Activity), listOf(
                         Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE), "Change profile picture")
-                    1 -> shapeableImageView.setImageDrawable(ContextCompat.getDrawable((context!! as Activity), profileType.getDefaultPicture()))
+                    1 -> imageView.setImageDrawable(ContextCompat.getDrawable((context!! as Activity), profileType.getDefaultPicture()))
                 }
             }
             .show()

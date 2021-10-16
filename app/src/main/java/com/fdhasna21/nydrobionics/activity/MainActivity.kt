@@ -115,22 +115,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener,
                 true
             }
             R.id.drawer_signout -> {
-                val alertDialog = AlertDialog.Builder(this)
-                val dialog = alertDialog.create()
-//                    val dialogButton : ArrayList<Button> = arrayListOf(dialog.getButton(AlertDialog.BUTTON_POSITIVE),
-//                                                                       dialog.getButton(AlertDialog.BUTTON_NEGATIVE))
-
-                alertDialog.apply {
-                    setTitle(getString(R.string.sign_out))
-                    setMessage(getString(R.string.sign_out_warning))
-                    setPositiveButton(getString(R.string.sign_out)){ _,_ ->
-//                            dialogButton.forEach { it.isEnabled = false }
+                AlertDialog.Builder(this)
+                    .setTitle(getString(R.string.sign_out))
+                    .setMessage(getString(R.string.sign_out_warning))
+                    .setPositiveButton(getString(R.string.sign_out)){ _,_ ->
                         val uid = Firebase.auth.uid!!
                         viewModel.signOut()
                         viewModel.isUserSignOut.observe(this@MainActivity, {
                             it?.let {
                                 if(it){
-//                                    dialogButton.forEach { it.isEnabled = true }
                                     drawerLayout.closeDrawer(GravityCompat.END)
                                     DatabaseHandler(this@MainActivity).signOut(uid)
                                     startActivity(Intent(this@MainActivity, SignInActivity::class.java))
@@ -151,9 +144,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener,
 
                         })
                     }
-                    setNegativeButton(getString(R.string.cancel)){_,_ ->}
-                }
-                alertDialog.show()
+                    .setNegativeButton(getString(R.string.cancel)){_,_ ->}
+                    .create()
+                    .show()
                 true
             }
             R.id.drawer_feedback -> {
@@ -171,6 +164,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener,
             R.id.drawer_language ->{
                 IntentUtility(this).openLanguageSettings()
                 drawerLayout.closeDrawer(GravityCompat.END)
+                true
+            }
+            R.id.drawer_about -> {
+                startActivity(Intent(this, AboutMeActivity::class.java))
+                drawerLayout.closeDrawer(GravityCompat.END)
+                true
+            }
+            R.id.drawer_my_post -> {
+                val intent = Intent(this, ShowRecyclerActivity::class.java)
+                intent.putExtra(BuildConfig.CURRENT_USER, viewModel.getCurrentUser().value)
+                intent.putExtra(BuildConfig.ALL_PLANTS, viewModel.getAllPosts().value)
+                startActivity(intent)
                 true
             }
             else -> false

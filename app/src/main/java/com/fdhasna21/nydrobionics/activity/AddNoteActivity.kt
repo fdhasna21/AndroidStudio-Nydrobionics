@@ -29,12 +29,12 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
     private lateinit var viewModel : AddNoteViewModel
     private lateinit var utility : ViewUtility
     private lateinit var editTexts : ArrayList<TextInputEditText>
+    private var strEdt : HashMap<String, TextInputEditText> = hashMapOf()
 
     companion object {
-        const val TAG = "addNoteList"
+        const val TAG = "addNoteActivity"
     }
 
-    //todo : kurang edit (tampilin data, check update)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddNoteBinding.inflate(layoutInflater)
@@ -43,12 +43,17 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
         viewModel = ViewModelProvider(this).get(AddNoteViewModel::class.java)
         viewModel.setCurrentData(intent.getParcelableExtra<NoteModel>(BuildConfig.SELECTED_NOTE))
 
-        supportActionBar?.title = getString(R.string.add_schedule_or_to_do_list)
+        supportActionBar?.title =
+            if(intent.getParcelableExtra<NoteModel>(BuildConfig.SELECTED_NOTE) == null) {
+                getString(R.string.add_notes)
+            } else {
+                getString(R.string.edit_notes)
+            }
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(false)
 
         binding.apply {
-            editTexts = arrayListOf(addNoteDate, addNoteTime, addNoteTitle, addNoteDesc)
+            editTexts = arrayListOf(addNoteTitle, addNoteDesc)
             utility = ViewUtility(
                 context = this@AddNoteActivity,
                 circularProgressButton = addNoteSubmit,
@@ -72,6 +77,10 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
                     it.time?.let{ time->
                         addNoteTime.setText(time)
                     }
+                    strEdt[it.title ?: ""] = addNoteTitle
+                    strEdt[it.description ?: ""] = addNoteDesc
+                    strEdt[it.date ?: ""] = addNoteDate
+                    strEdt[it.time ?:""] = addNoteTime
                 }
             })
             checkEmpty()
@@ -80,7 +89,12 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
 
     override fun onSupportNavigateUp(): Boolean {
         if(intent.getParcelableExtra<NoteModel>(BuildConfig.SELECTED_NOTE) != null){
-            binding.addNoteSubmit.performClick()
+            viewModel.isNotEmpties.observe(this, {
+                when(it){
+                    true -> binding.addNoteSubmit.performClick()
+                    else -> super.onBackPressed()
+                }
+            })
         } else {
             super.onBackPressed()
         }
@@ -166,10 +180,19 @@ class AddNoteActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
     override fun afterTextChanged(s: Editable?) {}
 
     private fun checkEmpty(){
-        viewModel.apply {
-            checkNotEmpty(utility.isEmpties(editTexts)).observe(this@AddNoteActivity, {
-                binding.addNoteSubmit.isEnabled = it
-            })
+        if(intent.getParcelableExtra<NoteModel>(BuildConfig.SELECTED_NOTE) != null){
+            viewModel.apply {
+                checkNotEmpty(utility.isEmpties(editTexts) && utility.isChanges(strEdt))
+                    .observe(this@AddNoteActivity, {
+                        binding.addNoteSubmit.isEnabled = it
+                    })
+            }
+        } else {
+            viewModel.apply {
+                checkNotEmpty(utility.isEmpties(editTexts)).observe(this@AddNoteActivity, {
+                    binding.addNoteSubmit.isEnabled = it
+                })
+            }
         }
     }
 }

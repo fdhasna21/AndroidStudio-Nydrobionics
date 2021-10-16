@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.fdhasna21.nydrobionics.BuildConfig
 import com.fdhasna21.nydrobionics.R
 import com.fdhasna21.nydrobionics.activity.AddPlantActivity
+import com.fdhasna21.nydrobionics.activity.ProfileUserActivity
 import com.fdhasna21.nydrobionics.adapter.AdapterType
 import com.fdhasna21.nydrobionics.adapter.PostModelAdapter
 import com.fdhasna21.nydrobionics.databinding.FragmentMainPostsBinding
@@ -68,10 +69,9 @@ class MainPostsFragment : Fragment() {
                                 IntentUtility(requireContext()).openImage(itemView, viewModel.getPostUser(position)?.name ?: "Photo Profile" )
                             }
                             v.postRoot -> {
-                                gotoPost(position)
-//                                val intent = Intent(requireContext(), ProfileUserActivity::class.java)
-//                                intent.putExtra(BuildConfig.SELECTED_USER, viewModel.getPostUser(position))
-//                                startActivity(intent)
+                                val intent = Intent(requireContext(), ProfileUserActivity::class.java)
+                                intent.putExtra(BuildConfig.SELECTED_USER, viewModel.getPostUser(position))
+                                startActivity(intent)
                             }
                             v.postOptions -> {
                                 val items = arrayOf("Edit", "Delete")
@@ -83,7 +83,7 @@ class MainPostsFragment : Fragment() {
                                                 viewModel.deletePost(position)
                                                 viewModel.isPostDeleted.observe(requireActivity(), {
                                                     when(it){
-                                                        true -> Toast.makeText(requireContext(), "Post deleted.", Toast.LENGTH_SHORT).show()
+                                                        true -> Toast.makeText(requireActivity(), "Post deleted.", Toast.LENGTH_SHORT).show()
                                                     }
                                                 })
                                             }

@@ -4,5 +4,31 @@
         <item name="cornerSize">50%</item>
     </style>
 
+    <style name="addImageStyle">
+        <item name="android:elevation">3dp</item>
+        <item name="android:layout_margin">2dp</item>
+        <item name="android:layout_width">150dp</item>
+        <item name="android:layout_height">150dp</item>
+        <item name="layout_constraintTop_toTopOf">parent</item>
+        <item name="layout_constraintEnd_toEndOf">parent</item>
+        <item name="layout_constraintBottom_toBottomOf">parent</item>
+        <item name="layout_constraintStart_toStartOf">parent</item>
+    </style>
 
+    <style name="editImageStyle">
+        <item name="tint">@color/white</item>
+        <item name="android:foregroundGravity">center</item>
+        <item name="android:background">@drawable/ic_circle</item>
+        <item name="android:backgroundTint">#80000000</item>
+        <item name="android:elevation">5dp</item>
+        <item name="android:src">@drawable/ic_camera</item>
+        <item name="android:padding">7.5dp</item>
+        <item name="android:layout_width">40dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="layout_constraintHorizontal_bias">0.95</item>
+        <item name="layout_constraintVertical_bias">0.95</item>
+        <item name="layout_constraintTop_toTopOf">parent</item>
+        <item name="layout_constraintEnd_toEndOf">parent</item>
+        <item name="layout_constraintBottom_toBottomOf">parent</item>
+    </style>
 </resources>

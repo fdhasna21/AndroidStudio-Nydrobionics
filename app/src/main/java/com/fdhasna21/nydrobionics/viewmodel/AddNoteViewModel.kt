@@ -19,7 +19,7 @@ class AddNoteViewModel : ViewModel(){
     private var noteModel : MutableLiveData<NoteModel> = MutableLiveData(NoteModel())
     private var timeHour : MutableLiveData<Int> = MutableLiveData(0)
     private var timeMinute : MutableLiveData<Int> = MutableLiveData(0)
-    private var isNotEmpties : MutableLiveData<Boolean> = MutableLiveData(false)
+    var isNotEmpties : MutableLiveData<Boolean> = MutableLiveData(false)
     var isNoteAdd: MutableLiveData<Boolean> = MutableLiveData(false)
     var addNoteError : MutableLiveData<String> = MutableLiveData("")
 

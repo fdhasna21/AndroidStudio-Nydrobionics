@@ -14,7 +14,7 @@
 
     <item
         android:id="@+id/addNote"
-        android:title="@string/add_schedule_or_to_do_list"
+        android:title="@string/add_notes"
         android:icon="@drawable/ic_add_notes"/>
 
     <item

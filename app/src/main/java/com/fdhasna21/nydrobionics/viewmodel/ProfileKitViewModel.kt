@@ -3,14 +3,11 @@ package com.fdhasna21.nydrobionics.viewmodel
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.fdhasna21.nydrobionics.dataclass.model.CropsModel
+import com.fdhasna21.nydrobionics.dataclass.model.*
 import com.fdhasna21.nydrobionics.dataclass.model.CropsModel.Companion.toCropsModel
-import com.fdhasna21.nydrobionics.dataclass.model.DataMonitoringModel
 import com.fdhasna21.nydrobionics.dataclass.model.DataMonitoringModel.Companion.toDataMonitoringModel
-import com.fdhasna21.nydrobionics.dataclass.model.KitModel
 import com.fdhasna21.nydrobionics.dataclass.model.KitModel.Companion.toKitModel
 import com.fdhasna21.nydrobionics.dataclass.model.PlantModel.Companion.toPlantModel
-import com.fdhasna21.nydrobionics.dataclass.model.UserModel
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
@@ -21,6 +18,7 @@ class ProfileKitViewModel : ViewModel() {
     private var firestore : FirebaseFirestore = Firebase.firestore
     private var currentUserModel : MutableLiveData<UserModel> = MutableLiveData(null)
     private var currentKitModel : MutableLiveData<KitModel> = MutableLiveData(null)
+    private var currentFarmModel : MutableLiveData<FarmModel> = MutableLiveData(null)
 
     private var monitoringArray : MutableLiveData<ArrayList<DataMonitoringModel>> = MutableLiveData(null)
     private var cropsArray : MutableLiveData<ArrayList<CropsModel>> = MutableLiveData(null)
@@ -32,9 +30,12 @@ class ProfileKitViewModel : ViewModel() {
         const val TAG = "profileKitViewModel"
     }
 
-    fun setCurrentKit(userModel: UserModel?, kitModel: KitModel?) {
+    fun setCurrentKit(userModel: UserModel?, farmModel: FarmModel?, kitModel: KitModel?) {
         userModel?.let { user ->
             currentUserModel.value = user
+            farmModel?.let {
+                currentFarmModel.value = it
+            }
             kitModel?.let { kit ->
                 currentKitModel.value = kit
                 getKitUpdate()
@@ -106,4 +107,6 @@ class ProfileKitViewModel : ViewModel() {
     fun getCurrentKit() = currentKitModel
     fun getCurrentMonitoring() = monitoringArray
     fun getCurrentCrops() = cropsArray
+    fun getCurrentUser() = currentUserModel
+    fun getCurrentFarm() = currentFarmModel
 }

@@ -70,7 +70,8 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        tools:context=".fragment.MapsFragment" />
+        tools:context=".fragment.MapsFragment"
+        android:visibility="gone"/>
 
     <RelativeLayout
         android:id="@+id/editStaff"

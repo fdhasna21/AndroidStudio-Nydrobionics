@@ -32,9 +32,10 @@ interface LoadingInterface {
                 it.isEnabled = !value
             }
             numberPickers?.forEach {
-                it.isEnabled = !value
+                //cannot change intractability because of the library
             }
             circularProgressButton?.apply {
+                this.saveInitialState()
                 this.isEnabled = true
                 if(value){
                     startAnimation()

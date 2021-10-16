@@ -5,23 +5,28 @@ plugins {
     id 'kotlin-parcelize'
 }
 
-def propFile = new File('tag.properties')
-Properties credentialProperties = new Properties()
-if (propFile.canRead()) {
-    credentialProperties.load(new FileInputStream(propFile))
-    if (credentialProperties != null) {
-        android.buildTypes.all {
-            buildType ->
-                credentialProperties.any {
-                    property ->
-                        buildType.buildConfigField "String", property.key, "\"${property.value}\""
-                }
+ArrayList<String> fileNames = new ArrayList<String>()
+fileNames.add('tag.properties')
+fileNames.add('credentials.properties')
+for(String fileName in fileNames){
+    def propFile = new File(fileName)
+    Properties fileProperties = new Properties()
+    if (propFile.canRead()) {
+        fileProperties.load(new FileInputStream(propFile))
+        if (fileProperties != null) {
+            android.buildTypes.all {
+                buildType ->
+                    fileProperties.any {
+                        property ->
+                            buildType.buildConfigField "String", property.key, "\"${property.value}\""
+                    }
+            }
+        } else {
+            throw new InvalidUserDataException(fileName+' found but some entries are missing')
         }
     } else {
-        throw new InvalidUserDataException('credential.properties found but some entries are missing')
+        throw new MissingResourceException(fileName+' not found')
     }
-} else {
-    throw new MissingResourceException('credential.properties not found')
 }
 
 android {

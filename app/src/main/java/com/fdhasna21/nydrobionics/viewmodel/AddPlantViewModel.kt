@@ -34,12 +34,12 @@ class AddPlantViewModel : ViewModel() {
 
     var plantModel : MutableLiveData<PlantModel> = MutableLiveData(PlantModel())
 
-    private var isNotEmpties : MutableLiveData<Boolean> = MutableLiveData(false)
+    var isNotEmpties : MutableLiveData<Boolean> = MutableLiveData(false)
     var isPlantAdd : MutableLiveData<Boolean> = MutableLiveData(false)
     var addPlantError : MutableLiveData<String> = MutableLiveData("")
 
     companion object {
-        const val TAG = "addPlant"
+        const val TAG = "addPlantViewModel"
     }
 
     fun checkNotEmpty(boolean: Boolean) : MutableLiveData<Boolean> {

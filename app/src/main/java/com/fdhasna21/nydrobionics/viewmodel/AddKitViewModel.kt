@@ -20,7 +20,7 @@ import com.google.firebase.ktx.Firebase
 
 class AddKitViewModel : ViewModel() {
     private var firestore : FirebaseFirestore = Firebase.firestore
-    private var isNotEmpties : MutableLiveData<Boolean> = MutableLiveData(false)
+    var isNotEmpties : MutableLiveData<Boolean> = MutableLiveData(false)
     var isKitAdd : MutableLiveData<Boolean> = MutableLiveData(false)
     var addKitError : MutableLiveData<String> = MutableLiveData("")
 

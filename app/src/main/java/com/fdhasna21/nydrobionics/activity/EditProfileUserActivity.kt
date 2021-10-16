@@ -44,7 +44,7 @@ class EditProfileUserActivity : AppCompatActivity(), View.OnClickListener, Segme
     private var strEdt : HashMap<String, TextInputEditText> = hashMapOf()
 
     companion object {
-        const val TAG = "editProfileUser"
+        const val TAG = "editProfileUserActivity"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -186,12 +186,10 @@ class EditProfileUserActivity : AppCompatActivity(), View.OnClickListener, Segme
                 createUserAddress.setText(it.address ?: "")
                 createUserBio.setText(it.bio ?: "")
                 createUserDOB.setText(it.dob ?: "")
-                it.photo_url?.let {
-                    Glide.with(this@EditProfileUserActivity)
-                        .load(it)
-                        .centerCrop()
-                        .into(createUserPhoto)
-                }
+                Glide.with(this@EditProfileUserActivity)
+                    .load(it.photo_url ?: R.drawable.bg_farmer)
+                    .centerCrop()
+                    .into(createUserPhoto)
                 createUserGender.setPosition(Gender.getType(it.gender!!)!!.getPosition(), false)
 
                 strEdt[it.name ?: ""] = createUserName
@@ -213,9 +211,10 @@ class EditProfileUserActivity : AppCompatActivity(), View.OnClickListener, Segme
 
     private fun checkUpdate() {
         viewModel.checkNotEmpty(
-            utility.isChanges(strEdt) ||
+            utility.isEmpties(editTexts) &&
+                    (utility.isChanges(strEdt) ||
                     viewModel.getUpdateGender() != bindingFragment.createUserGender.position ||
-                    viewModel.getPhotoProfile().value != null
+                    viewModel.getPhotoProfile().value != null)
         ).observe(this, {
             bindingFragment.createUserSubmit.isEnabled = it
         })

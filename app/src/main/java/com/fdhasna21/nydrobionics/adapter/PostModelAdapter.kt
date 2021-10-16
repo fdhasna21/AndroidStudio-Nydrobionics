@@ -55,9 +55,14 @@ class PostModelAdapter(private val context: Context,
             user?.let {
                 postUserName.text = it.name
                 postUserEmail.text = it.email
-                postDescription.text = context.getString(R.string.post_from_plant, item.name, item.growthTime)
+                postDescription.text = context.getString(R.string.post_from_plant,
+                    item.name,
+                    item.growthTime,
+                    item.tempLv?.min ?: 0f, item.tempLv?.max ?: 0f,
+                    item.humidLv?.min ?:0f, item.humidLv?.max ?: 0f,
+                    item.phLv?.min ?: 0f, item.phLv?.max ?: 0f)
                 Glide.with(context)
-                    .load(it.photo_url)
+                    .load(it.photo_url ?: R.drawable.bg_farmer)
                     .circleCrop()
                     .into(postUserImage)
                 postOptions.visibility = if(it.uid == Firebase.auth.uid && context !is ProfileUserActivity){

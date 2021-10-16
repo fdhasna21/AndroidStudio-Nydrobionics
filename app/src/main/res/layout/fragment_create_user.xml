@@ -16,37 +16,19 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center">
 
-        <com.google.android.material.imageview.ShapeableImageView
+        <ImageView
             android:id="@+id/createUserPhoto"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:contentDescription="@string/user_photo_profile"
-            android:src="@drawable/ic_farmer"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="ImageContrastCheck"
-            app:shapeAppearanceOverlay="@style/circular_image"
-            android:background="@color/white"/>
+            android:contentDescription="@string/photo_profile"
+            android:src="@drawable/bg_farmer"
+            style="@style/addImageStyle"
+            tools:ignore="MissingConstraints" />
 
         <ImageView
             android:id="@+id/createUserEditPhoto"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@drawable/bg_circle"
-            android:backgroundTint="#80000000"
-            android:padding="7.5dp"
-            android:src="@drawable/ic_camera"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.95"
+            android:contentDescription="@string/add_photo"
             app:layout_constraintStart_toStartOf="@+id/createUserPhoto"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.95"
-            app:tint="@color/white"
-            android:foregroundGravity="center"
-            android:contentDescription="@string/add_photo"/>
+            style="@style/editImageStyle"
+            tools:ignore="MissingConstraints" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.textfield.TextInputLayout

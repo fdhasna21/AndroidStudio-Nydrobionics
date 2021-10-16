@@ -14,6 +14,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.fdhasna21.nydrobionics.BuildConfig
 import com.fdhasna21.nydrobionics.R
 import com.fdhasna21.nydrobionics.databinding.ActivityProfileKitBinding
+import com.fdhasna21.nydrobionics.dataclass.model.FarmModel
 import com.fdhasna21.nydrobionics.dataclass.model.KitModel
 import com.fdhasna21.nydrobionics.dataclass.model.UserModel
 import com.fdhasna21.nydrobionics.fragment.profilekit.KitCropsFragment
@@ -38,6 +39,7 @@ class ProfileKitActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(this).get(ProfileKitViewModel::class.java)
         viewModel.setCurrentKit(intent.getParcelableExtra<UserModel>(BuildConfig.CURRENT_USER),
+            intent.getParcelableExtra<FarmModel>(BuildConfig.CURRENT_FARM),
             intent.getParcelableExtra<KitModel>(BuildConfig.SELECTED_KIT))
         supportActionBar?.title = getString(R.string.hydroponic_kit)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -88,10 +90,12 @@ class ProfileKitActivity : AppCompatActivity() {
         when(item.itemId){
             R.id.kitSettings -> {
                 val intent = Intent(this, AddKitActivity::class.java)
+                intent.putExtra(BuildConfig.CURRENT_USER, viewModel.getCurrentUser().value)
+                intent.putExtra(BuildConfig.CURRENT_FARM, viewModel.getCurrentFarm().value)
                 intent.putExtra(BuildConfig.SELECTED_KIT, viewModel.getCurrentKit().value)
                 startActivity(intent)
             }
-            R.id.kitHistory -> startActivity(Intent(this, ShowHistoryActivity::class.java))
+            R.id.kitHistory -> startActivity(Intent(this, ShowRecyclerActivity::class.java))
         }
         return super.onOptionsItemSelected(item)
     }

@@ -1,214 +1,222 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragment.mainactivity.MainProfileFragment"
-    android:orientation="vertical"
-    android:focusableInTouchMode="true"
-    android:fitsSystemWindows="true"
-    android:showDividers="middle"
-    android:divider="@drawable/divider_12dp"
-    android:layout_margin="24dp">
-
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/mainProfilePhoto"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_gravity="center"
-        android:contentDescription="@string/user_photo_profile"
-        android:src="@drawable/ic_farmer"
-        app:shapeAppearanceOverlay="@style/circular_image"
-        tools:ignore="ImageContrastCheck"
-        android:elevation="4dp"
-        android:background="@color/white"/>
-
-    <androidx.cardview.widget.CardView
+    tools:context=".fragment.mainactivity.MainProfileFragment">
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="10dp"
-        app:cardCornerRadius="8dp"
-        android:layout_marginTop="-80dp"
-        android:layout_marginHorizontal="2dp"
-        android:layout_marginBottom="10dp">
-        <RelativeLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+
+        android:orientation="vertical"
+        android:focusableInTouchMode="true"
+        android:fitsSystemWindows="true"
+        android:showDividers="middle"
+        android:divider="@drawable/divider_12dp"
+        android:layout_margin="24dp">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/mainProfilePhoto"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/user_photo_profile"
+            android:src="@drawable/default_farmer"
+            app:shapeAppearanceOverlay="@style/circular_image"
+            tools:ignore="ImageContrastCheck"
+            android:elevation="4dp"
+            android:background="@color/white"/>
+
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
-            android:orientation="vertical"
-            android:padding="@dimen/layoutPadding" >
-
-            <TextView
-                android:id="@+id/mainProfileName"
-                style="?attr/textAppearanceSubtitle1"
+            android:elevation="10dp"
+            app:cardCornerRadius="8dp"
+            android:layout_marginTop="-80dp"
+            android:layout_marginHorizontal="2dp"
+            android:layout_marginBottom="10dp">
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/name"
-                android:textAlignment="center"
-                android:textSize="18sp" />
+                android:layout_marginTop="60dp"
+                android:orientation="vertical"
+                android:padding="@dimen/layoutPadding" >
 
-            <TextView
-                android:id="@+id/mainProfileBio"
-                style="?attr/textAppearanceSubtitle1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/mainProfileName"
-                android:layout_marginVertical="4dp"
-                android:layout_marginTop="-4dp"
-                android:text="@string/bio"
-                android:textAlignment="center" />
-
-            <LinearLayout
-                android:id="@+id/mainProfileFarmGroup"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="2"
-                android:orientation="horizontal"
-                android:layout_below="@id/mainProfileBio"
-                android:background="?attr/selectableItemBackground"
-                android:layout_marginVertical="4dp"
-                android:divider="@drawable/divider_6dp"
-                android:showDividers="middle">
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.7"
-                    android:text="@string/role"
-                    style="?attr/textAppearanceBody2"
-                    android:gravity="top|start"/>
-                <TextView
-                    android:id="@+id/mainProfileRole"
+                    android:id="@+id/mainProfileName"
                     style="?attr/textAppearanceSubtitle1"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.3"
-                    android:text="@string/role"
-                    android:gravity="end|top"
-                    android:textSize="14sp"
-                    android:maxLines="1"/>
-            </LinearLayout>
+                    android:text="@string/name"
+                    android:textAlignment="center"
+                    android:textSize="18sp" />
 
-            <TextView
-                android:id="@+id/mainProfileJoinedSince"
-                style="?attr/textAppearanceBody2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="4dp"
-                android:text="@string/joined_company_since"
-                android:layout_below="@id/mainProfileFarmGroup"/>
-
-            <TextView
-                android:id="@+id/mainProfilePerformanceRate"
-                style="?attr/textAppearanceBody2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/mainProfileJoinedSince"
-                android:layout_alignParentStart="true"
-                android:layout_marginVertical="4dp"
-                android:text="@string/performance_rate" />
-
-            <androidx.appcompat.widget.AppCompatRatingBar
-                android:id="@+id/mainProfileRate"
-                style="?android:attr/ratingBarStyleSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="16dp"
-                android:layout_below="@id/mainProfileJoinedSince"
-                android:layout_alignParentEnd="true"
-                android:layout_marginVertical="4dp"
-                android:numStars="5"
-                android:rating="5"
-                android:stepSize="0.1" />
-
-            <LinearLayout
-                android:id="@+id/mainProfileEmailGroup"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="2"
-                android:orientation="horizontal"
-                android:layout_below="@id/mainProfilePerformanceRate"
-                android:background="?attr/selectableItemBackground"
-                android:layout_marginVertical="4dp"
-                android:divider="@drawable/divider_6dp"
-                android:showDividers="middle">
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.7"
-                    android:text="@string/email"
-                    style="?attr/textAppearanceBody2"
-                    android:gravity="top|start"/>
-                <TextView
-                    android:id="@+id/mainProfileEmail"
+                    android:id="@+id/mainProfileBio"
                     style="?attr/textAppearanceSubtitle1"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.3"
-                    android:text="@string/email"
-                    android:gravity="end|top"
-                    android:textSize="14sp"
-                    android:maxLines="1"/>
-            </LinearLayout>
+                    android:layout_below="@id/mainProfileName"
+                    android:layout_marginVertical="4dp"
+                    android:layout_marginTop="-4dp"
+                    android:text="@string/bio"
+                    android:textAlignment="center" />
 
-            <LinearLayout
-                android:id="@+id/mainProfilePhoneGroup"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="2"
-                android:orientation="horizontal"
-                android:layout_below="@id/mainProfileEmailGroup"
-                android:background="?attr/selectableItemBackground"
-                android:layout_marginVertical="4dp"
-                android:divider="@drawable/divider_6dp"
-                android:showDividers="middle">
-                <TextView
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:id="@+id/mainProfileFarmGroup"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.7"
-                    android:text="@string/phone_number"
-                    style="?attr/textAppearanceBody2"
-                    android:gravity="top|start"/>
-                <TextView
-                    android:id="@+id/mainProfilePhone"
-                    style="?attr/textAppearanceSubtitle1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1.3"
-                    android:text="@string/phone_number_ex"
-                    android:gravity="end|top"
-                    android:textSize="14sp"
-                    android:maxLines="1"/>
-            </LinearLayout>
+                    android:weightSum="2"
+                    android:orientation="horizontal"
+                    android:layout_below="@id/mainProfileBio"
+                    android:background="?attr/selectableItemBackground"
+                    android:layout_marginVertical="4dp"
+                    android:divider="@drawable/divider_6dp"
+                    android:showDividers="middle">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.7"
+                        android:text="@string/role"
+                        style="?attr/textAppearanceBody2"
+                        android:gravity="top|start"/>
+                    <TextView
+                        android:id="@+id/mainProfileRole"
+                        style="?attr/textAppearanceSubtitle1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.3"
+                        android:text="@string/role"
+                        android:gravity="end|top"
+                        android:textSize="14sp"
+                        android:maxLines="1"/>
+                </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/mainProfileAddressGroup"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_below="@id/mainProfilePhoneGroup"
-                android:background="?attr/selectableItemBackground"
-                android:layout_marginVertical="4dp"
-                android:divider="@drawable/divider_6dp"
-                android:showDividers="middle">
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.7"
-                    android:text="@string/address"
+                    android:id="@+id/mainProfileJoinedSince"
                     style="?attr/textAppearanceBody2"
-                    android:gravity="top|start"/>
-                <TextView
-                    android:id="@+id/mainProfileAddress"
-                    style="?attr/textAppearanceSubtitle1"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.3"
-                    android:gravity="end|top"
-                    android:textSize="14sp"
-                    android:maxLines="1"
-                    android:text="@string/address"/>
-            </LinearLayout>
-        </RelativeLayout>
-    </androidx.cardview.widget.CardView>
-</LinearLayout>
+                    android:layout_marginVertical="4dp"
+                    android:text="@string/joined_company_since"
+                    android:layout_below="@id/mainProfileFarmGroup"/>
+
+                <TextView
+                    android:id="@+id/mainProfilePerformanceRate"
+                    style="?attr/textAppearanceBody2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/mainProfileJoinedSince"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginVertical="4dp"
+                    android:text="@string/performance_rate" />
+
+                <androidx.appcompat.widget.AppCompatRatingBar
+                    android:id="@+id/mainProfileRate"
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="16dp"
+                    android:layout_below="@id/mainProfileJoinedSince"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginVertical="4dp"
+                    android:numStars="5"
+                    android:rating="5"
+                    android:stepSize="0.1" />
+
+                <LinearLayout
+                    android:id="@+id/mainProfileEmailGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="2"
+                    android:orientation="horizontal"
+                    android:layout_below="@id/mainProfilePerformanceRate"
+                    android:background="?attr/selectableItemBackground"
+                    android:layout_marginVertical="4dp"
+                    android:divider="@drawable/divider_6dp"
+                    android:showDividers="middle">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.7"
+                        android:text="@string/email"
+                        style="?attr/textAppearanceBody2"
+                        android:gravity="top|start"/>
+                    <TextView
+                        android:id="@+id/mainProfileEmail"
+                        style="?attr/textAppearanceSubtitle1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.3"
+                        android:text="@string/email"
+                        android:gravity="end|top"
+                        android:textSize="14sp"
+                        android:maxLines="1"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/mainProfilePhoneGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="2"
+                    android:orientation="horizontal"
+                    android:layout_below="@id/mainProfileEmailGroup"
+                    android:background="?attr/selectableItemBackground"
+                    android:layout_marginVertical="4dp"
+                    android:divider="@drawable/divider_6dp"
+                    android:showDividers="middle">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.7"
+                        android:text="@string/phone_number"
+                        style="?attr/textAppearanceBody2"
+                        android:gravity="top|start"/>
+                    <TextView
+                        android:id="@+id/mainProfilePhone"
+                        style="?attr/textAppearanceSubtitle1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.3"
+                        android:text="@string/phone_number_ex"
+                        android:gravity="end|top"
+                        android:textSize="14sp"
+                        android:maxLines="1"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/mainProfileAddressGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_below="@id/mainProfilePhoneGroup"
+                    android:background="?attr/selectableItemBackground"
+                    android:layout_marginVertical="4dp"
+                    android:divider="@drawable/divider_6dp"
+                    android:showDividers="middle">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.7"
+                        android:text="@string/address"
+                        style="?attr/textAppearanceBody2"
+                        android:gravity="top|start"/>
+                    <TextView
+                        android:id="@+id/mainProfileAddress"
+                        style="?attr/textAppearanceSubtitle1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.3"
+                        android:gravity="end|top"
+                        android:textSize="14sp"
+                        android:maxLines="1"
+                        android:text="@string/address"/>
+                </LinearLayout>
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/about_lottie"
+        android:title="@string/splash_screen_animation"
+        android:icon="@drawable/icon_lottie" />
+<!--    <item-->
+<!--        android:id="@+id/about_pixeltrue"-->
+<!--        android:title="@string/illustration_by_pixel_true"-->
+<!--        android:icon="@drawable/icon_pixeltrue" />-->
+    <item
+        android:id="@+id/about_freepik"
+        android:title="@string/icon_by_freepik"
+        android:icon="@drawable/icon_freepik" />
+</menu>
