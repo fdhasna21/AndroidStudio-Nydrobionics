@@ -26,8 +26,8 @@ class CropsModelAdapter(
         val item = cropsModel[position]
         holder.binding.apply {
             item.timestamp?.let {
-                val month = item.timestamp?.substring(5)?.toInt() as Int
-                cropsDate.text = item.timestamp?.substring(6,7).toString()
+                val month = item.timestamp?.substring(5,7)?.toInt() as Int
+                cropsDate.text = item.timestamp?.substring(8,10).toString()
                 cropsMonth.text = Month.of(month).getDisplayName(TextStyle.SHORT, Locale.US)
             }
 

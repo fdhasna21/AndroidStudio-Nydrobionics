@@ -3,14 +3,13 @@ package com.fdhasna21.nydrobionics.activity
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,7 +26,6 @@ import com.fdhasna21.nydrobionics.dataclass.model.PlantModel
 import com.fdhasna21.nydrobionics.dataclass.model.UserModel
 import com.fdhasna21.nydrobionics.enumclass.ProfileType
 import com.fdhasna21.nydrobionics.viewmodel.SearchViewModel
-import com.google.firebase.firestore.auth.User
 
 class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener, SwipeRefreshLayout.OnRefreshListener {
     private lateinit var binding : ActivitySearchBinding
@@ -69,7 +67,7 @@ class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener, Swip
         viewModel.getAllPlants()
         rowAdapter = AdapterType.SEARCH_PLANT.getAdapter(this, plantModels,
             allUsers = allUsers,
-            type = AdapterType.Companion.SearchSelectType.SEARCH) as PlantModelAdapter
+            type = AdapterType.Companion.SearchSelectType.SEARCH)
         viewModel.getPlants().observe(this, {
             plantModels.clear()
             plantModels.addAll(it ?: arrayListOf())
@@ -109,7 +107,7 @@ class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener, Swip
         viewModel.setExceptUsers(intent.getParcelableArrayListExtra<UserModel>(BuildConfig.EXCEPT_USERS))
         val data : ArrayList<UserModel> = arrayListOf()
         rowAdapter = AdapterType.SEARCH_USER.getAdapter(this, data,
-            type = AdapterType.Companion.SearchSelectType.SEARCH) as UserModelAdapter
+            type = AdapterType.Companion.SearchSelectType.SEARCH)
         viewModel.getUsers().observe(this, {
             data.clear()
             data.addAll(it ?: arrayListOf())
