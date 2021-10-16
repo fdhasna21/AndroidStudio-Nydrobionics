@@ -1,7 +1,6 @@
 package com.fdhasna21.nydrobionics.activity
 
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -10,6 +9,7 @@ import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import android.widget.RatingBar
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.fdhasna21.nydrobionics.R
 import com.fdhasna21.nydrobionics.databinding.ActivityFeedbackBinding
@@ -96,7 +96,7 @@ class FeedbackActivity : AppCompatActivity(), TextWatcher, RatingBar.OnRatingBar
     private fun checkEmpty() {
         viewModel.checkNotEmpty(
             utility.isEmpty(binding.feedbackContent) &&
-            viewModel.getRating()!! > 0f
+            viewModel.getRating() ?: 0f > 0f
         ).observe(this, {
             binding.feedbackSubmit.isEnabled = it
         })
