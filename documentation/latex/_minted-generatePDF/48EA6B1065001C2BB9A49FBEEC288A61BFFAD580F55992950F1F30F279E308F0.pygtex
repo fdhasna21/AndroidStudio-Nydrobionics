@@ -1,0 +1,278 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{class} \PYG{n+nc}{AddDataMonitoringActivity} \PYG{p}{:} \PYG{n}{AppCompatActivity}\PYG{p}{(),} \PYG{n}{View}\PYG{p}{.}\PYG{n+na}{OnClickListener} \PYG{p}{\PYGZob{}}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{binding} \PYG{p}{:} \PYG{n}{ActivityAddDataMonitoringBinding}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{bindingFragment} \PYG{p}{:} \PYG{n}{ActivityAddCropsBinding}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{viewModel} \PYG{p}{:} \PYG{n}{AddDataMonitoringViewModel}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{utility}\PYG{p}{:} \PYG{n}{ViewUtility}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{tooltips} \PYG{p}{:} \PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{ImageButton}\PYG{o}{\PYGZgt{}}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{viewsAsButton} \PYG{p}{:} \PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{View}\PYG{o}{\PYGZgt{}}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{numberPickers} \PYG{p}{:} \PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{ClickNumberPickerView}\PYG{o}{\PYGZgt{}}
+
+    \PYG{n}{companion} \PYG{n}{object}\PYG{p}{\PYGZob{}}
+        \PYG{k+kd}{const} \PYG{k+kd}{val} \PYG{n+nv}{TAG} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}addDataMonitoring\PYGZdq{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{c+c1}{//todo : kurang tombol buat panen, nampilin yg msh ada tanemannya}
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onCreate}\PYG{p}{(}\PYG{n}{savedInstanceState}\PYG{p}{:} \PYG{n}{Bundle?)} \PYG{p}{\PYGZob{}}
+        \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{onCreate}\PYG{p}{(}\PYG{n}{savedInstanceState}\PYG{p}{)}
+        \PYG{n}{binding} \PYG{o}{=} \PYG{n}{ActivityAddDataMonitoringBinding}\PYG{p}{.}\PYG{n+na}{inflate}\PYG{p}{(}\PYG{n}{layoutInflater}\PYG{p}{)}
+        \PYG{n}{setContentView}\PYG{p}{(}\PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{root}\PYG{p}{)}
+
+        \PYG{n}{viewModel} \PYG{o}{=} \PYG{n}{ViewModelProvider}\PYG{p}{(}\PYG{k}{this}\PYG{p}{).}\PYG{n+na}{get}\PYG{p}{(}\PYG{n}{AddDataMonitoringViewModel}\PYG{o}{::}\PYG{n}{class}\PYG{p}{.}\PYG{n+na}{java}\PYG{p}{)}
+        \PYG{n}{supportActionBar}\PYG{o}{?.}\PYG{n+na}{title} \PYG{o}{=} \PYG{n}{getString}\PYG{p}{(}\PYG{n}{R}\PYG{p}{.}\PYG{n+na}{string}\PYG{p}{.}\PYG{n+na}{add\PYGZus{}recent\PYGZus{}data\PYGZus{}monitoring}\PYG{p}{)}
+        \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{setCurrentData}\PYG{p}{(}\PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{getParcelableExtra}\PYG{o}{\PYGZlt{}}\PYG{n}{UserModel}\PYG{o}{\PYGZgt{}}\PYG{p}{(}\PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{CURRENT\PYGZus{}USER}\PYG{p}{),}
+            \PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{getParcelableExtra}\PYG{o}{\PYGZlt{}}\PYG{n}{FarmModel}\PYG{o}{\PYGZgt{}}\PYG{p}{(}\PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{CURRENT\PYGZus{}FARM}\PYG{p}{),}
+            \PYG{n}{isAddCrops} \PYG{o}{=} \PYG{k+kc}{false}\PYG{p}{)}
+        \PYG{n}{supportActionBar}\PYG{o}{?.}\PYG{n+na}{subtitle} \PYG{o}{=} \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{currentFarmModel}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{name}
+        \PYG{n}{supportActionBar}\PYG{o}{?.}\PYG{n+na}{setDisplayHomeAsUpEnabled}\PYG{p}{(}\PYG{k+kc}{true}\PYG{p}{)}
+        \PYG{n}{supportActionBar}\PYG{o}{?.}\PYG{n+na}{setDisplayShowHomeEnabled}\PYG{p}{(}\PYG{k+kc}{false}\PYG{p}{)}
+
+        \PYG{c+c1}{//todo : tooltip semuanya}
+        \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{apply} \PYG{p}{\PYGZob{}}
+            \PYG{n}{bindingFragment} \PYG{o}{=} \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addMonitoringCropsCreate}
+            \PYG{n}{bindingFragment}\PYG{p}{.}\PYG{n+na}{apply} \PYG{p}{\PYGZob{}}
+                \PYG{n}{acSelectKit}\PYG{p}{.}\PYG{n+na}{visibility} \PYG{o}{=} \PYG{n}{View}\PYG{p}{.}\PYG{n+na}{GONE}
+                \PYG{n}{acCropsSubmit}\PYG{p}{.}\PYG{n+na}{visibility} \PYG{o}{=} \PYG{n}{View}\PYG{p}{.}\PYG{n+na}{GONE}
+
+                \PYG{n}{viewsAsButton} \PYG{o}{=} \PYG{n}{arrayListOf}\PYG{p}{(}
+                    \PYG{n}{addMonitoringSubmit}\PYG{p}{,}
+                    \PYG{n}{addMonitoringCropsButton}\PYG{p}{,}
+                    \PYG{n}{acNewPlant}\PYG{p}{,}
+                    \PYG{n}{acSelectPlant}
+                \PYG{p}{)}
+                \PYG{n}{numberPickers} \PYG{o}{=} \PYG{n}{arrayListOf}\PYG{p}{(}
+                    \PYG{n}{addMonitoringTemperature}\PYG{p}{,}
+                    \PYG{n}{addMonitoringHumidity}\PYG{p}{,}
+                    \PYG{n}{addMonitoringAcidity}\PYG{p}{,}
+                    \PYG{n}{addMonitoringWaterTank}\PYG{p}{,}
+                    \PYG{n}{addMonitoringNutrientTank}\PYG{p}{,}
+                    \PYG{n}{addMonitoringWaterTurbidity}
+                \PYG{p}{)}
+                \PYG{n}{tooltips} \PYG{o}{=} \PYG{n}{arrayListOf}\PYG{p}{(}\PYG{n}{admTempInfo}\PYG{p}{,}
+                    \PYG{n}{admHumidInfo}\PYG{p}{,}
+                    \PYG{n}{admAcidityInfo}\PYG{p}{,}
+                    \PYG{n}{admWaterLevelInfo}\PYG{p}{,}
+                    \PYG{n}{admNutrientLevelInfo}\PYG{p}{,}
+                    \PYG{n}{admWaterTurbidityInfo}\PYG{p}{)}
+
+                \PYG{n}{utility} \PYG{o}{=} \PYG{n}{ViewUtility}\PYG{p}{(}
+                    \PYG{n}{context} \PYG{o}{=} \PYG{k}{this}\PYG{n+nd}{@AddDataMonitoringActivity}\PYG{p}{,}
+                    \PYG{n}{circularProgressButton} \PYG{o}{=} \PYG{n}{addMonitoringSubmit}\PYG{p}{,}
+                    \PYG{n}{viewsAsButton} \PYG{o}{=} \PYG{n}{viewsAsButton}\PYG{p}{,}
+                    \PYG{n}{actionBar} \PYG{o}{=} \PYG{n}{supportActionBar}
+                \PYG{p}{)}
+
+                \PYG{n}{numberPickers}\PYG{p}{.}\PYG{n+na}{forEachIndexed} \PYG{p}{\PYGZob{}} \PYG{n}{i}\PYG{p}{,} \PYG{n}{view} \PYG{o}{\PYGZhy{}\PYGZgt{}}
+                    \PYG{k+kd}{val} \PYG{n+nv}{numberPickerDataType} \PYG{o}{=} \PYG{n}{getNumberPickerType}\PYG{p}{(}\PYG{n}{view}\PYG{p}{)}
+                    \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getNumberPickerValue}\PYG{p}{(}\PYG{n}{numberPickerDataType}\PYG{p}{)}\PYG{o}{?.}\PYG{n+na}{observe}\PYG{p}{(}\PYG{k}{this}\PYG{n+nd}{@AddDataMonitoringActivity}\PYG{p}{,\PYGZob{}}
+                        \PYG{k}{if}\PYG{p}{(}\PYG{n+nb}{it} \PYG{o}{!=} \PYG{n}{view}\PYG{p}{.}\PYG{n+na}{value}\PYG{p}{)\PYGZob{}}
+                            \PYG{n}{view}\PYG{p}{.}\PYG{n+na}{setPickerValue}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{)}
+                        \PYG{p}{\PYGZcb{}}
+                    \PYG{p}{\PYGZcb{})}
+
+                    \PYG{n}{numberPickers}\PYG{o}{[}\PYG{n}{i}\PYG{o}{]}\PYG{p}{.}\PYG{n+na}{setClickNumberPickerListener} \PYG{p}{\PYGZob{}} \PYG{n}{previousValue}\PYG{p}{,} \PYG{n}{currentValue}\PYG{p}{,} \PYG{n}{pickerClickType} \PYG{o}{\PYGZhy{}\PYGZgt{}}
+                        \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{setNumberPickerValue}\PYG{p}{(}\PYG{n}{currentValue}\PYG{p}{,} \PYG{n}{numberPickerDataType}\PYG{p}{)}
+                        \PYG{n}{checkEmpty}\PYG{p}{()}
+                    \PYG{p}{\PYGZcb{}}
+                \PYG{p}{\PYGZcb{}}
+                \PYG{n}{viewsAsButton}\PYG{p}{.}\PYG{n+na}{forEach} \PYG{p}{\PYGZob{}} \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{setOnClickListener}\PYG{p}{(}\PYG{k}{this}\PYG{n+nd}{@AddDataMonitoringActivity}\PYG{p}{)} \PYG{p}{\PYGZcb{}}
+                \PYG{n}{tooltips}\PYG{p}{.}\PYG{n+na}{forEach} \PYG{p}{\PYGZob{}}
+                    \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{setOnClickListener} \PYG{p}{\PYGZob{}}
+                        \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{performLongClick}\PYG{p}{()}
+                    \PYG{p}{\PYGZcb{}}
+                \PYG{p}{\PYGZcb{}}
+                \PYG{n}{admHumidInfo}\PYG{p}{.}\PYG{n+na}{tooltipText} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}Min : \PYGZbs{}n\PYGZdq{}} \PYG{o}{+}
+                        \PYG{l+s}{\PYGZdq{}Max : \PYGZdq{}}
+
+                \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getCurrentCrops}\PYG{p}{().}\PYG{n+na}{observe}\PYG{p}{(}\PYG{k}{this}\PYG{n+nd}{@AddDataMonitoringActivity}\PYG{p}{,} \PYG{p}{\PYGZob{}}
+                    \PYG{k}{if}\PYG{p}{(}\PYG{n+nb}{it} \PYG{o}{==} \PYG{k+kc}{null}\PYG{p}{)\PYGZob{}} \PYG{c+c1}{//crops not found}
+                        \PYG{n}{addMonitoringCropsPlanted}\PYG{p}{.}\PYG{n+na}{root}\PYG{p}{.}\PYG{n+na}{visibility} \PYG{o}{=} \PYG{n}{View}\PYG{p}{.}\PYG{n+na}{GONE}
+                        \PYG{n}{addMonitoringNewCrops}\PYG{p}{.}\PYG{n+na}{visibility} \PYG{o}{=} \PYG{n}{View}\PYG{p}{.}\PYG{n+na}{VISIBLE}
+                    \PYG{p}{\PYGZcb{}} \PYG{k}{else} \PYG{p}{\PYGZob{}} \PYG{c+c1}{//crops found}
+                        \PYG{k}{if}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{cropsId} \PYG{o}{!=} \PYG{k+kc}{null}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+                            \PYG{n}{addMonitoringCropsPlanted}\PYG{p}{.}\PYG{n+na}{root}\PYG{p}{.}\PYG{n+na}{visibility} \PYG{o}{=} \PYG{n}{View}\PYG{p}{.}\PYG{n+na}{VISIBLE}
+                            \PYG{n}{addMonitoringNewCrops}\PYG{p}{.}\PYG{n+na}{visibility} \PYG{o}{=} \PYG{n}{View}\PYG{p}{.}\PYG{n+na}{GONE}
+                            \PYG{n}{addMonitoringCropsPlanted}\PYG{p}{.}\PYG{n+na}{apply} \PYG{p}{\PYGZob{}}
+                                \PYG{c+c1}{//todo kurang moreday}
+\PYG{c+c1}{//                            val plantedDate : String = utility.formatTimestampToDate(it.timestamp)}
+\PYG{c+c1}{//                            val estimateDate : Long = utility.formatStringToDate(plantedDate, it.plantModel?.growthTime)}
+                                \PYG{k}{this}\PYG{p}{.}\PYG{n+na}{kitPlantName}\PYG{p}{.}\PYG{n+na}{text} \PYG{o}{=} \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{plantModel}\PYG{o}{?.}\PYG{n+na}{name}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{()}
+\PYG{c+c1}{//                            this.kitPlantDate.text = plantedDate}
+                                \PYG{k}{this}\PYG{p}{.}\PYG{n+na}{kitPlantHarvest}\PYG{p}{.}\PYG{n+na}{text} \PYG{o}{=} \PYG{n}{getString}\PYG{p}{(}
+                                    \PYG{n}{R}\PYG{p}{.}\PYG{n+na}{string}\PYG{p}{.}\PYG{n+na}{can\PYGZus{}be\PYGZus{}harvested\PYGZus{}at\PYGZus{}s}\PYG{p}{,}
+                                    \PYG{l+s}{\PYGZdq{}now\PYGZdq{}}
+                                \PYG{p}{)}\PYG{c+c1}{//utility.formatDateToString(estimateDate))}
+                                \PYG{n}{Glide}\PYG{p}{.}\PYG{n+na}{with}\PYG{p}{(}\PYG{k}{this}\PYG{n+nd}{@AddDataMonitoringActivity}\PYG{p}{)}
+                                    \PYG{p}{.}\PYG{n+na}{load}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{plantModel}\PYG{o}{?.}\PYG{n+na}{photo\PYGZus{}url}\PYG{p}{)}
+                                    \PYG{p}{.}\PYG{n+na}{circleCrop}\PYG{p}{()}
+                                    \PYG{p}{.}\PYG{n+na}{into}\PYG{p}{(}\PYG{k}{this}\PYG{p}{.}\PYG{n+na}{kitPlantPhoto}\PYG{p}{)}
+                            \PYG{p}{\PYGZcb{}}
+                        \PYG{p}{\PYGZcb{}}
+                    \PYG{p}{\PYGZcb{}}
+                \PYG{p}{\PYGZcb{})}
+
+                \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getCurrentPlant}\PYG{p}{().}\PYG{n+na}{observe}\PYG{p}{(}\PYG{k}{this}\PYG{n+nd}{@AddDataMonitoringActivity}\PYG{p}{,} \PYG{p}{\PYGZob{}}
+                    \PYG{k}{if}\PYG{p}{(}\PYG{n+nb}{it} \PYG{o}{!=} \PYG{k+kc}{null}\PYG{p}{)\PYGZob{}}
+                        \PYG{k}{try}\PYG{p}{\PYGZob{}}
+                            \PYG{n}{acPlantSelector}\PYG{p}{.}\PYG{n+na}{visibility} \PYG{o}{=} \PYG{n}{View}\PYG{p}{.}\PYG{n+na}{GONE}
+                            \PYG{n}{acCropsContent}\PYG{p}{.}\PYG{n+na}{visibility} \PYG{o}{=} \PYG{n}{View}\PYG{p}{.}\PYG{n+na}{VISIBLE}
+                            \PYG{n}{addMonitoringCropsButton}\PYG{p}{.}\PYG{n+na}{visibility} \PYG{o}{=} \PYG{n}{View}\PYG{p}{.}\PYG{n+na}{GONE}
+
+                            \PYG{k+kd}{val} \PYG{n+nv}{estimated} \PYG{p}{:} \PYG{k+kt}{String} \PYG{o}{=} \PYG{n}{utility}\PYG{p}{.}\PYG{n+na}{formatDateToString}\PYG{p}{(}\PYG{n}{utility}\PYG{p}{.}\PYG{n+na}{formatStringToDate}\PYG{p}{(}\PYG{n}{est} \PYG{o}{=} \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{growthTime}\PYG{o}{!!}\PYG{p}{)).}\PYG{n+na}{toString}\PYG{p}{()}
+                            \PYG{n}{acPlantName}\PYG{p}{.}\PYG{n+na}{setText}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{name}\PYG{p}{)}
+                            \PYG{n}{acPlantDescription}\PYG{p}{.}\PYG{n+na}{setText}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{description}\PYG{p}{)}
+                            \PYG{n}{acPlantGrowth}\PYG{p}{.}\PYG{n+na}{setText}\PYG{p}{(}\PYG{n}{getString}\PYG{p}{(}\PYG{n}{R}\PYG{p}{.}\PYG{n+na}{string}\PYG{p}{.}\PYG{n+na}{d\PYGZus{}days}\PYG{p}{,} \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{growthTime}\PYG{p}{))}
+                            \PYG{n}{acPlantEstimated}\PYG{p}{.}\PYG{n+na}{setText}\PYG{p}{(}\PYG{n}{estimated}\PYG{p}{)}
+                            \PYG{n}{acPlantTempMin}\PYG{p}{.}\PYG{n+na}{setText}\PYG{p}{(}\PYG{n}{getString}\PYG{p}{(}\PYG{n}{R}\PYG{p}{.}\PYG{n+na}{string}\PYG{p}{.}\PYG{n+na}{temp\PYGZus{}value}\PYG{p}{,} \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{tempLv}\PYG{o}{?.}\PYG{n+na}{min}\PYG{p}{))}
+                            \PYG{n}{acPlantTempMax}\PYG{p}{.}\PYG{n+na}{setText}\PYG{p}{(}\PYG{n}{getString}\PYG{p}{(}\PYG{n}{R}\PYG{p}{.}\PYG{n+na}{string}\PYG{p}{.}\PYG{n+na}{temp\PYGZus{}value}\PYG{p}{,} \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{tempLv}\PYG{o}{?.}\PYG{n+na}{max}\PYG{p}{))}
+                            \PYG{n}{acPlantHumidMin}\PYG{p}{.}\PYG{n+na}{setText}\PYG{p}{(}\PYG{n}{getString}\PYG{p}{(}\PYG{n}{R}\PYG{p}{.}\PYG{n+na}{string}\PYG{p}{.}\PYG{n+na}{humid\PYGZus{}value}\PYG{p}{,} \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{humidLv}\PYG{o}{?.}\PYG{n+na}{min}\PYG{p}{))}
+                            \PYG{n}{acPlantHumidMax}\PYG{p}{.}\PYG{n+na}{setText}\PYG{p}{(}\PYG{n}{getString}\PYG{p}{(}\PYG{n}{R}\PYG{p}{.}\PYG{n+na}{string}\PYG{p}{.}\PYG{n+na}{humid\PYGZus{}value}\PYG{p}{,} \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{humidLv}\PYG{o}{?.}\PYG{n+na}{max}\PYG{p}{))}
+                            \PYG{n}{acPlantAcidMin}\PYG{p}{.}\PYG{n+na}{setText}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{phLv}\PYG{o}{?.}\PYG{n+na}{min}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{())}
+                            \PYG{n}{acPlantAcidMax}\PYG{p}{.}\PYG{n+na}{setText}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{phLv}\PYG{o}{?.}\PYG{n+na}{max}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{())}
+                            \PYG{n}{Glide}\PYG{p}{.}\PYG{n+na}{with}\PYG{p}{(}\PYG{k}{this}\PYG{n+nd}{@AddDataMonitoringActivity}\PYG{p}{)}
+                                \PYG{p}{.}\PYG{n+na}{load}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{photo\PYGZus{}url}\PYG{p}{)}
+                                \PYG{p}{.}\PYG{n+na}{circleCrop}\PYG{p}{()}
+                                \PYG{p}{.}\PYG{n+na}{into}\PYG{p}{(}\PYG{n}{acPlantPhoto}\PYG{p}{)}
+                        \PYG{p}{\PYGZcb{}} \PYG{k}{catch} \PYG{p}{(}\PYG{n}{e}\PYG{p}{:}\PYG{n}{Exception}\PYG{p}{)\PYGZob{}}
+                            \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{e}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}cannot parse plant data\PYGZdq{}}\PYG{p}{,} \PYG{n}{e}\PYG{p}{)}
+                        \PYG{p}{\PYGZcb{}}
+                    \PYG{p}{\PYGZcb{}} \PYG{k}{else} \PYG{p}{\PYGZob{}}
+                        \PYG{n}{acPlantSelector}\PYG{p}{.}\PYG{n+na}{visibility} \PYG{o}{=} \PYG{n}{View}\PYG{p}{.}\PYG{n+na}{VISIBLE}
+                        \PYG{n}{acCropsContent}\PYG{p}{.}\PYG{n+na}{visibility} \PYG{o}{=} \PYG{n}{View}\PYG{p}{.}\PYG{n+na}{GONE}
+                        \PYG{n}{addMonitoringCropsButton}\PYG{p}{.}\PYG{n+na}{visibility} \PYG{o}{=} \PYG{n}{View}\PYG{p}{.}\PYG{n+na}{VISIBLE}
+                    \PYG{p}{\PYGZcb{}}
+                    \PYG{n}{checkEmpty}\PYG{p}{()}
+                \PYG{p}{\PYGZcb{})}
+
+                \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getKitSelector}\PYG{p}{().}\PYG{n+na}{observe}\PYG{p}{(}\PYG{k}{this}\PYG{n+nd}{@AddDataMonitoringActivity}\PYG{p}{,} \PYG{p}{\PYGZob{}}
+                    \PYG{n+nb}{it}\PYG{o}{?.}\PYG{n+na}{let}\PYG{p}{\PYGZob{}}
+                        \PYG{k+kd}{val} \PYG{n+nv}{adapter} \PYG{o}{=} \PYG{n}{ArrayAdapter}\PYG{p}{(}\PYG{k}{this}\PYG{n+nd}{@AddDataMonitoringActivity}\PYG{p}{,} \PYG{n}{R}\PYG{p}{.}\PYG{n+na}{layout}\PYG{p}{.}\PYG{n+na}{row\PYGZus{}item\PYGZus{}list}\PYG{p}{,} \PYG{n+nb}{it}\PYG{p}{)}
+                        \PYG{p}{(}\PYG{n}{admSelectKit}\PYG{p}{.}\PYG{n+na}{editText} \PYG{k}{as?} \PYG{n}{AutoCompleteTextView}\PYG{p}{)}\PYG{o}{?.}\PYG{n+na}{setAdapter}\PYG{p}{(}\PYG{n}{adapter}\PYG{p}{)}
+                        \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{i}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}}\PYG{l+s+si}{\PYGZdl{}\PYGZob{}}\PYG{n}{adapter}\PYG{p}{.}\PYG{n+na}{count}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s}{ }\PYG{l+s+si}{\PYGZdl{}\PYGZob{}}\PYG{n+nb}{it}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}
+
+                        \PYG{p}{(}\PYG{n}{admSelectKit}\PYG{p}{.}\PYG{n+na}{editText} \PYG{k}{as?} \PYG{n}{AutoCompleteTextView}\PYG{p}{)}\PYG{o}{?.}\PYG{n+na}{setOnItemClickListener} \PYG{p}{\PYGZob{}} \PYG{n}{parent}\PYG{p}{,} \PYG{n}{view}\PYG{p}{,} \PYG{n}{position}\PYG{p}{,} \PYG{n}{id} \PYG{o}{\PYGZhy{}\PYGZgt{}}
+                            \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{setCurrentKit}\PYG{p}{(}\PYG{n}{position}\PYG{p}{)}
+                            \PYG{n}{checkEmpty}\PYG{p}{()}
+                        \PYG{p}{\PYGZcb{}}
+                    \PYG{p}{\PYGZcb{}}
+                \PYG{p}{\PYGZcb{})}
+                \PYG{n}{checkEmpty}\PYG{p}{()}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{private} \PYG{k+kd}{fun} \PYG{n+nf}{checkEmpty}\PYG{p}{()} \PYG{p}{\PYGZob{}}
+        \PYG{k+kd}{val} \PYG{n+nv}{currTemp} \PYG{p}{:} \PYG{k+kt}{Float} \PYG{o}{=} \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getNumberPickerValue}\PYG{p}{(}\PYG{n}{getNumberPickerType}\PYG{p}{(}\PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addMonitoringTemperature}\PYG{p}{))}\PYG{o}{?.}\PYG{n+na}{value} \PYG{o}{?:}\PYG{l+m}{0f}
+        \PYG{k+kd}{val} \PYG{n+nv}{currHumid} \PYG{p}{:} \PYG{k+kt}{Float} \PYG{o}{=} \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getNumberPickerValue}\PYG{p}{(}\PYG{n}{getNumberPickerType}\PYG{p}{(}\PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addMonitoringHumidity}\PYG{p}{))}\PYG{o}{?.}\PYG{n+na}{value} \PYG{o}{?:}\PYG{l+m}{0f}
+        \PYG{k+kd}{val} \PYG{n+nv}{currAcid} \PYG{p}{:} \PYG{k+kt}{Float} \PYG{o}{=}  \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getNumberPickerValue}\PYG{p}{(}\PYG{n}{getNumberPickerType}\PYG{p}{(}\PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addMonitoringAcidity}\PYG{p}{))}\PYG{o}{?.}\PYG{n+na}{value} \PYG{o}{?:}\PYG{l+m}{0f}
+        \PYG{k+kd}{val} \PYG{n+nv}{currWaterTank} \PYG{p}{:} \PYG{k+kt}{Float} \PYG{o}{=}  \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getNumberPickerValue}\PYG{p}{(}\PYG{n}{getNumberPickerType}\PYG{p}{(}\PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addMonitoringWaterTank}\PYG{p}{))}\PYG{o}{?.}\PYG{n+na}{value} \PYG{o}{?:}\PYG{l+m}{0f}
+        \PYG{k+kd}{val} \PYG{n+nv}{currNutrientTank} \PYG{p}{:} \PYG{k+kt}{Float} \PYG{o}{=}  \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getNumberPickerValue}\PYG{p}{(}\PYG{n}{getNumberPickerType}\PYG{p}{(}\PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addMonitoringNutrientTank}\PYG{p}{))}\PYG{o}{?.}\PYG{n+na}{value} \PYG{o}{?:} \PYG{l+m}{0f}
+        \PYG{k+kd}{val} \PYG{n+nv}{currentTurbidity} \PYG{p}{:} \PYG{k+kt}{Float} \PYG{o}{=}  \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getNumberPickerValue}\PYG{p}{(}\PYG{n}{getNumberPickerType}\PYG{p}{(}\PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addMonitoringWaterTurbidity}\PYG{p}{))}\PYG{o}{?.}\PYG{n+na}{value} \PYG{o}{?:}\PYG{l+m}{0f}
+
+        \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{checkNotEmpty}\PYG{p}{(}
+            \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getCurrentKit}\PYG{p}{().}\PYG{n+na}{value} \PYG{o}{!=} \PYG{k+kc}{null} \PYG{o}{\PYGZam{}\PYGZam{}}
+                    \PYG{n}{currTemp} \PYG{o}{\PYGZgt{}} \PYG{l+m}{0f} \PYG{o}{\PYGZam{}\PYGZam{}}
+                    \PYG{n}{currHumid} \PYG{o}{\PYGZgt{}} \PYG{l+m}{0f} \PYG{o}{\PYGZam{}\PYGZam{}}
+                    \PYG{n}{currAcid} \PYG{o}{\PYGZgt{}} \PYG{l+m}{0f} \PYG{o}{\PYGZam{}\PYGZam{}}
+                    \PYG{n}{currWaterTank} \PYG{o}{\PYGZgt{}} \PYG{l+m}{0f} \PYG{o}{\PYGZam{}\PYGZam{}}
+                    \PYG{n}{currNutrientTank} \PYG{o}{\PYGZgt{}} \PYG{l+m}{0f} \PYG{o}{\PYGZam{}\PYGZam{}}
+                    \PYG{n}{currentTurbidity} \PYG{o}{\PYGZgt{}} \PYG{l+m}{0f}
+        \PYG{p}{).}\PYG{n+na}{observe}\PYG{p}{(}\PYG{k}{this}\PYG{p}{,} \PYG{p}{\PYGZob{}}
+            \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addMonitoringSubmit}\PYG{p}{.}\PYG{n+na}{isEnabled} \PYG{o}{=} \PYG{n+nb}{it}
+        \PYG{p}{\PYGZcb{})}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onSupportNavigateUp}\PYG{p}{():} \PYG{k+kt}{Boolean} \PYG{p}{\PYGZob{}}
+        \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{onBackPressed}\PYG{p}{()}
+        \PYG{n}{finish}\PYG{p}{()}
+        \PYG{k}{return} \PYG{k+kc}{true}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{dispatchTouchEvent}\PYG{p}{(}\PYG{n}{ev}\PYG{p}{:} \PYG{n}{MotionEvent?)}\PYG{p}{:} \PYG{k+kt}{Boolean} \PYG{p}{\PYGZob{}}
+        \PYG{k}{if} \PYG{p}{(}\PYG{n}{currentFocus} \PYG{o}{!=} \PYG{k+kc}{null}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+            \PYG{k+kd}{val} \PYG{n+nv}{imm}\PYG{p}{:} \PYG{n}{InputMethodManager} \PYG{o}{=}
+                \PYG{n}{getSystemService}\PYG{p}{(}\PYG{n}{Context}\PYG{p}{.}\PYG{n+na}{INPUT\PYGZus{}METHOD\PYGZus{}SERVICE}\PYG{p}{)} \PYG{k}{as} \PYG{n}{InputMethodManager}
+            \PYG{n}{imm}\PYG{p}{.}\PYG{n+na}{hideSoftInputFromWindow}\PYG{p}{(}\PYG{n}{currentFocus}\PYG{o}{!!}\PYG{p}{.}\PYG{n+na}{windowToken}\PYG{p}{,} \PYG{l+m}{0}\PYG{p}{)}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{return} \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{dispatchTouchEvent}\PYG{p}{(}\PYG{n}{ev}\PYG{p}{)}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onClick}\PYG{p}{(}\PYG{n}{v}\PYG{p}{:} \PYG{n}{View?)} \PYG{p}{\PYGZob{}}
+        \PYG{k}{when}\PYG{p}{(}\PYG{n}{v}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addMonitoringSubmit} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{p}{\PYGZob{}}
+                \PYG{n}{utility}\PYG{p}{.}\PYG{n+na}{isLoading} \PYG{o}{=} \PYG{k+kc}{true}
+                \PYG{k}{when}\PYG{p}{(}\PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addCropsLayout}\PYG{p}{.}\PYG{n+na}{visibility}\PYG{p}{)\PYGZob{}}
+                    \PYG{n}{View}\PYG{p}{.}\PYG{n+na}{GONE} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{addDataMonitoring}\PYG{p}{()}
+                    \PYG{n}{View}\PYG{p}{.}\PYG{n+na}{VISIBLE} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{addCrops}\PYG{p}{()}
+                \PYG{p}{\PYGZcb{}}
+                \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{isDataMonitoringAdd}\PYG{p}{.}\PYG{n+na}{observe}\PYG{p}{(}\PYG{k}{this}\PYG{p}{,\PYGZob{}}
+                    \PYG{k}{if}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{)\PYGZob{}}
+                        \PYG{n}{utility}\PYG{p}{.}\PYG{n+na}{isLoading} \PYG{o}{=} \PYG{k+kc}{false}
+                        \PYG{n}{Toast}\PYG{p}{.}\PYG{n+na}{makeText}\PYG{p}{(}\PYG{k}{this}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}New data monitoring added\PYGZdq{}}\PYG{p}{,} \PYG{n}{Toast}\PYG{p}{.}\PYG{n+na}{LENGTH\PYGZus{}SHORT}\PYG{p}{).}\PYG{n+na}{show}\PYG{p}{()}
+                        \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{onBackPressed}\PYG{p}{()}
+                        \PYG{n}{finish}\PYG{p}{()}
+                    \PYG{p}{\PYGZcb{}} \PYG{k}{else} \PYG{p}{\PYGZob{}}
+                        \PYG{n}{utility}\PYG{p}{.}\PYG{n+na}{isLoading} \PYG{o}{=} \PYG{k+kc}{false}
+                        \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{addDataMonitoringError}\PYG{p}{.}\PYG{n+na}{observe}\PYG{p}{(}\PYG{k}{this}\PYG{p}{,} \PYG{p}{\PYGZob{}}
+                            \PYG{k}{if}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{isNotEmpty}\PYG{p}{())\PYGZob{}}
+                                \PYG{n}{Toast}\PYG{p}{.}\PYG{n+na}{makeText}\PYG{p}{(}\PYG{k}{this}\PYG{p}{,} \PYG{n+nb}{it}\PYG{p}{,} \PYG{n}{Toast}\PYG{p}{.}\PYG{n+na}{LENGTH\PYGZus{}SHORT}\PYG{p}{).}\PYG{n+na}{show}\PYG{p}{()}
+                                \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{i}\PYG{p}{(}\PYG{n}{CreateFarmFragment}\PYG{p}{.}\PYG{n+na}{TAG}\PYG{p}{,} \PYG{n+nb}{it}\PYG{p}{)}
+                                \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{addDataMonitoringError}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}\PYGZdq{}}
+                            \PYG{p}{\PYGZcb{}}
+                        \PYG{p}{\PYGZcb{})}
+                    \PYG{p}{\PYGZcb{}}
+                \PYG{p}{\PYGZcb{})}
+            \PYG{p}{\PYGZcb{}}
+            \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addMonitoringCropsButton} \PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{p}{\PYGZob{}}
+                \PYG{k}{when}\PYG{p}{(}\PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addCropsLayout}\PYG{p}{.}\PYG{n+na}{visibility}\PYG{p}{)\PYGZob{}}
+                    \PYG{n}{View}\PYG{p}{.}\PYG{n+na}{GONE} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{p}{\PYGZob{}}
+                        \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addCropsLayout}\PYG{p}{.}\PYG{n+na}{visibility} \PYG{o}{=} \PYG{n}{View}\PYG{p}{.}\PYG{n+na}{VISIBLE}
+                        \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addMonitoringCropsButton}\PYG{p}{.}\PYG{n+na}{text} \PYG{o}{=} \PYG{n}{getString}\PYG{p}{(}\PYG{n}{R}\PYG{p}{.}\PYG{n+na}{string}\PYG{p}{.}\PYG{n+na}{cancel}\PYG{p}{)}
+                    \PYG{p}{\PYGZcb{}}
+                    \PYG{n}{View}\PYG{p}{.}\PYG{n+na}{VISIBLE} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{p}{\PYGZob{}}
+                        \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addCropsLayout}\PYG{p}{.}\PYG{n+na}{visibility} \PYG{o}{=} \PYG{n}{View}\PYG{p}{.}\PYG{n+na}{GONE}
+                        \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addMonitoringCropsButton}\PYG{p}{.}\PYG{n+na}{text} \PYG{o}{=} \PYG{n}{getString}\PYG{p}{(}\PYG{n}{R}\PYG{p}{.}\PYG{n+na}{string}\PYG{p}{.}\PYG{n+na}{add\PYGZus{}new\PYGZus{}crops}\PYG{p}{)}
+                    \PYG{p}{\PYGZcb{}}
+                \PYG{p}{\PYGZcb{}}
+            \PYG{p}{\PYGZcb{}}
+            \PYG{n}{bindingFragment}\PYG{p}{.}\PYG{n+na}{acNewPlant} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{p}{\PYGZob{}}
+                \PYG{k+kd}{val} \PYG{n+nv}{intent} \PYG{o}{=} \PYG{n}{Intent}\PYG{p}{(}\PYG{k}{this}\PYG{p}{,} \PYG{n}{AddPlantActivity}\PYG{o}{::}\PYG{n}{class}\PYG{p}{.}\PYG{n+na}{java}\PYG{p}{)}
+                \PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{putExtra}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}from\PYGZdq{}}\PYG{p}{,} \PYG{n}{TAG}\PYG{p}{)}
+                \PYG{n}{startForResult}\PYG{p}{.}\PYG{n+na}{launch}\PYG{p}{(}\PYG{n}{intent}\PYG{p}{)}
+            \PYG{p}{\PYGZcb{}}
+            \PYG{n}{bindingFragment}\PYG{p}{.}\PYG{n+na}{acSelectPlant} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{p}{\PYGZob{}}
+                \PYG{k+kd}{val} \PYG{n+nv}{intent} \PYG{o}{=} \PYG{n}{Intent}\PYG{p}{(}\PYG{k}{this}\PYG{p}{,} \PYG{n}{SearchActivity}\PYG{o}{::}\PYG{n}{class}\PYG{p}{.}\PYG{n+na}{java}\PYG{p}{)}
+                \PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{putExtra}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}search\PYGZdq{}}\PYG{p}{,} \PYG{n}{TAG}\PYG{p}{)}
+                \PYG{n}{startForResult}\PYG{p}{.}\PYG{n+na}{launch}\PYG{p}{(}\PYG{n}{intent}\PYG{p}{)}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{private} \PYG{k+kd}{val} \PYG{n+nv}{startForResult} \PYG{o}{=} \PYG{n}{registerForActivityResult}\PYG{p}{(}\PYG{n}{ActivityResultContracts}\PYG{p}{.}\PYG{n+na}{StartActivityForResult}\PYG{p}{())} \PYG{p}{\PYGZob{}} \PYG{n}{data} \PYG{o}{\PYGZhy{}\PYGZgt{}}
+        \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{i}\PYG{p}{(}\PYG{n}{CreateProfileActivity}\PYG{p}{.}\PYG{n+na}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}}\PYG{l+s+si}{\PYGZdl{}}\PYG{n}{data}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}
+        \PYG{k}{try}\PYG{p}{\PYGZob{}}
+            \PYG{k}{if}\PYG{p}{(}\PYG{n}{data}\PYG{o}{?.}\PYG{n+na}{resultCode} \PYG{o}{==} \PYG{n}{Activity}\PYG{p}{.}\PYG{n+na}{RESULT\PYGZus{}OK}\PYG{p}{)\PYGZob{}}
+                \PYG{n}{data}\PYG{p}{.}\PYG{n+na}{data}\PYG{o}{?.}\PYG{n+na}{getParcelableExtra}\PYG{o}{\PYGZlt{}}\PYG{n}{PlantModel}\PYG{o}{\PYGZgt{}}\PYG{p}{(}\PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{SELECTED\PYGZus{}PLANT}\PYG{p}{)}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+                    \PYG{n}{bindingFragment}\PYG{p}{.}\PYG{n+na}{acPlantSelector}\PYG{p}{.}\PYG{n+na}{visibility} \PYG{o}{=} \PYG{n}{View}\PYG{p}{.}\PYG{n+na}{GONE}
+                    \PYG{n}{bindingFragment}\PYG{p}{.}\PYG{n+na}{acCropsContent}\PYG{p}{.}\PYG{n+na}{visibility} \PYG{o}{=} \PYG{n}{View}\PYG{p}{.}\PYG{n+na}{VISIBLE}
+                    \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{setCurrentPlant}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{)}
+                \PYG{p}{\PYGZcb{}}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}} \PYG{k}{catch} \PYG{p}{(}\PYG{n}{e}\PYG{p}{:} \PYG{n}{Exception}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{Toast}\PYG{p}{.}\PYG{n+na}{makeText}\PYG{p}{(}\PYG{k}{this}\PYG{p}{,} \PYG{n}{e}\PYG{p}{.}\PYG{n+na}{message}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{(),} \PYG{n}{Toast}\PYG{p}{.}\PYG{n+na}{LENGTH\PYGZus{}SHORT}\PYG{p}{).}\PYG{n+na}{show}\PYG{p}{()}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{private} \PYG{k+kd}{fun} \PYG{n+nf}{getNumberPickerType}\PYG{p}{(}\PYG{n}{view}\PYG{p}{:} \PYG{n}{ClickNumberPickerView}\PYG{p}{)} \PYG{p}{:} \PYG{n}{NumberPickerType?\PYGZob{}}
+        \PYG{k}{return} \PYG{k}{when} \PYG{p}{(}\PYG{n}{view}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+            \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addMonitoringTemperature} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{NumberPickerType}\PYG{p}{.}\PYG{n+na}{TEMPERATURE}
+            \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addMonitoringHumidity} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{NumberPickerType}\PYG{p}{.}\PYG{n+na}{HUMIDITY}
+            \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addMonitoringAcidity} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{NumberPickerType}\PYG{p}{.}\PYG{n+na}{ACIDITY}
+            \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addMonitoringWaterTank} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{NumberPickerType}\PYG{p}{.}\PYG{n+na}{WATER\PYGZus{}TANK}
+            \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addMonitoringNutrientTank} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{NumberPickerType}\PYG{p}{.}\PYG{n+na}{NUTRIENT\PYGZus{}TANK}
+            \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addMonitoringWaterTurbidity} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{NumberPickerType}\PYG{p}{.}\PYG{n+na}{TURBIDITY}
+            \PYG{k}{else} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{k+kc}{null}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

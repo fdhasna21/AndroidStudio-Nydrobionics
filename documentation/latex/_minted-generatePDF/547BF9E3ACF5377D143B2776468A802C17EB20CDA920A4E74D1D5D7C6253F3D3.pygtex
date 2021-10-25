@@ -1,0 +1,134 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{class} \PYG{n+nc}{AddPlantViewModel} \PYG{p}{:} \PYG{n}{ViewModel}\PYG{p}{()} \PYG{p}{\PYGZob{}}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{auth} \PYG{p}{:} \PYG{n}{FirebaseAuth} \PYG{o}{=} \PYG{n}{Firebase}\PYG{p}{.}\PYG{n+na}{auth}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{firestore} \PYG{p}{:} \PYG{n}{FirebaseFirestore} \PYG{o}{=} \PYG{n}{Firebase}\PYG{p}{.}\PYG{n+na}{firestore}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{storage} \PYG{p}{:} \PYG{n}{FirebaseStorage} \PYG{o}{=} \PYG{n}{Firebase}\PYG{p}{.}\PYG{n+na}{storage}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{growth} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{Float}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{l+m}{0f}\PYG{p}{)}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{tempMin} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{Float}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{l+m}{0f}\PYG{p}{)}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{tempMax} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{Float}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{l+m}{0f}\PYG{p}{)}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{humidMin} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{Float}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{l+m}{0f}\PYG{p}{)}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{humidMax} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{Float}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{l+m}{0f}\PYG{p}{)}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{acidMin} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{Float}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{l+m}{0f}\PYG{p}{)}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{acidMax} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{Float}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{l+m}{0f}\PYG{p}{)}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{imageUri} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{n}{UriFileExtensions}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{k+kc}{null}\PYG{p}{)}
+
+    \PYG{k+kd}{var} \PYG{n+nv}{plantModel} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{n}{PlantModel}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{n}{PlantModel}\PYG{p}{())}
+
+    \PYG{k+kd}{var} \PYG{n+nv}{isNotEmpties} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{Boolean}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{k+kc}{false}\PYG{p}{)}
+    \PYG{k+kd}{var} \PYG{n+nv}{isPlantAdd} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{Boolean}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{k+kc}{false}\PYG{p}{)}
+    \PYG{k+kd}{var} \PYG{n+nv}{addPlantError} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{String}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZdq{}}\PYG{p}{)}
+
+    \PYG{k+kd}{companion} \PYG{k+kd}{object} \PYG{err}{\PYGZob{}}
+        \PYG{k+kd}{const} \PYG{k+kd}{val} \PYG{n+nv}{TAG} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}addPlantViewModel\PYGZdq{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{checkNotEmpty}\PYG{p}{(}\PYG{n}{boolean}\PYG{p}{:} \PYG{k+kt}{Boolean}\PYG{p}{)} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{Boolean}\PYG{o}{\PYGZgt{}} \PYG{p}{\PYGZob{}}
+        \PYG{n}{isNotEmpties}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n}{boolean}
+        \PYG{k}{return} \PYG{n}{isNotEmpties}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{setCurrentData}\PYG{p}{(}\PYG{n}{plantModel}\PYG{p}{:} \PYG{n}{PlantModel?)}\PYG{p}{\PYGZob{}}
+        \PYG{n}{plantModel}\PYG{o}{?.}\PYG{n+na}{let}\PYG{p}{\PYGZob{}}
+            \PYG{k}{this}\PYG{p}{.}\PYG{n+na}{plantModel}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n+nb}{it}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{setNumberPickerValue}\PYG{p}{(}\PYG{n}{currentValue} \PYG{p}{:} \PYG{k+kt}{Float}\PYG{p}{,} \PYG{n}{type}\PYG{p}{:} \PYG{n}{NumberPickerType?)}\PYG{p}{\PYGZob{}}
+        \PYG{k}{when}\PYG{p}{(}\PYG{n}{type}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{NumberPickerType}\PYG{p}{.}\PYG{n+na}{GROWTH\PYGZus{}TIME} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{growth}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n}{currentValue}
+            \PYG{n}{NumberPickerType}\PYG{p}{.}\PYG{n+na}{TEMP\PYGZus{}MIN} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{tempMin}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n}{currentValue}
+            \PYG{n}{NumberPickerType}\PYG{p}{.}\PYG{n+na}{TEMP\PYGZus{}MAX} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{tempMax}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n}{currentValue}
+            \PYG{n}{NumberPickerType}\PYG{p}{.}\PYG{n+na}{HUMID\PYGZus{}MIN} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{humidMin}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n}{currentValue}
+            \PYG{n}{NumberPickerType}\PYG{p}{.}\PYG{n+na}{HUMID\PYGZus{}MAX} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{humidMax}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n}{currentValue}
+            \PYG{n}{NumberPickerType}\PYG{p}{.}\PYG{n+na}{ACID\PYGZus{}MIN} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{acidMin}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n}{currentValue}
+            \PYG{n}{NumberPickerType}\PYG{p}{.}\PYG{n+na}{ACID\PYGZus{}MAX} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{acidMax}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n}{currentValue}
+            \PYG{k}{else} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{p}{\PYGZob{}} \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{getNumberPickerValue}\PYG{p}{(}\PYG{n}{type}\PYG{p}{:} \PYG{n}{NumberPickerType?)} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{Float}\PYG{o}{\PYGZgt{}?}\PYG{p}{\PYGZob{}}
+        \PYG{k}{return} \PYG{k}{when}\PYG{p}{(}\PYG{n}{type}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{NumberPickerType}\PYG{p}{.}\PYG{n+na}{GROWTH\PYGZus{}TIME} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{growth}
+            \PYG{n}{NumberPickerType}\PYG{p}{.}\PYG{n+na}{TEMP\PYGZus{}MIN} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{tempMin}
+            \PYG{n}{NumberPickerType}\PYG{p}{.}\PYG{n+na}{TEMP\PYGZus{}MAX} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{tempMax}
+            \PYG{n}{NumberPickerType}\PYG{p}{.}\PYG{n+na}{HUMID\PYGZus{}MIN} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{humidMin}
+            \PYG{n}{NumberPickerType}\PYG{p}{.}\PYG{n+na}{HUMID\PYGZus{}MAX} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{humidMax}
+            \PYG{n}{NumberPickerType}\PYG{p}{.}\PYG{n+na}{ACID\PYGZus{}MIN} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{acidMin}
+            \PYG{n}{NumberPickerType}\PYG{p}{.}\PYG{n+na}{ACID\PYGZus{}MAX} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{acidMax}
+            \PYG{k}{else} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{k+kc}{null}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    
+    \PYG{k+kd}{fun} \PYG{n+nf}{createPlant}\PYG{p}{(}\PYG{n}{name}\PYG{p}{:}\PYG{k+kt}{String}\PYG{p}{,} \PYG{n}{description}\PYG{p}{:}\PYG{k+kt}{String}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{try}\PYG{p}{\PYGZob{}}
+            \PYG{n}{plantModel}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{apply} \PYG{p}{\PYGZob{}}
+                \PYG{k}{this}\PYG{p}{.}\PYG{n+na}{name} \PYG{o}{=} \PYG{n}{name}
+                \PYG{k}{this}\PYG{p}{.}\PYG{n+na}{description} \PYG{o}{=} \PYG{n}{description}
+                \PYG{k}{this}\PYG{p}{.}\PYG{n+na}{growthTime} \PYG{o}{=} \PYG{n}{growth}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{toInt}\PYG{p}{()}
+                \PYG{k}{this}\PYG{p}{.}\PYG{n+na}{tempLv} \PYG{o}{=} \PYG{n}{ScoreLevel}\PYG{p}{(}\PYG{n}{tempMin}\PYG{p}{.}\PYG{n+na}{value}\PYG{p}{,} \PYG{n}{tempMax}\PYG{p}{.}\PYG{n+na}{value}\PYG{p}{)}
+                \PYG{k}{this}\PYG{p}{.}\PYG{n+na}{humidLv} \PYG{o}{=} \PYG{n}{ScoreLevel}\PYG{p}{(}\PYG{n}{humidMin}\PYG{p}{.}\PYG{n+na}{value}\PYG{p}{,} \PYG{n}{humidMax}\PYG{p}{.}\PYG{n+na}{value}\PYG{p}{)}
+                \PYG{k}{this}\PYG{p}{.}\PYG{n+na}{phLv} \PYG{o}{=} \PYG{n}{ScoreLevel}\PYG{p}{(}\PYG{n}{acidMin}\PYG{p}{.}\PYG{n+na}{value}\PYG{p}{,} \PYG{n}{acidMax}\PYG{p}{.}\PYG{n+na}{value}\PYG{p}{)}
+                \PYG{k}{this}\PYG{p}{.}\PYG{n+na}{userId} \PYG{o}{=} \PYG{n}{auth}\PYG{p}{.}\PYG{n+na}{uid}\PYG{o}{!!}
+            \PYG{p}{\PYGZcb{}}
+
+            \PYG{k}{if}\PYG{p}{(}\PYG{n}{imageUri}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{!=} \PYG{k+kc}{null}\PYG{p}{)\PYGZob{}}
+                \PYG{k+kd}{val} \PYG{n+nv}{storageReference} \PYG{p}{:} \PYG{n}{StorageReference} \PYG{o}{=} \PYG{n}{storage}\PYG{p}{.}\PYG{n+na}{getReference}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}profile\PYGZus{}images\PYGZdq{}}\PYG{p}{)}
+                    \PYG{p}{.}\PYG{n+na}{child}\PYG{p}{(}\PYG{n}{System}\PYG{p}{.}\PYG{n+na}{currentTimeMillis}\PYG{p}{().}\PYG{n+na}{toString}\PYG{p}{()} \PYG{o}{+} \PYG{l+s}{\PYGZdq{}.}\PYG{l+s+si}{\PYGZdl{}\PYGZob{}}\PYG{n}{imageUri}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{fileExtensions}\PYG{o}{!!}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}
+                \PYG{k+kd}{val} \PYG{n+nv}{uploadTask} \PYG{o}{=} \PYG{n}{storageReference}\PYG{p}{.}\PYG{n+na}{putFile}\PYG{p}{(}\PYG{n}{imageUri}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{uri}\PYG{o}{!!}\PYG{p}{)}
+                \PYG{n}{uploadTask}\PYG{p}{.}\PYG{n+na}{continueWithTask} \PYG{p}{\PYGZob{}}
+                    \PYG{k}{if}\PYG{p}{(}\PYG{o}{!}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{isSuccessful}\PYG{p}{)\PYGZob{}}
+                        \PYG{k}{throw} \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{exception}\PYG{o}{!!}\PYG{p}{.}\PYG{n+na}{cause}\PYG{o}{!!}
+                    \PYG{p}{\PYGZcb{}}
+                    \PYG{n}{storageReference}\PYG{p}{.}\PYG{n+na}{downloadUrl}
+                \PYG{p}{\PYGZcb{}.}\PYG{n+na}{addOnCompleteListener} \PYG{p}{\PYGZob{}}
+                    \PYG{k}{if} \PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{isSuccessful}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+                        \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{result}\PYG{p}{.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+                            \PYG{n}{plantModel}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{photo\PYGZus{}url} \PYG{o}{=} \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{()}
+                            \PYG{n}{sendPlantProfile}\PYG{p}{()}
+                        \PYG{p}{\PYGZcb{}}
+                    \PYG{p}{\PYGZcb{}}
+                \PYG{p}{\PYGZcb{}}
+            \PYG{p}{\PYGZcb{}} \PYG{k}{else} \PYG{p}{\PYGZob{}}
+                \PYG{n}{sendPlantProfile}\PYG{p}{()}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}} \PYG{k}{catch} \PYG{p}{(}\PYG{n}{e}\PYG{p}{:}\PYG{n}{Exception}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{e}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}Error submit plant \PYGZdq{}}\PYG{p}{,} \PYG{n}{e}\PYG{p}{)}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{private} \PYG{k+kd}{fun} \PYG{n+nf}{sendPlantProfile}\PYG{p}{()\PYGZob{}}
+        \PYG{k+kd}{val} \PYG{n+nv}{db} \PYG{o}{=} \PYG{n}{firestore}\PYG{p}{.}\PYG{n+na}{collection}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}plants\PYGZdq{}}\PYG{p}{)}
+        \PYG{k+kd}{val} \PYG{n+nv}{ref} \PYG{p}{:} \PYG{n}{DocumentReference} \PYG{o}{=} \PYG{n}{db}\PYG{p}{.}\PYG{n+na}{document}\PYG{p}{()}
+
+        \PYG{n}{plantModel}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{apply} \PYG{p}{\PYGZob{}}
+            \PYG{k}{this}\PYG{p}{.}\PYG{n+na}{plantId} \PYG{o}{=} \PYG{n}{plantId} \PYG{o}{?:} \PYG{n}{ref}\PYG{p}{.}\PYG{n+na}{id}
+        \PYG{p}{\PYGZcb{}}
+
+        \PYG{n}{db}\PYG{p}{.}\PYG{n+na}{document}\PYG{p}{(}\PYG{n}{plantModel}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{!!}\PYG{p}{.}\PYG{n+na}{plantId}\PYG{o}{!!}\PYG{p}{).}\PYG{n+na}{set}\PYG{p}{(}\PYG{n}{plantModel}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{!!}\PYG{p}{.}\PYG{n+na}{toHashMap}\PYG{p}{()).}\PYG{n+na}{addOnCompleteListener} \PYG{p}{\PYGZob{}}
+            \PYG{k}{if}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{isSuccessful}\PYG{p}{)\PYGZob{}}
+                \PYG{n}{isPlantAdd}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{k+kc}{true}
+            \PYG{p}{\PYGZcb{}} \PYG{k}{else} \PYG{p}{\PYGZob{}}
+                \PYG{n}{addPlantError}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{exception}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{()}
+                \PYG{n}{isPlantAdd}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{k+kc}{false}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{setPhotoPlant}\PYG{p}{(}\PYG{n}{uri} \PYG{p}{:} \PYG{n}{Uri?,} \PYG{n}{fileExtension}\PYG{p}{:} \PYG{k+kt}{String?}\PYG{o}{=}\PYG{k+kc}{null}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{imageUri}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{k}{if}\PYG{p}{(}\PYG{n}{uri} \PYG{o}{!=} \PYG{k+kc}{null}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{UriFileExtensions}\PYG{p}{(}\PYG{n}{uri}\PYG{p}{,} \PYG{n}{fileExtension}\PYG{o}{!!}\PYG{p}{)}
+        \PYG{p}{\PYGZcb{}} \PYG{k}{else} \PYG{p}{\PYGZob{}}
+            \PYG{k+kc}{null}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{i}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}setPhotoPlant: }\PYG{l+s+si}{\PYGZdl{}}\PYG{n}{uri}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{getPhotoProfile}\PYG{p}{()} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{n}{UriFileExtensions}\PYG{o}{\PYGZgt{}}\PYG{p}{\PYGZob{}}
+        \PYG{k}{return} \PYG{n}{imageUri}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{getCurrentPlant}\PYG{p}{()} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{n}{PlantModel}\PYG{o}{\PYGZgt{}}\PYG{p}{\PYGZob{}}
+        \PYG{k}{return} \PYG{n}{plantModel}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

@@ -1,0 +1,79 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{class} \PYG{n+nc}{ProfileKitActivity} \PYG{p}{:} \PYG{n}{AppCompatActivity}\PYG{p}{()} \PYG{p}{\PYGZob{}}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{binding} \PYG{p}{:} \PYG{n}{ActivityProfileKitBinding}
+    \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{viewModel} \PYG{p}{:} \PYG{n}{ProfileKitViewModel}
+
+    \PYG{k+kd}{companion} \PYG{k+kd}{object} \PYG{err}{\PYGZob{}}
+        \PYG{k+kd}{const} \PYG{k+kd}{val} \PYG{n+nv}{TAG} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}kitProfileActivity\PYGZdq{}}
+        \PYG{k+kd}{val} \PYG{n+nv}{TAB\PYGZus{}LAYOUT} \PYG{o}{=} \PYG{n}{arrayListOf}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{String}\PYG{o}{\PYGZgt{}}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}Overview\PYGZdq{}}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}Data Monitoring\PYGZdq{}}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}Crops\PYGZdq{}}\PYG{p}{)}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onCreate}\PYG{p}{(}\PYG{n}{savedInstanceState}\PYG{p}{:} \PYG{n}{Bundle?)} \PYG{p}{\PYGZob{}}
+        \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{onCreate}\PYG{p}{(}\PYG{n}{savedInstanceState}\PYG{p}{)}
+        \PYG{n}{binding} \PYG{o}{=} \PYG{n}{ActivityProfileKitBinding}\PYG{p}{.}\PYG{n+na}{inflate}\PYG{p}{(}\PYG{n}{layoutInflater}\PYG{p}{)}
+        \PYG{n}{setContentView}\PYG{p}{(}\PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{root}\PYG{p}{)}
+
+        \PYG{n}{viewModel} \PYG{o}{=} \PYG{n}{ViewModelProvider}\PYG{p}{(}\PYG{k}{this}\PYG{p}{).}\PYG{n+na}{get}\PYG{p}{(}\PYG{n}{ProfileKitViewModel}\PYG{o}{::}\PYG{n}{class}\PYG{p}{.}\PYG{n+na}{java}\PYG{p}{)}
+        \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{setCurrentKit}\PYG{p}{(}\PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{getParcelableExtra}\PYG{o}{\PYGZlt{}}\PYG{n}{UserModel}\PYG{o}{\PYGZgt{}}\PYG{p}{(}\PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{CURRENT\PYGZus{}USER}\PYG{p}{),}
+            \PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{getParcelableExtra}\PYG{o}{\PYGZlt{}}\PYG{n}{FarmModel}\PYG{o}{\PYGZgt{}}\PYG{p}{(}\PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{CURRENT\PYGZus{}FARM}\PYG{p}{),}
+            \PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{getParcelableExtra}\PYG{o}{\PYGZlt{}}\PYG{n}{KitModel}\PYG{o}{\PYGZgt{}}\PYG{p}{(}\PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{SELECTED\PYGZus{}KIT}\PYG{p}{))}
+        \PYG{n}{supportActionBar}\PYG{o}{?.}\PYG{n+na}{title} \PYG{o}{=} \PYG{n}{getString}\PYG{p}{(}\PYG{n}{R}\PYG{p}{.}\PYG{n+na}{string}\PYG{p}{.}\PYG{n+na}{hydroponic\PYGZus{}kit}\PYG{p}{)}
+        \PYG{n}{supportActionBar}\PYG{o}{?.}\PYG{n+na}{setDisplayHomeAsUpEnabled}\PYG{p}{(}\PYG{k+kc}{true}\PYG{p}{)}
+        \PYG{n}{supportActionBar}\PYG{o}{?.}\PYG{n+na}{setDisplayShowHomeEnabled}\PYG{p}{(}\PYG{k+kc}{false}\PYG{p}{)}
+        \PYG{n}{supportActionBar}\PYG{o}{?.}\PYG{n+na}{elevation} \PYG{o}{=} \PYG{l+m}{0f}
+
+        \PYG{k+kd}{val} \PYG{n+nv}{tabLayoutAdapter} \PYG{o}{=} \PYG{k}{object} \PYG{p}{:} \PYG{n+nc}{FragmentStateAdapter}\PYG{p}{(}\PYG{n}{supportFragmentManager}\PYG{p}{,} \PYG{n}{lifecycle}\PYG{p}{)\PYGZob{}}
+            \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{getItemCount}\PYG{p}{():} \PYG{k+kt}{Int} \PYG{p}{\PYGZob{}}
+                \PYG{k}{return} \PYG{n}{TAB\PYGZus{}LAYOUT}\PYG{p}{.}\PYG{n+na}{size}
+            \PYG{p}{\PYGZcb{}}
+
+            \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{createFragment}\PYG{p}{(}\PYG{n}{position}\PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{):} \PYG{n}{Fragment} \PYG{p}{\PYGZob{}}
+                \PYG{k}{return} \PYG{k}{when}\PYG{p}{(}\PYG{n}{position}\PYG{p}{)\PYGZob{}}
+                    \PYG{l+m}{1} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{KitMonitoringFragment}\PYG{p}{()}
+                    \PYG{l+m}{2} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{KitCropsFragment}\PYG{p}{()}
+                    \PYG{k}{else} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{KitOverviewFragment}\PYG{p}{()}
+                \PYG{p}{\PYGZcb{}}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+
+        \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{profileKitViewPager}\PYG{p}{.}\PYG{n+na}{adapter} \PYG{o}{=} \PYG{n}{tabLayoutAdapter}
+        \PYG{n}{TabLayoutMediator}\PYG{p}{(}\PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{profileKitTabLayout}\PYG{p}{,} \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{profileKitViewPager}\PYG{p}{)} \PYG{p}{\PYGZob{}} \PYG{n}{tab}\PYG{p}{,} \PYG{n}{position} \PYG{o}{\PYGZhy{}\PYGZgt{}}
+            \PYG{n}{tab}\PYG{p}{.}\PYG{n+na}{text} \PYG{o}{=} \PYG{n}{TAB\PYGZus{}LAYOUT}\PYG{o}{[}\PYG{n}{position}\PYG{o}{]}
+        \PYG{p}{\PYGZcb{}.}\PYG{n+na}{attach}\PYG{p}{()}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onSupportNavigateUp}\PYG{p}{():} \PYG{k+kt}{Boolean} \PYG{p}{\PYGZob{}}
+        \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{onBackPressed}\PYG{p}{()}
+        \PYG{n}{finish}\PYG{p}{()}
+        \PYG{k}{return} \PYG{k+kc}{true}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{dispatchTouchEvent}\PYG{p}{(}\PYG{n}{ev}\PYG{p}{:} \PYG{n}{MotionEvent?)}\PYG{p}{:} \PYG{k+kt}{Boolean} \PYG{p}{\PYGZob{}}
+        \PYG{k}{if} \PYG{p}{(}\PYG{n}{currentFocus} \PYG{o}{!=} \PYG{k+kc}{null}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+            \PYG{k+kd}{val} \PYG{n+nv}{imm}\PYG{p}{:} \PYG{n}{InputMethodManager} \PYG{o}{=}
+                \PYG{n}{getSystemService}\PYG{p}{(}\PYG{n}{Context}\PYG{p}{.}\PYG{n+na}{INPUT\PYGZus{}METHOD\PYGZus{}SERVICE}\PYG{p}{)} \PYG{k}{as} \PYG{n}{InputMethodManager}
+            \PYG{n}{imm}\PYG{p}{.}\PYG{n+na}{hideSoftInputFromWindow}\PYG{p}{(}\PYG{n}{currentFocus}\PYG{o}{!!}\PYG{p}{.}\PYG{n+na}{windowToken}\PYG{p}{,} \PYG{l+m}{0}\PYG{p}{)}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{return} \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{dispatchTouchEvent}\PYG{p}{(}\PYG{n}{ev}\PYG{p}{)}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onCreateOptionsMenu}\PYG{p}{(}\PYG{n}{menu}\PYG{p}{:} \PYG{n}{Menu?)}\PYG{p}{:} \PYG{k+kt}{Boolean} \PYG{p}{\PYGZob{}}
+        \PYG{n}{menuInflater}\PYG{p}{.}\PYG{n+na}{inflate}\PYG{p}{(}\PYG{n}{R}\PYG{p}{.}\PYG{n+na}{menu}\PYG{p}{.}\PYG{n+na}{menu\PYGZus{}profile\PYGZus{}kit}\PYG{p}{,} \PYG{n}{menu}\PYG{p}{)}
+        \PYG{k}{return} \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{onCreateOptionsMenu}\PYG{p}{(}\PYG{n}{menu}\PYG{p}{)}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onOptionsItemSelected}\PYG{p}{(}\PYG{n}{item}\PYG{p}{:} \PYG{n}{MenuItem}\PYG{p}{):} \PYG{k+kt}{Boolean} \PYG{p}{\PYGZob{}}
+        \PYG{k}{when}\PYG{p}{(}\PYG{n}{item}\PYG{p}{.}\PYG{n+na}{itemId}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{R}\PYG{p}{.}\PYG{n+na}{id}\PYG{p}{.}\PYG{n+na}{kitSettings} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{p}{\PYGZob{}}
+                \PYG{k+kd}{val} \PYG{n+nv}{intent} \PYG{o}{=} \PYG{n}{Intent}\PYG{p}{(}\PYG{k}{this}\PYG{p}{,} \PYG{n}{AddKitActivity}\PYG{o}{::}\PYG{n}{class}\PYG{p}{.}\PYG{n+na}{java}\PYG{p}{)}
+                \PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{putExtra}\PYG{p}{(}\PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{CURRENT\PYGZus{}USER}\PYG{p}{,} \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getCurrentUser}\PYG{p}{().}\PYG{n+na}{value}\PYG{p}{)}
+                \PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{putExtra}\PYG{p}{(}\PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{CURRENT\PYGZus{}FARM}\PYG{p}{,} \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getCurrentFarm}\PYG{p}{().}\PYG{n+na}{value}\PYG{p}{)}
+                \PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{putExtra}\PYG{p}{(}\PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{SELECTED\PYGZus{}KIT}\PYG{p}{,} \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getCurrentKit}\PYG{p}{().}\PYG{n+na}{value}\PYG{p}{)}
+                \PYG{n}{startActivity}\PYG{p}{(}\PYG{n}{intent}\PYG{p}{)}
+            \PYG{p}{\PYGZcb{}}
+            \PYG{n}{R}\PYG{p}{.}\PYG{n+na}{id}\PYG{p}{.}\PYG{n+na}{kitHistory} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{startActivity}\PYG{p}{(}\PYG{n}{Intent}\PYG{p}{(}\PYG{k}{this}\PYG{p}{,} \PYG{n}{ShowRecyclerActivity}\PYG{o}{::}\PYG{n}{class}\PYG{p}{.}\PYG{n+na}{java}\PYG{p}{))}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{return} \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{onOptionsItemSelected}\PYG{p}{(}\PYG{n}{item}\PYG{p}{)}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

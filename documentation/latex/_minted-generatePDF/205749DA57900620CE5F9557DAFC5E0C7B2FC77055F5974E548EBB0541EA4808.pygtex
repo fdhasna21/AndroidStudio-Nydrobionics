@@ -1,0 +1,13 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nd}{@Parcelize}
+\PYG{k+kd}{data} \PYG{k+kd}{class} \PYG{n+nc}{CropsModel}\PYG{p}{(}
+    \PYG{k+kd}{var} \PYG{n+nv}{cropsId} \PYG{p}{:} \PYG{k+kt}{String?} \PYG{o}{=} \PYG{k+kc}{null}\PYG{p}{,}
+    \PYG{k+kd}{var} \PYG{n+nv}{plantId} \PYG{p}{:} \PYG{k+kt}{String?} \PYG{o}{=} \PYG{k+kc}{null}\PYG{p}{,}
+    \PYG{k+kd}{var} \PYG{n+nv}{userId} \PYG{p}{:} \PYG{k+kt}{String?} \PYG{o}{=} \PYG{k+kc}{null}\PYG{p}{,}
+    \PYG{k+kd}{var} \PYG{n+nv}{tempLv} \PYG{p}{:} \PYG{n+nd}{@RawValue} \PYG{n}{ScoreLevel? }\PYG{o}{=} \PYG{k+kc}{null}\PYG{p}{,}
+    \PYG{k+kd}{var} \PYG{n+nv}{humidLv} \PYG{p}{:} \PYG{n+nd}{@RawValue} \PYG{n}{ScoreLevel? }\PYG{o}{=} \PYG{k+kc}{null}\PYG{p}{,}
+    \PYG{k+kd}{var} \PYG{n+nv}{phLv} \PYG{p}{:} \PYG{n+nd}{@RawValue} \PYG{n}{ScoreLevel? }\PYG{o}{=} \PYG{k+kc}{null}\PYG{p}{,}
+    \PYG{k+kd}{var} \PYG{n+nv}{timestamp} \PYG{p}{:} \PYG{k+kt}{String?} \PYG{o}{=} \PYG{k+kc}{null}\PYG{p}{,}
+    \PYG{k+kd}{var} \PYG{n+nv}{plantModel}\PYG{p}{:} \PYG{n}{PlantModel? }\PYG{o}{=} \PYG{k+kc}{null}
+\PYG{p}{)} \PYG{p}{:} \PYG{n}{Parcelable}
+\end{Verbatim}

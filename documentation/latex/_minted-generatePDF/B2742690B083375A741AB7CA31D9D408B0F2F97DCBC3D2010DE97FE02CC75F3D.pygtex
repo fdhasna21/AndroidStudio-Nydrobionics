@@ -1,0 +1,100 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{class} \PYG{n+nc}{ShowRecyclerActivity} \PYG{p}{:} \PYG{n}{AppCompatActivity}\PYG{p}{()} \PYG{p}{\PYGZob{}}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{binding} \PYG{p}{:} \PYG{n}{ActivityShowRecyclerBinding}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{viewModel} \PYG{p}{:} \PYG{n}{ShowRecyclerViewModel}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onCreate}\PYG{p}{(}\PYG{n}{savedInstanceState}\PYG{p}{:} \PYG{n}{Bundle?)} \PYG{p}{\PYGZob{}}
+        \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{onCreate}\PYG{p}{(}\PYG{n}{savedInstanceState}\PYG{p}{)}
+        \PYG{n}{binding} \PYG{o}{=} \PYG{n}{ActivityShowRecyclerBinding}\PYG{p}{.}\PYG{n+na}{inflate}\PYG{p}{(}\PYG{n}{layoutInflater}\PYG{p}{)}
+        \PYG{n}{setContentView}\PYG{p}{(}\PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{root}\PYG{p}{)}
+
+        \PYG{n}{viewModel} \PYG{o}{=} \PYG{n}{ViewModelProvider}\PYG{p}{(}\PYG{k}{this}\PYG{p}{).}\PYG{n+na}{get}\PYG{p}{(}\PYG{n}{ShowRecyclerViewModel}\PYG{o}{::}\PYG{n}{class}\PYG{p}{.}\PYG{n+na}{java}\PYG{p}{)}
+        \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{setCurrentPosts}\PYG{p}{(}\PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{getParcelableArrayListExtra}\PYG{p}{(}\PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{ALL\PYGZus{}PLANTS}\PYG{p}{),}
+            \PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{getParcelableExtra}\PYG{o}{\PYGZlt{}}\PYG{n}{UserModel}\PYG{o}{\PYGZgt{}}\PYG{p}{(}\PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{CURRENT\PYGZus{}USER}\PYG{p}{))}
+        \PYG{n}{supportActionBar}\PYG{o}{?.}\PYG{n+na}{title} \PYG{o}{=} \PYG{n}{getString}\PYG{p}{(}\PYG{n}{R}\PYG{p}{.}\PYG{n+na}{string}\PYG{p}{.}\PYG{n+na}{history}\PYG{p}{)}
+        \PYG{n}{supportActionBar}\PYG{o}{?.}\PYG{n+na}{setDisplayHomeAsUpEnabled}\PYG{p}{(}\PYG{k+kc}{true}\PYG{p}{)}
+        \PYG{n}{supportActionBar}\PYG{o}{?.}\PYG{n+na}{setDisplayShowHomeEnabled}\PYG{p}{(}\PYG{k+kc}{false}\PYG{p}{)}
+
+        \PYG{n}{setupRecyclerView}\PYG{p}{()}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{private} \PYG{k+kd}{fun} \PYG{n+nf}{setupRecyclerView}\PYG{p}{()} \PYG{p}{\PYGZob{}}
+        \PYG{k+kd}{val} \PYG{n+nv}{plantModels} \PYG{p}{:} \PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{PlantModel}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{arrayListOf}\PYG{p}{()}
+        \PYG{k+kd}{val} \PYG{n+nv}{userModels} \PYG{p}{:} \PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{UserModel}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{arrayListOf}\PYG{p}{()}
+        \PYG{k+kd}{val} \PYG{n+nv}{rowAdapter} \PYG{o}{=} \PYG{n}{AdapterType}\PYG{p}{.}\PYG{n+na}{POST\PYGZus{}PLANT}\PYG{p}{.}\PYG{n+na}{getAdapter}\PYG{p}{(}\PYG{k}{this}\PYG{p}{,} \PYG{n}{plantModels}\PYG{p}{,} \PYG{n}{allUsers} \PYG{o}{=} \PYG{n}{userModels}\PYG{p}{)}
+        \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getCurrentPosts}\PYG{p}{().}\PYG{n+na}{observe}\PYG{p}{(}\PYG{k}{this}\PYG{p}{,\PYGZob{}}
+            \PYG{n}{plantModels}\PYG{p}{.}\PYG{n+na}{clear}\PYG{p}{()}
+            \PYG{n}{plantModels}\PYG{p}{.}\PYG{n+na}{addAll}\PYG{p}{(}\PYG{n+nb}{it} \PYG{o}{?:} \PYG{n}{arrayListOf}\PYG{p}{())}
+            \PYG{n}{rowAdapter}\PYG{p}{.}\PYG{n+na}{notifyDataSetChanged}\PYG{p}{()}
+            \PYG{p}{(}\PYG{n}{rowAdapter} \PYG{k}{as} \PYG{n}{PostModelAdapter}\PYG{p}{).}\PYG{n+na}{setOnItemClickListener}\PYG{p}{(}
+                \PYG{k}{object} \PYG{p}{:} \PYG{n+nc}{PostModelAdapter}\PYG{p}{.}\PYG{n+na}{OnItemClickListener}\PYG{p}{\PYGZob{}}
+                    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onItemClicked}\PYG{p}{(}
+                        \PYG{n}{position}\PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{,}
+                        \PYG{n}{itemView}\PYG{p}{:} \PYG{n}{View}\PYG{p}{,}
+                        \PYG{n}{v}\PYG{p}{:} \PYG{n}{RowItemPostBinding}
+                    \PYG{p}{)} \PYG{p}{\PYGZob{}}
+                        \PYG{k}{when}\PYG{p}{(}\PYG{n}{itemView}\PYG{p}{)\PYGZob{}}
+                            \PYG{n}{v}\PYG{p}{.}\PYG{n+na}{postRoot} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{p}{\PYGZob{}}
+                                \PYG{n}{gotoPost}\PYG{p}{(}\PYG{n}{position}\PYG{p}{)}
+                            \PYG{p}{\PYGZcb{}}
+                            \PYG{n}{v}\PYG{p}{.}\PYG{n+na}{postOptions} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{p}{\PYGZob{}}
+                                \PYG{k+kd}{val} \PYG{n+nv}{items} \PYG{o}{=} \PYG{n}{arrayOf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}Edit\PYGZdq{}}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}Delete\PYGZdq{}}\PYG{p}{)}
+                                \PYG{n}{MaterialAlertDialogBuilder}\PYG{p}{(}\PYG{k}{this}\PYG{n+nd}{@ShowRecyclerActivity}\PYG{p}{)}
+                                    \PYG{p}{.}\PYG{n+na}{setItems}\PYG{p}{(}\PYG{n}{items}\PYG{p}{)\PYGZob{}}\PYG{n}{\PYGZus{}}\PYG{p}{,} \PYG{n}{which} \PYG{o}{\PYGZhy{}\PYGZgt{}}
+                                        \PYG{k}{when}\PYG{p}{(}\PYG{n}{which}\PYG{p}{)\PYGZob{}}
+                                            \PYG{l+m}{0} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{gotoPost}\PYG{p}{(}\PYG{n}{position}\PYG{p}{)}
+                                            \PYG{l+m}{1} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{p}{\PYGZob{}}
+                                                \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{deletePost}\PYG{p}{(}\PYG{n}{position}\PYG{p}{)}
+                                                \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{isPostDeleted}\PYG{p}{.}\PYG{n+na}{observe}\PYG{p}{(}\PYG{k}{this}\PYG{n+nd}{@ShowRecyclerActivity}\PYG{p}{,} \PYG{p}{\PYGZob{}}
+                                                    \PYG{k}{when}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{)\PYGZob{}}
+                                                        \PYG{k+kc}{true} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{Toast}\PYG{p}{.}\PYG{n+na}{makeText}\PYG{p}{(}\PYG{k}{this}\PYG{n+nd}{@ShowRecyclerActivity}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}Post deleted.\PYGZdq{}}\PYG{p}{,} \PYG{n}{Toast}\PYG{p}{.}\PYG{n+na}{LENGTH\PYGZus{}SHORT}\PYG{p}{).}\PYG{n+na}{show}\PYG{p}{()}
+                                                    \PYG{p}{\PYGZcb{}}
+                                                \PYG{p}{\PYGZcb{})}
+                                            \PYG{p}{\PYGZcb{}}
+                                        \PYG{p}{\PYGZcb{}}
+                                    \PYG{p}{\PYGZcb{}}
+                                    \PYG{p}{.}\PYG{n+na}{show}\PYG{p}{()}
+                            \PYG{p}{\PYGZcb{}}
+                        \PYG{p}{\PYGZcb{}}
+                    \PYG{p}{\PYGZcb{}}
+
+                \PYG{p}{\PYGZcb{}}
+            \PYG{p}{)}
+            \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{i}\PYG{p}{(}\PYG{n}{MainPostsFragment}\PYG{p}{.}\PYG{n+na}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}}\PYG{l+s+si}{\PYGZdl{}\PYGZob{}}\PYG{n}{rowAdapter}\PYG{p}{.}\PYG{n+na}{itemCount}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}
+        \PYG{p}{\PYGZcb{})}
+
+        \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getCurrentUser}\PYG{p}{().}\PYG{n+na}{observe}\PYG{p}{(}\PYG{k}{this}\PYG{p}{,} \PYG{p}{\PYGZob{}}
+            \PYG{n}{userModels}\PYG{p}{.}\PYG{n+na}{clear}\PYG{p}{()}
+            \PYG{n}{userModels}\PYG{p}{.}\PYG{n+na}{addAll}\PYG{p}{(}\PYG{n}{arrayListOf}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{))}
+            \PYG{n}{rowAdapter}\PYG{p}{.}\PYG{n+na}{notifyDataSetChanged}\PYG{p}{()}
+        \PYG{p}{\PYGZcb{})}
+
+        \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{recyclerView}\PYG{p}{.}\PYG{n+na}{apply} \PYG{p}{\PYGZob{}}
+            \PYG{n}{adapter} \PYG{o}{=} \PYG{n}{rowAdapter}
+            \PYG{n}{layoutManager} \PYG{o}{=} \PYG{n}{LinearLayoutManager}\PYG{p}{(}\PYG{k}{this}\PYG{n+nd}{@ShowRecyclerActivity}\PYG{p}{)}
+            \PYG{n}{addItemDecoration}\PYG{p}{(}\PYG{k}{object} \PYG{p}{:} \PYG{n+nc}{DividerItemDecoration}\PYG{p}{(}\PYG{k}{this}\PYG{n+nd}{@ShowRecyclerActivity}\PYG{p}{,} \PYG{n}{VERTICAL}\PYG{p}{)} \PYG{p}{\PYGZob{}\PYGZcb{})}
+            \PYG{n}{setHasFixedSize}\PYG{p}{(}\PYG{k+kc}{true}\PYG{p}{)}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onSupportNavigateUp}\PYG{p}{():} \PYG{k+kt}{Boolean} \PYG{p}{\PYGZob{}}
+        \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{onBackPressed}\PYG{p}{()}
+        \PYG{k}{return} \PYG{k+kc}{true}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{dispatchTouchEvent}\PYG{p}{(}\PYG{n}{ev}\PYG{p}{:} \PYG{n}{MotionEvent?)}\PYG{p}{:} \PYG{k+kt}{Boolean} \PYG{p}{\PYGZob{}}
+        \PYG{k}{if} \PYG{p}{(}\PYG{n}{currentFocus} \PYG{o}{!=} \PYG{k+kc}{null}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+            \PYG{k+kd}{val} \PYG{n+nv}{imm}\PYG{p}{:} \PYG{n}{InputMethodManager} \PYG{o}{=}
+                \PYG{n}{getSystemService}\PYG{p}{(}\PYG{n}{Context}\PYG{p}{.}\PYG{n+na}{INPUT\PYGZus{}METHOD\PYGZus{}SERVICE}\PYG{p}{)} \PYG{k}{as} \PYG{n}{InputMethodManager}
+            \PYG{n}{imm}\PYG{p}{.}\PYG{n+na}{hideSoftInputFromWindow}\PYG{p}{(}\PYG{n}{currentFocus}\PYG{o}{!!}\PYG{p}{.}\PYG{n+na}{windowToken}\PYG{p}{,} \PYG{l+m}{0}\PYG{p}{)}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{return} \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{dispatchTouchEvent}\PYG{p}{(}\PYG{n}{ev}\PYG{p}{)}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{private} \PYG{k+kd}{fun} \PYG{n+nf}{gotoPost}\PYG{p}{(}\PYG{n}{position}\PYG{p}{:}\PYG{k+kt}{Int}\PYG{p}{)\PYGZob{}}
+        \PYG{k+kd}{val} \PYG{n+nv}{intent} \PYG{o}{=} \PYG{n}{Intent}\PYG{p}{(}\PYG{k}{this}\PYG{p}{,} \PYG{n}{AddPlantActivity}\PYG{o}{::}\PYG{n}{class}\PYG{p}{.}\PYG{n+na}{java}\PYG{p}{)}
+        \PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{putExtra}\PYG{p}{(}\PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{SELECTED\PYGZus{}PLANT}\PYG{p}{,} \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getPost}\PYG{p}{(}\PYG{n}{position}\PYG{p}{))}
+        \PYG{n}{startActivity}\PYG{p}{(}\PYG{n}{intent}\PYG{p}{)}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

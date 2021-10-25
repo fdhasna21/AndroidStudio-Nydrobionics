@@ -1,0 +1,174 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{class} \PYG{n+nc}{AddNoteActivity} \PYG{p}{:} \PYG{n}{AppCompatActivity}\PYG{p}{(),} \PYG{n}{View}\PYG{p}{.}\PYG{n+na}{OnClickListener}\PYG{p}{,} \PYG{n}{TextWatcher} \PYG{p}{\PYGZob{}}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{binding} \PYG{p}{:} \PYG{n}{ActivityAddNoteBinding}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{viewModel} \PYG{p}{:} \PYG{n}{AddNoteViewModel}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{utility} \PYG{p}{:} \PYG{n}{ViewUtility}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{editTexts} \PYG{p}{:} \PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{TextInputEditText}\PYG{o}{\PYGZgt{}}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{strEdt} \PYG{p}{:} \PYG{n}{HashMap}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{String}\PYG{p}{,} \PYG{n}{TextInputEditText}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{hashMapOf}\PYG{p}{()}
+
+    \PYG{k+kd}{companion} \PYG{k+kd}{object} \PYG{err}{\PYGZob{}}
+        \PYG{k+kd}{const} \PYG{k+kd}{val} \PYG{n+nv}{TAG} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}addNoteActivity\PYGZdq{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onCreate}\PYG{p}{(}\PYG{n}{savedInstanceState}\PYG{p}{:} \PYG{n}{Bundle?)} \PYG{p}{\PYGZob{}}
+        \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{onCreate}\PYG{p}{(}\PYG{n}{savedInstanceState}\PYG{p}{)}
+        \PYG{n}{binding} \PYG{o}{=} \PYG{n}{ActivityAddNoteBinding}\PYG{p}{.}\PYG{n+na}{inflate}\PYG{p}{(}\PYG{n}{layoutInflater}\PYG{p}{)}
+        \PYG{n}{setContentView}\PYG{p}{(}\PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{root}\PYG{p}{)}
+
+        \PYG{n}{viewModel} \PYG{o}{=} \PYG{n}{ViewModelProvider}\PYG{p}{(}\PYG{k}{this}\PYG{p}{).}\PYG{n+na}{get}\PYG{p}{(}\PYG{n}{AddNoteViewModel}\PYG{o}{::}\PYG{n}{class}\PYG{p}{.}\PYG{n+na}{java}\PYG{p}{)}
+        \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{setCurrentData}\PYG{p}{(}\PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{getParcelableExtra}\PYG{o}{\PYGZlt{}}\PYG{n}{NoteModel}\PYG{o}{\PYGZgt{}}\PYG{p}{(}\PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{SELECTED\PYGZus{}NOTE}\PYG{p}{))}
+
+        \PYG{n}{supportActionBar}\PYG{o}{?.}\PYG{n+na}{title} \PYG{o}{=}
+            \PYG{k}{if}\PYG{p}{(}\PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{getParcelableExtra}\PYG{o}{\PYGZlt{}}\PYG{n}{NoteModel}\PYG{o}{\PYGZgt{}}\PYG{p}{(}\PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{SELECTED\PYGZus{}NOTE}\PYG{p}{)} \PYG{o}{==} \PYG{k+kc}{null}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+                \PYG{n}{getString}\PYG{p}{(}\PYG{n}{R}\PYG{p}{.}\PYG{n+na}{string}\PYG{p}{.}\PYG{n+na}{add\PYGZus{}notes}\PYG{p}{)}
+            \PYG{p}{\PYGZcb{}} \PYG{k}{else} \PYG{p}{\PYGZob{}}
+                \PYG{n}{getString}\PYG{p}{(}\PYG{n}{R}\PYG{p}{.}\PYG{n+na}{string}\PYG{p}{.}\PYG{n+na}{edit\PYGZus{}notes}\PYG{p}{)}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{n}{supportActionBar}\PYG{o}{?.}\PYG{n+na}{setDisplayHomeAsUpEnabled}\PYG{p}{(}\PYG{k+kc}{true}\PYG{p}{)}
+        \PYG{n}{supportActionBar}\PYG{o}{?.}\PYG{n+na}{setDisplayShowHomeEnabled}\PYG{p}{(}\PYG{k+kc}{false}\PYG{p}{)}
+
+        \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{apply} \PYG{p}{\PYGZob{}}
+            \PYG{n}{editTexts} \PYG{o}{=} \PYG{n}{arrayListOf}\PYG{p}{(}\PYG{n}{addNoteTitle}\PYG{p}{,} \PYG{n}{addNoteDesc}\PYG{p}{)}
+            \PYG{n}{utility} \PYG{o}{=} \PYG{n}{ViewUtility}\PYG{p}{(}
+                \PYG{n}{context} \PYG{o}{=} \PYG{k}{this}\PYG{n+nd}{@AddNoteActivity}\PYG{p}{,}
+                \PYG{n}{circularProgressButton} \PYG{o}{=} \PYG{n}{addNoteSubmit}\PYG{p}{,}
+                \PYG{n}{textInputEditTexts} \PYG{o}{=} \PYG{n}{editTexts}\PYG{p}{,}
+                \PYG{n}{actionBar} \PYG{o}{=} \PYG{n}{supportActionBar}
+            \PYG{p}{)}
+
+            \PYG{n}{editTexts}\PYG{p}{.}\PYG{n+na}{forEach} \PYG{p}{\PYGZob{}}
+                \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{setOnClickListener}\PYG{p}{(}\PYG{k}{this}\PYG{n+nd}{@AddNoteActivity}\PYG{p}{)}
+                \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{addTextChangedListener}\PYG{p}{(}\PYG{k}{this}\PYG{n+nd}{@AddNoteActivity}\PYG{p}{)}
+            \PYG{p}{\PYGZcb{}}
+            \PYG{n}{addNoteSubmit}\PYG{p}{.}\PYG{n+na}{setOnClickListener}\PYG{p}{(}\PYG{k}{this}\PYG{n+nd}{@AddNoteActivity}\PYG{p}{)}
+
+            \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getCurrentNoteModel}\PYG{p}{().}\PYG{n+na}{observe}\PYG{p}{(}\PYG{k}{this}\PYG{n+nd}{@AddNoteActivity}\PYG{p}{,} \PYG{p}{\PYGZob{}}
+                \PYG{k}{if}\PYG{p}{(}\PYG{n+nb}{it}\PYG{o}{!=}\PYG{k+kc}{null}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+                    \PYG{n}{addNoteTitle}\PYG{p}{.}\PYG{n+na}{setText}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{title}\PYG{p}{)}
+                    \PYG{n}{addNoteDesc}\PYG{p}{.}\PYG{n+na}{setText}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{description}\PYG{p}{)}
+                    \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{date}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}} \PYG{n}{date}\PYG{o}{\PYGZhy{}\PYGZgt{}}
+                        \PYG{n}{addNoteDate}\PYG{p}{.}\PYG{n+na}{setText}\PYG{p}{(}\PYG{n}{date}\PYG{p}{)}
+                    \PYG{p}{\PYGZcb{}}
+                    \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{time}\PYG{o}{?.}\PYG{n+na}{let}\PYG{p}{\PYGZob{}} \PYG{n}{time}\PYG{o}{\PYGZhy{}\PYGZgt{}}
+                        \PYG{n}{addNoteTime}\PYG{p}{.}\PYG{n+na}{setText}\PYG{p}{(}\PYG{n}{time}\PYG{p}{)}
+                    \PYG{p}{\PYGZcb{}}
+                    \PYG{n}{strEdt}\PYG{o}{[}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{title} \PYG{o}{?:} \PYG{l+s}{\PYGZdq{}\PYGZdq{}}\PYG{o}{]} \PYG{o}{=} \PYG{n}{addNoteTitle}
+                    \PYG{n}{strEdt}\PYG{o}{[}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{description} \PYG{o}{?:} \PYG{l+s}{\PYGZdq{}\PYGZdq{}}\PYG{o}{]} \PYG{o}{=} \PYG{n}{addNoteDesc}
+                    \PYG{n}{strEdt}\PYG{o}{[}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{date} \PYG{o}{?:} \PYG{l+s}{\PYGZdq{}\PYGZdq{}}\PYG{o}{]} \PYG{o}{=} \PYG{n}{addNoteDate}
+                    \PYG{n}{strEdt}\PYG{o}{[}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{time} \PYG{o}{?:}\PYG{l+s}{\PYGZdq{}\PYGZdq{}}\PYG{o}{]} \PYG{o}{=} \PYG{n}{addNoteTime}
+                \PYG{p}{\PYGZcb{}}
+            \PYG{p}{\PYGZcb{})}
+            \PYG{n}{checkEmpty}\PYG{p}{()}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onSupportNavigateUp}\PYG{p}{():} \PYG{k+kt}{Boolean} \PYG{p}{\PYGZob{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{getParcelableExtra}\PYG{o}{\PYGZlt{}}\PYG{n}{NoteModel}\PYG{o}{\PYGZgt{}}\PYG{p}{(}\PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{SELECTED\PYGZus{}NOTE}\PYG{p}{)} \PYG{o}{!=} \PYG{k+kc}{null}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{isNotEmpties}\PYG{p}{.}\PYG{n+na}{observe}\PYG{p}{(}\PYG{k}{this}\PYG{p}{,} \PYG{p}{\PYGZob{}}
+                \PYG{k}{when}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{)\PYGZob{}}
+                    \PYG{k+kc}{true} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addNoteSubmit}\PYG{p}{.}\PYG{n+na}{performClick}\PYG{p}{()}
+                    \PYG{k}{else} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{onBackPressed}\PYG{p}{()}
+                \PYG{p}{\PYGZcb{}}
+            \PYG{p}{\PYGZcb{})}
+        \PYG{p}{\PYGZcb{}} \PYG{k}{else} \PYG{p}{\PYGZob{}}
+            \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{onBackPressed}\PYG{p}{()}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{return} \PYG{k+kc}{true}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{dispatchTouchEvent}\PYG{p}{(}\PYG{n}{ev}\PYG{p}{:} \PYG{n}{MotionEvent?)}\PYG{p}{:} \PYG{k+kt}{Boolean} \PYG{p}{\PYGZob{}}
+        \PYG{k}{if} \PYG{p}{(}\PYG{n}{currentFocus} \PYG{o}{!=} \PYG{k+kc}{null}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+            \PYG{k+kd}{val} \PYG{n+nv}{imm}\PYG{p}{:} \PYG{n}{InputMethodManager} \PYG{o}{=}
+                \PYG{n}{getSystemService}\PYG{p}{(}\PYG{n}{Context}\PYG{p}{.}\PYG{n+na}{INPUT\PYGZus{}METHOD\PYGZus{}SERVICE}\PYG{p}{)} \PYG{k}{as} \PYG{n}{InputMethodManager}
+            \PYG{n}{imm}\PYG{p}{.}\PYG{n+na}{hideSoftInputFromWindow}\PYG{p}{(}\PYG{n}{currentFocus}\PYG{o}{!!}\PYG{p}{.}\PYG{n+na}{windowToken}\PYG{p}{,} \PYG{l+m}{0}\PYG{p}{)}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{return} \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{dispatchTouchEvent}\PYG{p}{(}\PYG{n}{ev}\PYG{p}{)}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onClick}\PYG{p}{(}\PYG{n}{v}\PYG{p}{:} \PYG{n}{View?)} \PYG{p}{\PYGZob{}}
+        \PYG{k}{when}\PYG{p}{(}\PYG{n}{v}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addNoteDate} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{p}{\PYGZob{}}
+                \PYG{k+kd}{val} \PYG{n+nv}{datePicker} \PYG{o}{=} \PYG{n}{MaterialDatePicker}\PYG{p}{.}\PYG{n+na}{Builder}\PYG{p}{.}\PYG{n+na}{datePicker}\PYG{p}{()}
+                    \PYG{p}{.}\PYG{n+na}{setTitleText}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}Date of Birth\PYGZdq{}}\PYG{p}{)}
+                    \PYG{p}{.}\PYG{n+na}{setSelection}\PYG{p}{(}\PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getDate}\PYG{p}{())}
+                    \PYG{p}{.}\PYG{n+na}{setInputMode}\PYG{p}{(}\PYG{n}{MaterialDatePicker}\PYG{p}{.}\PYG{n+na}{INPUT\PYGZus{}MODE\PYGZus{}CALENDAR}\PYG{p}{)}
+                    \PYG{p}{.}\PYG{n+na}{build}\PYG{p}{()}
+                \PYG{n}{datePicker}\PYG{p}{.}\PYG{n+na}{show}\PYG{p}{(}\PYG{n}{supportFragmentManager}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}DATE\PYGZus{}PICKER\PYGZdq{}}\PYG{p}{)}
+                \PYG{n}{datePicker}\PYG{p}{.}\PYG{n+na}{addOnPositiveButtonClickListener}\PYG{p}{\PYGZob{}}
+                    \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addNoteDate}\PYG{p}{.}\PYG{n+na}{setText}\PYG{p}{(}\PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{setDate}\PYG{p}{(}\PYG{n}{datePicker}\PYG{p}{.}\PYG{n+na}{selection}\PYG{p}{))}
+                \PYG{p}{\PYGZcb{}}
+                \PYG{n}{datePicker}\PYG{p}{.}\PYG{n+na}{addOnNegativeButtonClickListener}\PYG{p}{\PYGZob{}\PYGZcb{}}
+                \PYG{n}{datePicker}\PYG{p}{.}\PYG{n+na}{isCancelable} \PYG{o}{=} \PYG{k+kc}{false}
+            \PYG{p}{\PYGZcb{}}
+            \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addNoteTime} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{p}{\PYGZob{}}
+                \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getTime}\PYG{p}{()}
+                \PYG{k+kd}{val} \PYG{n+nv}{timePicker} \PYG{o}{=} \PYG{n}{MaterialTimePicker}\PYG{p}{.}\PYG{n+na}{Builder}\PYG{p}{()}
+                    \PYG{p}{.}\PYG{n+na}{setTimeFormat}\PYG{p}{(}\PYG{n}{TimeFormat}\PYG{p}{.}\PYG{n+na}{CLOCK\PYGZus{}24H}\PYG{p}{)}
+                    \PYG{p}{.}\PYG{n+na}{setHour}\PYG{p}{(}\PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getTimeHour}\PYG{p}{())}
+                    \PYG{p}{.}\PYG{n+na}{setMinute}\PYG{p}{(}\PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getTimeMinute}\PYG{p}{())}
+                    \PYG{p}{.}\PYG{n+na}{setTitleText}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}Select a time\PYGZdq{}}\PYG{p}{)}
+                    \PYG{p}{.}\PYG{n+na}{build}\PYG{p}{()}
+                \PYG{n}{timePicker}\PYG{p}{.}\PYG{n+na}{show}\PYG{p}{(}\PYG{n}{supportFragmentManager}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}TIME\PYGZus{}PICKER\PYGZdq{}}\PYG{p}{)}
+                \PYG{n}{timePicker}\PYG{p}{.}\PYG{n+na}{isCancelable} \PYG{o}{=} \PYG{k+kc}{false}
+
+                \PYG{n}{timePicker}\PYG{p}{.}\PYG{n+na}{addOnPositiveButtonClickListener} \PYG{p}{\PYGZob{}}
+                    \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addNoteTime}\PYG{p}{.}\PYG{n+na}{setText}\PYG{p}{(}\PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{setTime}\PYG{p}{(}\PYG{n}{timePicker}\PYG{p}{.}\PYG{n+na}{hour}\PYG{p}{,} \PYG{n}{timePicker}\PYG{p}{.}\PYG{n+na}{minute}\PYG{p}{))}
+                \PYG{p}{\PYGZcb{}}
+                \PYG{n}{timePicker}\PYG{p}{.}\PYG{n+na}{addOnNegativeButtonClickListener} \PYG{p}{\PYGZob{}\PYGZcb{}}
+            \PYG{p}{\PYGZcb{}}
+            \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addNoteSubmit} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{p}{\PYGZob{}}
+                \PYG{n}{utility}\PYG{p}{.}\PYG{n+na}{isLoading} \PYG{o}{=} \PYG{k+kc}{true}
+                \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{createNote}\PYG{p}{(}\PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addNoteTitle}\PYG{p}{.}\PYG{n+na}{text}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{(),}
+                    \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addNoteDesc}\PYG{p}{.}\PYG{n+na}{text}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{())}
+                \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{isNoteAdd}\PYG{p}{.}\PYG{n+na}{observe}\PYG{p}{(}\PYG{k}{this}\PYG{p}{,} \PYG{p}{\PYGZob{}}
+                    \PYG{k}{if}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{)\PYGZob{}}
+                        \PYG{n}{utility}\PYG{p}{.}\PYG{n+na}{isLoading} \PYG{o}{=} \PYG{k+kc}{false}
+                        \PYG{k+kd}{val} \PYG{n+nv}{toastTxt} \PYG{o}{=} \PYG{k}{if}\PYG{p}{(}\PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{getParcelableExtra}\PYG{o}{\PYGZlt{}}\PYG{n}{NoteModel}\PYG{o}{\PYGZgt{}}\PYG{p}{(}\PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{SELECTED\PYGZus{}NOTE}\PYG{p}{)} \PYG{o}{!=} \PYG{k+kc}{null}\PYG{p}{)\PYGZob{}}
+                            \PYG{l+s}{\PYGZdq{}Note updated.\PYGZdq{}}
+                        \PYG{p}{\PYGZcb{}} \PYG{k}{else} \PYG{p}{\PYGZob{}}
+                            \PYG{l+s}{\PYGZdq{}New note created.\PYGZdq{}}
+                        \PYG{p}{\PYGZcb{}}
+                        \PYG{n}{Toast}\PYG{p}{.}\PYG{n+na}{makeText}\PYG{p}{(}\PYG{k}{this}\PYG{p}{,} \PYG{n}{toastTxt}\PYG{p}{,} \PYG{n}{Toast}\PYG{p}{.}\PYG{n+na}{LENGTH\PYGZus{}SHORT}\PYG{p}{).}\PYG{n+na}{show}\PYG{p}{()}
+                        \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{onBackPressed}\PYG{p}{()}
+                        \PYG{n}{finish}\PYG{p}{()}
+                    \PYG{p}{\PYGZcb{}} \PYG{k}{else} \PYG{p}{\PYGZob{}}
+                        \PYG{n}{utility}\PYG{p}{.}\PYG{n+na}{isLoading} \PYG{o}{=} \PYG{k+kc}{false}
+                        \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{addNoteError}\PYG{p}{.}\PYG{n+na}{observe}\PYG{p}{(}\PYG{k}{this}\PYG{p}{,} \PYG{p}{\PYGZob{}}
+                            \PYG{k}{if}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{isNotEmpty}\PYG{p}{())\PYGZob{}}
+                                \PYG{n}{Toast}\PYG{p}{.}\PYG{n+na}{makeText}\PYG{p}{(}\PYG{k}{this}\PYG{p}{,} \PYG{n+nb}{it}\PYG{p}{,} \PYG{n}{Toast}\PYG{p}{.}\PYG{n+na}{LENGTH\PYGZus{}SHORT}\PYG{p}{).}\PYG{n+na}{show}\PYG{p}{()}
+                                \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{i}\PYG{p}{(}\PYG{n}{CreateFarmFragment}\PYG{p}{.}\PYG{n+na}{TAG}\PYG{p}{,} \PYG{n+nb}{it}\PYG{p}{)}
+                                \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{addNoteError}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}\PYGZdq{}}
+                            \PYG{p}{\PYGZcb{}}
+                        \PYG{p}{\PYGZcb{})}
+                    \PYG{p}{\PYGZcb{}}
+                \PYG{p}{\PYGZcb{})}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{beforeTextChanged}\PYG{p}{(}\PYG{n}{s}\PYG{p}{:} \PYG{n}{CharSequence?,} \PYG{n}{start}\PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{,} \PYG{n}{count}\PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{,} \PYG{n}{after}\PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{)} \PYG{p}{\PYGZob{}\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onTextChanged}\PYG{p}{(}\PYG{n}{s}\PYG{p}{:} \PYG{n}{CharSequence?,} \PYG{n}{start}\PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{,} \PYG{n}{before}\PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{,} \PYG{n}{count}\PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+        \PYG{n}{checkEmpty}\PYG{p}{()}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{afterTextChanged}\PYG{p}{(}\PYG{n}{s}\PYG{p}{:} \PYG{n}{Editable?)} \PYG{p}{\PYGZob{}\PYGZcb{}}
+
+    \PYG{k+kd}{private} \PYG{k+kd}{fun} \PYG{n+nf}{checkEmpty}\PYG{p}{()\PYGZob{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{getParcelableExtra}\PYG{o}{\PYGZlt{}}\PYG{n}{NoteModel}\PYG{o}{\PYGZgt{}}\PYG{p}{(}\PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{SELECTED\PYGZus{}NOTE}\PYG{p}{)} \PYG{o}{!=} \PYG{k+kc}{null}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{apply} \PYG{p}{\PYGZob{}}
+                \PYG{n}{checkNotEmpty}\PYG{p}{(}\PYG{n}{utility}\PYG{p}{.}\PYG{n+na}{isEmpties}\PYG{p}{(}\PYG{n}{editTexts}\PYG{p}{)} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{utility}\PYG{p}{.}\PYG{n+na}{isChanges}\PYG{p}{(}\PYG{n}{strEdt}\PYG{p}{))}
+                    \PYG{p}{.}\PYG{n+na}{observe}\PYG{p}{(}\PYG{k}{this}\PYG{n+nd}{@AddNoteActivity}\PYG{p}{,} \PYG{p}{\PYGZob{}}
+                        \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addNoteSubmit}\PYG{p}{.}\PYG{n+na}{isEnabled} \PYG{o}{=} \PYG{n+nb}{it}
+                    \PYG{p}{\PYGZcb{})}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}} \PYG{k}{else} \PYG{p}{\PYGZob{}}
+            \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{apply} \PYG{p}{\PYGZob{}}
+                \PYG{n}{checkNotEmpty}\PYG{p}{(}\PYG{n}{utility}\PYG{p}{.}\PYG{n+na}{isEmpties}\PYG{p}{(}\PYG{n}{editTexts}\PYG{p}{)).}\PYG{n+na}{observe}\PYG{p}{(}\PYG{k}{this}\PYG{n+nd}{@AddNoteActivity}\PYG{p}{,} \PYG{p}{\PYGZob{}}
+                    \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addNoteSubmit}\PYG{p}{.}\PYG{n+na}{isEnabled} \PYG{o}{=} \PYG{n+nb}{it}
+                \PYG{p}{\PYGZcb{})}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

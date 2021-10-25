@@ -1,0 +1,94 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{class} \PYG{n+nc}{MainProfileFragment} \PYG{p}{:} \PYG{n}{Fragment}\PYG{p}{(),} \PYG{n}{View}\PYG{p}{.}\PYG{n+na}{OnClickListener} \PYG{p}{\PYGZob{}}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{\PYGZus{}binding} \PYG{p}{:} \PYG{n}{FragmentMainProfileBinding? }\PYG{o}{=} \PYG{k+kc}{null}
+    \PYG{k+kd}{private} \PYG{k+kd}{val}  \PYG{n+nv}{binding} \PYG{k}{get}\PYG{p}{()} \PYG{o}{=} \PYG{n}{\PYGZus{}binding}\PYG{o}{!!}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{viewModel} \PYG{p}{:} \PYG{n}{MainViewModel}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{drawerLayout} \PYG{p}{:} \PYG{n}{DrawerLayout}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{viewsAsButton} \PYG{p}{:} \PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{View}\PYG{o}{\PYGZgt{}}
+
+    \PYG{k+kd}{companion} \PYG{k+kd}{object} \PYG{err}{\PYGZob{}}
+        \PYG{k+kd}{const} \PYG{k+kd}{val} \PYG{n+nv}{TAG} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}mainProfile\PYGZdq{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onCreateView}\PYG{p}{(}
+        \PYG{n}{inflater}\PYG{p}{:} \PYG{n}{LayoutInflater}\PYG{p}{,} \PYG{n}{container}\PYG{p}{:} \PYG{n}{ViewGroup?,}
+        \PYG{n}{savedInstanceState}\PYG{p}{:} \PYG{n}{Bundle?}
+    \PYG{p}{):} \PYG{n}{View} \PYG{p}{\PYGZob{}}
+        \PYG{n}{\PYGZus{}binding} \PYG{o}{=} \PYG{n}{FragmentMainProfileBinding}\PYG{p}{.}\PYG{n+na}{inflate}\PYG{p}{(}\PYG{n}{layoutInflater}\PYG{p}{,} \PYG{n}{container}\PYG{p}{,} \PYG{k+kc}{false}\PYG{p}{)}
+        \PYG{k}{return} \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{root}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onViewCreated}\PYG{p}{(}\PYG{n}{view}\PYG{p}{:} \PYG{n}{View}\PYG{p}{,} \PYG{n}{savedInstanceState}\PYG{p}{:} \PYG{n}{Bundle?)} \PYG{p}{\PYGZob{}}
+        \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{onViewCreated}\PYG{p}{(}\PYG{n}{view}\PYG{p}{,} \PYG{n}{savedInstanceState}\PYG{p}{)}
+        \PYG{n}{setHasOptionsMenu}\PYG{p}{(}\PYG{k+kc}{true}\PYG{p}{)}
+        \PYG{n}{requireActivity}\PYG{p}{().}\PYG{n+na}{title} \PYG{o}{=} \PYG{n}{getString}\PYG{p}{(}\PYG{n}{R}\PYG{p}{.}\PYG{n+na}{string}\PYG{p}{.}\PYG{n+na}{profile}\PYG{p}{)}
+        \PYG{n}{viewModel} \PYG{o}{=} \PYG{n}{ViewModelProvider}\PYG{p}{(}\PYG{n}{requireActivity}\PYG{p}{()).}\PYG{n+na}{get}\PYG{p}{(}\PYG{n}{MainViewModel}\PYG{o}{::}\PYG{n}{class}\PYG{p}{.}\PYG{n+na}{java}\PYG{p}{)}
+        \PYG{n}{drawerLayout} \PYG{o}{=} \PYG{p}{(}\PYG{n}{requireActivity}\PYG{p}{()} \PYG{k}{as} \PYG{n}{MainActivity}\PYG{p}{).}\PYG{n+na}{drawerLayout}
+
+        \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{apply} \PYG{p}{\PYGZob{}}
+            \PYG{n}{viewsAsButton} \PYG{o}{=} \PYG{n}{arrayListOf}\PYG{p}{(}\PYG{n}{mainProfileEmailGroup}\PYG{p}{,}
+                                        \PYG{n}{mainProfilePhoneGroup}\PYG{p}{,}
+                                        \PYG{n}{mainProfileAddressGroup}\PYG{p}{,}
+                                        \PYG{n}{mainProfilePhoto}\PYG{p}{)}
+            \PYG{n}{viewsAsButton}\PYG{p}{.}\PYG{n+na}{forEach} \PYG{p}{\PYGZob{}} \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{setOnClickListener}\PYG{p}{(}\PYG{k}{this}\PYG{n+nd}{@MainProfileFragment}\PYG{p}{)} \PYG{p}{\PYGZcb{}}
+
+            \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getCurrentUser}\PYG{p}{().}\PYG{n+na}{observe}\PYG{p}{(}\PYG{n}{requireActivity}\PYG{p}{(),\PYGZob{}}
+                \PYG{k}{try} \PYG{p}{\PYGZob{}}
+                    \PYG{n+nb}{it}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+                        \PYG{n}{mainProfileName}\PYG{p}{.}\PYG{n+na}{text} \PYG{o}{=} \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{name}
+                        \PYG{n}{mainProfilePhone}\PYG{p}{.}\PYG{n+na}{text} \PYG{o}{=} \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{phone}
+                        \PYG{n}{mainProfileAddress}\PYG{p}{.}\PYG{n+na}{text} \PYG{o}{=} \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{address}
+                        \PYG{n}{mainProfileJoinedSince}\PYG{p}{.}\PYG{n+na}{text} \PYG{o}{=}
+                            \PYG{n}{getString}\PYG{p}{(}\PYG{n}{R}\PYG{p}{.}\PYG{n+na}{string}\PYG{p}{.}\PYG{n+na}{joined\PYGZus{}company\PYGZus{}since}\PYG{p}{,} \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{joinedSince}\PYG{p}{)}
+                        \PYG{n}{mainProfileBio}\PYG{p}{.}\PYG{n+na}{text} \PYG{o}{=} \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{bio}
+                        \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{performanceRate}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+                            \PYG{n}{mainProfileRate}\PYG{p}{.}\PYG{n+na}{rating} \PYG{o}{=} \PYG{n+nb}{it}
+                        \PYG{p}{\PYGZcb{}}
+                        \PYG{n}{mainProfileEmail}\PYG{p}{.}\PYG{n+na}{text} \PYG{o}{=} \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{email}
+                        \PYG{n}{mainProfileRole}\PYG{p}{.}\PYG{n+na}{text} \PYG{o}{=} \PYG{n}{getString}\PYG{p}{(}
+                            \PYG{n}{R}\PYG{p}{.}\PYG{n+na}{string}\PYG{p}{.}\PYG{n+na}{role\PYGZus{}in\PYGZus{}profile}\PYG{p}{,}
+                            \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{role}\PYG{o}{!!}\PYG{p}{.}\PYG{n+na}{replaceFirstChar} \PYG{p}{\PYGZob{}} \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{uppercase}\PYG{p}{()} \PYG{p}{\PYGZcb{},}
+                            \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getCurrentFarm}\PYG{p}{().}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{name}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{()}
+                        \PYG{p}{)}
+                        \PYG{n}{Glide}\PYG{p}{.}\PYG{n+na}{with}\PYG{p}{(}\PYG{n}{requireActivity}\PYG{p}{())}
+                            \PYG{p}{.}\PYG{n+na}{load}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{photo\PYGZus{}url} \PYG{o}{?:} \PYG{n}{R}\PYG{p}{.}\PYG{n+na}{drawable}\PYG{p}{.}\PYG{n+na}{bg\PYGZus{}farmer}\PYG{p}{)}
+                            \PYG{p}{.}\PYG{n+na}{centerCrop}\PYG{p}{()}
+                            \PYG{p}{.}\PYG{n+na}{into}\PYG{p}{(}\PYG{n}{mainProfilePhoto}\PYG{p}{)}
+                    \PYG{p}{\PYGZcb{}}
+                \PYG{p}{\PYGZcb{}} \PYG{k}{catch} \PYG{p}{(}\PYG{n}{e}\PYG{p}{:}\PYG{n}{Exception}\PYG{p}{)\PYGZob{}}
+                    \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{e}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}currentUser value null in some field\PYGZdq{}}\PYG{p}{,} \PYG{n}{e}\PYG{p}{)}
+                \PYG{p}{\PYGZcb{}}
+            \PYG{p}{\PYGZcb{})}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onCreateOptionsMenu}\PYG{p}{(}\PYG{n}{menu}\PYG{p}{:} \PYG{n}{Menu}\PYG{p}{,} \PYG{n}{inflater}\PYG{p}{:} \PYG{n}{MenuInflater}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+        \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{onCreateOptionsMenu}\PYG{p}{(}\PYG{n}{menu}\PYG{p}{,} \PYG{n}{inflater}\PYG{p}{)}
+        \PYG{n}{menu}\PYG{p}{.}\PYG{n+na}{clear}\PYG{p}{()}
+        \PYG{n}{inflater}\PYG{p}{.}\PYG{n+na}{inflate}\PYG{p}{(}\PYG{n}{R}\PYG{p}{.}\PYG{n+na}{menu}\PYG{p}{.}\PYG{n+na}{menu\PYGZus{}main\PYGZus{}profile}\PYG{p}{,} \PYG{n}{menu}\PYG{p}{)}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onOptionsItemSelected}\PYG{p}{(}\PYG{n}{item}\PYG{p}{:} \PYG{n}{MenuItem}\PYG{p}{):} \PYG{k+kt}{Boolean} \PYG{p}{\PYGZob{}}
+        \PYG{k}{when}\PYG{p}{(}\PYG{n}{item}\PYG{p}{.}\PYG{n+na}{itemId}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{R}\PYG{p}{.}\PYG{n+na}{id}\PYG{p}{.}\PYG{n+na}{settings} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{p}{\PYGZob{}}
+                \PYG{k}{if}\PYG{p}{(}\PYG{n}{drawerLayout}\PYG{p}{.}\PYG{n+na}{isDrawerOpen}\PYG{p}{(}\PYG{n}{GravityCompat}\PYG{p}{.}\PYG{n+na}{END}\PYG{p}{))\PYGZob{}}
+                    \PYG{n}{drawerLayout}\PYG{p}{.}\PYG{n+na}{closeDrawer}\PYG{p}{(}\PYG{n}{GravityCompat}\PYG{p}{.}\PYG{n+na}{END}\PYG{p}{)}
+                \PYG{p}{\PYGZcb{}}
+                \PYG{k}{else}\PYG{p}{\PYGZob{}}
+                    \PYG{n}{drawerLayout}\PYG{p}{.}\PYG{n+na}{openDrawer}\PYG{p}{(}\PYG{n}{GravityCompat}\PYG{p}{.}\PYG{n+na}{END}\PYG{p}{)}
+                \PYG{p}{\PYGZcb{}}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{return} \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{onOptionsItemSelected}\PYG{p}{(}\PYG{n}{item}\PYG{p}{)}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onClick}\PYG{p}{(}\PYG{n}{v}\PYG{p}{:} \PYG{n}{View?)} \PYG{p}{\PYGZob{}}
+        \PYG{k}{when}\PYG{p}{(}\PYG{n}{v}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{mainProfileEmail} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{IntentUtility}\PYG{p}{(}\PYG{n}{requireContext}\PYG{p}{()).}\PYG{n+na}{openEmail}\PYG{p}{(}\PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{mainProfileEmail}\PYG{p}{.}\PYG{n+na}{text}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{())}
+            \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{mainProfilePhoneGroup} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{RequestPermission}\PYG{p}{().}\PYG{n+na}{requestPermission}\PYG{p}{(}\PYG{n}{requireActivity}\PYG{p}{(),} \PYG{n}{Manifest}\PYG{p}{.}\PYG{n+na}{permission}\PYG{p}{.}\PYG{n+na}{CALL\PYGZus{}PHONE}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}Phone call\PYGZdq{}}\PYG{p}{,} \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{mainProfilePhone}\PYG{p}{.}\PYG{n+na}{text}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{())}
+            \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{mainProfileAddressGroup} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{IntentUtility}\PYG{p}{(}\PYG{n}{requireContext}\PYG{p}{()).}\PYG{n+na}{openMaps}\PYG{p}{(}\PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{mainProfileAddress}\PYG{p}{.}\PYG{n+na}{text}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{())}
+            \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{mainProfilePhoto} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{IntentUtility}\PYG{p}{(}\PYG{n}{requireContext}\PYG{p}{()).}\PYG{n+na}{openImage}\PYG{p}{(}\PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{mainProfilePhoto}\PYG{p}{,} \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{mainProfileName}\PYG{p}{.}\PYG{n+na}{text}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{())}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

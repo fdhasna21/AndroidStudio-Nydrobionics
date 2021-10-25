@@ -1,0 +1,227 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{class} \PYG{n+nc}{AddKitActivity} \PYG{p}{:} \PYG{n}{AppCompatActivity}\PYG{p}{(),} \PYG{n}{TextWatcher}\PYG{p}{\PYGZob{}}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{binding} \PYG{p}{:} \PYG{n}{ActivityAddKitBinding}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{viewModel} \PYG{p}{:} \PYG{n}{AddKitViewModel}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{utility} \PYG{p}{:} \PYG{n}{ViewUtility}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{editTexts} \PYG{p}{:} \PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{TextInputEditText}\PYG{o}{\PYGZgt{}}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{tooltips} \PYG{p}{:} \PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{ImageButton}\PYG{o}{\PYGZgt{}}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{numberPickers} \PYG{p}{:} \PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{ClickNumberPickerView}\PYG{o}{\PYGZgt{}}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{strEdt} \PYG{p}{:} \PYG{n}{HashMap}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{String}\PYG{p}{,} \PYG{n}{TextInputEditText}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{hashMapOf}\PYG{p}{()}
+
+    \PYG{k+kd}{companion} \PYG{k+kd}{object} \PYG{err}{\PYGZob{}}
+        \PYG{k+kd}{const} \PYG{k+kd}{val} \PYG{n+nv}{TAG} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}addKitActivity\PYGZdq{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onCreate}\PYG{p}{(}\PYG{n}{savedInstanceState}\PYG{p}{:} \PYG{n}{Bundle?)} \PYG{p}{\PYGZob{}}
+        \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{onCreate}\PYG{p}{(}\PYG{n}{savedInstanceState}\PYG{p}{)}
+        \PYG{n}{binding} \PYG{o}{=} \PYG{n}{ActivityAddKitBinding}\PYG{p}{.}\PYG{n+na}{inflate}\PYG{p}{(}\PYG{n}{layoutInflater}\PYG{p}{)}
+        \PYG{n}{setContentView}\PYG{p}{(}\PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{root}\PYG{p}{)}
+
+        \PYG{n}{viewModel} \PYG{o}{=} \PYG{n}{ViewModelProvider}\PYG{p}{(}\PYG{k}{this}\PYG{p}{).}\PYG{n+na}{get}\PYG{p}{(}\PYG{n}{AddKitViewModel}\PYG{o}{::}\PYG{n}{class}\PYG{p}{.}\PYG{n+na}{java}\PYG{p}{)}
+        \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{setCurrentData}\PYG{p}{(}\PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{getParcelableExtra}\PYG{o}{\PYGZlt{}}\PYG{n}{UserModel}\PYG{o}{\PYGZgt{}}\PYG{p}{(}\PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{CURRENT\PYGZus{}USER}\PYG{p}{),}
+            \PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{getParcelableExtra}\PYG{o}{\PYGZlt{}}\PYG{n}{FarmModel}\PYG{o}{\PYGZgt{}}\PYG{p}{(}\PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{CURRENT\PYGZus{}FARM}\PYG{p}{),}
+            \PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{getParcelableExtra}\PYG{o}{\PYGZlt{}}\PYG{n}{KitModel}\PYG{o}{\PYGZgt{}}\PYG{p}{(}\PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{SELECTED\PYGZus{}KIT}\PYG{p}{))}
+
+        \PYG{n}{supportActionBar}\PYG{o}{?.}\PYG{n+na}{title} \PYG{o}{=} \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getCurrentKit}\PYG{p}{().}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{name} \PYG{o}{?:} \PYG{n}{getString}\PYG{p}{(}\PYG{n}{R}\PYG{p}{.}\PYG{n+na}{string}\PYG{p}{.}\PYG{n+na}{create\PYGZus{}new\PYGZus{}kit}\PYG{p}{)}
+        \PYG{n}{supportActionBar}\PYG{o}{?.}\PYG{n+na}{subtitle} \PYG{o}{=} \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getCurrentFarm}\PYG{p}{().}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{name}
+        \PYG{n}{supportActionBar}\PYG{o}{?.}\PYG{n+na}{setDisplayHomeAsUpEnabled}\PYG{p}{(}\PYG{k+kc}{true}\PYG{p}{)}
+        \PYG{n}{supportActionBar}\PYG{o}{?.}\PYG{n+na}{setDisplayShowHomeEnabled}\PYG{p}{(}\PYG{k+kc}{false}\PYG{p}{)}
+
+        \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{apply} \PYG{p}{\PYGZob{}}
+            \PYG{n}{setupDefaultData}\PYG{p}{()}
+            \PYG{n}{editTexts} \PYG{o}{=} \PYG{n}{arrayListOf}\PYG{p}{(}\PYG{n}{addKitName}\PYG{p}{,} \PYG{n}{addKitPosition}\PYG{p}{)}
+            \PYG{n}{tooltips} \PYG{o}{=} \PYG{n}{arrayListOf}\PYG{p}{(}\PYG{n}{akSizeInfo}\PYG{p}{,}
+                                  \PYG{n}{akWaterLevelInfo}\PYG{p}{,}
+                                  \PYG{n}{akNutrientLevelInfo}\PYG{p}{,}
+                                  \PYG{n}{akTurbidityLevelInfo}\PYG{p}{)}
+            \PYG{n}{numberPickers} \PYG{o}{=} \PYG{n}{arrayListOf}\PYG{p}{(}\PYG{n}{addKitWidth}\PYG{p}{,}
+                \PYG{n}{addKitLength}\PYG{p}{,}
+                \PYG{n}{addKitWaterMin}\PYG{p}{,}
+                \PYG{n}{addKitWaterMax}\PYG{p}{,}
+                \PYG{n}{addKitNutrientMin}\PYG{p}{,}
+                \PYG{n}{addKitNutrientMax}\PYG{p}{,}
+                \PYG{n}{addKitTurbidityMin}\PYG{p}{,}
+                \PYG{n}{addKitTurbidityMax}\PYG{p}{)}
+            \PYG{n}{utility} \PYG{o}{=} \PYG{n}{ViewUtility}\PYG{p}{(}\PYG{n}{context} \PYG{o}{=} \PYG{k}{this}\PYG{n+nd}{@AddKitActivity}\PYG{p}{,}
+                \PYG{n}{circularProgressButton} \PYG{o}{=} \PYG{n}{addKitSubmit}\PYG{p}{,}
+                \PYG{n}{textInputEditTexts} \PYG{o}{=} \PYG{n}{editTexts}\PYG{p}{,}
+                \PYG{n}{numberPickers} \PYG{o}{=} \PYG{n}{numberPickers}\PYG{p}{,}
+                \PYG{n}{actionBar} \PYG{o}{=} \PYG{n}{supportActionBar}\PYG{p}{)}
+
+            \PYG{n}{tooltips}\PYG{p}{.}\PYG{n+na}{forEach} \PYG{p}{\PYGZob{}}
+                \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{setOnClickListener} \PYG{p}{\PYGZob{}}
+                    \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{performLongClick}\PYG{p}{()}
+                \PYG{p}{\PYGZcb{}}
+            \PYG{p}{\PYGZcb{}}
+            \PYG{n}{akSizeInfo}\PYG{p}{.}\PYG{n+na}{tooltipText} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}How many holes on each side length and width (must more than 0).\PYGZdq{}}
+            \PYG{n}{akWaterLevelInfo}\PYG{p}{.}\PYG{n+na}{tooltipText} \PYG{o}{=} \PYG{n}{getString}\PYG{p}{(}\PYG{n}{R}\PYG{p}{.}\PYG{n+na}{string}\PYG{p}{.}\PYG{n+na}{level\PYGZus{}tooltip}\PYG{p}{)}
+            \PYG{n}{akNutrientLevelInfo}\PYG{p}{.}\PYG{n+na}{tooltipText} \PYG{o}{=} \PYG{n}{getString}\PYG{p}{(}\PYG{n}{R}\PYG{p}{.}\PYG{n+na}{string}\PYG{p}{.}\PYG{n+na}{level\PYGZus{}tooltip}\PYG{p}{)}
+            \PYG{n}{akTurbidityLevelInfo}\PYG{p}{.}\PYG{n+na}{tooltipText} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}belum ditentuin\PYGZdq{}}
+            \PYG{c+c1}{//todo : turbidity tooltip}
+
+            \PYG{n}{editTexts}\PYG{p}{.}\PYG{n+na}{forEach} \PYG{p}{\PYGZob{}} \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{addTextChangedListener}\PYG{p}{(}\PYG{k}{this}\PYG{n+nd}{@AddKitActivity}\PYG{p}{)} \PYG{p}{\PYGZcb{}}
+            \PYG{n}{numberPickers}\PYG{p}{.}\PYG{n+na}{forEachIndexed} \PYG{p}{\PYGZob{}} \PYG{n}{i}\PYG{p}{,} \PYG{n}{view} \PYG{o}{\PYGZhy{}\PYGZgt{}}
+                \PYG{k+kd}{val} \PYG{n+nv}{numberPickerDataType} \PYG{o}{=} \PYG{n}{getNumberPickerType}\PYG{p}{(}\PYG{n}{view}\PYG{p}{)}
+                \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getNumberPickerValue}\PYG{p}{(}\PYG{n}{numberPickerDataType}\PYG{p}{)}\PYG{o}{?.}\PYG{n+na}{observe}\PYG{p}{(}\PYG{k}{this}\PYG{n+nd}{@AddKitActivity}\PYG{p}{,\PYGZob{}}
+                    \PYG{k}{if}\PYG{p}{(}\PYG{n+nb}{it} \PYG{o}{!=} \PYG{n}{view}\PYG{p}{.}\PYG{n+na}{value}\PYG{p}{)\PYGZob{}}
+                        \PYG{n}{view}\PYG{p}{.}\PYG{n+na}{setPickerValue}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{)}
+                    \PYG{p}{\PYGZcb{}}
+                \PYG{p}{\PYGZcb{})}
+
+                \PYG{n}{numberPickers}\PYG{o}{[}\PYG{n}{i}\PYG{o}{]}\PYG{p}{.}\PYG{n+na}{setClickNumberPickerListener} \PYG{p}{\PYGZob{}} \PYG{n}{previousValue}\PYG{p}{,} \PYG{n}{currentValue}\PYG{p}{,} \PYG{n}{pickerClickType} \PYG{o}{\PYGZhy{}\PYGZgt{}}
+                    \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{setNumberPickerValue}\PYG{p}{(}\PYG{n}{currentValue}\PYG{p}{,} \PYG{n}{numberPickerDataType}\PYG{p}{)}
+                    \PYG{n}{checkEmpty}\PYG{p}{()}
+                \PYG{p}{\PYGZcb{}}
+            \PYG{p}{\PYGZcb{}}
+
+            \PYG{n}{addKitSubmit}\PYG{p}{.}\PYG{n+na}{setOnClickListener} \PYG{p}{\PYGZob{}}
+                \PYG{n}{utility}\PYG{p}{.}\PYG{n+na}{isLoading} \PYG{o}{=} \PYG{k+kc}{true}
+                \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{createKit}\PYG{p}{(}\PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addKitName}\PYG{p}{.}\PYG{n+na}{text}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{(),}
+                                    \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addKitPosition}\PYG{p}{.}\PYG{n+na}{text}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{())}
+                \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{isKitAdd}\PYG{p}{.}\PYG{n+na}{observe}\PYG{p}{(}\PYG{k}{this}\PYG{n+nd}{@AddKitActivity}\PYG{p}{,} \PYG{p}{\PYGZob{}}
+                    \PYG{k}{if}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{)\PYGZob{}}
+                        \PYG{n}{utility}\PYG{p}{.}\PYG{n+na}{isLoading} \PYG{o}{=} \PYG{k+kc}{false}
+                        \PYG{k+kd}{val} \PYG{n+nv}{toastTxt} \PYG{o}{=} \PYG{k}{if}\PYG{p}{(}\PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{getParcelableExtra}\PYG{o}{\PYGZlt{}}\PYG{n}{NoteModel}\PYG{o}{\PYGZgt{}}\PYG{p}{(}\PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{SELECTED\PYGZus{}NOTE}\PYG{p}{)} \PYG{o}{!=} \PYG{k+kc}{null}\PYG{p}{)\PYGZob{}}
+                            \PYG{l+s}{\PYGZdq{}Kit updated.\PYGZdq{}}
+                        \PYG{p}{\PYGZcb{}} \PYG{k}{else} \PYG{p}{\PYGZob{}}
+                            \PYG{l+s}{\PYGZdq{}New kit created.\PYGZdq{}}
+                        \PYG{p}{\PYGZcb{}}
+                        \PYG{n}{Toast}\PYG{p}{.}\PYG{n+na}{makeText}\PYG{p}{(}\PYG{k}{this}\PYG{n+nd}{@AddKitActivity}\PYG{p}{,} \PYG{n}{toastTxt}\PYG{p}{,} \PYG{n}{Toast}\PYG{p}{.}\PYG{n+na}{LENGTH\PYGZus{}SHORT}\PYG{p}{).}\PYG{n+na}{show}\PYG{p}{()}
+                        \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{onBackPressed}\PYG{p}{()}
+                        \PYG{n}{finish}\PYG{p}{()}
+                    \PYG{p}{\PYGZcb{}} \PYG{k}{else} \PYG{p}{\PYGZob{}}
+                        \PYG{n}{utility}\PYG{p}{.}\PYG{n+na}{isLoading} \PYG{o}{=} \PYG{k+kc}{false}
+                        \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{addKitError}\PYG{p}{.}\PYG{n+na}{observe}\PYG{p}{(}\PYG{k}{this}\PYG{n+nd}{@AddKitActivity}\PYG{p}{,} \PYG{p}{\PYGZob{}}
+                            \PYG{k}{if}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{isNotEmpty}\PYG{p}{())\PYGZob{}}
+                                \PYG{n}{Toast}\PYG{p}{.}\PYG{n+na}{makeText}\PYG{p}{(}\PYG{k}{this}\PYG{n+nd}{@AddKitActivity}\PYG{p}{,} \PYG{n+nb}{it}\PYG{p}{,} \PYG{n}{Toast}\PYG{p}{.}\PYG{n+na}{LENGTH\PYGZus{}SHORT}\PYG{p}{).}\PYG{n+na}{show}\PYG{p}{()}
+                                \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{i}\PYG{p}{(}\PYG{n}{CreateFarmFragment}\PYG{p}{.}\PYG{n+na}{TAG}\PYG{p}{,} \PYG{n+nb}{it}\PYG{p}{)}
+                                \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{addKitError}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}\PYGZdq{}}
+                            \PYG{p}{\PYGZcb{}}
+                        \PYG{p}{\PYGZcb{})}
+                    \PYG{p}{\PYGZcb{}}
+                \PYG{p}{\PYGZcb{})}
+            \PYG{p}{\PYGZcb{}}
+            \PYG{n}{checkEmpty}\PYG{p}{()}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{private} \PYG{k+kd}{fun} \PYG{n+nf}{setupDefaultData}\PYG{p}{()\PYGZob{}}
+        \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{apply} \PYG{p}{\PYGZob{}}
+            \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getCurrentKit}\PYG{p}{().}\PYG{n+na}{observe}\PYG{p}{(}\PYG{k}{this}\PYG{n+nd}{@AddKitActivity}\PYG{p}{,} \PYG{p}{\PYGZob{}} \PYG{n+nb}{it} \PYG{o}{\PYGZhy{}\PYGZgt{}}
+                \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{kitId}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}} \PYG{n}{kitId} \PYG{o}{\PYGZhy{}\PYGZgt{}}
+                    \PYG{n}{addKitName}\PYG{p}{.}\PYG{n+na}{setText}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{name}\PYG{p}{)}
+                    \PYG{n}{addKitPosition}\PYG{p}{.}\PYG{n+na}{setText}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{position}\PYG{p}{)}
+                    \PYG{n}{addKitWidth}\PYG{p}{.}\PYG{n+na}{setPickerValue}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{width}\PYG{o}{?.}\PYG{n+na}{toFloat}\PYG{p}{()} \PYG{o}{?:} \PYG{l+m}{0f}\PYG{p}{)}
+                    \PYG{n}{addKitLength}\PYG{p}{.}\PYG{n+na}{setPickerValue}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{length}\PYG{o}{?.}\PYG{n+na}{toFloat}\PYG{p}{()} \PYG{o}{?:} \PYG{l+m}{0f}\PYG{p}{)}
+                    \PYG{n}{addKitWaterMin}\PYG{p}{.}\PYG{n+na}{setPickerValue}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{waterLv}\PYG{o}{?.}\PYG{n+na}{min} \PYG{o}{?:} \PYG{l+m}{0f}\PYG{p}{)}
+                    \PYG{n}{addKitWaterMax}\PYG{p}{.}\PYG{n+na}{setPickerValue}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{waterLv}\PYG{o}{?.}\PYG{n+na}{max} \PYG{o}{?:} \PYG{l+m}{0f}\PYG{p}{)}
+                    \PYG{n}{addKitNutrientMin}\PYG{p}{.}\PYG{n+na}{setPickerValue}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{nutrientLv}\PYG{o}{?.}\PYG{n+na}{min} \PYG{o}{?:} \PYG{l+m}{0f}\PYG{p}{)}
+                    \PYG{n}{addKitNutrientMax}\PYG{p}{.}\PYG{n+na}{setPickerValue}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{nutrientLv}\PYG{o}{?.}\PYG{n+na}{max} \PYG{o}{?:} \PYG{l+m}{0f}\PYG{p}{)}
+                    \PYG{n}{addKitTurbidityMin}\PYG{p}{.}\PYG{n+na}{setPickerValue}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{turbidityLv}\PYG{o}{?.}\PYG{n+na}{min} \PYG{o}{?:} \PYG{l+m}{0f}\PYG{p}{)}
+                    \PYG{n}{addKitTurbidityMax}\PYG{p}{.}\PYG{n+na}{setPickerValue}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{turbidityLv}\PYG{o}{?.}\PYG{n+na}{max} \PYG{o}{?:} \PYG{l+m}{0f}\PYG{p}{)}
+
+                    \PYG{n}{strEdt}\PYG{o}{[}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{name} \PYG{o}{?:} \PYG{l+s}{\PYGZdq{}\PYGZdq{}}\PYG{o}{]} \PYG{o}{=} \PYG{n}{addKitName}
+                    \PYG{n}{strEdt}\PYG{o}{[}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{position} \PYG{o}{?:} \PYG{l+s}{\PYGZdq{}\PYGZdq{}}\PYG{o}{]} \PYG{o}{=} \PYG{n}{addKitPosition}
+                \PYG{p}{\PYGZcb{}}
+            \PYG{p}{\PYGZcb{})}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onSupportNavigateUp}\PYG{p}{():} \PYG{k+kt}{Boolean} \PYG{p}{\PYGZob{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{getParcelableExtra}\PYG{o}{\PYGZlt{}}\PYG{n}{KitModel}\PYG{o}{\PYGZgt{}}\PYG{p}{(}\PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{SELECTED\PYGZus{}KIT}\PYG{p}{)} \PYG{o}{!=} \PYG{k+kc}{null}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{isNotEmpties}\PYG{p}{.}\PYG{n+na}{observe}\PYG{p}{(}\PYG{k}{this}\PYG{p}{,} \PYG{p}{\PYGZob{}}
+                \PYG{k}{when}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{)\PYGZob{}}
+                    \PYG{k+kc}{true} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addKitSubmit}\PYG{p}{.}\PYG{n+na}{performClick}\PYG{p}{()}
+                    \PYG{k}{else} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{onBackPressed}\PYG{p}{()}
+                \PYG{p}{\PYGZcb{}}
+            \PYG{p}{\PYGZcb{})}
+        \PYG{p}{\PYGZcb{}} \PYG{k}{else} \PYG{p}{\PYGZob{}}
+            \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{onBackPressed}\PYG{p}{()}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{return} \PYG{k+kc}{true}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{dispatchTouchEvent}\PYG{p}{(}\PYG{n}{ev}\PYG{p}{:} \PYG{n}{MotionEvent?)}\PYG{p}{:} \PYG{k+kt}{Boolean} \PYG{p}{\PYGZob{}}
+        \PYG{k}{if} \PYG{p}{(}\PYG{n}{currentFocus} \PYG{o}{!=} \PYG{k+kc}{null}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+            \PYG{k+kd}{val} \PYG{n+nv}{imm}\PYG{p}{:} \PYG{n}{InputMethodManager} \PYG{o}{=}
+                \PYG{n}{getSystemService}\PYG{p}{(}\PYG{n}{Context}\PYG{p}{.}\PYG{n+na}{INPUT\PYGZus{}METHOD\PYGZus{}SERVICE}\PYG{p}{)} \PYG{k}{as} \PYG{n}{InputMethodManager}
+            \PYG{n}{imm}\PYG{p}{.}\PYG{n+na}{hideSoftInputFromWindow}\PYG{p}{(}\PYG{n}{currentFocus}\PYG{o}{!!}\PYG{p}{.}\PYG{n+na}{windowToken}\PYG{p}{,} \PYG{l+m}{0}\PYG{p}{)}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{return} \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{dispatchTouchEvent}\PYG{p}{(}\PYG{n}{ev}\PYG{p}{)}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{beforeTextChanged}\PYG{p}{(}\PYG{n}{s}\PYG{p}{:} \PYG{n}{CharSequence?,} \PYG{n}{start}\PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{,} \PYG{n}{count}\PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{,} \PYG{n}{after}\PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{)} \PYG{p}{\PYGZob{}\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onTextChanged}\PYG{p}{(}\PYG{n}{s}\PYG{p}{:} \PYG{n}{CharSequence?,} \PYG{n}{start}\PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{,} \PYG{n}{before}\PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{,} \PYG{n}{count}\PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+        \PYG{n}{checkEmpty}\PYG{p}{()}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{afterTextChanged}\PYG{p}{(}\PYG{n}{s}\PYG{p}{:} \PYG{n}{Editable?)} \PYG{p}{\PYGZob{}\PYGZcb{}}
+
+    \PYG{k+kd}{private} \PYG{k+kd}{fun} \PYG{n+nf}{checkEmpty}\PYG{p}{()\PYGZob{}}
+        \PYG{k+kd}{val} \PYG{n+nv}{currWidth} \PYG{p}{:} \PYG{k+kt}{Float} \PYG{o}{=} \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getNumberPickerValue}\PYG{p}{(}\PYG{n}{getNumberPickerType}\PYG{p}{(}\PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addKitWidth}\PYG{p}{))}\PYG{o}{?.}\PYG{n+na}{value} \PYG{o}{?:} \PYG{l+m}{0f}
+        \PYG{k+kd}{val} \PYG{n+nv}{currLength} \PYG{p}{:} \PYG{k+kt}{Float} \PYG{o}{=} \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getNumberPickerValue}\PYG{p}{(}\PYG{n}{getNumberPickerType}\PYG{p}{(}\PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addKitLength}\PYG{p}{))}\PYG{o}{?.}\PYG{n+na}{value} \PYG{o}{?:} \PYG{l+m}{0f}
+        \PYG{k+kd}{val} \PYG{n+nv}{currWaterMin} \PYG{p}{:} \PYG{k+kt}{Float?} \PYG{o}{=}  \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getNumberPickerValue}\PYG{p}{(}\PYG{n}{getNumberPickerType}\PYG{p}{(}\PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addKitWaterMin}\PYG{p}{))}\PYG{o}{?.}\PYG{n+na}{value}
+        \PYG{k+kd}{val} \PYG{n+nv}{currWaterMax} \PYG{p}{:} \PYG{k+kt}{Float?} \PYG{o}{=}  \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getNumberPickerValue}\PYG{p}{(}\PYG{n}{getNumberPickerType}\PYG{p}{(}\PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addKitWaterMax}\PYG{p}{))}\PYG{o}{?.}\PYG{n+na}{value}
+        \PYG{k+kd}{val} \PYG{n+nv}{currNutrientMin} \PYG{p}{:} \PYG{k+kt}{Float?} \PYG{o}{=}  \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getNumberPickerValue}\PYG{p}{(}\PYG{n}{getNumberPickerType}\PYG{p}{(}\PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addKitNutrientMin}\PYG{p}{))}\PYG{o}{?.}\PYG{n+na}{value}
+        \PYG{k+kd}{val} \PYG{n+nv}{currentNutrientMax} \PYG{p}{:} \PYG{k+kt}{Float?} \PYG{o}{=}  \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getNumberPickerValue}\PYG{p}{(}\PYG{n}{getNumberPickerType}\PYG{p}{(}\PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addKitNutrientMax}\PYG{p}{))}\PYG{o}{?.}\PYG{n+na}{value}
+        \PYG{k+kd}{val} \PYG{n+nv}{currentTurbidityMin} \PYG{p}{:} \PYG{k+kt}{Float?} \PYG{o}{=} \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getNumberPickerValue}\PYG{p}{(}\PYG{n}{getNumberPickerType}\PYG{p}{(}\PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addKitTurbidityMin}\PYG{p}{))}\PYG{o}{?.}\PYG{n+na}{value}
+        \PYG{k+kd}{val} \PYG{n+nv}{currentTurbidityMax} \PYG{p}{:} \PYG{k+kt}{Float?} \PYG{o}{=} \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getNumberPickerValue}\PYG{p}{(}\PYG{n}{getNumberPickerType}\PYG{p}{(}\PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addKitTurbidityMax}\PYG{p}{))}\PYG{o}{?.}\PYG{n+na}{value}
+        \PYG{k+kd}{val} \PYG{n+nv}{hashMap} \PYG{p}{:} \PYG{n}{HashMap}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{Float?}\PYG{p}{,} \PYG{k+kt}{Float?}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{hashMapOf}\PYG{p}{()}
+        \PYG{n}{hashMap}\PYG{o}{[}\PYG{n}{currWaterMin}\PYG{o}{]} \PYG{o}{=} \PYG{n}{currWaterMax}
+        \PYG{n}{hashMap}\PYG{o}{[}\PYG{n}{currNutrientMin}\PYG{o}{]} \PYG{o}{=} \PYG{n}{currentNutrientMax}
+        \PYG{n}{hashMap}\PYG{o}{[}\PYG{n}{currentTurbidityMin}\PYG{o}{]} \PYG{o}{=} \PYG{n}{currentTurbidityMax}
+
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{getParcelableExtra}\PYG{o}{\PYGZlt{}}\PYG{n}{KitModel}\PYG{o}{\PYGZgt{}}\PYG{p}{(}\PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{SELECTED\PYGZus{}KIT}\PYG{p}{)} \PYG{o}{!=} \PYG{k+kc}{null}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getCurrentKit}\PYG{p}{().}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+                \PYG{k+kd}{val} \PYG{n+nv}{floNumPick} \PYG{p}{:} \PYG{n}{HashMap}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{Float}\PYG{p}{,} \PYG{k+kt}{Float}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{hashMapOf}\PYG{p}{()}
+                \PYG{n}{floNumPick}\PYG{o}{[}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{width}\PYG{o}{?.}\PYG{n+na}{toFloat}\PYG{p}{()} \PYG{o}{?:} \PYG{l+m}{0f}\PYG{o}{]} \PYG{o}{=} \PYG{n}{currWidth}
+                \PYG{n}{floNumPick}\PYG{o}{[}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{length}\PYG{o}{?.}\PYG{n+na}{toFloat}\PYG{p}{()} \PYG{o}{?:} \PYG{l+m}{0f}\PYG{o}{]} \PYG{o}{=} \PYG{n}{currLength}
+                \PYG{n}{floNumPick}\PYG{o}{[}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{waterLv}\PYG{o}{?.}\PYG{n+na}{min} \PYG{o}{?:} \PYG{l+m}{0f}\PYG{o}{]} \PYG{o}{=} \PYG{n}{currWaterMin} \PYG{o}{?:}\PYG{l+m}{0f}
+                \PYG{n}{floNumPick}\PYG{o}{[}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{waterLv}\PYG{o}{?.}\PYG{n+na}{max} \PYG{o}{?:} \PYG{l+m}{0f}\PYG{o}{]} \PYG{o}{=} \PYG{n}{currWaterMax} \PYG{o}{?:}\PYG{l+m}{0f}
+                \PYG{n}{floNumPick}\PYG{o}{[}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{nutrientLv}\PYG{o}{?.}\PYG{n+na}{min} \PYG{o}{?:} \PYG{l+m}{0f}\PYG{o}{]} \PYG{o}{=} \PYG{n}{currNutrientMin} \PYG{o}{?:}\PYG{l+m}{0f}
+                \PYG{n}{floNumPick}\PYG{o}{[}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{nutrientLv}\PYG{o}{?.}\PYG{n+na}{max} \PYG{o}{?:} \PYG{l+m}{0f}\PYG{o}{]} \PYG{o}{=} \PYG{n}{currentNutrientMax} \PYG{o}{?:}\PYG{l+m}{0f}
+                \PYG{n}{floNumPick}\PYG{o}{[}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{turbidityLv}\PYG{o}{?.}\PYG{n+na}{min} \PYG{o}{?:} \PYG{l+m}{0f}\PYG{o}{]} \PYG{o}{=} \PYG{n}{currentTurbidityMin} \PYG{o}{?:}\PYG{l+m}{0f}
+                \PYG{n}{floNumPick}\PYG{o}{[}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{turbidityLv}\PYG{o}{?.}\PYG{n+na}{max} \PYG{o}{?:} \PYG{l+m}{0f}\PYG{o}{]} \PYG{o}{=} \PYG{n}{currentTurbidityMax} \PYG{o}{?:}\PYG{l+m}{0f}
+
+                \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{checkNotEmpty}\PYG{p}{(}\PYG{n}{utility}\PYG{p}{.}\PYG{n+na}{isEmpties}\PYG{p}{(}\PYG{n}{editTexts}\PYG{p}{)} \PYG{o}{\PYGZam{}\PYGZam{}}
+                        \PYG{n}{currWidth} \PYG{o}{\PYGZgt{}} \PYG{l+m}{0f} \PYG{o}{\PYGZam{}\PYGZam{}}
+                        \PYG{n}{currLength} \PYG{o}{\PYGZgt{}} \PYG{l+m}{0f} \PYG{o}{\PYGZam{}\PYGZam{}}
+                        \PYG{n}{utility}\PYG{p}{.}\PYG{n+na}{isInRanges}\PYG{p}{(}\PYG{n}{hashMap}\PYG{p}{)} \PYG{o}{\PYGZam{}\PYGZam{}}
+                        \PYG{p}{(}\PYG{n}{utility}\PYG{p}{.}\PYG{n+na}{isChanges}\PYG{p}{(}\PYG{n}{strEdt}\PYG{p}{)} \PYG{o}{||} \PYG{n}{utility}\PYG{p}{.}\PYG{n+na}{isNumberPickerChanges}\PYG{p}{(}\PYG{n}{floNumPick}\PYG{p}{))}
+                \PYG{p}{).}\PYG{n+na}{observe}\PYG{p}{(}\PYG{k}{this}\PYG{n+nd}{@AddKitActivity}\PYG{p}{,} \PYG{p}{\PYGZob{}}
+                    \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addKitSubmit}\PYG{p}{.}\PYG{n+na}{isEnabled} \PYG{o}{=} \PYG{n+nb}{it}
+                \PYG{p}{\PYGZcb{})}
+
+                \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{i}\PYG{p}{(}
+                    \PYG{n}{TAG}\PYG{p}{,}
+                    \PYG{l+s}{\PYGZdq{}checkEmpty: }\PYG{l+s+si}{\PYGZdl{}\PYGZob{}}\PYG{n}{utility}\PYG{p}{.}\PYG{n+na}{isEmpties}\PYG{p}{(}\PYG{n}{editTexts}\PYG{p}{)}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s}{ }\PYG{l+s+si}{\PYGZdl{}\PYGZob{}}\PYG{n}{currWidth} \PYG{o}{\PYGZgt{}} \PYG{l+m}{0f}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s}{ }\PYG{l+s+si}{\PYGZdl{}\PYGZob{}}\PYG{n}{currLength} \PYG{o}{\PYGZgt{}} \PYG{l+m}{0f}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s}{ }\PYG{l+s+si}{\PYGZdl{}\PYGZob{}}\PYG{n}{utility}\PYG{p}{.}\PYG{n+na}{isInRanges}\PYG{p}{(}\PYG{n}{hashMap}\PYG{p}{)}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s}{ }\PYG{l+s+si}{\PYGZdl{}\PYGZob{}}\PYG{n}{utility}\PYG{p}{.}\PYG{n+na}{isChanges}\PYG{p}{(}\PYG{n}{strEdt}\PYG{p}{)}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s}{ }\PYG{l+s+si}{\PYGZdl{}\PYGZob{}}\PYG{n}{utility}\PYG{p}{.}\PYG{n+na}{isNumberPickerChanges}\PYG{p}{(}\PYG{n}{floNumPick}\PYG{p}{)}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s}{\PYGZdq{}}
+                \PYG{p}{)}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}} \PYG{k}{else} \PYG{p}{\PYGZob{}}
+            \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{checkNotEmpty}\PYG{p}{(}
+                \PYG{n}{utility}\PYG{p}{.}\PYG{n+na}{isEmpties}\PYG{p}{(}\PYG{n}{editTexts}\PYG{p}{)} \PYG{o}{\PYGZam{}\PYGZam{}}
+                        \PYG{n}{currWidth} \PYG{o}{\PYGZgt{}} \PYG{l+m}{0f} \PYG{o}{\PYGZam{}\PYGZam{}}
+                        \PYG{n}{currLength} \PYG{o}{\PYGZgt{}} \PYG{l+m}{0f} \PYG{o}{\PYGZam{}\PYGZam{}}
+                        \PYG{n}{utility}\PYG{p}{.}\PYG{n+na}{isInRanges}\PYG{p}{(}\PYG{n}{hashMap}\PYG{p}{)}
+            \PYG{p}{).}\PYG{n+na}{observe}\PYG{p}{(}\PYG{k}{this}\PYG{n+nd}{@AddKitActivity}\PYG{p}{,} \PYG{p}{\PYGZob{}}
+                \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addKitSubmit}\PYG{p}{.}\PYG{n+na}{isEnabled} \PYG{o}{=} \PYG{n+nb}{it}
+            \PYG{p}{\PYGZcb{})}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{private} \PYG{k+kd}{fun} \PYG{n+nf}{getNumberPickerType}\PYG{p}{(}\PYG{n}{view}\PYG{p}{:} \PYG{n}{ClickNumberPickerView}\PYG{p}{)} \PYG{p}{:} \PYG{n}{NumberPickerType?\PYGZob{}}
+        \PYG{k}{return} \PYG{k}{when} \PYG{p}{(}\PYG{n}{view}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+            \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addKitWidth} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{NumberPickerType}\PYG{p}{.}\PYG{n+na}{KIT\PYGZus{}WIDTH}
+            \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addKitLength} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{NumberPickerType}\PYG{p}{.}\PYG{n+na}{KIT\PYGZus{}LENGTH}
+            \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addKitWaterMin} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{NumberPickerType}\PYG{p}{.}\PYG{n+na}{WATER\PYGZus{}MIN}
+            \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addKitWaterMax} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{NumberPickerType}\PYG{p}{.}\PYG{n+na}{WATER\PYGZus{}MAX}
+            \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addKitNutrientMin} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{NumberPickerType}\PYG{p}{.}\PYG{n+na}{NUTRIENT\PYGZus{}MIN}
+            \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addKitNutrientMax} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{NumberPickerType}\PYG{p}{.}\PYG{n+na}{NUTRIENT\PYGZus{}MAX}
+            \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addKitTurbidityMin} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{NumberPickerType}\PYG{p}{.}\PYG{n+na}{TURBIDITY\PYGZus{}MIN}
+            \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{addKitTurbidityMax} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{NumberPickerType}\PYG{p}{.}\PYG{n+na}{TURBIDITY\PYGZus{}MAX}
+            \PYG{k}{else} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{k+kc}{null}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

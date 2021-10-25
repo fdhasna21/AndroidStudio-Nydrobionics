@@ -1,0 +1,58 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{class} \PYG{n+nc}{KitMonitoringFragment} \PYG{p}{:} \PYG{n}{Fragment}\PYG{p}{()} \PYG{p}{\PYGZob{}}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{\PYGZus{}binding} \PYG{p}{:} \PYG{n}{FragmentKitMonitoringBinding? }\PYG{o}{=} \PYG{k+kc}{null}
+    \PYG{k+kd}{private} \PYG{k+kd}{val} \PYG{n+nv}{binding} \PYG{k}{get}\PYG{p}{()} \PYG{o}{=} \PYG{n}{\PYGZus{}binding}\PYG{o}{!!}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{viewModel} \PYG{p}{:} \PYG{n}{ProfileKitViewModel}
+
+    \PYG{k+kd}{companion} \PYG{k+kd}{object} \PYG{err}{\PYGZob{}}
+        \PYG{k+kd}{const} \PYG{k+kd}{val} \PYG{n+nv}{TAG} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}kitMonitoringFragment\PYGZdq{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onCreateView}\PYG{p}{(}
+        \PYG{n}{inflater}\PYG{p}{:} \PYG{n}{LayoutInflater}\PYG{p}{,} \PYG{n}{container}\PYG{p}{:} \PYG{n}{ViewGroup?,}
+        \PYG{n}{savedInstanceState}\PYG{p}{:} \PYG{n}{Bundle?}
+    \PYG{p}{):} \PYG{n}{View} \PYG{p}{\PYGZob{}}
+        \PYG{n}{\PYGZus{}binding} \PYG{o}{=} \PYG{n}{FragmentKitMonitoringBinding}\PYG{p}{.}\PYG{n+na}{inflate}\PYG{p}{(}\PYG{n}{inflater}\PYG{p}{,} \PYG{n}{container}\PYG{p}{,} \PYG{k+kc}{false}\PYG{p}{)}
+        \PYG{k}{return} \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{root}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onViewCreated}\PYG{p}{(}\PYG{n}{view}\PYG{p}{:} \PYG{n}{View}\PYG{p}{,} \PYG{n}{savedInstanceState}\PYG{p}{:} \PYG{n}{Bundle?)} \PYG{p}{\PYGZob{}}
+        \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{onViewCreated}\PYG{p}{(}\PYG{n}{view}\PYG{p}{,} \PYG{n}{savedInstanceState}\PYG{p}{)}
+        \PYG{n}{viewModel} \PYG{o}{=} \PYG{p}{(}\PYG{n}{requireActivity}\PYG{p}{()} \PYG{k}{as} \PYG{n}{ProfileKitActivity}\PYG{p}{).}\PYG{n+na}{viewModel}
+
+        \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getCurrentMonitoring}\PYG{p}{().}\PYG{n+na}{observe}\PYG{p}{(}\PYG{n}{viewLifecycleOwner}\PYG{p}{,} \PYG{p}{\PYGZob{}}
+            \PYG{k+kd}{val} \PYG{n+nv}{tempList} \PYG{p}{:} \PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{Entry}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{arrayListOf}\PYG{p}{()}
+            \PYG{k+kd}{val} \PYG{n+nv}{humidList} \PYG{p}{:} \PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{Entry}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{arrayListOf}\PYG{p}{()}
+            \PYG{k+kd}{val} \PYG{n+nv}{acidList} \PYG{p}{:} \PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{Entry}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{arrayListOf}\PYG{p}{()}
+            \PYG{k+kd}{val} \PYG{n+nv}{waterList} \PYG{p}{:} \PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{Entry}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{arrayListOf}\PYG{p}{()}
+            \PYG{k+kd}{val} \PYG{n+nv}{nutrientList} \PYG{p}{:} \PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{Entry}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{arrayListOf}\PYG{p}{()}
+            \PYG{k+kd}{val} \PYG{n+nv}{turbidityList} \PYG{p}{:} \PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{Entry}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{arrayListOf}\PYG{p}{()}
+
+            \PYG{n+nb}{it}\PYG{o}{?.}\PYG{n+na}{forEachIndexed} \PYG{p}{\PYGZob{}} \PYG{n}{index}\PYG{p}{,} \PYG{n}{dataMonitoringModel} \PYG{o}{\PYGZhy{}\PYGZgt{}}
+                \PYG{n}{tempList}\PYG{p}{.}\PYG{n+na}{add}\PYG{p}{(}\PYG{n}{Entry}\PYG{p}{(}\PYG{n}{index}\PYG{p}{.}\PYG{n+na}{toFloat}\PYG{p}{(),} \PYG{n}{dataMonitoringModel}\PYG{p}{.}\PYG{n+na}{temperature} \PYG{o}{?:} \PYG{l+m}{0f}\PYG{p}{))}
+                \PYG{n}{humidList}\PYG{p}{.}\PYG{n+na}{add}\PYG{p}{(}\PYG{n}{Entry}\PYG{p}{(}\PYG{n}{index}\PYG{p}{.}\PYG{n+na}{toFloat}\PYG{p}{(),} \PYG{n}{dataMonitoringModel}\PYG{p}{.}\PYG{n+na}{humidity} \PYG{o}{?:} \PYG{l+m}{0f}\PYG{p}{))}
+                \PYG{n}{acidList}\PYG{p}{.}\PYG{n+na}{add}\PYG{p}{(}\PYG{n}{Entry}\PYG{p}{(}\PYG{n}{index}\PYG{p}{.}\PYG{n+na}{toFloat}\PYG{p}{(),} \PYG{n}{dataMonitoringModel}\PYG{p}{.}\PYG{n+na}{ph} \PYG{o}{?:} \PYG{l+m}{0f}\PYG{p}{))}
+                \PYG{n}{waterList}\PYG{p}{.}\PYG{n+na}{add}\PYG{p}{(}\PYG{n}{Entry}\PYG{p}{(}\PYG{n}{index}\PYG{p}{.}\PYG{n+na}{toFloat}\PYG{p}{(),} \PYG{n}{dataMonitoringModel}\PYG{p}{.}\PYG{n+na}{waterTank} \PYG{o}{?:} \PYG{l+m}{0f}\PYG{p}{))}
+                \PYG{n}{nutrientList}\PYG{p}{.}\PYG{n+na}{add}\PYG{p}{(}\PYG{n}{Entry}\PYG{p}{(}\PYG{n}{index}\PYG{p}{.}\PYG{n+na}{toFloat}\PYG{p}{(),} \PYG{n}{dataMonitoringModel}\PYG{p}{.}\PYG{n+na}{nutrientTank} \PYG{o}{?:} \PYG{l+m}{0f}\PYG{p}{))}
+                \PYG{n}{turbidityList}\PYG{p}{.}\PYG{n+na}{add}\PYG{p}{(}\PYG{n}{Entry}\PYG{p}{(}\PYG{n}{index}\PYG{p}{.}\PYG{n+na}{toFloat}\PYG{p}{(),} \PYG{n}{dataMonitoringModel}\PYG{p}{.}\PYG{n+na}{turbidity} \PYG{o}{?:} \PYG{l+m}{0f}\PYG{p}{))}
+            \PYG{p}{\PYGZcb{}}
+
+            \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{apply} \PYG{p}{\PYGZob{}}
+                \PYG{n}{kitCropsTemp}\PYG{p}{.}\PYG{n+na}{data} \PYG{o}{=} \PYG{n}{LineData}\PYG{p}{(}\PYG{n}{LineDataSet}\PYG{p}{(}\PYG{n}{tempList}\PYG{p}{,} \PYG{n}{getString}\PYG{p}{(}\PYG{n}{R}\PYG{p}{.}\PYG{n+na}{string}\PYG{p}{.}\PYG{n+na}{temperature\PYGZus{}only}\PYG{p}{)))}
+                \PYG{n}{kitCropsHumid}\PYG{p}{.}\PYG{n+na}{data} \PYG{o}{=} \PYG{n}{LineData}\PYG{p}{(}\PYG{n}{LineDataSet}\PYG{p}{(}\PYG{n}{humidList}\PYG{p}{,} \PYG{n}{getString}\PYG{p}{(}\PYG{n}{R}\PYG{p}{.}\PYG{n+na}{string}\PYG{p}{.}\PYG{n+na}{humidity\PYGZus{}only}\PYG{p}{)))}
+                \PYG{n}{kitCropsAcid}\PYG{p}{.}\PYG{n+na}{data} \PYG{o}{=} \PYG{n}{LineData}\PYG{p}{(}\PYG{n}{LineDataSet}\PYG{p}{(}\PYG{n}{tempList}\PYG{p}{,} \PYG{n}{getString}\PYG{p}{(}\PYG{n}{R}\PYG{p}{.}\PYG{n+na}{string}\PYG{p}{.}\PYG{n+na}{acidity\PYGZus{}only}\PYG{p}{)))}
+                \PYG{n}{kitCropsWaterTank}\PYG{p}{.}\PYG{n+na}{data} \PYG{o}{=} \PYG{n}{LineData}\PYG{p}{(}\PYG{n}{LineDataSet}\PYG{p}{(}\PYG{n}{tempList}\PYG{p}{,} \PYG{n}{getString}\PYG{p}{(}\PYG{n}{R}\PYG{p}{.}\PYG{n+na}{string}\PYG{p}{.}\PYG{n+na}{water\PYGZus{}level\PYGZus{}only}\PYG{p}{)))}
+                \PYG{n}{kitCropsNutrientTank}\PYG{p}{.}\PYG{n+na}{data} \PYG{o}{=} \PYG{n}{LineData}\PYG{p}{(}\PYG{n}{LineDataSet}\PYG{p}{(}\PYG{n}{tempList}\PYG{p}{,} \PYG{n}{getString}\PYG{p}{(}\PYG{n}{R}\PYG{p}{.}\PYG{n+na}{string}\PYG{p}{.}\PYG{n+na}{nutrient\PYGZus{}level\PYGZus{}only}\PYG{p}{)))}
+                \PYG{n}{kitCropsTurbidity}\PYG{p}{.}\PYG{n+na}{data} \PYG{o}{=} \PYG{n}{LineData}\PYG{p}{(}\PYG{n}{LineDataSet}\PYG{p}{(}\PYG{n}{tempList}\PYG{p}{,} \PYG{n}{getString}\PYG{p}{(}\PYG{n}{R}\PYG{p}{.}\PYG{n+na}{string}\PYG{p}{.}\PYG{n+na}{turbidity\PYGZus{}only}\PYG{p}{)))}
+
+                \PYG{n}{kitCropsTemp}\PYG{p}{.}\PYG{n+na}{invalidate}\PYG{p}{()}
+                \PYG{n}{kitCropsHumid}\PYG{p}{.}\PYG{n+na}{invalidate}\PYG{p}{()}
+                \PYG{n}{kitCropsAcid}\PYG{p}{.}\PYG{n+na}{invalidate}\PYG{p}{()}
+                \PYG{n}{kitCropsWaterTank}\PYG{p}{.}\PYG{n+na}{invalidate}\PYG{p}{()}
+                \PYG{n}{kitCropsNutrientTank}\PYG{p}{.}\PYG{n+na}{invalidate}\PYG{p}{()}
+                \PYG{n}{kitCropsTurbidity}\PYG{p}{.}\PYG{n+na}{invalidate}\PYG{p}{()}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{})}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

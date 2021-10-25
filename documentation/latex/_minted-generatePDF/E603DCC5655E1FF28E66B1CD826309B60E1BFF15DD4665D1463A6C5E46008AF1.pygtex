@@ -1,0 +1,95 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{class} \PYG{n+nc}{FeedbackActivity} \PYG{p}{:} \PYG{n}{AppCompatActivity}\PYG{p}{(),} \PYG{n}{TextWatcher}\PYG{p}{,} \PYG{n}{RatingBar}\PYG{p}{.}\PYG{n+na}{OnRatingBarChangeListener} \PYG{p}{\PYGZob{}}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{binding} \PYG{p}{:} \PYG{n}{ActivityFeedbackBinding}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{viewModel} \PYG{p}{:} \PYG{n}{FeedbackViewModel}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{utility} \PYG{p}{:} \PYG{n}{ViewUtility}
+
+    \PYG{k+kd}{companion} \PYG{k+kd}{object} \PYG{err}{\PYGZob{}}
+        \PYG{k+kd}{const} \PYG{k+kd}{val} \PYG{n+nv}{TAG} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}feedback\PYGZdq{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onCreate}\PYG{p}{(}\PYG{n}{savedInstanceState}\PYG{p}{:} \PYG{n}{Bundle?)} \PYG{p}{\PYGZob{}}
+        \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{onCreate}\PYG{p}{(}\PYG{n}{savedInstanceState}\PYG{p}{)}
+        \PYG{n}{binding} \PYG{o}{=} \PYG{n}{ActivityFeedbackBinding}\PYG{p}{.}\PYG{n+na}{inflate}\PYG{p}{(}\PYG{n}{layoutInflater}\PYG{p}{)}
+        \PYG{n}{setContentView}\PYG{p}{(}\PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{root}\PYG{p}{)}
+
+        \PYG{n}{viewModel} \PYG{o}{=} \PYG{n}{ViewModelProvider}\PYG{p}{(}\PYG{k}{this}\PYG{p}{).}\PYG{n+na}{get}\PYG{p}{(}\PYG{n}{FeedbackViewModel}\PYG{o}{::}\PYG{n}{class}\PYG{p}{.}\PYG{n+na}{java}\PYG{p}{)}
+        \PYG{n}{supportActionBar}\PYG{o}{?.}\PYG{n+na}{title} \PYG{o}{=} \PYG{n}{getString}\PYG{p}{(}\PYG{n}{R}\PYG{p}{.}\PYG{n+na}{string}\PYG{p}{.}\PYG{n+na}{feedback}\PYG{p}{)}
+        \PYG{n}{supportActionBar}\PYG{o}{?.}\PYG{n+na}{setDisplayHomeAsUpEnabled}\PYG{p}{(}\PYG{k+kc}{true}\PYG{p}{)}
+        \PYG{n}{supportActionBar}\PYG{o}{?.}\PYG{n+na}{setDisplayShowHomeEnabled}\PYG{p}{(}\PYG{k+kc}{false}\PYG{p}{)}
+
+        \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{apply} \PYG{p}{\PYGZob{}}
+            \PYG{n}{utility} \PYG{o}{=} \PYG{n}{ViewUtility}\PYG{p}{(}\PYG{n}{context} \PYG{o}{=} \PYG{k}{this}\PYG{n+nd}{@FeedbackActivity}\PYG{p}{,}
+                \PYG{n}{circularProgressButton} \PYG{o}{=} \PYG{n}{feedbackSubmit}\PYG{p}{,}
+                \PYG{n}{textInputEditTexts} \PYG{o}{=} \PYG{n}{arrayListOf}\PYG{p}{(}\PYG{n}{feedbackContent}\PYG{p}{),}
+                \PYG{n}{actionBar} \PYG{o}{=} \PYG{n}{supportActionBar}\PYG{p}{)}
+
+            \PYG{n}{feedbackRatingbar}\PYG{p}{.}\PYG{n+na}{rating} \PYG{o}{=} \PYG{l+m}{5f}
+            \PYG{n}{feedbackRatingbar}\PYG{p}{.}\PYG{n+na}{onRatingBarChangeListener} \PYG{o}{=} \PYG{k}{this}\PYG{n+nd}{@FeedbackActivity}
+            \PYG{n}{feedbackContent}\PYG{p}{.}\PYG{n+na}{addTextChangedListener}\PYG{p}{(}\PYG{k}{this}\PYG{n+nd}{@FeedbackActivity}\PYG{p}{)}
+            \PYG{n}{checkEmpty}\PYG{p}{()}
+
+            \PYG{n}{feedbackSubmit}\PYG{p}{.}\PYG{n+na}{setOnClickListener} \PYG{p}{\PYGZob{}}
+                \PYG{n}{utility}\PYG{p}{.}\PYG{n+na}{isLoading} \PYG{o}{=} \PYG{k+kc}{true}
+                \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{submitFeedback}\PYG{p}{(}\PYG{n}{feedbackContent}\PYG{p}{.}\PYG{n+na}{text}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{())}
+                \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{isFeedbackSubmit}\PYG{p}{.}\PYG{n+na}{observe}\PYG{p}{(}\PYG{k}{this}\PYG{n+nd}{@FeedbackActivity}\PYG{p}{,} \PYG{p}{\PYGZob{}}
+                    \PYG{k}{if}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{)\PYGZob{}}
+                        \PYG{n}{utility}\PYG{p}{.}\PYG{n+na}{isLoading} \PYG{o}{=} \PYG{k+kc}{false}
+                        \PYG{n}{Toast}\PYG{p}{.}\PYG{n+na}{makeText}\PYG{p}{(}\PYG{k}{this}\PYG{n+nd}{@FeedbackActivity}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}Thank you for your feedback.\PYGZdq{}}\PYG{p}{,} \PYG{n}{Toast}\PYG{p}{.}\PYG{n+na}{LENGTH\PYGZus{}SHORT}\PYG{p}{).}\PYG{n+na}{show}\PYG{p}{()}
+                        \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{onBackPressed}\PYG{p}{()}
+                        \PYG{n}{finish}\PYG{p}{()}
+                    \PYG{p}{\PYGZcb{}} \PYG{k}{else} \PYG{p}{\PYGZob{}}
+                        \PYG{n}{utility}\PYG{p}{.}\PYG{n+na}{isLoading} \PYG{o}{=} \PYG{k+kc}{false}
+                        \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{feedbackSubmitError}\PYG{p}{.}\PYG{n+na}{observe}\PYG{p}{(}\PYG{k}{this}\PYG{n+nd}{@FeedbackActivity}\PYG{p}{,} \PYG{p}{\PYGZob{}}
+                            \PYG{k}{if}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{isNotEmpty}\PYG{p}{())\PYGZob{}}
+                                \PYG{n}{Toast}\PYG{p}{.}\PYG{n+na}{makeText}\PYG{p}{(}\PYG{k}{this}\PYG{n+nd}{@FeedbackActivity}\PYG{p}{,} \PYG{n+nb}{it}\PYG{p}{,} \PYG{n}{Toast}\PYG{p}{.}\PYG{n+na}{LENGTH\PYGZus{}SHORT}\PYG{p}{).}\PYG{n+na}{show}\PYG{p}{()}
+                                \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{i}\PYG{p}{(}\PYG{n}{SignInActivity}\PYG{p}{.}\PYG{n+na}{TAG}\PYG{p}{,} \PYG{n+nb}{it}\PYG{p}{)}
+                                \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{feedbackSubmitError}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}\PYGZdq{}}
+                            \PYG{p}{\PYGZcb{}}
+                        \PYG{p}{\PYGZcb{})}
+                    \PYG{p}{\PYGZcb{}}
+                \PYG{p}{\PYGZcb{})}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onSupportNavigateUp}\PYG{p}{():} \PYG{k+kt}{Boolean} \PYG{p}{\PYGZob{}}
+        \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{onBackPressed}\PYG{p}{()}
+        \PYG{k}{return} \PYG{k+kc}{true}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{dispatchTouchEvent}\PYG{p}{(}\PYG{n}{ev}\PYG{p}{:} \PYG{n}{MotionEvent?)}\PYG{p}{:} \PYG{k+kt}{Boolean} \PYG{p}{\PYGZob{}}
+        \PYG{k}{if} \PYG{p}{(}\PYG{n}{currentFocus} \PYG{o}{!=} \PYG{k+kc}{null}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+            \PYG{k+kd}{val} \PYG{n+nv}{imm}\PYG{p}{:} \PYG{n}{InputMethodManager} \PYG{o}{=}
+                \PYG{n}{getSystemService}\PYG{p}{(}\PYG{n}{Context}\PYG{p}{.}\PYG{n+na}{INPUT\PYGZus{}METHOD\PYGZus{}SERVICE}\PYG{p}{)} \PYG{k}{as} \PYG{n}{InputMethodManager}
+            \PYG{n}{imm}\PYG{p}{.}\PYG{n+na}{hideSoftInputFromWindow}\PYG{p}{(}\PYG{n}{currentFocus}\PYG{o}{!!}\PYG{p}{.}\PYG{n+na}{windowToken}\PYG{p}{,} \PYG{l+m}{0}\PYG{p}{)}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{return} \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{dispatchTouchEvent}\PYG{p}{(}\PYG{n}{ev}\PYG{p}{)}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{beforeTextChanged}\PYG{p}{(}\PYG{n}{s}\PYG{p}{:} \PYG{n}{CharSequence?,} \PYG{n}{start}\PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{,} \PYG{n}{count}\PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{,} \PYG{n}{after}\PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{)} \PYG{p}{\PYGZob{}\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onTextChanged}\PYG{p}{(}\PYG{n}{s}\PYG{p}{:} \PYG{n}{CharSequence?,} \PYG{n}{start}\PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{,} \PYG{n}{before}\PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{,} \PYG{n}{count}\PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+        \PYG{n}{checkEmpty}\PYG{p}{()}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{afterTextChanged}\PYG{p}{(}\PYG{n}{s}\PYG{p}{:} \PYG{n}{Editable?)} \PYG{p}{\PYGZob{}\PYGZcb{}}
+
+    \PYG{k+kd}{private} \PYG{k+kd}{fun} \PYG{n+nf}{checkEmpty}\PYG{p}{()} \PYG{p}{\PYGZob{}}
+        \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{checkNotEmpty}\PYG{p}{(}
+            \PYG{n}{utility}\PYG{p}{.}\PYG{n+na}{isEmpty}\PYG{p}{(}\PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{feedbackContent}\PYG{p}{)} \PYG{o}{\PYGZam{}\PYGZam{}}
+            \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getRating}\PYG{p}{()} \PYG{o}{?:} \PYG{l+m}{0f} \PYG{o}{\PYGZgt{}} \PYG{l+m}{0f}
+        \PYG{p}{).}\PYG{n+na}{observe}\PYG{p}{(}\PYG{k}{this}\PYG{p}{,} \PYG{p}{\PYGZob{}}
+            \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{feedbackSubmit}\PYG{p}{.}\PYG{n+na}{isEnabled} \PYG{o}{=} \PYG{n+nb}{it}
+        \PYG{p}{\PYGZcb{})}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onRatingChanged}\PYG{p}{(}\PYG{n}{ratingBar}\PYG{p}{:} \PYG{n}{RatingBar?,} \PYG{n}{rating}\PYG{p}{:} \PYG{k+kt}{Float}\PYG{p}{,} \PYG{n}{fromUser}\PYG{p}{:} \PYG{k+kt}{Boolean}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+        \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{setRating}\PYG{p}{(}\PYG{n}{rating}\PYG{p}{)}\PYG{o}{?.}\PYG{n+na}{observe}\PYG{p}{(}\PYG{k}{this}\PYG{p}{,} \PYG{p}{\PYGZob{}}
+            \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{rating}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+                \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{feedbackRatingtxt}\PYG{p}{.}\PYG{n+na}{text} \PYG{o}{=} \PYG{n}{Rating}\PYG{p}{.}\PYG{n+na}{getType}\PYG{p}{(}\PYG{n}{rating}\PYG{p}{).}\PYG{n+na}{toString}\PYG{p}{()}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{})}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

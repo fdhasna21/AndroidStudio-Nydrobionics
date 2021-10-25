@@ -1,0 +1,403 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{\PYGZbs{}documentclass}\PYG{n+nb}{\PYGZob{}}article\PYG{n+nb}{\PYGZcb{}}
+\PYG{k}{\PYGZbs{}title}\PYG{n+nb}{\PYGZob{}}\PYG{k}{\PYGZbs{}vspace}\PYG{n+nb}{\PYGZob{}}\PYGZhy{}5ex\PYG{n+nb}{\PYGZcb{}} \PYG{k}{\PYGZbs{}bfseries} \PYG{n+nb}{\PYGZob{}}\PYG{k}{\PYGZbs{}sc}\PYG{n+nb}{\PYGZob{}}LAMPIRAN\PYG{n+nb}{\PYGZcb{}\PYGZcb{}\PYGZcb{}}
+\PYG{k}{\PYGZbs{}date}\PYG{n+nb}{\PYGZob{}}\PYG{k}{\PYGZbs{}vspace}\PYG{n+nb}{\PYGZob{}}\PYGZhy{}10ex\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+\PYG{k}{\PYGZbs{}usepackage}\PYG{n+nb}{\PYGZob{}}geometry\PYG{n+nb}{\PYGZcb{}}
+\PYG{k}{\PYGZbs{}geometry}\PYG{n+nb}{\PYGZob{}}
+	a4paper,
+	left=40mm,
+	top=30mm,
+	right=30mm,
+	bottom=30mm
+\PYG{n+nb}{\PYGZcb{}}
+\PYG{k}{\PYGZbs{}usepackage}\PYG{n+nb}{\PYGZob{}}pdfpages\PYG{n+nb}{\PYGZcb{}}
+\PYG{k}{\PYGZbs{}usepackage}\PYG{n+na}{[bookmarks=false]}\PYG{n+nb}{\PYGZob{}}hyperref\PYG{n+nb}{\PYGZcb{}}
+\PYG{k}{\PYGZbs{}usepackage}\PYG{n+nb}{\PYGZob{}}minted\PYG{n+nb}{\PYGZcb{}}
+\PYG{k}{\PYGZbs{}usepackage}\PYG{n+nb}{\PYGZob{}}caption\PYG{n+nb}{\PYGZcb{}}
+\PYG{k}{\PYGZbs{}usepackage}\PYG{n+nb}{\PYGZob{}}setspace\PYG{n+nb}{\PYGZcb{}}
+\PYG{k}{\PYGZbs{}usepackage}\PYG{n+nb}{\PYGZob{}}fancyhdr\PYG{n+nb}{\PYGZcb{}}
+\PYG{k}{\PYGZbs{}pagestyle}\PYG{n+nb}{\PYGZob{}}fancy\PYG{n+nb}{\PYGZcb{}}
+\PYG{k}{\PYGZbs{}fancyhf}\PYG{n+nb}{\PYGZob{}\PYGZcb{}}
+\PYG{k}{\PYGZbs{}fancyfoot}\PYG{n+na}{[R]}\PYG{n+nb}{\PYGZob{}}Laporan Tugas Akhir Aplikasi Monitoring Kebun Hidroponik Berbasis \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Mobile\PYG{n+nb}{\PYGZcb{}} \PYG{l+s}{\PYGZdl{}}\PYG{n+nv}{\PYGZbs{}vert}\PYG{l+s}{\PYGZdl{}} \PYG{k}{\PYGZbs{}thepage}\PYG{n+nb}{\PYGZcb{}} 
+\PYG{k}{\PYGZbs{}fancypagestyle}\PYG{n+nb}{\PYGZob{}}plain\PYG{n+nb}{\PYGZcb{}\PYGZob{}}
+	\PYG{k}{\PYGZbs{}renewcommand}\PYG{n+nb}{\PYGZob{}}\PYG{k}{\PYGZbs{}headrulewidth}\PYG{n+nb}{\PYGZcb{}\PYGZob{}}0pt\PYG{n+nb}{\PYGZcb{}}
+	\PYG{k}{\PYGZbs{}fancyhf}\PYG{n+nb}{\PYGZob{}\PYGZcb{}}\PYG{c}{\PYGZpc{}}
+	\PYG{k}{\PYGZbs{}fancyfoot}\PYG{n+na}{[R]}\PYG{n+nb}{\PYGZob{}}Laporan Tugas Akhir Aplikasi Monitoring Kebun Hidroponik Berbasis \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Mobile\PYG{n+nb}{\PYGZcb{}} \PYG{l+s}{\PYGZdl{}}\PYG{n+nv}{\PYGZbs{}vert}\PYG{l+s}{\PYGZdl{}} \PYG{k}{\PYGZbs{}thepage}\PYG{n+nb}{\PYGZcb{}}
+\PYG{n+nb}{\PYGZcb{}}
+
+\PYG{k}{\PYGZbs{}setcounter}\PYG{n+nb}{\PYGZob{}}page\PYG{n+nb}{\PYGZcb{}\PYGZob{}}43\PYG{n+nb}{\PYGZcb{}}
+\PYG{k}{\PYGZbs{}setcounter}\PYG{n+nb}{\PYGZob{}}secnumdepth\PYG{n+nb}{\PYGZcb{}\PYGZob{}}4\PYG{n+nb}{\PYGZcb{}}
+\PYG{k}{\PYGZbs{}setminted}\PYG{n+nb}{\PYGZob{}}
+	linenos, 
+	breaklines, 
+	breakanywhere, 
+	fontsize=\PYG{k}{\PYGZbs{}footnotesize}, 
+	frame=single, 
+	framesep=10pt, 
+	baselinestretch=1
+\PYG{n+nb}{\PYGZcb{}}
+\PYG{k}{\PYGZbs{}newenvironment}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}
+	\PYG{k}{\PYGZbs{}setstretch}\PYG{n+nb}{\PYGZob{}}1\PYG{n+nb}{\PYGZcb{}}
+	\PYG{k}{\PYGZbs{}captionsetup}\PYG{n+nb}{\PYGZob{}}type=listing, justification=centering, skip=\PYGZhy{}5pt\PYG{n+nb}{\PYGZcb{}}
+\PYG{n+nb}{\PYGZcb{}\PYGZob{}\PYGZcb{}}
+
+\PYG{k}{\PYGZbs{}renewcommand}\PYG{n+nb}{\PYGZob{}}\PYG{k}{\PYGZbs{}listingscaption}\PYG{n+nb}{\PYGZcb{}\PYGZob{}}Kode\PYG{n+nb}{\PYGZcb{}}
+\PYG{k}{\PYGZbs{}renewcommand}\PYG{n+nb}{\PYGZob{}}\PYG{k}{\PYGZbs{}thesection}\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}Alph}\PYG{n+nb}{\PYGZob{}}section\PYG{n+nb}{\PYGZcb{}}.\PYG{n+nb}{\PYGZcb{}}
+\PYG{k}{\PYGZbs{}renewcommand}\PYG{n+nb}{\PYGZob{}}\PYG{k}{\PYGZbs{}thesubsection}\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}arabic}\PYG{n+nb}{\PYGZob{}}subsection\PYG{n+nb}{\PYGZcb{}}.\PYG{n+nb}{\PYGZcb{}}
+\PYG{k}{\PYGZbs{}renewcommand}\PYG{n+nb}{\PYGZob{}}\PYG{k}{\PYGZbs{}thesubsubsection}\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}alph}\PYG{n+nb}{\PYGZob{}}subsubsection\PYG{n+nb}{\PYGZcb{}})\PYG{n+nb}{\PYGZcb{}}
+\PYG{k}{\PYGZbs{}newcommand}\PYG{n+nb}{\PYGZob{}}\PYG{k}{\PYGZbs{}subsectionpostlude}\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}vspace}\PYG{n+nb}{\PYGZob{}}1em\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+
+\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}document\PYG{n+nb}{\PYGZcb{}}
+	\PYG{k}{\PYGZbs{}maketitle}
+	Untuk memudahkan pembuatan lampiran, maka kontennya di\PYGZhy{}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}generate\PYG{n+nb}{\PYGZcb{}} menjadi PDF menggunakan LaTeX (TexStudio sebagai IDE\PYGZhy{}nya) dengan memanfaatkan \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}package\PYG{n+nb}{\PYGZcb{}} pdfpages dan minted.  LaTeX adalah sebuah bahasa pemograman yang difokuskan untuk membuat sebuah dokumen dan banyak digunakan untuk membuat thesis maupun jurnal ilmiah. \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Source code\PYG{n+nb}{\PYGZcb{}} dalam LaTeX untuk membuat lampiran ini ditunjukkan melalui Kode \PYG{k}{\PYGZbs{}ref*}\PYG{n+nb}{\PYGZob{}}code:latex\PYG{n+nb}{\PYGZcb{}}.
+	\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}latex\PYG{n+nb}{\PYGZcb{}\PYGZob{}}generatePDF.tex\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Source code\PYG{n+nb}{\PYGZcb{}} LaTeX untuk membuat lampiran\PYG{k}{\PYGZbs{}label}\PYG{n+nb}{\PYGZob{}}code:latex\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+	\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+	
+	\PYG{k}{\PYGZbs{}includepdf}\PYG{n+na}{[pages=\PYGZob{}1\PYGZhy{}3\PYGZcb{}, scale=0.75, nup=1x3, pagecommand=\PYGZbs{}section\PYGZob{}PRODUCT MANUAL\PYGZcb{}]}\PYG{n+nb}{\PYGZob{}}codes/product\PYG{n+nb}{\PYGZus{}}manual.pdf\PYG{n+nb}{\PYGZcb{}}
+	\PYG{k}{\PYGZbs{}includepdf}\PYG{n+na}{[pages=\PYGZob{}4\PYGZhy{}\PYGZcb{}, scale=0.75, nup=1x3]}\PYG{n+nb}{\PYGZob{}}codes/product\PYG{n+nb}{\PYGZus{}}manual.pdf\PYG{n+nb}{\PYGZcb{}}
+
+	\PYG{k}{\PYGZbs{}includepdf}\PYG{n+na}{[pages=\PYGZob{}11\PYGZhy{}12\PYGZcb{}, scale=0.8, nup=1x2, offset=0 0.9cm, pagecommand=\PYGZbs{}section\PYGZob{}FRONT END\PYGZcb{}]}\PYG{n+nb}{\PYGZob{}}codes/ppt.pdf\PYG{n+nb}{\PYGZcb{}}
+	\PYG{k}{\PYGZbs{}includepdf}\PYG{n+na}{[pages=\PYGZob{}13\PYGZhy{}18\PYGZcb{}, scale=0.8, nup=1x2, offset=0 0.5cm]}\PYG{n+nb}{\PYGZob{}}codes/ppt.pdf\PYG{n+nb}{\PYGZcb{}}
+
+	\PYG{k}{\PYGZbs{}section}\PYG{n+nb}{\PYGZob{}}DATA MODEL\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}subsection}\PYG{n+nb}{\PYGZob{}}USER MODEL\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/UserModel.kt\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Data class\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}User\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+	
+		\PYG{k}{\PYGZbs{}subsection}\PYG{n+nb}{\PYGZob{}}NOTE MODEL\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/NoteModel.kt\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Data class\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Note\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+
+		\PYG{k}{\PYGZbs{}subsection}\PYG{n+nb}{\PYGZob{}}FARM MODEL\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/FarmModel.kt\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Data class\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Farm\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+		
+		\PYG{k}{\PYGZbs{}subsection}\PYG{n+nb}{\PYGZob{}}KIT MODEL\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/KitModel.kt\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Data class\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Hydroponic Kit\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+	
+		\PYG{k}{\PYGZbs{}subsection}\PYG{n+nb}{\PYGZob{}}DATA MONITORING MODEL\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/DataMonitoringModel.kt\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Data class\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Data Monitoring\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+		
+		\PYG{k}{\PYGZbs{}subsection}\PYG{n+nb}{\PYGZob{}}CROPS MODEL\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/CropsModel.kt\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Data class\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Crops\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+	
+		\PYG{k}{\PYGZbs{}subsection}\PYG{n+nb}{\PYGZob{}}PLANT MODEL\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/PlantModel.kt\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Data class\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Plant\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+		
+		\PYG{k}{\PYGZbs{}subsection}\PYG{n+nb}{\PYGZob{}}FEEDBACK MODEL\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/FeedbackModel.kt\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Data class\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Feedback\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+		
+		\PYG{k}{\PYGZbs{}subsection}\PYG{n+nb}{\PYGZob{}}SCORE LEVEL MODEL\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/ScoreLevel.kt\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Data class\PYG{n+nb}{\PYGZcb{}} untuk data yang memiliki nilai minimum dan maksimum\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+		
+		\PYG{k}{\PYGZbs{}subsection}\PYG{n+nb}{\PYGZob{}}URI FILE EXTENSIONS MODEL\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/UriFileExtensions.kt\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Data class\PYG{n+nb}{\PYGZcb{}} untuk yang digunakan untuk mengelola \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}attach\PYG{n+nb}{\PYGZcb{}} gambar\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+
+	\PYG{k}{\PYGZbs{}section}\PYG{n+nb}{\PYGZob{}}VIEW MODEL\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}subsection}\PYG{n+nb}{\PYGZob{}}SPLASH SCREEN VIEW MODEL\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/SplashScreenViewModel.kt\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}View Model\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Splash Screen Activity\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+	
+		\PYG{k}{\PYGZbs{}subsection}\PYG{n+nb}{\PYGZob{}}SIGN IN VIEW MODEL\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/SignInViewModel.kt\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}View Model\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Sign In Activity\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+	
+		\PYG{k}{\PYGZbs{}subsection}\PYG{n+nb}{\PYGZob{}}SIGN UP VIEW MODEL\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/SignUpViewModel.kt\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}View Model\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Sign Up Activity\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+
+		\PYG{k}{\PYGZbs{}subsection}\PYG{n+nb}{\PYGZob{}}FORGET PASSWORD VIEW MODEL\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/ForgetPasswordViewModel.kt\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}View Model\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Forget Password Activity\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+
+		\PYG{k}{\PYGZbs{}subsection}\PYG{n+nb}{\PYGZob{}}CREATE PROFILE VIEW MODEL\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/CreateProfileViewModel.kt\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}View Model\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Create Profile Activity\PYG{n+nb}{\PYGZcb{}} beserta \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Create User\PYG{n+nb}{\PYGZcb{}} dan \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Create Farm\PYG{n+nb}{\PYGZcb{}} \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}fragments\PYG{n+nb}{\PYGZcb{}}. Termasuk juga untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Edit Profile User\PYG{n+nb}{\PYGZcb{}} dan \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Edit Profile Farm\PYG{n+nb}{\PYGZcb{}} \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}activities\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+	
+		\PYG{k}{\PYGZbs{}subsection}\PYG{n+nb}{\PYGZob{}}MAIN VIEW MODEL\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/MainViewModel.kt\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}View Model\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Main Activity\PYG{n+nb}{\PYGZcb{}} beserta \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Main Home\PYG{n+nb}{\PYGZcb{}}, \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Main Posts\PYG{n+nb}{\PYGZcb{}}, \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Main Add\PYG{n+nb}{\PYGZcb{}}, \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Main Notes\PYG{n+nb}{\PYGZcb{}}, dan \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Main Profile\PYG{n+nb}{\PYGZcb{}} \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}fragments\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+	
+		\PYG{k}{\PYGZbs{}subsection}\PYG{n+nb}{\PYGZob{}}ADD CROPS VIEW MODEL\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/AddCropsViewModel.kt\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}View Model\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Add Crops Activity\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+		
+		\PYG{k}{\PYGZbs{}subsection}\PYG{n+nb}{\PYGZob{}}ADD DATA MONITORING VIEW MODEL\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/AddDataMonitoringViewModel.kt\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}View Model\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Add Data Monitoring Activity\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+		
+		\PYG{k}{\PYGZbs{}subsection}\PYG{n+nb}{\PYGZob{}}ADD KIT VIEW MODEL\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/AddKitViewModel.kt\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}View Model\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Add Kit Activity\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+		
+		\PYG{k}{\PYGZbs{}subsection}\PYG{n+nb}{\PYGZob{}}ADD NOTE VIEW MODEL\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/AddNoteViewModel.kt\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}View Model\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Add Note Activity\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+		
+		\PYG{k}{\PYGZbs{}subsection}\PYG{n+nb}{\PYGZob{}}ADD PLANT VIEW MODEL\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/AddPlantViewModel.kt\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}View Model\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Add Plant Activity\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+
+		\PYG{k}{\PYGZbs{}subsection}\PYG{n+nb}{\PYGZob{}}PROFILE KIT VIEW MODEL\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/ProfileKitViewModel.kt\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}View Model\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Profile Kit Activity\PYG{n+nb}{\PYGZcb{}} beserta \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Kit Overview\PYG{n+nb}{\PYGZcb{}}, \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Kit Monitoring\PYG{n+nb}{\PYGZcb{}}, dan \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Kit Crops\PYG{n+nb}{\PYGZcb{}} \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}fragments\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+		
+		\PYG{k}{\PYGZbs{}subsection}\PYG{n+nb}{\PYGZob{}}PROFILE USER VIEW MODEL\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/ProfileUserViewModel.kt\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}View Model\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Profile User Activity\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+		
+		\PYG{k}{\PYGZbs{}subsection}\PYG{n+nb}{\PYGZob{}}SEARCH VIEW MODEL\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/SearchViewModel.kt\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}View Model\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Search Activity\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+		
+		\PYG{k}{\PYGZbs{}subsection}\PYG{n+nb}{\PYGZob{}}FEEDBACK VIEW MODEL\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/FeedbackViewModel.kt\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}View Model\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Feedback Activity\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+		
+		\PYG{k}{\PYGZbs{}subsection}\PYG{n+nb}{\PYGZob{}}SHOW RECYCLER VIEW MODEL\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/ShowRecyclerViewModel.kt\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}View Model\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Show Recycler Activity\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+
+	\PYG{k}{\PYGZbs{}section}\PYG{n+nb}{\PYGZob{}}VIEW LAYER (ACTIVITY AND FRAGMENT)\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}subsection}\PYG{n+nb}{\PYGZob{}}SPLASH SCREEN ACTIVITY\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/SplashScreenActivity.kt\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Source Code\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Splash Screen Activity\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+		
+		\PYG{k}{\PYGZbs{}subsection}\PYG{n+nb}{\PYGZob{}}SIGN IN ACTIVITY\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/SignInActivity.kt\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Source Code\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Sign In Activity\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+		
+		\PYG{k}{\PYGZbs{}subsection}\PYG{n+nb}{\PYGZob{}}SIGN UP ACTIVITY\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/SignUpActivity.kt\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Source Code\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Sign Up Activity\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+		
+		\PYG{k}{\PYGZbs{}subsection}\PYG{n+nb}{\PYGZob{}}FORGET PASSWORD ACTIVITY\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/ForgetPasswordActivity.kt\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Source Code\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Forget Password Activity\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+		
+		\PYG{k}{\PYGZbs{}subsection}\PYG{n+nb}{\PYGZob{}}CREATE PROFILE ACTIVITY\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/CreateProfileActivity.kt\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Source Code\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Create Profile Activity\PYG{n+nb}{\PYGZcb{}} beserta \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}fragments\PYG{n+nb}{\PYGZcb{}} terkait\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+	
+			\PYG{k}{\PYGZbs{}subsubsection}\PYG{n+nb}{\PYGZob{}}CREATE USER FRAGMENT\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+				\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/CreateUserFragment.kt\PYG{n+nb}{\PYGZcb{}}
+				\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Source Code\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Create User Fragment\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+			
+			\PYG{k}{\PYGZbs{}subsubsection}\PYG{n+nb}{\PYGZob{}}CREATE FARM FRAGMENT\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+				\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/CreateFarmFragment.kt\PYG{n+nb}{\PYGZcb{}}
+				\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Source Code\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Create Farm Fragment\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+		
+		\PYG{k}{\PYGZbs{}subsection}\PYG{n+nb}{\PYGZob{}}MAIN ACTIVITY\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/MainActivity.kt\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Source Code\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Main Activity\PYG{n+nb}{\PYGZcb{}} beserta \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}fragments\PYG{n+nb}{\PYGZcb{}} terkait\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+	
+			\PYG{k}{\PYGZbs{}subsubsection}\PYG{n+nb}{\PYGZob{}}MAIN HOME FRAGMENT\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+				\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/MainHomeFragment.kt\PYG{n+nb}{\PYGZcb{}}
+				\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Source Code\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Main Home Fragment\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+			
+			\PYG{k}{\PYGZbs{}subsubsection}\PYG{n+nb}{\PYGZob{}}MAIN POSTS FRAGMENT\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+				\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/MainPostsFragment.kt\PYG{n+nb}{\PYGZcb{}}
+				\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Source Code\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Main Posts Fragment\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+		
+			\PYG{k}{\PYGZbs{}subsubsection}\PYG{n+nb}{\PYGZob{}}MAIN ADD FRAGMENT\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+				\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/MainAddFragment.kt\PYG{n+nb}{\PYGZcb{}}
+				\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Source Code\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Main Add Fragment\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+			
+			\PYG{k}{\PYGZbs{}subsubsection}\PYG{n+nb}{\PYGZob{}}MAIN NOTES FRAGMENT\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+				\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/MainNotesFragment.kt\PYG{n+nb}{\PYGZcb{}}
+				\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Source Code\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Main Notes Fragment\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+		
+			\PYG{k}{\PYGZbs{}subsubsection}\PYG{n+nb}{\PYGZob{}}MAIN PROFILE FRAGMENT\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+				\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/MainProfileFragment.kt\PYG{n+nb}{\PYGZcb{}}
+				\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Source Code\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Main Profile Fragment\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+	
+		\PYG{k}{\PYGZbs{}subsection}\PYG{n+nb}{\PYGZob{}}ADD CROPS ACTIVITY\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/AddCropsActivity.kt\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Source Code\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Add Crops Activity\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+		
+		\PYG{k}{\PYGZbs{}subsection}\PYG{n+nb}{\PYGZob{}}ADD DATA MONITORING ACTIVITY\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/AddDataMonitoringActivity.kt\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Source Code\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Add Data Monitoring Activity\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+		
+		\PYG{k}{\PYGZbs{}subsection}\PYG{n+nb}{\PYGZob{}}ADD KIT ACTIVITY\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/AddKitActivity.kt\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Source Code\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Add Kit Activity\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+		
+		\PYG{k}{\PYGZbs{}subsection}\PYG{n+nb}{\PYGZob{}}ADD NOTE ACTIVITY\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/AddNoteActivity.kt\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Source Code\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Add Note Activity\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+		
+		\PYG{k}{\PYGZbs{}subsection}\PYG{n+nb}{\PYGZob{}}ADD PLANT ACTIVITY\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/AddPlantActivity.kt\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Source Code\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Add Plant Activity\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+		
+		\PYG{k}{\PYGZbs{}subsection}\PYG{n+nb}{\PYGZob{}}PROFILE KIT ACTIVITY\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/ProfileKitActivity.kt\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Source Code\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Profile Kit Activity\PYG{n+nb}{\PYGZcb{}} beserta \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}fragments\PYG{n+nb}{\PYGZcb{}} terkait\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+	
+			\PYG{k}{\PYGZbs{}subsubsection}\PYG{n+nb}{\PYGZob{}}KIT OVERVIEW FRAGMENT\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+				\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/KitOverviewFragment.kt\PYG{n+nb}{\PYGZcb{}}
+				\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Source Code\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}KitOverview Fragment\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+			
+			\PYG{k}{\PYGZbs{}subsubsection}\PYG{n+nb}{\PYGZob{}}KIT MONITORING FRAGMENT\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+				\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/KitMonitoringFragment.kt\PYG{n+nb}{\PYGZcb{}}
+				\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Source Code\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}KitMonitoring Fragment\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+			
+			\PYG{k}{\PYGZbs{}subsubsection}\PYG{n+nb}{\PYGZob{}}KIT CROPS FRAGMENT\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+				\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/KitCropsFragment.kt\PYG{n+nb}{\PYGZcb{}}
+				\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Source Code\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Kit Crops Fragment\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+		
+		\PYG{k}{\PYGZbs{}subsection}\PYG{n+nb}{\PYGZob{}}PROFILE USER ACTIVITY\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/ProfileUserActivity.kt\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Source Code\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Profile User Activity\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+		
+		\PYG{k}{\PYGZbs{}subsection}\PYG{n+nb}{\PYGZob{}}EDIT PROFILE FARM ACTIVITY\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/EditProfileFarmActivity.kt\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Source Code\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Edit Profile Farm Activity\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+		
+		\PYG{k}{\PYGZbs{}subsection}\PYG{n+nb}{\PYGZob{}}EDIT PROFILE USER ACTIVITY\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/EditProfileUserActivity.kt\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Source Code\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Edit Profile User Activity\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+		
+		\PYG{k}{\PYGZbs{}subsection}\PYG{n+nb}{\PYGZob{}}SEARCH MODEL\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/SearchActivity.kt\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Source Code\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Search Activity\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+		
+		\PYG{k}{\PYGZbs{}subsection}\PYG{n+nb}{\PYGZob{}}FEEDBACK ACTIVITY\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/FeedbackActivity.kt\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Source Code\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Feedback Activity\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+		
+		\PYG{k}{\PYGZbs{}subsection}\PYG{n+nb}{\PYGZob{}}SHOW RECYCLER ACTIVITY\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/ShowRecyclerActivity.kt\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Source Code\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Show Recycler Activity\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+	
+		\PYG{k}{\PYGZbs{}subsection}\PYG{n+nb}{\PYGZob{}}SHOW PICTURE ACTIVITY\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/ShowPictureActivity.kt\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Source Code\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Show Picture Activity\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+	
+		\PYG{k}{\PYGZbs{}subsection}\PYG{n+nb}{\PYGZob{}}ABOUT ME ACTIVITY\PYG{n+nb}{\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}begin}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}inputminted}\PYG{n+nb}{\PYGZob{}}kotlin\PYG{n+nb}{\PYGZcb{}\PYGZob{}}codes/AboutMeActivity.kt\PYG{n+nb}{\PYGZcb{}}
+			\PYG{k}{\PYGZbs{}captionof}\PYG{n+nb}{\PYGZob{}}listing\PYG{n+nb}{\PYGZcb{}\PYGZob{}}\PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}Source Code\PYG{n+nb}{\PYGZcb{}} untuk \PYG{k}{\PYGZbs{}textit}\PYG{n+nb}{\PYGZob{}}About Me Activity\PYG{n+nb}{\PYGZcb{}\PYGZcb{}}
+		\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}multipageListing\PYG{n+nb}{\PYGZcb{}}
+\PYG{k}{\PYGZbs{}end}\PYG{n+nb}{\PYGZob{}}document\PYG{n+nb}{\PYGZcb{}}
+\end{Verbatim}

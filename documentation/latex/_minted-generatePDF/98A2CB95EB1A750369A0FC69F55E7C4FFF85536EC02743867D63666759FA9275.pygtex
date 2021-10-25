@@ -1,0 +1,177 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{class} \PYG{n+nc}{CreateUserFragment} \PYG{p}{:} \PYG{n}{Fragment}\PYG{p}{(),} \PYG{n}{View}\PYG{p}{.}\PYG{n+na}{OnClickListener}\PYG{p}{,} \PYG{n}{SegmentedButtonGroup}\PYG{p}{.}\PYG{n+na}{OnPositionChangedListener}\PYG{p}{,} \PYG{n}{TextWatcher} \PYG{p}{\PYGZob{}}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{\PYGZus{}binding} \PYG{p}{:} \PYG{n}{FragmentCreateUserBinding? }\PYG{o}{=} \PYG{k+kc}{null}
+    \PYG{k+kd}{private} \PYG{k+kd}{val} \PYG{n+nv}{binding} \PYG{k}{get}\PYG{p}{()} \PYG{o}{=} \PYG{n}{\PYGZus{}binding}\PYG{o}{!!}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{viewModel} \PYG{p}{:} \PYG{n}{CreateProfileViewModel}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{utility}\PYG{p}{:} \PYG{n}{ViewUtility}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{editTexts} \PYG{p}{:} \PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{TextInputEditText}\PYG{o}{\PYGZgt{}}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{viewsAsButton} \PYG{p}{:} \PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{View}\PYG{o}{\PYGZgt{}}
+
+    \PYG{k+kd}{companion} \PYG{k+kd}{object} \PYG{err}{\PYGZob{}}
+        \PYG{k+kd}{const} \PYG{k+kd}{val} \PYG{n+nv}{TAG} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}createUserFragment\PYGZdq{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onCreateView}\PYG{p}{(}
+        \PYG{n}{inflater}\PYG{p}{:} \PYG{n}{LayoutInflater}\PYG{p}{,} \PYG{n}{container}\PYG{p}{:} \PYG{n}{ViewGroup?,}
+        \PYG{n}{savedInstanceState}\PYG{p}{:} \PYG{n}{Bundle?}
+    \PYG{p}{):} \PYG{n}{View} \PYG{p}{\PYGZob{}}
+        \PYG{n}{\PYGZus{}binding} \PYG{o}{=} \PYG{n}{FragmentCreateUserBinding}\PYG{p}{.}\PYG{n+na}{inflate}\PYG{p}{(}\PYG{n}{inflater}\PYG{p}{,} \PYG{n}{container}\PYG{p}{,} \PYG{k+kc}{false}\PYG{p}{)}
+        \PYG{k}{return} \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{root}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onViewCreated}\PYG{p}{(}\PYG{n}{view}\PYG{p}{:} \PYG{n}{View}\PYG{p}{,} \PYG{n}{savedInstanceState}\PYG{p}{:} \PYG{n}{Bundle?)} \PYG{p}{\PYGZob{}}
+        \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{onViewCreated}\PYG{p}{(}\PYG{n}{view}\PYG{p}{,} \PYG{n}{savedInstanceState}\PYG{p}{)}
+        \PYG{n}{requireActivity}\PYG{p}{().}\PYG{n+na}{title} \PYG{o}{=} \PYG{n}{getString}\PYG{p}{(}\PYG{n}{R}\PYG{p}{.}\PYG{n+na}{string}\PYG{p}{.}\PYG{n+na}{create\PYGZus{}profile}\PYG{p}{)}
+        \PYG{n}{viewModel} \PYG{o}{=} \PYG{p}{(}\PYG{n}{requireActivity}\PYG{p}{()} \PYG{k}{as} \PYG{n}{CreateProfileActivity}\PYG{p}{).}\PYG{n+na}{viewModel}
+
+        \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{apply} \PYG{p}{\PYGZob{}}
+            \PYG{n}{viewsAsButton} \PYG{o}{=} \PYG{n}{arrayListOf}\PYG{p}{(}\PYG{n}{roleOwner}\PYG{p}{,}
+                                        \PYG{n}{createUserDOB}\PYG{p}{,}
+                                        \PYG{n}{createUserSubmit}\PYG{p}{,}
+                                        \PYG{n}{createUserEditPhoto}\PYG{p}{,}
+                                        \PYG{n}{createUserPhoto}\PYG{p}{)}
+            \PYG{n}{editTexts} \PYG{o}{=} \PYG{n}{arrayListOf}\PYG{p}{(}
+                    \PYG{n}{createUserName}\PYG{p}{,}
+                    \PYG{n}{createUserPhone}\PYG{p}{,}
+                    \PYG{n}{createUserAddress}\PYG{p}{,}
+                    \PYG{n}{createUserBio}\PYG{p}{)}
+            \PYG{n}{utility} \PYG{o}{=} \PYG{n}{ViewUtility}\PYG{p}{(}
+                \PYG{n}{context} \PYG{o}{=} \PYG{n}{requireContext}\PYG{p}{(),}
+                \PYG{n}{circularProgressButton} \PYG{o}{=} \PYG{n}{createUserSubmit}\PYG{p}{,}
+                \PYG{n}{textInputEditTexts} \PYG{o}{=} \PYG{n}{editTexts}\PYG{p}{,}
+                \PYG{n}{viewsAsButton} \PYG{o}{=} \PYG{n}{viewsAsButton}\PYG{p}{,}
+                \PYG{n}{actionBar} \PYG{o}{=} \PYG{p}{(}\PYG{n}{requireActivity}\PYG{p}{()} \PYG{k}{as} \PYG{n}{CreateProfileActivity}\PYG{p}{).}\PYG{n+na}{supportActionBar}\PYG{p}{)}
+            \PYG{n}{utility}\PYG{p}{.}\PYG{n+na}{onLoadingChangeListener} \PYG{p}{\PYGZob{}}
+                \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{roleOwner}\PYG{p}{.}\PYG{n+na}{isClickable} \PYG{o}{=} \PYG{n+nb}{it}
+                \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{roleStaff}\PYG{p}{.}\PYG{n+na}{isClickable} \PYG{o}{=} \PYG{n+nb}{it}
+            \PYG{p}{\PYGZcb{}}
+
+            \PYG{n}{editTexts}\PYG{p}{.}\PYG{n+na}{forEach} \PYG{p}{\PYGZob{}} \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{addTextChangedListener}\PYG{p}{(}\PYG{k}{this}\PYG{n+nd}{@CreateUserFragment}\PYG{p}{)} \PYG{p}{\PYGZcb{}}
+            \PYG{n}{viewsAsButton}\PYG{p}{.}\PYG{n+na}{forEach} \PYG{p}{\PYGZob{}} \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{setOnClickListener}\PYG{p}{(}\PYG{k}{this}\PYG{n+nd}{@CreateUserFragment}\PYG{p}{)} \PYG{p}{\PYGZcb{}}
+            \PYG{n}{createUserGender}\PYG{p}{.}\PYG{n+na}{onPositionChangedListener} \PYG{o}{=} \PYG{k}{this}\PYG{n+nd}{@CreateUserFragment}
+            \PYG{n}{createUserPhoto}\PYG{p}{.}\PYG{n+na}{setOnLongClickListener} \PYG{p}{\PYGZob{}} \PYG{n}{createUserEditPhoto}\PYG{p}{.}\PYG{n+na}{performClick}\PYG{p}{()} \PYG{p}{\PYGZcb{}}
+            \PYG{n}{checkEmpty}\PYG{p}{()}
+
+            \PYG{n}{createUserEmail}\PYG{p}{.}\PYG{n+na}{setText}\PYG{p}{(}\PYG{n}{Firebase}\PYG{p}{.}\PYG{n+na}{auth}\PYG{p}{.}\PYG{n+na}{currentUser}\PYG{o}{?.}\PYG{n+na}{email}\PYG{p}{)}
+            \PYG{n}{roleOwner}\PYG{p}{.}\PYG{n+na}{performClick}\PYG{p}{()}
+        \PYG{p}{\PYGZcb{}}
+
+        \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getPhotoProfile}\PYG{p}{().}\PYG{n+na}{observe}\PYG{p}{(}\PYG{n}{requireActivity}\PYG{p}{(),} \PYG{p}{\PYGZob{}}
+            \PYG{n+nb}{it}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+                \PYG{n}{Glide}\PYG{p}{.}\PYG{n+na}{with}\PYG{p}{(}\PYG{k}{this}\PYG{p}{)}
+                    \PYG{p}{.}\PYG{n+na}{load}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{uri}\PYG{p}{)}
+                    \PYG{p}{.}\PYG{n+na}{circleCrop}\PYG{p}{()}
+                    \PYG{p}{.}\PYG{n+na}{into}\PYG{p}{(}\PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{createUserPhoto}\PYG{p}{)}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{})}
+
+        \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{isUserCreated}\PYG{p}{.}\PYG{n+na}{observe}\PYG{p}{(}\PYG{n}{viewLifecycleOwner}\PYG{p}{,} \PYG{p}{\PYGZob{}}
+            \PYG{k}{if}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{)\PYGZob{}}
+                \PYG{n}{utility}\PYG{p}{.}\PYG{n+na}{isLoading} \PYG{o}{=} \PYG{k+kc}{false}
+                \PYG{n}{Toast}\PYG{p}{.}\PYG{n+na}{makeText}\PYG{p}{(}\PYG{n}{requireContext}\PYG{p}{(),} \PYG{l+s}{\PYGZdq{}User created\PYGZdq{}}\PYG{p}{,} \PYG{n}{Toast}\PYG{p}{.}\PYG{n+na}{LENGTH\PYGZus{}SHORT}\PYG{p}{).}\PYG{n+na}{show}\PYG{p}{()}
+                \PYG{k}{if} \PYG{p}{(}\PYG{n}{Role}\PYG{p}{.}\PYG{n+na}{getType}\PYG{p}{(}\PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getCurrentUserModel}\PYG{p}{()}\PYG{o}{?.}\PYG{n+na}{role}\PYG{o}{!!}\PYG{p}{)} \PYG{o}{==} \PYG{n}{Role}\PYG{p}{.}\PYG{n+na}{OWNER}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+                    \PYG{n}{Navigation}\PYG{p}{.}\PYG{n+na}{findNavController}\PYG{p}{(}\PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{root}\PYG{p}{).}\PYG{n+na}{navigate}\PYG{p}{(}\PYG{n}{R}\PYG{p}{.}\PYG{n+na}{id}\PYG{p}{.}\PYG{n+na}{action\PYGZus{}createUserFragment\PYGZus{}to\PYGZus{}createFarmFragment}\PYG{p}{)}
+                \PYG{p}{\PYGZcb{}} \PYG{k}{else} \PYG{p}{\PYGZob{}}
+                    \PYG{k+kd}{val} \PYG{n+nv}{intent} \PYG{o}{=} \PYG{n}{Intent}\PYG{p}{(}\PYG{n}{requireContext}\PYG{p}{(),} \PYG{n}{MainActivity}\PYG{o}{::}\PYG{n}{class}\PYG{p}{.}\PYG{n+na}{java}\PYG{p}{)}
+                    \PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{putExtra}\PYG{p}{(}\PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{CURRENT\PYGZus{}USER}\PYG{p}{,} \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getCurrentUserModel}\PYG{p}{())}
+                    \PYG{n}{startActivity}\PYG{p}{(}\PYG{n}{intent}\PYG{p}{)}
+                    \PYG{n}{requireActivity}\PYG{p}{().}\PYG{n+na}{finish}\PYG{p}{()}
+                \PYG{p}{\PYGZcb{}}
+            \PYG{p}{\PYGZcb{}} \PYG{k}{else} \PYG{p}{\PYGZob{}}
+                \PYG{n}{utility}\PYG{p}{.}\PYG{n+na}{isLoading} \PYG{o}{=} \PYG{k+kc}{false}
+                \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{createProfileError}\PYG{p}{.}\PYG{n+na}{observe}\PYG{p}{(}\PYG{n}{viewLifecycleOwner}\PYG{p}{,} \PYG{p}{\PYGZob{}}
+                    \PYG{k}{if}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{isNotEmpty}\PYG{p}{())\PYGZob{}}
+                        \PYG{n}{Toast}\PYG{p}{.}\PYG{n+na}{makeText}\PYG{p}{(}\PYG{n}{requireContext}\PYG{p}{(),} \PYG{n+nb}{it}\PYG{p}{,} \PYG{n}{Toast}\PYG{p}{.}\PYG{n+na}{LENGTH\PYGZus{}SHORT}\PYG{p}{).}\PYG{n+na}{show}\PYG{p}{()}
+                        \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{i}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{n+nb}{it}\PYG{p}{)}
+                        \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{createProfileError}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}\PYGZdq{}}
+                    \PYG{p}{\PYGZcb{}}
+                \PYG{p}{\PYGZcb{})}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{})}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onClick}\PYG{p}{(}\PYG{n}{v}\PYG{p}{:} \PYG{n}{View?)} \PYG{p}{\PYGZob{}}
+        \PYG{k}{when}\PYG{p}{(}\PYG{n}{v}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{roleOwner} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{setRoleType}\PYG{p}{(}\PYG{n}{Role}\PYG{p}{.}\PYG{n+na}{OWNER}\PYG{p}{)}
+            \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{roleStaff} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{setRoleType}\PYG{p}{(}\PYG{n}{Role}\PYG{p}{.}\PYG{n+na}{STAFF}\PYG{p}{)}
+            \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{createUserDOB} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{p}{\PYGZob{}}
+                \PYG{k+kd}{val} \PYG{n+nv}{calendar} \PYG{o}{=} \PYG{n}{Calendar}\PYG{p}{.}\PYG{n+na}{getInstance}\PYG{p}{(}\PYG{n}{TimeZone}\PYG{p}{.}\PYG{n+na}{getTimeZone}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}WIB\PYGZdq{}}\PYG{p}{))}
+                \PYG{n}{calendar}\PYG{o}{[}\PYG{n}{Calendar}\PYG{p}{.}\PYG{n+na}{MONTH}\PYG{o}{]} \PYG{o}{=} \PYG{n}{Calendar}\PYG{p}{.}\PYG{n+na}{DECEMBER}
+                \PYG{k+kd}{val} \PYG{n+nv}{constraintBuilder} \PYG{o}{=} \PYG{n}{CalendarConstraints}\PYG{p}{.}\PYG{n+na}{Builder}\PYG{p}{()}
+                \PYG{n}{constraintBuilder}\PYG{p}{.}\PYG{n+na}{setValidator}\PYG{p}{(}\PYG{n}{DateValidatorPointBackward}\PYG{p}{.}\PYG{n+na}{now}\PYG{p}{()).}\PYG{n+na}{setEnd}\PYG{p}{(}\PYG{n}{calendar}\PYG{p}{.}\PYG{n+na}{timeInMillis}\PYG{p}{)}
+                
+                \PYG{k+kd}{val} \PYG{n+nv}{datePicker} \PYG{o}{=} \PYG{n}{MaterialDatePicker}\PYG{p}{.}\PYG{n+na}{Builder}\PYG{p}{.}\PYG{n+na}{datePicker}\PYG{p}{()}
+                    \PYG{p}{.}\PYG{n+na}{setTitleText}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}Date of Birth\PYGZdq{}}\PYG{p}{)}
+                    \PYG{p}{.}\PYG{n+na}{setSelection}\PYG{p}{(}\PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getDOB}\PYG{p}{())}
+                    \PYG{p}{.}\PYG{n+na}{setInputMode}\PYG{p}{(}\PYG{n}{MaterialDatePicker}\PYG{p}{.}\PYG{n+na}{INPUT\PYGZus{}MODE\PYGZus{}CALENDAR}\PYG{p}{)}
+                    \PYG{p}{.}\PYG{n+na}{setCalendarConstraints}\PYG{p}{(}\PYG{n}{constraintBuilder}\PYG{p}{.}\PYG{n+na}{build}\PYG{p}{())}
+                    \PYG{p}{.}\PYG{n+na}{build}\PYG{p}{()}
+                \PYG{n}{datePicker}\PYG{p}{.}\PYG{n+na}{show}\PYG{p}{(}\PYG{n}{childFragmentManager}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}DATE\PYGZus{}PICKER\PYGZdq{}}\PYG{p}{)}
+                \PYG{n}{datePicker}\PYG{p}{.}\PYG{n+na}{addOnPositiveButtonClickListener}\PYG{p}{\PYGZob{}}
+                    \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{createUserDOB}\PYG{p}{.}\PYG{n+na}{setText}\PYG{p}{(}\PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{setDOB}\PYG{p}{(}\PYG{n}{datePicker}\PYG{p}{.}\PYG{n+na}{selection}\PYG{p}{))}
+                    \PYG{n}{checkEmpty}\PYG{p}{()}
+                \PYG{p}{\PYGZcb{}}
+                \PYG{n}{datePicker}\PYG{p}{.}\PYG{n+na}{addOnNegativeButtonClickListener}\PYG{p}{\PYGZob{}\PYGZcb{}}
+                \PYG{n}{datePicker}\PYG{p}{.}\PYG{n+na}{isCancelable} \PYG{o}{=} \PYG{k+kc}{false}
+            \PYG{p}{\PYGZcb{}}
+            \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{createUserEditPhoto} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{utility}\PYG{p}{.}\PYG{n+na}{openEditPhoto}\PYG{p}{(}\PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{createUserPhoto}\PYG{p}{,} \PYG{n}{ProfileType}\PYG{p}{.}\PYG{n+na}{USER}\PYG{p}{)}
+            \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{createUserPhoto} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{utility}\PYG{p}{.}\PYG{n+na}{openImage}\PYG{p}{(}\PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{createUserPhoto}\PYG{p}{)}
+            \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{createUserSubmit} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{p}{\PYGZob{}}
+                \PYG{n}{utility}\PYG{p}{.}\PYG{n+na}{isLoading} \PYG{o}{=} \PYG{k+kc}{true}
+                \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{createUserProfile}\PYG{p}{(}
+                    \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{createUserName}\PYG{p}{.}\PYG{n+na}{text}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{(),}
+                    \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{createUserPhone}\PYG{p}{.}\PYG{n+na}{text}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{(),}
+                    \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{createUserAddress}\PYG{p}{.}\PYG{n+na}{text}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{(),}
+                    \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{createUserBio}\PYG{p}{.}\PYG{n+na}{text}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{()}
+                \PYG{p}{)}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onPositionChanged}\PYG{p}{(}\PYG{n}{position}\PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+        \PYG{k}{when}\PYG{p}{(}\PYG{n}{position}\PYG{p}{)\PYGZob{}}
+            \PYG{l+m}{0} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{setGender}\PYG{p}{(}\PYG{n}{Gender}\PYG{p}{.}\PYG{n+na}{MALE}\PYG{p}{)}
+            \PYG{l+m}{1} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{setGender}\PYG{p}{(}\PYG{n}{Gender}\PYG{p}{.}\PYG{n+na}{FEMALE}\PYG{p}{)}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{checkEmpty}\PYG{p}{()}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{private} \PYG{k+kd}{fun} \PYG{n+nf}{setRoleType}\PYG{p}{(}\PYG{n}{role} \PYG{p}{:} \PYG{n}{Role}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{setRole}\PYG{p}{(}\PYG{n}{role}\PYG{p}{)}
+        \PYG{k}{when}\PYG{p}{(}\PYG{n}{role}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{Role}\PYG{p}{.}\PYG{n+na}{OWNER} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{p}{\PYGZob{}}
+                \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{roleOwner}\PYG{p}{.}\PYG{n+na}{isChecked} \PYG{o}{=} \PYG{k+kc}{true}
+                \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{roleStaff}\PYG{p}{.}\PYG{n+na}{isChecked} \PYG{o}{=} \PYG{k+kc}{false}
+                \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{createUserRoleDescription}\PYG{p}{.}\PYG{n+na}{text} \PYG{o}{=} \PYG{n}{getString}\PYG{p}{(}\PYG{n}{R}\PYG{p}{.}\PYG{n+na}{string}\PYG{p}{.}\PYG{n+na}{owner\PYGZus{}description}\PYG{p}{)}
+            \PYG{p}{\PYGZcb{}}
+            \PYG{n}{Role}\PYG{p}{.}\PYG{n+na}{STAFF} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{p}{\PYGZob{}}
+                \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{roleStaff}\PYG{p}{.}\PYG{n+na}{isChecked} \PYG{o}{=} \PYG{k+kc}{true}
+                \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{roleOwner}\PYG{p}{.}\PYG{n+na}{isChecked} \PYG{o}{=} \PYG{k+kc}{false}
+                \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{createUserRoleDescription}\PYG{p}{.}\PYG{n+na}{text} \PYG{o}{=} \PYG{n}{getString}\PYG{p}{(}\PYG{n}{R}\PYG{p}{.}\PYG{n+na}{string}\PYG{p}{.}\PYG{n+na}{staff\PYGZus{}description}\PYG{p}{)}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{checkEmpty}\PYG{p}{()}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{beforeTextChanged}\PYG{p}{(}\PYG{n}{s}\PYG{p}{:} \PYG{n}{CharSequence?,} \PYG{n}{start}\PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{,} \PYG{n}{count}\PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{,} \PYG{n}{after}\PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{)} \PYG{p}{\PYGZob{}\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onTextChanged}\PYG{p}{(}\PYG{n}{s}\PYG{p}{:} \PYG{n}{CharSequence?,} \PYG{n}{start}\PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{,} \PYG{n}{before}\PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{,} \PYG{n}{count}\PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+        \PYG{n}{checkEmpty}\PYG{p}{()}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{afterTextChanged}\PYG{p}{(}\PYG{n}{s}\PYG{p}{:} \PYG{n}{Editable?)} \PYG{p}{\PYGZob{}\PYGZcb{}}
+
+    \PYG{k+kd}{private} \PYG{k+kd}{fun} \PYG{n+nf}{checkEmpty}\PYG{p}{()} \PYG{p}{\PYGZob{}}
+        \PYG{k+kd}{val} \PYG{n+nv}{checkerEditText} \PYG{o}{=} \PYG{n}{arrayListOf}\PYG{o}{\PYGZlt{}}\PYG{n}{TextInputEditText}\PYG{o}{\PYGZgt{}}\PYG{p}{(}
+            \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{createUserName}\PYG{p}{,}
+            \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{createUserPhone}\PYG{p}{,}
+            \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{createUserAddress}\PYG{p}{,}
+            \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{createUserDOB}\PYG{p}{)}
+        \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{checkNotEmpty}\PYG{p}{(}
+            \PYG{n}{utility}\PYG{p}{.}\PYG{n+na}{isEmpties}\PYG{p}{(}\PYG{n}{checkerEditText}\PYG{p}{)} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{p}{(}\PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{roleOwner}\PYG{p}{.}\PYG{n+na}{isChecked}\PYG{p}{)}
+        \PYG{p}{).}\PYG{n+na}{observe}\PYG{p}{(}\PYG{n}{viewLifecycleOwner}\PYG{p}{,} \PYG{p}{\PYGZob{}}
+            \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{createUserSubmit}\PYG{p}{.}\PYG{n+na}{isEnabled} \PYG{o}{=} \PYG{n+nb}{it}
+        \PYG{p}{\PYGZcb{})}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

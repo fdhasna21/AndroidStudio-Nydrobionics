@@ -1,0 +1,11 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nd}{@Parcelize}
+\PYG{k+kd}{data} \PYG{k+kd}{class} \PYG{n+nc}{NoteModel}\PYG{p}{(}
+    \PYG{k+kd}{var} \PYG{n+nv}{noteId} \PYG{p}{:} \PYG{k+kt}{String?} \PYG{o}{=} \PYG{k+kc}{null}\PYG{p}{,}
+    \PYG{k+kd}{var} \PYG{n+nv}{title}\PYG{p}{:} \PYG{k+kt}{String?} \PYG{o}{=} \PYG{k+kc}{null}\PYG{p}{,}
+    \PYG{k+kd}{var} \PYG{n+nv}{description} \PYG{p}{:} \PYG{k+kt}{String?} \PYG{o}{=} \PYG{k+kc}{null}\PYG{p}{,}
+    \PYG{k+kd}{var} \PYG{n+nv}{timestamp} \PYG{p}{:} \PYG{k+kt}{String?}\PYG{o}{=}\PYG{k+kc}{null}\PYG{p}{,}
+    \PYG{k+kd}{var} \PYG{n+nv}{date} \PYG{p}{:} \PYG{k+kt}{String?} \PYG{o}{=} \PYG{k+kc}{null}\PYG{p}{,}
+    \PYG{k+kd}{var} \PYG{n+nv}{time} \PYG{p}{:} \PYG{k+kt}{String?} \PYG{o}{=} \PYG{k+kc}{null}
+\PYG{p}{)} \PYG{p}{:} \PYG{n}{Parcelable}
+\end{Verbatim}

@@ -1,0 +1,42 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{class} \PYG{n+nc}{MainAddFragment} \PYG{p}{:} \PYG{n}{BottomSheetDialogFragment}\PYG{p}{(),} \PYG{n}{NavigationView}\PYG{p}{.}\PYG{n+na}{OnNavigationItemSelectedListener} \PYG{p}{\PYGZob{}}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{\PYGZus{}binding} \PYG{p}{:} \PYG{n}{FragmentMainAddBinding? }\PYG{o}{=} \PYG{k+kc}{null}
+    \PYG{k+kd}{private} \PYG{k+kd}{val} \PYG{n+nv}{binding} \PYG{k}{get}\PYG{p}{()} \PYG{o}{=} \PYG{n}{\PYGZus{}binding}\PYG{o}{!!}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{viewModel} \PYG{p}{:} \PYG{n}{MainViewModel}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onCreateView}\PYG{p}{(}
+        \PYG{n}{inflater}\PYG{p}{:} \PYG{n}{LayoutInflater}\PYG{p}{,} \PYG{n}{container}\PYG{p}{:} \PYG{n}{ViewGroup?,}
+        \PYG{n}{savedInstanceState}\PYG{p}{:} \PYG{n}{Bundle?}
+    \PYG{p}{):} \PYG{n}{View} \PYG{p}{\PYGZob{}}
+        \PYG{n}{\PYGZus{}binding} \PYG{o}{=} \PYG{n}{FragmentMainAddBinding}\PYG{p}{.}\PYG{n+na}{inflate}\PYG{p}{(}\PYG{n}{layoutInflater}\PYG{p}{,} \PYG{n}{container}\PYG{p}{,} \PYG{k+kc}{false}\PYG{p}{)}
+        \PYG{k}{return} \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{root}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onViewCreated}\PYG{p}{(}\PYG{n}{view}\PYG{p}{:} \PYG{n}{View}\PYG{p}{,} \PYG{n}{savedInstanceState}\PYG{p}{:} \PYG{n}{Bundle?)} \PYG{p}{\PYGZob{}}
+        \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{onViewCreated}\PYG{p}{(}\PYG{n}{view}\PYG{p}{,} \PYG{n}{savedInstanceState}\PYG{p}{)}
+        \PYG{n}{viewModel} \PYG{o}{=} \PYG{n}{ViewModelProvider}\PYG{p}{(}\PYG{n}{requireActivity}\PYG{p}{()).}\PYG{n+na}{get}\PYG{p}{(}\PYG{n}{MainViewModel}\PYG{o}{::}\PYG{n}{class}\PYG{p}{.}\PYG{n+na}{java}\PYG{p}{)}
+        \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{mainAddMenu}\PYG{p}{.}\PYG{n+na}{itemIconTintList} \PYG{o}{=} \PYG{k+kc}{null}
+        \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{mainAddMenu}\PYG{p}{.}\PYG{n+na}{setNavigationItemSelectedListener}\PYG{p}{(}\PYG{k}{this}\PYG{p}{)}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onNavigationItemSelected}\PYG{p}{(}\PYG{n}{item}\PYG{p}{:} \PYG{n}{MenuItem}\PYG{p}{):} \PYG{k+kt}{Boolean} \PYG{p}{\PYGZob{}}
+        \PYG{k}{return} \PYG{k}{when}\PYG{p}{(}\PYG{n}{item}\PYG{p}{.}\PYG{n+na}{itemId}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{R}\PYG{p}{.}\PYG{n+na}{id}\PYG{p}{.}\PYG{n+na}{addDataMonitoring}  \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{gotoActivity}\PYG{p}{(}\PYG{n}{AddDataMonitoringActivity}\PYG{o}{::}\PYG{n}{class}\PYG{p}{.}\PYG{n+na}{java}\PYG{p}{)}
+            \PYG{n}{R}\PYG{p}{.}\PYG{n+na}{id}\PYG{p}{.}\PYG{n+na}{addCrops}           \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{gotoActivity}\PYG{p}{(}\PYG{n}{AddCropsActivity}\PYG{o}{::}\PYG{n}{class}\PYG{p}{.}\PYG{n+na}{java}\PYG{p}{)}
+            \PYG{n}{R}\PYG{p}{.}\PYG{n+na}{id}\PYG{p}{.}\PYG{n+na}{addNote}            \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{gotoActivity}\PYG{p}{(}\PYG{n}{AddNoteActivity}\PYG{o}{::}\PYG{n}{class}\PYG{p}{.}\PYG{n+na}{java}\PYG{p}{)}
+            \PYG{n}{R}\PYG{p}{.}\PYG{n+na}{id}\PYG{p}{.}\PYG{n+na}{addKit}             \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{gotoActivity}\PYG{p}{(}\PYG{n}{AddKitActivity}\PYG{o}{::}\PYG{n}{class}\PYG{p}{.}\PYG{n+na}{java}\PYG{p}{)}
+            \PYG{n}{R}\PYG{p}{.}\PYG{n+na}{id}\PYG{p}{.}\PYG{n+na}{addPlant}           \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{gotoActivity}\PYG{p}{(}\PYG{n}{AddPlantActivity}\PYG{o}{::}\PYG{n}{class}\PYG{p}{.}\PYG{n+na}{java}\PYG{p}{)}
+            \PYG{k}{else}                    \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{k+kc}{false}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{private} \PYG{k+kd}{fun} \PYG{n+nf}{gotoActivity}\PYG{p}{(}\PYG{n}{destination} \PYG{p}{:} \PYG{n}{Class}\PYG{o}{\PYGZlt{}*\PYGZgt{}}\PYG{p}{)} \PYG{p}{:} \PYG{k+kt}{Boolean}\PYG{p}{\PYGZob{}}
+        \PYG{n}{dismiss}\PYG{p}{()}
+        \PYG{k+kd}{val} \PYG{n+nv}{intent} \PYG{o}{=} \PYG{n}{Intent}\PYG{p}{(}\PYG{n}{requireActivity}\PYG{p}{(),} \PYG{n}{destination}\PYG{p}{)}
+        \PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{putExtra}\PYG{p}{(}\PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{CURRENT\PYGZus{}USER}\PYG{p}{,} \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getCurrentUser}\PYG{p}{().}\PYG{n+na}{value}\PYG{p}{)}
+        \PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{putExtra}\PYG{p}{(}\PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{CURRENT\PYGZus{}FARM}\PYG{p}{,} \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getCurrentFarm}\PYG{p}{().}\PYG{n+na}{value}\PYG{p}{)}
+        \PYG{n}{startActivity}\PYG{p}{(}\PYG{n}{intent}\PYG{p}{)}
+        \PYG{k}{return} \PYG{k+kc}{true}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

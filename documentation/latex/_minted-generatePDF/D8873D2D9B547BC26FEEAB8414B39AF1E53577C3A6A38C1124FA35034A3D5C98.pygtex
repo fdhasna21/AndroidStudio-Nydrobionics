@@ -1,0 +1,138 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{class} \PYG{n+nc}{SearchViewModel} \PYG{p}{:} \PYG{n}{ViewModel}\PYG{p}{()\PYGZob{}}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{firestore} \PYG{p}{:} \PYG{n}{FirebaseFirestore} \PYG{o}{=} \PYG{n}{Firebase}\PYG{p}{.}\PYG{n+na}{firestore}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{userModels} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{UserModel}\PYG{o}{\PYGZgt{}\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{()}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{plantModels} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{PlantModel}\PYG{o}{\PYGZgt{}\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{()}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{searchUsers} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{UserModel}\PYG{o}{\PYGZgt{}\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{()}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{searchPlants} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{PlantModel}\PYG{o}{\PYGZgt{}\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{()}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{exceptUsers} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{UserModel}\PYG{o}{\PYGZgt{}\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{k+kc}{null}\PYG{p}{)}
+
+    \PYG{k+kd}{var} \PYG{n+nv}{isSearchSuccess} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{Boolean}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{k+kc}{false}\PYG{p}{)}
+    \PYG{k+kd}{var} \PYG{n+nv}{searchError} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{String}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZdq{}}\PYG{p}{)}
+
+    \PYG{k+kd}{companion} \PYG{k+kd}{object} \PYG{err}{\PYGZob{}}
+        \PYG{k+kd}{const} \PYG{k+kd}{val} \PYG{n+nv}{TAG} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}searchViewModel\PYGZdq{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{init} \PYG{p}{\PYGZob{}}
+        \PYG{n}{getAllUsers}\PYG{p}{(}\PYG{k+kc}{null}\PYG{p}{)}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{setExceptUsers}\PYG{p}{(}\PYG{n}{userModels} \PYG{p}{:} \PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{UserModel}\PYG{o}{\PYGZgt{}?}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{exceptUsers}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n}{userModels}
+        \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{i}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}setExceptUsers: }\PYG{l+s+si}{\PYGZdl{}\PYGZob{}}\PYG{n}{exceptUsers}\PYG{p}{.}\PYG{n+na}{value}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{getAllUsers}\PYG{p}{()} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{UserModel}\PYG{o}{\PYGZgt{}\PYGZgt{}} \PYG{o}{=} \PYG{n}{userModels}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{getAllUsers}\PYG{p}{(}\PYG{n}{lastKey} \PYG{p}{:} \PYG{k+kt}{String?} \PYG{o}{=} \PYG{k+kc}{null}\PYG{p}{)\PYGZob{}}
+        \PYG{k+kd}{val} \PYG{n+nv}{db} \PYG{o}{=} \PYG{n}{firestore}\PYG{p}{.}\PYG{n+na}{collection}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}users\PYGZdq{}}\PYG{p}{)}
+        \PYG{k}{try} \PYG{p}{\PYGZob{}}
+            \PYG{n}{db}\PYG{p}{.}\PYG{n+na}{addSnapshotListener} \PYG{p}{\PYGZob{}} \PYG{n}{snapshot}\PYG{p}{,} \PYG{n}{error} \PYG{o}{\PYGZhy{}\PYGZgt{}}
+                \PYG{n}{snapshot}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+                    \PYG{k+kd}{val} \PYG{n+nv}{users} \PYG{p}{:} \PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{UserModel}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{arrayListOf}\PYG{p}{()}
+                    \PYG{k}{for}\PYG{p}{(}\PYG{n}{plant} \PYG{k}{in} \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{documents}\PYG{p}{)\PYGZob{}}
+                        \PYG{n}{plant}\PYG{p}{.}\PYG{n+na}{toUserModel}\PYG{p}{()}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}} \PYG{n}{it1} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{users}\PYG{p}{.}\PYG{n+na}{add}\PYG{p}{(}\PYG{n}{it1}\PYG{p}{)} \PYG{p}{\PYGZcb{}}
+                    \PYG{p}{\PYGZcb{}}
+                    \PYG{n}{userModels}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n}{users}
+                    \PYG{n}{searchUsers}\PYG{p}{(}\PYG{n}{lastKey}\PYG{p}{)}
+                \PYG{p}{\PYGZcb{}}
+
+                \PYG{n}{error}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+                    \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{e}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}Listen data users failed\PYGZdq{}}\PYG{p}{,} \PYG{n+nb}{it}\PYG{p}{)}
+                    \PYG{k}{return}\PYG{n+nd}{@addSnapshotListener}
+                \PYG{p}{\PYGZcb{}}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}} \PYG{k}{catch} \PYG{p}{(}\PYG{n}{e}\PYG{p}{:}\PYG{n}{Exception}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{e}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}Error get plants\PYGZdq{}}\PYG{p}{,} \PYG{n}{e}\PYG{p}{)}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k+kd}{fun} \PYG{n+nf}{getAllPlants}\PYG{p}{(}\PYG{n}{lastKey} \PYG{p}{:} \PYG{k+kt}{String?} \PYG{o}{=} \PYG{k+kc}{null}\PYG{p}{)\PYGZob{}}
+        \PYG{k+kd}{val} \PYG{n+nv}{db} \PYG{o}{=} \PYG{n}{firestore}\PYG{p}{.}\PYG{n+na}{collection}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}plants\PYGZdq{}}\PYG{p}{)}
+        \PYG{k}{try} \PYG{p}{\PYGZob{}}
+            \PYG{n}{db}\PYG{p}{.}\PYG{n+na}{addSnapshotListener} \PYG{p}{\PYGZob{}} \PYG{n}{snapshot}\PYG{p}{,} \PYG{n}{error} \PYG{o}{\PYGZhy{}\PYGZgt{}}
+                \PYG{n}{snapshot}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+                    \PYG{k+kd}{val} \PYG{n+nv}{plants} \PYG{p}{:} \PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{PlantModel}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{arrayListOf}\PYG{p}{()}
+                    \PYG{k}{for}\PYG{p}{(}\PYG{n}{plant} \PYG{k}{in} \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{documents}\PYG{p}{)\PYGZob{}}
+                        \PYG{n}{plant}\PYG{p}{.}\PYG{n+na}{toPlantModel}\PYG{p}{()}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}} \PYG{n}{it1} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{plants}\PYG{p}{.}\PYG{n+na}{add}\PYG{p}{(}\PYG{n}{it1}\PYG{p}{)} \PYG{p}{\PYGZcb{}}
+                    \PYG{p}{\PYGZcb{}}
+                    \PYG{n}{plantModels}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n}{plants}
+                    \PYG{n}{searchPlants}\PYG{p}{(}\PYG{n}{lastKey}\PYG{p}{)}
+                \PYG{p}{\PYGZcb{}}
+
+                \PYG{n}{error}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+                    \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{e}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}Listen data plants failed\PYGZdq{}}\PYG{p}{,} \PYG{n+nb}{it}\PYG{p}{)}
+                    \PYG{k}{return}\PYG{n+nd}{@addSnapshotListener}
+                \PYG{p}{\PYGZcb{}}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}} \PYG{k}{catch} \PYG{p}{(}\PYG{n}{e}\PYG{p}{:}\PYG{n}{Exception}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{e}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}Error get plants\PYGZdq{}}\PYG{p}{,} \PYG{n}{e}\PYG{p}{)}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{getUsers}\PYG{p}{()} \PYG{p}{:}  \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{UserModel}\PYG{o}{\PYGZgt{}\PYGZgt{}} \PYG{o}{=} \PYG{n}{searchUsers}
+    \PYG{k+kd}{fun} \PYG{n+nf}{getPlants}\PYG{p}{()} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{PlantModel}\PYG{o}{\PYGZgt{}\PYGZgt{}} \PYG{o}{=} \PYG{n}{searchPlants}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{getUser}\PYG{p}{(}\PYG{n}{position}\PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{)} \PYG{p}{:} \PYG{n}{UserModel? }\PYG{p}{\PYGZob{}}
+        \PYG{k}{return} \PYG{n}{searchUsers}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{get}\PYG{p}{(}\PYG{n}{position}\PYG{p}{)}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k+kd}{fun} \PYG{n+nf}{getPlant}\PYG{p}{(}\PYG{n}{position}\PYG{p}{:}\PYG{k+kt}{Int}\PYG{p}{)} \PYG{p}{:} \PYG{n}{PlantModel?\PYGZob{}}
+        \PYG{k}{return} \PYG{n}{searchPlants}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{get}\PYG{p}{(}\PYG{n}{position}\PYG{p}{)}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{searchUsers}\PYG{p}{(}\PYG{n}{key}\PYG{p}{:}\PYG{k+kt}{String?}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{key} \PYG{o}{!=} \PYG{k+kc}{null}\PYG{p}{)\PYGZob{}}
+            \PYG{k+kd}{val} \PYG{n+nv}{results} \PYG{p}{:} \PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{UserModel}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{arrayListOf}\PYG{p}{()}
+            \PYG{n}{userModels}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+                \PYG{k}{for} \PYG{p}{(}\PYG{n}{user} \PYG{k}{in} \PYG{n+nb}{it}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+                    \PYG{k}{if} \PYG{p}{(}\PYG{n}{user}\PYG{p}{.}\PYG{n+na}{name}\PYG{o}{?.}\PYG{n+na}{contains}\PYG{p}{(}\PYG{n}{key}\PYG{p}{)} \PYG{o}{==} \PYG{k+kc}{true} \PYG{o}{||} \PYG{n}{user}\PYG{p}{.}\PYG{n+na}{email}\PYG{o}{?.}\PYG{n+na}{contains}\PYG{p}{(}\PYG{n}{key}\PYG{p}{)} \PYG{o}{==} \PYG{k+kc}{true}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+                        \PYG{n}{exceptUsers}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+                            \PYG{k}{for} \PYG{p}{(}\PYG{n}{exUser} \PYG{k}{in} \PYG{n+nb}{it}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+                                \PYG{k}{if} \PYG{p}{(}\PYG{n}{exUser}\PYG{p}{.}\PYG{n+na}{uid} \PYG{o}{!=} \PYG{n}{user}\PYG{p}{.}\PYG{n+na}{uid}\PYG{p}{)\PYGZob{}} \PYG{c+c1}{//|| user.role != Role.OWNER.toString()) \PYGZob{}}
+                                    \PYG{n}{results}\PYG{p}{.}\PYG{n+na}{add}\PYG{p}{(}\PYG{n}{user}\PYG{p}{)}
+                                \PYG{p}{\PYGZcb{}}
+                            \PYG{p}{\PYGZcb{}}
+                        \PYG{p}{\PYGZcb{}} \PYG{o}{?:} \PYG{n}{kotlin}\PYG{p}{.}\PYG{n+na}{run} \PYG{p}{\PYGZob{}}
+                            \PYG{n}{results}\PYG{p}{.}\PYG{n+na}{add}\PYG{p}{(}\PYG{n}{user}\PYG{p}{)}
+                        \PYG{p}{\PYGZcb{}}
+                    \PYG{p}{\PYGZcb{}}
+                \PYG{p}{\PYGZcb{}}
+                \PYG{n}{searchUsers}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n}{results}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{else} \PYG{p}{\PYGZob{}}
+            \PYG{n}{userModels}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}} \PYG{n}{allUsers} \PYG{o}{\PYGZhy{}\PYGZgt{}}
+                \PYG{n}{exceptUsers}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+                    \PYG{k+kd}{val} \PYG{n+nv}{results} \PYG{p}{:} \PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{UserModel}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{arrayListOf}\PYG{p}{()}
+                    \PYG{k}{for}\PYG{p}{(}\PYG{n}{user} \PYG{k}{in} \PYG{n}{allUsers}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+                        \PYG{k}{for} \PYG{p}{(}\PYG{n}{exUser} \PYG{k}{in} \PYG{n+nb}{it}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+                            \PYG{k}{if} \PYG{p}{(}\PYG{n}{exUser}\PYG{p}{.}\PYG{n+na}{uid} \PYG{o}{!=} \PYG{n}{user}\PYG{p}{.}\PYG{n+na}{uid}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+                                \PYG{n}{results}\PYG{p}{.}\PYG{n+na}{add}\PYG{p}{(}\PYG{n}{user}\PYG{p}{)}
+                            \PYG{p}{\PYGZcb{}}
+                        \PYG{p}{\PYGZcb{}}
+                    \PYG{p}{\PYGZcb{}}
+                    \PYG{n}{searchUsers}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n}{results}
+                \PYG{p}{\PYGZcb{}} \PYG{o}{?:} \PYG{n}{kotlin}\PYG{p}{.}\PYG{n+na}{run} \PYG{p}{\PYGZob{}}
+                    \PYG{n}{searchUsers}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n}{userModels}\PYG{p}{.}\PYG{n+na}{value}
+                \PYG{p}{\PYGZcb{}}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k+kd}{fun} \PYG{n+nf}{searchPlants}\PYG{p}{(}\PYG{n}{key}\PYG{p}{:}\PYG{k+kt}{String?}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{key} \PYG{o}{!=} \PYG{k+kc}{null} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{plantModels}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{!=} \PYG{k+kc}{null}\PYG{p}{)\PYGZob{}}
+            \PYG{k+kd}{val} \PYG{n+nv}{results} \PYG{p}{:} \PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{PlantModel}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{arrayListOf}\PYG{p}{()}
+            \PYG{n}{plantModels}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+                \PYG{k}{for} \PYG{p}{(}\PYG{n}{user} \PYG{k}{in} \PYG{n+nb}{it}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+                    \PYG{k}{if} \PYG{p}{(}\PYG{n}{user}\PYG{p}{.}\PYG{n+na}{name}\PYG{o}{?.}\PYG{n+na}{contains}\PYG{p}{(}\PYG{n}{key}\PYG{p}{)} \PYG{o}{==} \PYG{k+kc}{true}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+                        \PYG{n}{results}\PYG{p}{.}\PYG{n+na}{add}\PYG{p}{(}\PYG{n}{user}\PYG{p}{)}
+                    \PYG{p}{\PYGZcb{}}
+                \PYG{p}{\PYGZcb{}}
+                \PYG{n}{searchPlants}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n}{results}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{else} \PYG{p}{\PYGZob{}}
+            \PYG{n}{searchPlants}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n}{plantModels}\PYG{p}{.}\PYG{n+na}{value}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

@@ -1,0 +1,94 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{class} \PYG{n+nc}{AddNoteViewModel} \PYG{p}{:} \PYG{n}{ViewModel}\PYG{p}{()\PYGZob{}}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{auth} \PYG{p}{:} \PYG{n}{FirebaseAuth} \PYG{o}{=} \PYG{n}{Firebase}\PYG{p}{.}\PYG{n+na}{auth}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{firestore} \PYG{p}{:} \PYG{n}{FirebaseFirestore} \PYG{o}{=} \PYG{n}{Firebase}\PYG{p}{.}\PYG{n+na}{firestore}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{noteModel} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{n}{NoteModel}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{n}{NoteModel}\PYG{p}{())}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{timeHour} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{Int}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{l+m}{0}\PYG{p}{)}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{timeMinute} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{Int}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{l+m}{0}\PYG{p}{)}
+    \PYG{k+kd}{var} \PYG{n+nv}{isNotEmpties} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{Boolean}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{k+kc}{false}\PYG{p}{)}
+    \PYG{k+kd}{var} \PYG{n+nv}{isNoteAdd}\PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{Boolean}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{k+kc}{false}\PYG{p}{)}
+    \PYG{k+kd}{var} \PYG{n+nv}{addNoteError} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{String}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZdq{}}\PYG{p}{)}
+
+    \PYG{k+kd}{companion} \PYG{k+kd}{object} \PYG{err}{\PYGZob{}}
+        \PYG{k+kd}{const} \PYG{k+kd}{val} \PYG{n+nv}{TAG} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}addNote\PYGZdq{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{setCurrentData}\PYG{p}{(}\PYG{n}{noteModel}\PYG{p}{:} \PYG{n}{NoteModel?)}\PYG{p}{\PYGZob{}}
+        \PYG{n}{noteModel}\PYG{o}{?.}\PYG{n+na}{let}\PYG{p}{\PYGZob{}}
+            \PYG{k}{this}\PYG{p}{.}\PYG{n+na}{noteModel}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n+nb}{it}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{getCurrentNoteModel}\PYG{p}{()} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{n}{NoteModel}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{noteModel}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{checkNotEmpty}\PYG{p}{(}\PYG{n}{boolean}\PYG{p}{:} \PYG{k+kt}{Boolean}\PYG{p}{)} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{Boolean}\PYG{o}{\PYGZgt{}} \PYG{p}{\PYGZob{}}
+        \PYG{n}{isNotEmpties}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n}{boolean}
+        \PYG{k}{return} \PYG{n}{isNotEmpties}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{getDate}\PYG{p}{():} \PYG{k+kt}{Long} \PYG{p}{\PYGZob{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{noteModel}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{date} \PYG{o}{==} \PYG{k+kc}{null}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{noteModel}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{date} \PYG{o}{=} \PYG{n}{ViewUtility}\PYG{p}{().}\PYG{n+na}{getCurrentDate}\PYG{p}{()}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{return} \PYG{n}{ViewUtility}\PYG{p}{().}\PYG{n+na}{formatStringToDate}\PYG{p}{(}\PYG{n}{noteModel}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{date}\PYG{p}{)}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{setDate}\PYG{p}{(}\PYG{n}{date}\PYG{p}{:} \PYG{k+kt}{Long?}\PYG{p}{):} \PYG{k+kt}{String?} \PYG{p}{\PYGZob{}}
+        \PYG{n}{noteModel}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{date} \PYG{o}{=} \PYG{n}{ViewUtility}\PYG{p}{().}\PYG{n+na}{formatDateToString}\PYG{p}{(}\PYG{n}{date}\PYG{p}{)}
+        \PYG{k}{return} \PYG{n}{noteModel}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{date}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{setTime}\PYG{p}{(}\PYG{n}{hour}\PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{,} \PYG{n}{minute}\PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{)} \PYG{p}{:} \PYG{k+kt}{String?}\PYG{p}{\PYGZob{}}
+        \PYG{n}{noteModel}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{time} \PYG{o}{=} \PYG{n}{ViewUtility}\PYG{p}{().}\PYG{n+na}{formatTimeToString}\PYG{p}{(}\PYG{n}{hour}\PYG{p}{,} \PYG{n}{minute}\PYG{p}{)}
+        \PYG{k}{return} \PYG{n}{noteModel}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{time}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{getTime}\PYG{p}{()\PYGZob{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{noteModel}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{time} \PYG{o}{==} \PYG{k+kc}{null}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{noteModel}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{time} \PYG{o}{=} \PYG{n}{ViewUtility}\PYG{p}{().}\PYG{n+na}{getCurrentTime}\PYG{p}{()}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k+kd}{val} \PYG{p}{(}\PYG{n+nv}{hour}\PYG{p}{,} \PYG{n+nv}{minute}\PYG{p}{)} \PYG{o}{=} \PYG{n}{ViewUtility}\PYG{p}{().}\PYG{n+na}{formatStringToTime}\PYG{p}{(}\PYG{n}{noteModel}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{time}\PYG{p}{)}
+        \PYG{n}{timeHour}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n}{hour}
+        \PYG{n}{timeMinute}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n}{minute}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{getTimeHour}\PYG{p}{()} \PYG{p}{:} \PYG{k+kt}{Int} \PYG{p}{\PYGZob{}}
+        \PYG{n}{timeHour}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+            \PYG{k}{return} \PYG{n+nb}{it}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{return} \PYG{l+m}{0}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{getTimeMinute}\PYG{p}{()} \PYG{p}{:} \PYG{k+kt}{Int} \PYG{p}{\PYGZob{}}
+        \PYG{n}{timeMinute}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+            \PYG{k}{return} \PYG{n+nb}{it}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{return} \PYG{l+m}{0}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{createNote}\PYG{p}{(}\PYG{n}{title}\PYG{p}{:}\PYG{k+kt}{String}\PYG{p}{,} \PYG{n}{description}\PYG{p}{:}\PYG{k+kt}{String}\PYG{p}{)\PYGZob{}}
+        \PYG{k+kd}{val} \PYG{n+nv}{db} \PYG{o}{=} \PYG{n}{firestore}\PYG{p}{.}\PYG{n+na}{collection}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}users\PYGZdq{}}\PYG{p}{).}\PYG{n+na}{document}\PYG{p}{(}\PYG{n}{auth}\PYG{p}{.}\PYG{n+na}{uid}\PYG{o}{!!}\PYG{p}{).}\PYG{n+na}{collection}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}notes\PYGZdq{}}\PYG{p}{)}
+        \PYG{k+kd}{val} \PYG{n+nv}{ref} \PYG{p}{:} \PYG{n}{DocumentReference} \PYG{o}{=} \PYG{n}{db}\PYG{p}{.}\PYG{n+na}{document}\PYG{p}{()}
+
+        \PYG{k}{try} \PYG{p}{\PYGZob{}}
+            \PYG{n}{noteModel}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{apply}\PYG{p}{\PYGZob{}}
+                \PYG{k}{this}\PYG{p}{.}\PYG{n+na}{noteId} \PYG{o}{=} \PYG{n}{noteId} \PYG{o}{?:} \PYG{n}{ref}\PYG{p}{.}\PYG{n+na}{id}
+                \PYG{k}{this}\PYG{p}{.}\PYG{n+na}{title} \PYG{o}{=} \PYG{n}{title}
+                \PYG{k}{this}\PYG{p}{.}\PYG{n+na}{description} \PYG{o}{=} \PYG{n}{description}
+            \PYG{p}{\PYGZcb{}}
+
+            \PYG{n}{db}\PYG{p}{.}\PYG{n+na}{document}\PYG{p}{(}\PYG{n}{noteModel}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{!!}\PYG{p}{.}\PYG{n+na}{noteId}\PYG{o}{!!}\PYG{p}{).}\PYG{n+na}{set}\PYG{p}{(}\PYG{n}{noteModel}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{!!}\PYG{p}{.}\PYG{n+na}{toHashMap}\PYG{p}{()).}\PYG{n+na}{addOnCompleteListener} \PYG{p}{\PYGZob{}}
+                \PYG{k}{if}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{isSuccessful}\PYG{p}{)\PYGZob{}}
+                    \PYG{n}{isNoteAdd}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{k+kc}{true}
+                \PYG{p}{\PYGZcb{}} \PYG{k}{else} \PYG{p}{\PYGZob{}}
+                    \PYG{n}{addNoteError}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{exception}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{()}
+                    \PYG{n}{isNoteAdd}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{k+kc}{false}
+                \PYG{p}{\PYGZcb{}}
+            \PYG{p}{\PYGZcb{}}
+
+        \PYG{p}{\PYGZcb{}} \PYG{k}{catch} \PYG{p}{(}\PYG{n}{e}\PYG{p}{:}\PYG{n}{Exception}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{e}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}Error submit note\PYGZdq{}}\PYG{p}{,} \PYG{n}{e}\PYG{p}{)}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

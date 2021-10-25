@@ -1,0 +1,33 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{class} \PYG{n+nc}{KitCropsFragment} \PYG{p}{:} \PYG{n}{Fragment}\PYG{p}{()} \PYG{p}{\PYGZob{}}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{\PYGZus{}binding} \PYG{p}{:} \PYG{n}{FragmentKitCropsBinding? }\PYG{o}{=} \PYG{k+kc}{null}
+    \PYG{k+kd}{private} \PYG{k+kd}{val} \PYG{n+nv}{binding} \PYG{k}{get}\PYG{p}{()} \PYG{o}{=} \PYG{n}{\PYGZus{}binding}\PYG{o}{!!}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{viewModel} \PYG{p}{:} \PYG{n}{ProfileKitViewModel}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onCreateView}\PYG{p}{(}
+        \PYG{n}{inflater}\PYG{p}{:} \PYG{n}{LayoutInflater}\PYG{p}{,} \PYG{n}{container}\PYG{p}{:} \PYG{n}{ViewGroup?,}
+        \PYG{n}{savedInstanceState}\PYG{p}{:} \PYG{n}{Bundle?}
+    \PYG{p}{):} \PYG{n}{View} \PYG{p}{\PYGZob{}}
+        \PYG{n}{\PYGZus{}binding} \PYG{o}{=} \PYG{n}{FragmentKitCropsBinding}\PYG{p}{.}\PYG{n+na}{inflate}\PYG{p}{(}\PYG{n}{inflater}\PYG{p}{,} \PYG{n}{container}\PYG{p}{,} \PYG{k+kc}{false}\PYG{p}{)}
+        \PYG{k}{return} \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{root}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onViewCreated}\PYG{p}{(}\PYG{n}{view}\PYG{p}{:} \PYG{n}{View}\PYG{p}{,} \PYG{n}{savedInstanceState}\PYG{p}{:} \PYG{n}{Bundle?)} \PYG{p}{\PYGZob{}}
+        \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{onViewCreated}\PYG{p}{(}\PYG{n}{view}\PYG{p}{,} \PYG{n}{savedInstanceState}\PYG{p}{)}
+        \PYG{n}{viewModel} \PYG{o}{=} \PYG{p}{(}\PYG{n}{requireActivity}\PYG{p}{()} \PYG{k}{as} \PYG{n}{ProfileKitActivity}\PYG{p}{).}\PYG{n+na}{viewModel}
+
+        \PYG{k+kd}{val} \PYG{n+nv}{data} \PYG{p}{:} \PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{CropsModel}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{arrayListOf}\PYG{p}{()}
+        \PYG{k+kd}{val} \PYG{n+nv}{rowAdapter} \PYG{o}{=} \PYG{n}{AdapterType}\PYG{p}{.}\PYG{n+na}{PROFILE\PYGZus{}CROPS}\PYG{p}{.}\PYG{n+na}{getAdapter}\PYG{p}{(}\PYG{n}{requireContext}\PYG{p}{(),} \PYG{n}{data}\PYG{p}{)}
+        \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getCurrentCrops}\PYG{p}{().}\PYG{n+na}{observe}\PYG{p}{(}\PYG{n}{viewLifecycleOwner}\PYG{p}{,} \PYG{p}{\PYGZob{}}
+            \PYG{n}{data}\PYG{p}{.}\PYG{n+na}{clear}\PYG{p}{()}
+            \PYG{n}{data}\PYG{p}{.}\PYG{n+na}{addAll}\PYG{p}{(}\PYG{n+nb}{it} \PYG{o}{?:} \PYG{n}{arrayListOf}\PYG{p}{())}
+            \PYG{n}{rowAdapter}\PYG{p}{.}\PYG{n+na}{notifyDataSetChanged}\PYG{p}{()}
+        \PYG{p}{\PYGZcb{})}
+
+        \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{kitCropsRecyclerView}\PYG{p}{.}\PYG{n+na}{apply} \PYG{p}{\PYGZob{}}
+            \PYG{n}{adapter} \PYG{o}{=} \PYG{n}{rowAdapter}
+            \PYG{n}{layoutManager} \PYG{o}{=} \PYG{n}{LinearLayoutManager}\PYG{p}{(}\PYG{n}{requireContext}\PYG{p}{())}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

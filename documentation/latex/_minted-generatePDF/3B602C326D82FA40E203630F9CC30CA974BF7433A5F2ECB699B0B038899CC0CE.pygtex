@@ -1,0 +1,10 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nd}{@Parcelize}
+\PYG{k+kd}{data} \PYG{k+kd}{class} \PYG{n+nc}{FeedbackModel}\PYG{p}{(}
+    \PYG{k+kd}{var} \PYG{n+nv}{feedbackId} \PYG{p}{:} \PYG{k+kt}{String?} \PYG{o}{=} \PYG{k+kc}{null}\PYG{p}{,}
+    \PYG{k+kd}{var} \PYG{n+nv}{userId} \PYG{p}{:} \PYG{k+kt}{String?} \PYG{o}{=} \PYG{k+kc}{null}\PYG{p}{,}
+    \PYG{k+kd}{var} \PYG{n+nv}{content} \PYG{p}{:} \PYG{k+kt}{String?} \PYG{o}{=} \PYG{k+kc}{null}\PYG{p}{,}
+    \PYG{k+kd}{var} \PYG{n+nv}{rating} \PYG{p}{:} \PYG{k+kt}{Float?} \PYG{o}{=} \PYG{k+kc}{null}\PYG{p}{,}
+    \PYG{k+kd}{var} \PYG{n+nv}{timestamp}\PYG{p}{:} \PYG{k+kt}{String?} \PYG{o}{=} \PYG{k+kc}{null}
+\PYG{p}{)} \PYG{p}{:} \PYG{n}{Parcelable}
+\end{Verbatim}

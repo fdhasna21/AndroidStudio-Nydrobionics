@@ -1,0 +1,401 @@
+\documentclass{article}
+\title{\vspace{-5ex} \bfseries {\sc{LAMPIRAN}}}
+\date{\vspace{-10ex}}
+\usepackage{geometry}
+\geometry{
+	a4paper,
+	left=40mm,
+	top=30mm,
+	right=30mm,
+	bottom=30mm
+}
+\usepackage{pdfpages}
+\usepackage[bookmarks=false]{hyperref}
+\usepackage{minted}
+\usepackage{caption}
+\usepackage{setspace}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[R]{Laporan Tugas Akhir Aplikasi Monitoring Kebun Hidroponik Berbasis \textit{Mobile} $\vert$ \thepage} 
+\fancypagestyle{plain}{
+	\renewcommand{\headrulewidth}{0pt}
+	\fancyhf{}%
+	\fancyfoot[R]{Laporan Tugas Akhir Aplikasi Monitoring Kebun Hidroponik Berbasis \textit{Mobile} $\vert$ \thepage}
+}
+
+\setcounter{page}{43}
+\setcounter{secnumdepth}{4}
+\setminted{
+	linenos, 
+	breaklines, 
+	breakanywhere, 
+	fontsize=\footnotesize, 
+	frame=single, 
+	framesep=10pt, 
+	baselinestretch=1
+}
+\newenvironment{multipageListing}{
+	\setstretch{1}
+	\captionsetup{type=listing, justification=centering, skip=-5pt}
+}{}
+
+\renewcommand{\listingscaption}{Kode}
+\renewcommand{\thesection}{\Alph{section}.}
+\renewcommand{\thesubsection}{\arabic{subsection}.}
+\renewcommand{\thesubsubsection}{\alph{subsubsection})}
+\newcommand{\subsectionpostlude}{\vspace{1em}}
+
+\begin{document}
+	\maketitle
+	Untuk memudahkan pembuatan lampiran, maka kontennya di-\textit{generate} menjadi PDF menggunakan LaTeX (TexStudio sebagai IDE-nya) dengan memanfaatkan \textit{package} pdfpages dan minted.  LaTeX adalah sebuah bahasa pemograman yang difokuskan untuk membuat sebuah dokumen dan banyak digunakan untuk membuat thesis maupun jurnal ilmiah. \textit{Source code} dalam LaTeX untuk membuat lampiran ini ditunjukkan melalui Kode \ref*{code:latex}.
+	\begin{multipageListing}
+		\inputminted{latex}{generatePDF.tex}
+		\captionof{listing}{\textit{Source code} LaTeX untuk membuat lampiran\label{code:latex}}
+	\end{multipageListing}
+	
+	\includepdf[pages={1-3}, scale=0.75, nup=1x3, pagecommand=\section{PRODUCT MANUAL}]{codes/product_manual.pdf}
+	\includepdf[pages={4-}, scale=0.75, nup=1x3]{codes/product_manual.pdf}
+
+	\includepdf[pages={11-12}, scale=0.8, nup=1x2, offset=0 0.9cm, pagecommand=\section{FRONT END}]{codes/ppt.pdf}
+	\includepdf[pages={13-18}, scale=0.8, nup=1x2, offset=0 0.5cm]{codes/ppt.pdf}
+
+	\section{DATA MODEL}
+		\subsection{USER MODEL}
+		\begin{multipageListing}
+			\inputminted{kotlin}{codes/UserModel.kt}
+			\captionof{listing}{\textit{Data class} untuk \textit{User}}
+		\end{multipageListing}
+	
+		\subsection{NOTE MODEL}
+		\begin{multipageListing}
+			\inputminted{kotlin}{codes/NoteModel.kt}
+			\captionof{listing}{\textit{Data class} untuk \textit{Note}}
+		\end{multipageListing}
+
+		\subsection{FARM MODEL}
+		\begin{multipageListing}
+			\inputminted{kotlin}{codes/FarmModel.kt}
+			\captionof{listing}{\textit{Data class} untuk \textit{Farm}}
+		\end{multipageListing}
+		
+		\subsection{KIT MODEL}
+		\begin{multipageListing}
+			\inputminted{kotlin}{codes/KitModel.kt}
+			\captionof{listing}{\textit{Data class} untuk \textit{Hydroponic Kit}}
+		\end{multipageListing}
+	
+		\subsection{DATA MONITORING MODEL}
+		\begin{multipageListing}
+			\inputminted{kotlin}{codes/DataMonitoringModel.kt}
+			\captionof{listing}{\textit{Data class} untuk \textit{Data Monitoring}}
+		\end{multipageListing}
+		
+		\subsection{CROPS MODEL}
+		\begin{multipageListing}
+			\inputminted{kotlin}{codes/CropsModel.kt}
+			\captionof{listing}{\textit{Data class} untuk \textit{Crops}}
+		\end{multipageListing}
+	
+		\subsection{PLANT MODEL}
+		\begin{multipageListing}
+			\inputminted{kotlin}{codes/PlantModel.kt}
+			\captionof{listing}{\textit{Data class} untuk \textit{Plant}}
+		\end{multipageListing}
+		
+		\subsection{FEEDBACK MODEL}
+		\begin{multipageListing}
+			\inputminted{kotlin}{codes/FeedbackModel.kt}
+			\captionof{listing}{\textit{Data class} untuk \textit{Feedback}}
+		\end{multipageListing}
+		
+		\subsection{SCORE LEVEL MODEL}
+		\begin{multipageListing}
+			\inputminted{kotlin}{codes/ScoreLevel.kt}
+			\captionof{listing}{\textit{Data class} untuk data yang memiliki nilai minimum dan maksimum}
+		\end{multipageListing}
+		
+		\subsection{URI FILE EXTENSIONS MODEL}
+		\begin{multipageListing}
+			\inputminted{kotlin}{codes/UriFileExtensions.kt}
+			\captionof{listing}{\textit{Data class} untuk yang digunakan untuk mengelola \textit{attach} gambar}
+		\end{multipageListing}
+
+	\section{VIEW MODEL}
+		\subsection{SPLASH SCREEN VIEW MODEL}
+		\begin{multipageListing}
+			\inputminted{kotlin}{codes/SplashScreenViewModel.kt}
+			\captionof{listing}{\textit{View Model} untuk \textit{Splash Screen Activity}}
+		\end{multipageListing}
+	
+		\subsection{SIGN IN VIEW MODEL}
+		\begin{multipageListing}
+			\inputminted{kotlin}{codes/SignInViewModel.kt}
+			\captionof{listing}{\textit{View Model} untuk \textit{Sign In Activity}}
+		\end{multipageListing}
+	
+		\subsection{SIGN UP VIEW MODEL}
+		\begin{multipageListing}
+			\inputminted{kotlin}{codes/SignUpViewModel.kt}
+			\captionof{listing}{\textit{View Model} untuk \textit{Sign Up Activity}}
+		\end{multipageListing}
+
+		\subsection{FORGET PASSWORD VIEW MODEL}
+		\begin{multipageListing}
+			\inputminted{kotlin}{codes/ForgetPasswordViewModel.kt}
+			\captionof{listing}{\textit{View Model} untuk \textit{Forget Password Activity}}
+		\end{multipageListing}
+
+		\subsection{CREATE PROFILE VIEW MODEL}
+		\begin{multipageListing}
+			\inputminted{kotlin}{codes/CreateProfileViewModel.kt}
+			\captionof{listing}{\textit{View Model} untuk \textit{Create Profile Activity} beserta \textit{Create User} dan \textit{Create Farm} \textit{fragments}. Termasuk juga untuk \textit{Edit Profile User} dan \textit{Edit Profile Farm} \textit{activities}}
+		\end{multipageListing}
+	
+		\subsection{MAIN VIEW MODEL}
+		\begin{multipageListing}
+			\inputminted{kotlin}{codes/MainViewModel.kt}
+			\captionof{listing}{\textit{View Model} untuk \textit{Main Activity} beserta \textit{Main Home}, \textit{Main Posts}, \textit{Main Add}, \textit{Main Notes}, dan \textit{Main Profile} \textit{fragments}}
+		\end{multipageListing}
+	
+		\subsection{ADD CROPS VIEW MODEL}
+		\begin{multipageListing}
+			\inputminted{kotlin}{codes/AddCropsViewModel.kt}
+			\captionof{listing}{\textit{View Model} untuk \textit{Add Crops Activity}}
+		\end{multipageListing}
+		
+		\subsection{ADD DATA MONITORING VIEW MODEL}
+		\begin{multipageListing}
+			\inputminted{kotlin}{codes/AddDataMonitoringViewModel.kt}
+			\captionof{listing}{\textit{View Model} untuk \textit{Add Data Monitoring Activity}}
+		\end{multipageListing}
+		
+		\subsection{ADD KIT VIEW MODEL}
+		\begin{multipageListing}
+			\inputminted{kotlin}{codes/AddKitViewModel.kt}
+			\captionof{listing}{\textit{View Model} untuk \textit{Add Kit Activity}}
+		\end{multipageListing}
+		
+		\subsection{ADD NOTE VIEW MODEL}
+		\begin{multipageListing}
+			\inputminted{kotlin}{codes/AddNoteViewModel.kt}
+			\captionof{listing}{\textit{View Model} untuk \textit{Add Note Activity}}
+		\end{multipageListing}
+		
+		\subsection{ADD PLANT VIEW MODEL}
+		\begin{multipageListing}
+			\inputminted{kotlin}{codes/AddPlantViewModel.kt}
+			\captionof{listing}{\textit{View Model} untuk \textit{Add Plant Activity}}
+		\end{multipageListing}
+
+		\subsection{PROFILE KIT VIEW MODEL}
+		\begin{multipageListing}
+			\inputminted{kotlin}{codes/ProfileKitViewModel.kt}
+			\captionof{listing}{\textit{View Model} untuk \textit{Profile Kit Activity} beserta \textit{Kit Overview}, \textit{Kit Monitoring}, dan \textit{Kit Crops} \textit{fragments}}
+		\end{multipageListing}
+		
+		\subsection{PROFILE USER VIEW MODEL}
+		\begin{multipageListing}
+			\inputminted{kotlin}{codes/ProfileUserViewModel.kt}
+			\captionof{listing}{\textit{View Model} untuk \textit{Profile User Activity}}
+		\end{multipageListing}
+		
+		\subsection{SEARCH VIEW MODEL}
+		\begin{multipageListing}
+			\inputminted{kotlin}{codes/SearchViewModel.kt}
+			\captionof{listing}{\textit{View Model} untuk \textit{Search Activity}}
+		\end{multipageListing}
+		
+		\subsection{FEEDBACK VIEW MODEL}
+		\begin{multipageListing}
+			\inputminted{kotlin}{codes/FeedbackViewModel.kt}
+			\captionof{listing}{\textit{View Model} untuk \textit{Feedback Activity}}
+		\end{multipageListing}
+		
+		\subsection{SHOW RECYCLER VIEW MODEL}
+		\begin{multipageListing}
+			\inputminted{kotlin}{codes/ShowRecyclerViewModel.kt}
+			\captionof{listing}{\textit{View Model} untuk \textit{Show Recycler Activity}}
+		\end{multipageListing}
+
+	\section{VIEW LAYER (ACTIVITY AND FRAGMENT)}
+		\subsection{SPLASH SCREEN ACTIVITY}
+		\begin{multipageListing}
+			\inputminted{kotlin}{codes/SplashScreenActivity.kt}
+			\captionof{listing}{\textit{Source Code} untuk \textit{Splash Screen Activity}}
+		\end{multipageListing}
+		
+		\subsection{SIGN IN ACTIVITY}
+		\begin{multipageListing}
+			\inputminted{kotlin}{codes/SignInActivity.kt}
+			\captionof{listing}{\textit{Source Code} untuk \textit{Sign In Activity}}
+		\end{multipageListing}
+		
+		\subsection{SIGN UP ACTIVITY}
+		\begin{multipageListing}
+			\inputminted{kotlin}{codes/SignUpActivity.kt}
+			\captionof{listing}{\textit{Source Code} untuk \textit{Sign Up Activity}}
+		\end{multipageListing}
+		
+		\subsection{FORGET PASSWORD ACTIVITY}
+		\begin{multipageListing}
+			\inputminted{kotlin}{codes/ForgetPasswordActivity.kt}
+			\captionof{listing}{\textit{Source Code} untuk \textit{Forget Password Activity}}
+		\end{multipageListing}
+		
+		\subsection{CREATE PROFILE ACTIVITY}
+		\begin{multipageListing}
+			\inputminted{kotlin}{codes/CreateProfileActivity.kt}
+			\captionof{listing}{\textit{Source Code} untuk \textit{Create Profile Activity} beserta \textit{fragments} terkait}
+		\end{multipageListing}
+	
+			\subsubsection{CREATE USER FRAGMENT}
+			\begin{multipageListing}
+				\inputminted{kotlin}{codes/CreateUserFragment.kt}
+				\captionof{listing}{\textit{Source Code} untuk \textit{Create User Fragment}}
+			\end{multipageListing}
+			
+			\subsubsection{CREATE FARM FRAGMENT}
+			\begin{multipageListing}
+				\inputminted{kotlin}{codes/CreateFarmFragment.kt}
+				\captionof{listing}{\textit{Source Code} untuk \textit{Create Farm Fragment}}
+			\end{multipageListing}
+		
+		\subsection{MAIN ACTIVITY}
+		\begin{multipageListing}
+			\inputminted{kotlin}{codes/MainActivity.kt}
+			\captionof{listing}{\textit{Source Code} untuk \textit{Main Activity} beserta \textit{fragments} terkait}
+		\end{multipageListing}
+	
+			\subsubsection{MAIN HOME FRAGMENT}
+			\begin{multipageListing}
+				\inputminted{kotlin}{codes/MainHomeFragment.kt}
+				\captionof{listing}{\textit{Source Code} untuk \textit{Main Home Fragment}}
+			\end{multipageListing}
+			
+			\subsubsection{MAIN POSTS FRAGMENT}
+			\begin{multipageListing}
+				\inputminted{kotlin}{codes/MainPostsFragment.kt}
+				\captionof{listing}{\textit{Source Code} untuk \textit{Main Posts Fragment}}
+			\end{multipageListing}
+		
+			\subsubsection{MAIN ADD FRAGMENT}
+			\begin{multipageListing}
+				\inputminted{kotlin}{codes/MainAddFragment.kt}
+				\captionof{listing}{\textit{Source Code} untuk \textit{Main Add Fragment}}
+			\end{multipageListing}
+			
+			\subsubsection{MAIN NOTES FRAGMENT}
+			\begin{multipageListing}
+				\inputminted{kotlin}{codes/MainNotesFragment.kt}
+				\captionof{listing}{\textit{Source Code} untuk \textit{Main Notes Fragment}}
+			\end{multipageListing}
+		
+			\subsubsection{MAIN PROFILE FRAGMENT}
+			\begin{multipageListing}
+				\inputminted{kotlin}{codes/MainProfileFragment.kt}
+				\captionof{listing}{\textit{Source Code} untuk \textit{Main Profile Fragment}}
+			\end{multipageListing}
+	
+		\subsection{ADD CROPS ACTIVITY}
+		\begin{multipageListing}
+			\inputminted{kotlin}{codes/AddCropsActivity.kt}
+			\captionof{listing}{\textit{Source Code} untuk \textit{Add Crops Activity}}
+		\end{multipageListing}
+		
+		\subsection{ADD DATA MONITORING ACTIVITY}
+		\begin{multipageListing}
+			\inputminted{kotlin}{codes/AddDataMonitoringActivity.kt}
+			\captionof{listing}{\textit{Source Code} untuk \textit{Add Data Monitoring Activity}}
+		\end{multipageListing}
+		
+		\subsection{ADD KIT ACTIVITY}
+		\begin{multipageListing}
+			\inputminted{kotlin}{codes/AddKitActivity.kt}
+			\captionof{listing}{\textit{Source Code} untuk \textit{Add Kit Activity}}
+		\end{multipageListing}
+		
+		\subsection{ADD NOTE ACTIVITY}
+		\begin{multipageListing}
+			\inputminted{kotlin}{codes/AddNoteActivity.kt}
+			\captionof{listing}{\textit{Source Code} untuk \textit{Add Note Activity}}
+		\end{multipageListing}
+		
+		\subsection{ADD PLANT ACTIVITY}
+		\begin{multipageListing}
+			\inputminted{kotlin}{codes/AddPlantActivity.kt}
+			\captionof{listing}{\textit{Source Code} untuk \textit{Add Plant Activity}}
+		\end{multipageListing}
+		
+		\subsection{PROFILE KIT ACTIVITY}
+		\begin{multipageListing}
+			\inputminted{kotlin}{codes/ProfileKitActivity.kt}
+			\captionof{listing}{\textit{Source Code} untuk \textit{Profile Kit Activity} beserta \textit{fragments} terkait}
+		\end{multipageListing}
+	
+			\subsubsection{KIT OVERVIEW FRAGMENT}
+			\begin{multipageListing}
+				\inputminted{kotlin}{codes/KitOverviewFragment.kt}
+				\captionof{listing}{\textit{Source Code} untuk \textit{KitOverview Fragment}}
+			\end{multipageListing}
+			
+			\subsubsection{KIT MONITORING FRAGMENT}
+			\begin{multipageListing}
+				\inputminted{kotlin}{codes/KitMonitoringFragment.kt}
+				\captionof{listing}{\textit{Source Code} untuk \textit{KitMonitoring Fragment}}
+			\end{multipageListing}
+			
+			\subsubsection{KIT CROPS FRAGMENT}
+			\begin{multipageListing}
+				\inputminted{kotlin}{codes/KitCropsFragment.kt}
+				\captionof{listing}{\textit{Source Code} untuk \textit{Kit Crops Fragment}}
+			\end{multipageListing}
+		
+		\subsection{PROFILE USER ACTIVITY}
+		\begin{multipageListing}
+			\inputminted{kotlin}{codes/ProfileUserActivity.kt}
+			\captionof{listing}{\textit{Source Code} untuk \textit{Profile User Activity}}
+		\end{multipageListing}
+		
+		\subsection{EDIT PROFILE FARM ACTIVITY}
+		\begin{multipageListing}
+			\inputminted{kotlin}{codes/EditProfileFarmActivity.kt}
+			\captionof{listing}{\textit{Source Code} untuk \textit{Edit Profile Farm Activity}}
+		\end{multipageListing}
+		
+		\subsection{EDIT PROFILE USER ACTIVITY}
+		\begin{multipageListing}
+			\inputminted{kotlin}{codes/EditProfileUserActivity.kt}
+			\captionof{listing}{\textit{Source Code} untuk \textit{Edit Profile User Activity}}
+		\end{multipageListing}
+		
+		\subsection{SEARCH MODEL}
+		\begin{multipageListing}
+			\inputminted{kotlin}{codes/SearchActivity.kt}
+			\captionof{listing}{\textit{Source Code} untuk \textit{Search Activity}}
+		\end{multipageListing}
+		
+		\subsection{FEEDBACK ACTIVITY}
+		\begin{multipageListing}
+			\inputminted{kotlin}{codes/FeedbackActivity.kt}
+			\captionof{listing}{\textit{Source Code} untuk \textit{Feedback Activity}}
+		\end{multipageListing}
+		
+		\subsection{SHOW RECYCLER ACTIVITY}
+		\begin{multipageListing}
+			\inputminted{kotlin}{codes/ShowRecyclerActivity.kt}
+			\captionof{listing}{\textit{Source Code} untuk \textit{Show Recycler Activity}}
+		\end{multipageListing}
+	
+		\subsection{SHOW PICTURE ACTIVITY}
+		\begin{multipageListing}
+			\inputminted{kotlin}{codes/ShowPictureActivity.kt}
+			\captionof{listing}{\textit{Source Code} untuk \textit{Show Picture Activity}}
+		\end{multipageListing}
+	
+		\subsection{ABOUT ME ACTIVITY}
+		\begin{multipageListing}
+			\inputminted{kotlin}{codes/AboutMeActivity.kt}
+			\captionof{listing}{\textit{Source Code} untuk \textit{About Me Activity}}
+		\end{multipageListing}
+\end{document}

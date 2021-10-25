@@ -1,0 +1,36 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{class} \PYG{n+nc}{ShowPictureActivity} \PYG{p}{:} \PYG{n}{AppCompatActivity}\PYG{p}{()} \PYG{p}{\PYGZob{}}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{binding} \PYG{p}{:} \PYG{n}{ActivityShowPictureBinding}
+
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{currentImage} \PYG{p}{:} \PYG{n}{Bitmap? }\PYG{o}{=} \PYG{k+kc}{null}
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onCreate}\PYG{p}{(}\PYG{n}{savedInstanceState}\PYG{p}{:} \PYG{n}{Bundle?)} \PYG{p}{\PYGZob{}}
+        \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{onCreate}\PYG{p}{(}\PYG{n}{savedInstanceState}\PYG{p}{)}
+        \PYG{n}{binding} \PYG{o}{=} \PYG{n}{ActivityShowPictureBinding}\PYG{p}{.}\PYG{n+na}{inflate}\PYG{p}{(}\PYG{n}{layoutInflater}\PYG{p}{)}
+        \PYG{n}{setContentView}\PYG{p}{(}\PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{root}\PYG{p}{)}
+
+        \PYG{k+kd}{val} \PYG{n+nv}{titleBar} \PYG{o}{=} \PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{getStringExtra}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}actionBarTitle\PYGZdq{}}\PYG{p}{)}
+
+        \PYG{n}{window}\PYG{p}{.}\PYG{n+na}{statusBarColor} \PYG{o}{=} \PYG{n}{Color}\PYG{p}{.}\PYG{n+na}{BLACK}
+        \PYG{n}{supportActionBar}\PYG{o}{?.}\PYG{n+na}{setDisplayShowHomeEnabled}\PYG{p}{(}\PYG{k+kc}{true}\PYG{p}{)}
+        \PYG{n}{supportActionBar}\PYG{o}{?.}\PYG{n+na}{setDisplayHomeAsUpEnabled}\PYG{p}{(}\PYG{k+kc}{true}\PYG{p}{)}
+        \PYG{n}{supportActionBar}\PYG{o}{?.}\PYG{n+na}{setBackgroundDrawable}\PYG{p}{(}\PYG{n}{ColorDrawable}\PYG{p}{(}\PYG{n}{ContextCompat}\PYG{p}{.}\PYG{n+na}{getColor}\PYG{p}{(}\PYG{k}{this}\PYG{p}{,} \PYG{n}{R}\PYG{p}{.}\PYG{n+na}{color}\PYG{p}{.}\PYG{n+na}{black}\PYG{p}{)))}
+        \PYG{n}{supportActionBar}\PYG{o}{?.}\PYG{n+na}{title} \PYG{o}{=} \PYG{k}{if}\PYG{p}{(}\PYG{n}{titleBar}\PYG{p}{.}\PYG{n+na}{isNullOrEmpty}\PYG{p}{())\PYGZob{}}\PYG{l+s}{\PYGZdq{}Profile Picture\PYGZdq{}}\PYG{p}{\PYGZcb{}}
+        \PYG{k}{else}\PYG{p}{\PYGZob{}}\PYG{n}{titleBar}\PYG{p}{\PYGZcb{}}
+
+        \PYG{k+kd}{val} \PYG{n+nv}{filename} \PYG{o}{=} \PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{getStringExtra}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}photoContent\PYGZdq{}}\PYG{p}{)}
+        \PYG{k}{try} \PYG{p}{\PYGZob{}}
+            \PYG{k+kd}{val} \PYG{n+nv}{`is`}\PYG{p}{:} \PYG{n}{FileInputStream} \PYG{o}{=} \PYG{n}{openFileInput}\PYG{p}{(}\PYG{n}{filename}\PYG{p}{)}
+            \PYG{n}{currentImage} \PYG{o}{=} \PYG{n}{BitmapFactory}\PYG{p}{.}\PYG{n+na}{decodeStream}\PYG{p}{(}\PYG{n}{`is`}\PYG{p}{)}
+            \PYG{n}{`is`}\PYG{p}{.}\PYG{n+na}{close}\PYG{p}{()}
+        \PYG{p}{\PYGZcb{}} \PYG{k}{catch} \PYG{p}{(}\PYG{n}{e}\PYG{p}{:} \PYG{n}{Exception}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+            \PYG{n}{e}\PYG{p}{.}\PYG{n+na}{printStackTrace}\PYG{p}{()}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{showPicture}\PYG{p}{.}\PYG{n+na}{setImageBitmap}\PYG{p}{(}\PYG{n}{currentImage}\PYG{p}{)}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onSupportNavigateUp}\PYG{p}{():} \PYG{k+kt}{Boolean} \PYG{p}{\PYGZob{}}
+        \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{onBackPressed}\PYG{p}{()}
+        \PYG{k}{return} \PYG{k+kc}{true}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

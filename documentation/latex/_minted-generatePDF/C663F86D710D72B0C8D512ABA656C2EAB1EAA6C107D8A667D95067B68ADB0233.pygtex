@@ -1,0 +1,152 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{class} \PYG{n+nc}{MainActivity} \PYG{p}{:} \PYG{n}{AppCompatActivity}\PYG{p}{(),} \PYG{n}{View}\PYG{p}{.}\PYG{n+na}{OnClickListener}\PYG{p}{,}
+    \PYG{n}{SwipeRefreshLayout}\PYG{p}{.}\PYG{n+na}{OnRefreshListener}\PYG{p}{,}
+    \PYG{n}{NavigationView}\PYG{p}{.}\PYG{n+na}{OnNavigationItemSelectedListener} \PYG{p}{\PYGZob{}}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{binding} \PYG{p}{:} \PYG{n}{ActivityMainBinding}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{viewModel} \PYG{p}{:} \PYG{n}{MainViewModel}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{navHostFragment} \PYG{p}{:} \PYG{n}{NavHostFragment}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{navController} \PYG{p}{:} \PYG{n}{NavController}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{actionBarToggle} \PYG{p}{:} \PYG{n}{ActionBarDrawerToggle}
+    \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{swipeRefresh}\PYG{p}{:} \PYG{n}{SwipeRefreshLayout}
+    \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{drawerLayout} \PYG{p}{:} \PYG{n}{DrawerLayout}
+
+    \PYG{n}{companion} \PYG{n}{object}\PYG{p}{\PYGZob{}}
+        \PYG{k+kd}{const} \PYG{k+kd}{val} \PYG{n+nv}{TAG} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}mainActivity\PYGZdq{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onCreate}\PYG{p}{(}\PYG{n}{savedInstanceState}\PYG{p}{:} \PYG{n}{Bundle?)} \PYG{p}{\PYGZob{}}
+        \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{onCreate}\PYG{p}{(}\PYG{n}{savedInstanceState}\PYG{p}{)}
+        \PYG{n}{binding} \PYG{o}{=} \PYG{n}{ActivityMainBinding}\PYG{p}{.}\PYG{n+na}{inflate}\PYG{p}{(}\PYG{n}{layoutInflater}\PYG{p}{)}
+        \PYG{n}{setContentView}\PYG{p}{(}\PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{root}\PYG{p}{)}
+
+        \PYG{n}{viewModel} \PYG{o}{=} \PYG{n}{ViewModelProvider}\PYG{p}{(}\PYG{k}{this}\PYG{p}{).}\PYG{n+na}{get}\PYG{p}{(}\PYG{n}{MainViewModel}\PYG{o}{::}\PYG{n}{class}\PYG{p}{.}\PYG{n+na}{java}\PYG{p}{)}
+        \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{setCurrentData}\PYG{p}{(}
+            \PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{getParcelableExtra}\PYG{o}{\PYGZlt{}}\PYG{n}{UserModel}\PYG{o}{\PYGZgt{}}\PYG{p}{(}\PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{CURRENT\PYGZus{}USER}\PYG{p}{),}
+            \PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{getParcelableExtra}\PYG{o}{\PYGZlt{}}\PYG{n}{FarmModel}\PYG{o}{\PYGZgt{}}\PYG{p}{(}\PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{CURRENT\PYGZus{}FARM}\PYG{p}{))}
+
+        \PYG{n}{navHostFragment} \PYG{o}{=} \PYG{n}{supportFragmentManager}\PYG{p}{.}\PYG{n+na}{findFragmentById}\PYG{p}{(}\PYG{n}{R}\PYG{p}{.}\PYG{n+na}{id}\PYG{p}{.}\PYG{n+na}{mainFragmentContainer}\PYG{p}{)} \PYG{k}{as} \PYG{n}{NavHostFragment}
+        \PYG{n}{navController} \PYG{o}{=} \PYG{n}{navHostFragment}\PYG{p}{.}\PYG{n+na}{navController}
+
+        \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{apply} \PYG{p}{\PYGZob{}}
+            \PYG{n}{mainBottomNavigation}\PYG{p}{.}\PYG{n+na}{setupWithNavController}\PYG{p}{(}\PYG{n}{navController}\PYG{p}{)}
+            \PYG{n}{mainVersion}\PYG{p}{.}\PYG{n+na}{text} \PYG{o}{=} \PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{VERSION\PYGZus{}NAME}
+            \PYG{n}{swipeRefresh} \PYG{o}{=} \PYG{n}{mainSwipeRefresh}
+            \PYG{n}{mainAddFragment}\PYG{p}{.}\PYG{n+na}{setOnClickListener}\PYG{p}{(}\PYG{k}{this}\PYG{n+nd}{@MainActivity}\PYG{p}{)}
+            \PYG{n}{mainSwipeRefresh}\PYG{p}{.}\PYG{n+na}{setOnRefreshListener}\PYG{p}{(}\PYG{k}{this}\PYG{n+nd}{@MainActivity}\PYG{p}{)}
+            \PYG{n}{mainDrawerNavigation}\PYG{p}{.}\PYG{n+na}{setNavigationItemSelectedListener}\PYG{p}{(}\PYG{k}{this}\PYG{n+nd}{@MainActivity}\PYG{p}{)}
+        \PYG{p}{\PYGZcb{}}
+
+        \PYG{n}{setupDrawer}\PYG{p}{()}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{private} \PYG{k+kd}{fun} \PYG{n+nf}{setupDrawer}\PYG{p}{()} \PYG{p}{\PYGZob{}}
+        \PYG{n}{drawerLayout} \PYG{o}{=} \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{mainDrawerLayout}
+        \PYG{n}{actionBarToggle} \PYG{o}{=} \PYG{n}{ActionBarDrawerToggle}\PYG{p}{(}\PYG{k}{this}\PYG{p}{,} \PYG{n}{drawerLayout}\PYG{p}{,} \PYG{l+m}{0}\PYG{p}{,}\PYG{l+m}{0}\PYG{p}{)}
+        \PYG{n}{drawerLayout}\PYG{p}{.}\PYG{n+na}{addDrawerListener}\PYG{p}{(}\PYG{n}{actionBarToggle}\PYG{p}{)}
+        \PYG{n}{actionBarToggle}\PYG{p}{.}\PYG{n+na}{syncState}\PYG{p}{()}
+
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{dispatchTouchEvent}\PYG{p}{(}\PYG{n}{ev}\PYG{p}{:} \PYG{n}{MotionEvent?)}\PYG{p}{:} \PYG{k+kt}{Boolean} \PYG{p}{\PYGZob{}}
+        \PYG{k}{if} \PYG{p}{(}\PYG{n}{currentFocus} \PYG{o}{!=} \PYG{k+kc}{null}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+            \PYG{k+kd}{val} \PYG{n+nv}{imm}\PYG{p}{:} \PYG{n}{InputMethodManager} \PYG{o}{=}
+                \PYG{n}{getSystemService}\PYG{p}{(}\PYG{n}{Context}\PYG{p}{.}\PYG{n+na}{INPUT\PYGZus{}METHOD\PYGZus{}SERVICE}\PYG{p}{)} \PYG{k}{as} \PYG{n}{InputMethodManager}
+            \PYG{n}{imm}\PYG{p}{.}\PYG{n+na}{hideSoftInputFromWindow}\PYG{p}{(}\PYG{n}{currentFocus}\PYG{o}{!!}\PYG{p}{.}\PYG{n+na}{windowToken}\PYG{p}{,} \PYG{l+m}{0}\PYG{p}{)}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{return} \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{dispatchTouchEvent}\PYG{p}{(}\PYG{n}{ev}\PYG{p}{)}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onClick}\PYG{p}{(}\PYG{n}{v}\PYG{p}{:} \PYG{n}{View?)} \PYG{p}{\PYGZob{}}
+        \PYG{k}{when}\PYG{p}{(}\PYG{n}{v}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{mainAddFragment} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{MainAddFragment}\PYG{p}{().}\PYG{n+na}{show}\PYG{p}{(}\PYG{n}{supportFragmentManager}\PYG{p}{,} \PYG{n}{TAG}\PYG{o}{+}\PYG{l+s}{\PYGZdq{}FAB\PYGZdq{}}\PYG{p}{)}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onRefresh}\PYG{p}{()} \PYG{p}{\PYGZob{}}
+        \PYG{k}{when}\PYG{p}{(}\PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{mainBottomNavigation}\PYG{p}{.}\PYG{n+na}{selectedItemId}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{R}\PYG{p}{.}\PYG{n+na}{id}\PYG{p}{.}\PYG{n+na}{mainHomeFragment} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{refreshFarm}\PYG{p}{()}
+            \PYG{n}{R}\PYG{p}{.}\PYG{n+na}{id}\PYG{p}{.}\PYG{n+na}{mainSocialFragment} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{refreshPosts}\PYG{p}{()}
+            \PYG{n}{R}\PYG{p}{.}\PYG{n+na}{id}\PYG{p}{.}\PYG{n+na}{mainNotesFragment} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{refreshNotes}\PYG{p}{()}
+            \PYG{n}{R}\PYG{p}{.}\PYG{n+na}{id}\PYG{p}{.}\PYG{n+na}{mainProfileFragment} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{p}{\PYGZob{}\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onNavigationItemSelected}\PYG{p}{(}\PYG{n}{item}\PYG{p}{:} \PYG{n}{MenuItem}\PYG{p}{):} \PYG{k+kt}{Boolean} \PYG{p}{\PYGZob{}}
+        \PYG{k}{return} \PYG{k}{when}\PYG{p}{(}\PYG{n}{item}\PYG{p}{.}\PYG{n+na}{itemId}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+            \PYG{n}{R}\PYG{p}{.}\PYG{n+na}{id}\PYG{p}{.}\PYG{n+na}{drawer\PYGZus{}edit} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{p}{\PYGZob{}}
+                \PYG{k+kd}{val} \PYG{n+nv}{intent} \PYG{o}{=} \PYG{n}{Intent}\PYG{p}{(}\PYG{k}{this}\PYG{p}{,} \PYG{n}{EditProfileUserActivity}\PYG{o}{::}\PYG{n}{class}\PYG{p}{.}\PYG{n+na}{java}\PYG{p}{)}
+                \PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{putExtra}\PYG{p}{(}\PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{CURRENT\PYGZus{}USER}\PYG{p}{,} \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getCurrentUser}\PYG{p}{().}\PYG{n+na}{value}\PYG{p}{)}
+                \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{i}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}onNavigationItemSelected: }\PYG{l+s+si}{\PYGZdl{}\PYGZob{}}\PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getCurrentUser}\PYG{p}{().}\PYG{n+na}{value}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}
+                \PYG{n}{startActivity}\PYG{p}{(}\PYG{n}{intent}\PYG{p}{)}
+                \PYG{n}{drawerLayout}\PYG{p}{.}\PYG{n+na}{closeDrawer}\PYG{p}{(}\PYG{n}{GravityCompat}\PYG{p}{.}\PYG{n+na}{END}\PYG{p}{)}
+                \PYG{k+kc}{true}
+            \PYG{p}{\PYGZcb{}}
+            \PYG{n}{R}\PYG{p}{.}\PYG{n+na}{id}\PYG{p}{.}\PYG{n+na}{drawer\PYGZus{}signout} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{p}{\PYGZob{}}
+                \PYG{n}{AlertDialog}\PYG{p}{.}\PYG{n+na}{Builder}\PYG{p}{(}\PYG{k}{this}\PYG{p}{)}
+                    \PYG{p}{.}\PYG{n+na}{setTitle}\PYG{p}{(}\PYG{n}{getString}\PYG{p}{(}\PYG{n}{R}\PYG{p}{.}\PYG{n+na}{string}\PYG{p}{.}\PYG{n+na}{sign\PYGZus{}out}\PYG{p}{))}
+                    \PYG{p}{.}\PYG{n+na}{setMessage}\PYG{p}{(}\PYG{n}{getString}\PYG{p}{(}\PYG{n}{R}\PYG{p}{.}\PYG{n+na}{string}\PYG{p}{.}\PYG{n+na}{sign\PYGZus{}out\PYGZus{}warning}\PYG{p}{))}
+                    \PYG{p}{.}\PYG{n+na}{setPositiveButton}\PYG{p}{(}\PYG{n}{getString}\PYG{p}{(}\PYG{n}{R}\PYG{p}{.}\PYG{n+na}{string}\PYG{p}{.}\PYG{n+na}{sign\PYGZus{}out}\PYG{p}{))\PYGZob{}} \PYG{n}{\PYGZus{}}\PYG{p}{,}\PYG{n}{\PYGZus{}} \PYG{o}{\PYGZhy{}\PYGZgt{}}
+                        \PYG{k+kd}{val} \PYG{n+nv}{uid} \PYG{o}{=} \PYG{n}{Firebase}\PYG{p}{.}\PYG{n+na}{auth}\PYG{p}{.}\PYG{n+na}{uid}\PYG{o}{!!}
+                        \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{signOut}\PYG{p}{()}
+                        \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{isUserSignOut}\PYG{p}{.}\PYG{n+na}{observe}\PYG{p}{(}\PYG{k}{this}\PYG{n+nd}{@MainActivity}\PYG{p}{,} \PYG{p}{\PYGZob{}}
+                            \PYG{n+nb}{it}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+                                \PYG{k}{if}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{)\PYGZob{}}
+                                    \PYG{n}{drawerLayout}\PYG{p}{.}\PYG{n+na}{closeDrawer}\PYG{p}{(}\PYG{n}{GravityCompat}\PYG{p}{.}\PYG{n+na}{END}\PYG{p}{)}
+                                    \PYG{n}{DatabaseHandler}\PYG{p}{(}\PYG{k}{this}\PYG{n+nd}{@MainActivity}\PYG{p}{).}\PYG{n+na}{signOut}\PYG{p}{(}\PYG{n}{uid}\PYG{p}{)}
+                                    \PYG{n}{startActivity}\PYG{p}{(}\PYG{n}{Intent}\PYG{p}{(}\PYG{k}{this}\PYG{n+nd}{@MainActivity}\PYG{p}{,} \PYG{n}{SignInActivity}\PYG{o}{::}\PYG{n}{class}\PYG{p}{.}\PYG{n+na}{java}\PYG{p}{))}
+                                    \PYG{n}{finish}\PYG{p}{()}
+                                \PYG{p}{\PYGZcb{}} \PYG{k}{else} \PYG{p}{\PYGZob{}}
+\PYG{c+c1}{//                                    dialogButton.forEach \PYGZob{} it.isEnabled = true \PYGZcb{}}
+                                    \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{signOutError}\PYG{p}{.}\PYG{n+na}{observe}\PYG{p}{(}\PYG{k}{this}\PYG{n+nd}{@MainActivity}\PYG{p}{,} \PYG{p}{\PYGZob{}}
+                                        \PYG{n+nb}{it}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+                                            \PYG{k}{if} \PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{isNotEmpty}\PYG{p}{())} \PYG{p}{\PYGZob{}}
+                                                \PYG{n}{Toast}\PYG{p}{.}\PYG{n+na}{makeText}\PYG{p}{(}\PYG{k}{this}\PYG{n+nd}{@MainActivity}\PYG{p}{,} \PYG{n+nb}{it}\PYG{p}{,} \PYG{n}{Toast}\PYG{p}{.}\PYG{n+na}{LENGTH\PYGZus{}SHORT}\PYG{p}{).}\PYG{n+na}{show}\PYG{p}{()}
+                                                \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{i}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{n+nb}{it}\PYG{p}{)}
+                                                \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{signOutError}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{k+kc}{null}
+                                            \PYG{p}{\PYGZcb{}}
+                                        \PYG{p}{\PYGZcb{}}
+                                    \PYG{p}{\PYGZcb{})}
+                                \PYG{p}{\PYGZcb{}}
+                            \PYG{p}{\PYGZcb{}}
+
+                        \PYG{p}{\PYGZcb{})}
+                    \PYG{p}{\PYGZcb{}}
+                    \PYG{p}{.}\PYG{n+na}{setNegativeButton}\PYG{p}{(}\PYG{n}{getString}\PYG{p}{(}\PYG{n}{R}\PYG{p}{.}\PYG{n+na}{string}\PYG{p}{.}\PYG{n+na}{cancel}\PYG{p}{))\PYGZob{}}\PYG{n}{\PYGZus{}}\PYG{p}{,}\PYG{n}{\PYGZus{}} \PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{p}{\PYGZcb{}}
+                    \PYG{p}{.}\PYG{n+na}{create}\PYG{p}{()}
+                    \PYG{p}{.}\PYG{n+na}{show}\PYG{p}{()}
+                \PYG{k+kc}{true}
+            \PYG{p}{\PYGZcb{}}
+            \PYG{n}{R}\PYG{p}{.}\PYG{n+na}{id}\PYG{p}{.}\PYG{n+na}{drawer\PYGZus{}feedback} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{p}{\PYGZob{}}
+                \PYG{k+kd}{val} \PYG{n+nv}{intent} \PYG{o}{=} \PYG{n}{Intent}\PYG{p}{(}\PYG{k}{this}\PYG{p}{,} \PYG{n}{FeedbackActivity}\PYG{o}{::}\PYG{n}{class}\PYG{p}{.}\PYG{n+na}{java}\PYG{p}{)}
+                \PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{putExtra}\PYG{p}{(}\PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{CURRENT\PYGZus{}USER}\PYG{p}{,} \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getCurrentUser}\PYG{p}{().}\PYG{n+na}{value}\PYG{p}{)}
+                \PYG{n}{startActivity}\PYG{p}{(}\PYG{n}{intent}\PYG{p}{)}
+                \PYG{n}{drawerLayout}\PYG{p}{.}\PYG{n+na}{closeDrawer}\PYG{p}{(}\PYG{n}{GravityCompat}\PYG{p}{.}\PYG{n+na}{END}\PYG{p}{)}
+                \PYG{k+kc}{true}
+            \PYG{p}{\PYGZcb{}}
+            \PYG{n}{R}\PYG{p}{.}\PYG{n+na}{id}\PYG{p}{.}\PYG{n+na}{drawer\PYGZus{}info} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{p}{\PYGZob{}}
+                \PYG{n}{IntentUtility}\PYG{p}{(}\PYG{k}{this}\PYG{p}{).}\PYG{n+na}{openAppInfo}\PYG{p}{()}
+                \PYG{n}{drawerLayout}\PYG{p}{.}\PYG{n+na}{closeDrawer}\PYG{p}{(}\PYG{n}{GravityCompat}\PYG{p}{.}\PYG{n+na}{END}\PYG{p}{)}
+                \PYG{k+kc}{true}
+            \PYG{p}{\PYGZcb{}}
+            \PYG{n}{R}\PYG{p}{.}\PYG{n+na}{id}\PYG{p}{.}\PYG{n+na}{drawer\PYGZus{}language} \PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{p}{\PYGZob{}}
+                \PYG{n}{IntentUtility}\PYG{p}{(}\PYG{k}{this}\PYG{p}{).}\PYG{n+na}{openLanguageSettings}\PYG{p}{()}
+                \PYG{n}{drawerLayout}\PYG{p}{.}\PYG{n+na}{closeDrawer}\PYG{p}{(}\PYG{n}{GravityCompat}\PYG{p}{.}\PYG{n+na}{END}\PYG{p}{)}
+                \PYG{k+kc}{true}
+            \PYG{p}{\PYGZcb{}}
+            \PYG{n}{R}\PYG{p}{.}\PYG{n+na}{id}\PYG{p}{.}\PYG{n+na}{drawer\PYGZus{}about} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{p}{\PYGZob{}}
+                \PYG{n}{startActivity}\PYG{p}{(}\PYG{n}{Intent}\PYG{p}{(}\PYG{k}{this}\PYG{p}{,} \PYG{n}{AboutMeActivity}\PYG{o}{::}\PYG{n}{class}\PYG{p}{.}\PYG{n+na}{java}\PYG{p}{))}
+                \PYG{n}{drawerLayout}\PYG{p}{.}\PYG{n+na}{closeDrawer}\PYG{p}{(}\PYG{n}{GravityCompat}\PYG{p}{.}\PYG{n+na}{END}\PYG{p}{)}
+                \PYG{k+kc}{true}
+            \PYG{p}{\PYGZcb{}}
+            \PYG{n}{R}\PYG{p}{.}\PYG{n+na}{id}\PYG{p}{.}\PYG{n+na}{drawer\PYGZus{}my\PYGZus{}post} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{p}{\PYGZob{}}
+                \PYG{k+kd}{val} \PYG{n+nv}{intent} \PYG{o}{=} \PYG{n}{Intent}\PYG{p}{(}\PYG{k}{this}\PYG{p}{,} \PYG{n}{ShowRecyclerActivity}\PYG{o}{::}\PYG{n}{class}\PYG{p}{.}\PYG{n+na}{java}\PYG{p}{)}
+                \PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{putExtra}\PYG{p}{(}\PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{CURRENT\PYGZus{}USER}\PYG{p}{,} \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getCurrentUser}\PYG{p}{().}\PYG{n+na}{value}\PYG{p}{)}
+                \PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{putExtra}\PYG{p}{(}\PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{ALL\PYGZus{}PLANTS}\PYG{p}{,} \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getAllPosts}\PYG{p}{().}\PYG{n+na}{value}\PYG{p}{)}
+                \PYG{n}{startActivity}\PYG{p}{(}\PYG{n}{intent}\PYG{p}{)}
+                \PYG{k+kc}{true}
+            \PYG{p}{\PYGZcb{}}
+            \PYG{k}{else} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{k+kc}{false}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

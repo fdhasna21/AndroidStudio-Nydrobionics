@@ -1,0 +1,15 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nd}{@Parcelize}
+\PYG{k+kd}{data} \PYG{k+kd}{class} \PYG{n+nc}{DataMonitoringModel}\PYG{p}{(}
+    \PYG{k+kd}{var} \PYG{n+nv}{dataId} \PYG{p}{:} \PYG{k+kt}{String?} \PYG{o}{=} \PYG{k+kc}{null}\PYG{p}{,}
+    \PYG{k+kd}{var} \PYG{n+nv}{temperature} \PYG{p}{:} \PYG{k+kt}{Float?} \PYG{o}{=} \PYG{l+m}{0f}\PYG{p}{,}
+    \PYG{k+kd}{var} \PYG{n+nv}{humidity} \PYG{p}{:} \PYG{k+kt}{Float?} \PYG{o}{=} \PYG{l+m}{0f}\PYG{p}{,}
+    \PYG{k+kd}{var} \PYG{n+nv}{waterTank} \PYG{p}{:} \PYG{k+kt}{Float?} \PYG{o}{=} \PYG{l+m}{0f}\PYG{p}{,}
+    \PYG{k+kd}{var} \PYG{n+nv}{nutrientTank} \PYG{p}{:} \PYG{k+kt}{Float?} \PYG{o}{=} \PYG{l+m}{0f}\PYG{p}{,}
+    \PYG{k+kd}{var} \PYG{n+nv}{turbidity} \PYG{p}{:} \PYG{k+kt}{Float?} \PYG{o}{=}\PYG{l+m}{0f}\PYG{p}{,}
+    \PYG{k+kd}{var} \PYG{n+nv}{ph} \PYG{p}{:} \PYG{k+kt}{Float?} \PYG{o}{=} \PYG{l+m}{0f}\PYG{p}{,}
+    \PYG{k+kd}{var} \PYG{n+nv}{userId} \PYG{p}{:} \PYG{k+kt}{String?} \PYG{o}{=} \PYG{k+kc}{null}\PYG{p}{,}
+    \PYG{k+kd}{var} \PYG{n+nv}{cropsId} \PYG{p}{:} \PYG{k+kt}{String?} \PYG{o}{=} \PYG{k+kc}{null}\PYG{p}{,}
+    \PYG{k+kd}{var} \PYG{n+nv}{timestamp} \PYG{p}{:} \PYG{k+kt}{String?} \PYG{o}{=} \PYG{k+kc}{null}
+\PYG{p}{)} \PYG{p}{:} \PYG{n}{Parcelable}
+\end{Verbatim}

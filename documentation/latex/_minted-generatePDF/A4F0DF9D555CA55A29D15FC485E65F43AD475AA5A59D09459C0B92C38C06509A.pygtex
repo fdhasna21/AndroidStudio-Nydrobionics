@@ -1,0 +1,84 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{class} \PYG{n+nc}{KitOverviewFragment} \PYG{p}{:} \PYG{n}{Fragment}\PYG{p}{()} \PYG{p}{\PYGZob{}}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{\PYGZus{}binding} \PYG{p}{:} \PYG{n}{FragmentKitOverviewBinding? }\PYG{o}{=} \PYG{k+kc}{null}
+    \PYG{k+kd}{private} \PYG{k+kd}{val} \PYG{n+nv}{binding} \PYG{k}{get}\PYG{p}{()} \PYG{o}{=} \PYG{n}{\PYGZus{}binding}\PYG{o}{!!}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{bindingCondition} \PYG{p}{:} \PYG{n}{RowItemKitBinding}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{bindingPlanted} \PYG{p}{:} \PYG{n}{LayoutPlantedCropsBinding}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{viewModel} \PYG{p}{:} \PYG{n}{ProfileKitViewModel}
+
+    \PYG{k+kd}{companion} \PYG{k+kd}{object} \PYG{err}{\PYGZob{}}
+        \PYG{k+kd}{const} \PYG{k+kd}{val} \PYG{n+nv}{TAG} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}kitOverViewFragment\PYGZdq{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onCreateView}\PYG{p}{(}
+        \PYG{n}{inflater}\PYG{p}{:} \PYG{n}{LayoutInflater}\PYG{p}{,} \PYG{n}{container}\PYG{p}{:} \PYG{n}{ViewGroup?,}
+        \PYG{n}{savedInstanceState}\PYG{p}{:} \PYG{n}{Bundle?}
+    \PYG{p}{):} \PYG{n}{View} \PYG{p}{\PYGZob{}}
+        \PYG{n}{\PYGZus{}binding} \PYG{o}{=} \PYG{n}{FragmentKitOverviewBinding}\PYG{p}{.}\PYG{n+na}{inflate}\PYG{p}{(}\PYG{n}{inflater}\PYG{p}{,} \PYG{n}{container}\PYG{p}{,} \PYG{k+kc}{false}\PYG{p}{)}
+        \PYG{k}{return} \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{root}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onViewCreated}\PYG{p}{(}\PYG{n}{view}\PYG{p}{:} \PYG{n}{View}\PYG{p}{,} \PYG{n}{savedInstanceState}\PYG{p}{:} \PYG{n}{Bundle?)} \PYG{p}{\PYGZob{}}
+        \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{onViewCreated}\PYG{p}{(}\PYG{n}{view}\PYG{p}{,} \PYG{n}{savedInstanceState}\PYG{p}{)}
+        \PYG{n}{viewModel} \PYG{o}{=} \PYG{p}{(}\PYG{n}{requireActivity}\PYG{p}{()} \PYG{k}{as} \PYG{n}{ProfileKitActivity}\PYG{p}{).}\PYG{n+na}{viewModel}
+        \PYG{n}{bindingCondition} \PYG{o}{=} \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{kitCondition}
+        \PYG{n}{bindingPlanted} \PYG{o}{=} \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{kitPlantedCrops}
+        \PYG{n}{bindingCondition}\PYG{p}{.}\PYG{n+na}{apply} \PYG{p}{\PYGZob{}}
+            \PYG{n}{kitName}\PYG{p}{.}\PYG{n+na}{visibility} \PYG{o}{=} \PYG{n}{View}\PYG{p}{.}\PYG{n+na}{GONE}
+            \PYG{n}{kitShowDetail}\PYG{p}{.}\PYG{n+na}{visibility} \PYG{o}{=} \PYG{n}{View}\PYG{p}{.}\PYG{n+na}{GONE}
+        \PYG{p}{\PYGZcb{}}
+
+        \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{apply} \PYG{p}{\PYGZob{}}
+            \PYG{n}{bindingCondition}\PYG{p}{.}\PYG{n+na}{apply} \PYG{p}{\PYGZob{}}
+                \PYG{n}{bindingPlanted}\PYG{p}{.}\PYG{n+na}{apply} \PYG{p}{\PYGZob{}}
+                    \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getCurrentKit}\PYG{p}{().}\PYG{n+na}{observe}\PYG{p}{(}\PYG{n}{viewLifecycleOwner}\PYG{p}{,} \PYG{p}{\PYGZob{}} \PYG{n}{kit} \PYG{o}{\PYGZhy{}\PYGZgt{}}
+                        \PYG{n}{kit}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+                            \PYG{p}{(}\PYG{n}{requireActivity}\PYG{p}{()} \PYG{k}{as} \PYG{n}{ProfileKitActivity}\PYG{p}{).}\PYG{n+na}{supportActionBar}\PYG{o}{?.}\PYG{n+na}{title} \PYG{o}{=} \PYG{n}{kit}\PYG{p}{.}\PYG{n+na}{name}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{()}
+                            \PYG{k}{if}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{isPlanted} \PYG{o}{==} \PYG{k+kc}{true}\PYG{p}{)\PYGZob{}}
+                                \PYG{n}{kitPlantedRoot}\PYG{p}{.}\PYG{n+na}{visibility} \PYG{o}{=} \PYG{n}{View}\PYG{p}{.}\PYG{n+na}{GONE}
+                            \PYG{p}{\PYGZcb{}} \PYG{k}{else} \PYG{p}{\PYGZob{}}
+                                \PYG{n}{kitPlantedRoot}\PYG{p}{.}\PYG{n+na}{visibility} \PYG{o}{=} \PYG{n}{View}\PYG{p}{.}\PYG{n+na}{GONE}
+                            \PYG{p}{\PYGZcb{}}
+                        \PYG{p}{\PYGZcb{}}
+                    \PYG{p}{\PYGZcb{})}
+
+                    \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getCurrentMonitoring}\PYG{p}{().}\PYG{n+na}{observe}\PYG{p}{(}\PYG{n}{viewLifecycleOwner}\PYG{p}{,} \PYG{p}{\PYGZob{}} \PYG{n}{monitorings} \PYG{o}{\PYGZhy{}\PYGZgt{}}
+                        \PYG{n}{monitorings}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+                            \PYG{k}{if}\PYG{p}{(}\PYG{n}{monitorings}\PYG{p}{.}\PYG{n+na}{size} \PYG{o}{\PYGZgt{}} \PYG{l+m}{0}\PYG{p}{)}
+                            \PYG{p}{\PYGZob{}}
+                                \PYG{n}{monitorings}\PYG{o}{[}\PYG{l+m}{0}\PYG{o}{]}\PYG{p}{.}\PYG{n+na}{apply} \PYG{p}{\PYGZob{}}
+                                    \PYG{n}{kitLastMonitoring}\PYG{p}{.}\PYG{n+na}{visibility} \PYG{o}{=} \PYG{n}{View}\PYG{p}{.}\PYG{n+na}{VISIBLE}
+                                    \PYG{n}{kitTimestamp}\PYG{p}{.}\PYG{n+na}{visibility} \PYG{o}{=} \PYG{n}{View}\PYG{p}{.}\PYG{n+na}{VISIBLE}
+                                    \PYG{n}{kitTimestamp}\PYG{p}{.}\PYG{n+na}{text} \PYG{o}{=} \PYG{n}{getString}\PYG{p}{(}\PYG{n}{R}\PYG{p}{.}\PYG{n+na}{string}\PYG{p}{.}\PYG{n+na}{updated\PYGZus{}on\PYGZus{}s}\PYG{p}{,} \PYG{n}{timestamp}\PYG{p}{)}
+                                    \PYG{n}{kitTemp}\PYG{p}{.}\PYG{n+na}{text} \PYG{o}{=} \PYG{n}{temperature}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{()}
+                                    \PYG{n}{kitHumid}\PYG{p}{.}\PYG{n+na}{text} \PYG{o}{=} \PYG{n}{humidity}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{()}
+                                    \PYG{n}{kitAcidity}\PYG{p}{.}\PYG{n+na}{text} \PYG{o}{=} \PYG{n}{ph}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{()}
+                                    \PYG{n}{kitWaterTank}\PYG{p}{.}\PYG{n+na}{text} \PYG{o}{=} \PYG{n}{waterTank}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{()}
+                                    \PYG{n}{kitNutrientTank}\PYG{p}{.}\PYG{n+na}{text} \PYG{o}{=} \PYG{n}{nutrientTank}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{()}
+                                    \PYG{n}{kitTurbidity}\PYG{p}{.}\PYG{n+na}{text} \PYG{o}{=} \PYG{n}{turbidity}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{()}
+                                \PYG{p}{\PYGZcb{}}
+                            \PYG{p}{\PYGZcb{}}
+                        \PYG{p}{\PYGZcb{}}
+                    \PYG{p}{\PYGZcb{})}
+
+                    \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getCurrentCrops}\PYG{p}{().}\PYG{n+na}{observe}\PYG{p}{(}\PYG{n}{viewLifecycleOwner}\PYG{p}{,} \PYG{p}{\PYGZob{}} \PYG{n}{crops} \PYG{o}{\PYGZhy{}\PYGZgt{}}
+                        \PYG{n}{crops}\PYG{o}{?.}\PYG{n+na}{let}\PYG{p}{\PYGZob{}}
+                            \PYG{k}{if}\PYG{p}{(}\PYG{n}{crops}\PYG{p}{.}\PYG{n+na}{size} \PYG{o}{\PYGZgt{}} \PYG{l+m}{0}\PYG{p}{)\PYGZob{}}
+                                \PYG{n}{crops}\PYG{o}{[}\PYG{l+m}{0}\PYG{o}{]}\PYG{p}{.}\PYG{n+na}{apply} \PYG{p}{\PYGZob{}}
+                                    \PYG{n}{plantModel}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+                                        \PYG{n}{kitPlantTitle}\PYG{p}{.}\PYG{n+na}{text} \PYG{o}{=} \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{name}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{()}
+                                        \PYG{n}{kitPlantDate}\PYG{p}{.}\PYG{n+na}{text} \PYG{o}{=} \PYG{k}{this}\PYG{p}{.}\PYG{n+na}{timestamp}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{()}
+
+                                    \PYG{p}{\PYGZcb{}}
+                                \PYG{p}{\PYGZcb{}}
+                            \PYG{p}{\PYGZcb{}}
+                        \PYG{p}{\PYGZcb{}} \PYG{o}{?:} \PYG{n}{kotlin}\PYG{p}{.}\PYG{n+na}{run} \PYG{p}{\PYGZob{}}
+                            \PYG{n}{kitPlantedRoot}\PYG{p}{.}\PYG{n+na}{visibility} \PYG{o}{=} \PYG{n}{View}\PYG{p}{.}\PYG{n+na}{GONE}
+                        \PYG{p}{\PYGZcb{}}
+                    \PYG{p}{\PYGZcb{})}
+                \PYG{p}{\PYGZcb{}}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

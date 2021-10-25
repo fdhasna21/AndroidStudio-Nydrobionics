@@ -1,0 +1,137 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{class} \PYG{n+nc}{ForgetPasswordActivity} \PYG{p}{:} \PYG{n}{AppCompatActivity}\PYG{p}{(),} \PYG{n}{View}\PYG{p}{.}\PYG{n+na}{OnClickListener}\PYG{p}{,} \PYG{n}{TextWatcher} \PYG{p}{\PYGZob{}}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{binding} \PYG{p}{:} \PYG{n}{ActivityForgetPasswordBinding}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{viewModel} \PYG{p}{:} \PYG{n}{ForgetPasswordViewModel}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{utility} \PYG{p}{:} \PYG{n}{ViewUtility}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{viewsAsButton} \PYG{p}{:} \PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{View}\PYG{o}{\PYGZgt{}}
+
+    \PYG{n}{companion} \PYG{n}{object}\PYG{p}{\PYGZob{}}
+        \PYG{k+kd}{const} \PYG{k+kd}{val} \PYG{n+nv}{TAG} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}forgetPasswordActivity\PYGZdq{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onCreate}\PYG{p}{(}\PYG{n}{savedInstanceState}\PYG{p}{:} \PYG{n}{Bundle?)} \PYG{p}{\PYGZob{}}
+        \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{onCreate}\PYG{p}{(}\PYG{n}{savedInstanceState}\PYG{p}{)}
+        \PYG{n}{binding} \PYG{o}{=} \PYG{n}{ActivityForgetPasswordBinding}\PYG{p}{.}\PYG{n+na}{inflate}\PYG{p}{(}\PYG{n}{layoutInflater}\PYG{p}{)}
+        \PYG{n}{setContentView}\PYG{p}{(}\PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{root}\PYG{p}{)}
+
+        \PYG{n}{viewModel} \PYG{o}{=} \PYG{n}{ViewModelProvider}\PYG{p}{(}\PYG{k}{this}\PYG{p}{).}\PYG{n+na}{get}\PYG{p}{(}\PYG{n}{ForgetPasswordViewModel}\PYG{o}{::}\PYG{n}{class}\PYG{p}{.}\PYG{n+na}{java}\PYG{p}{)}
+        \PYG{n}{supportActionBar}\PYG{o}{?.}\PYG{n+na}{title} \PYG{o}{=} \PYG{k+kc}{null}
+        \PYG{n}{supportActionBar}\PYG{o}{?.}\PYG{n+na}{elevation}\PYG{o}{=} \PYG{l+m}{0f}
+        \PYG{n}{supportActionBar}\PYG{o}{?.}\PYG{n+na}{setDisplayHomeAsUpEnabled}\PYG{p}{(}\PYG{k+kc}{true}\PYG{p}{)}
+        \PYG{n}{supportActionBar}\PYG{o}{?.}\PYG{n+na}{setDisplayShowHomeEnabled}\PYG{p}{(}\PYG{k+kc}{false}\PYG{p}{)}
+
+        \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{apply} \PYG{p}{\PYGZob{}}
+            \PYG{n}{viewsAsButton} \PYG{o}{=} \PYG{n}{arrayListOf}\PYG{p}{(}\PYG{n}{forgetSubmit}\PYG{p}{,} \PYG{n}{forgetResend}\PYG{p}{)}
+            \PYG{n}{utility} \PYG{o}{=} \PYG{n}{ViewUtility}\PYG{p}{(}
+                \PYG{n}{context} \PYG{o}{=} \PYG{k}{this}\PYG{n+nd}{@ForgetPasswordActivity}\PYG{p}{,}
+                \PYG{n}{circularProgressButton} \PYG{o}{=} \PYG{n}{forgetSubmit}\PYG{p}{,}
+                \PYG{n}{textInputEditTexts} \PYG{o}{=} \PYG{n}{arrayListOf}\PYG{p}{(}\PYG{n}{forgetEmail}\PYG{p}{),}
+                \PYG{n}{viewsAsButton} \PYG{o}{=} \PYG{n}{viewsAsButton}\PYG{p}{,}
+                \PYG{n}{actionBar} \PYG{o}{=} \PYG{n}{supportActionBar}
+            \PYG{p}{)}
+            \PYG{n}{utility}\PYG{p}{.}\PYG{n+na}{onLoadingChangeListener}\PYG{p}{\PYGZob{}}
+                \PYG{k}{if}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{)\PYGZob{}}
+                    \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{forgetSuccess}\PYG{p}{.}\PYG{n+na}{visibility} \PYG{o}{=} \PYG{n}{View}\PYG{p}{.}\PYG{n+na}{GONE}
+                \PYG{p}{\PYGZcb{}}
+            \PYG{p}{\PYGZcb{}}
+
+            \PYG{n}{viewsAsButton}\PYG{p}{.}\PYG{n+na}{forEach} \PYG{p}{\PYGZob{}} \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{setOnClickListener}\PYG{p}{(}\PYG{k}{this}\PYG{n+nd}{@ForgetPasswordActivity}\PYG{p}{)} \PYG{p}{\PYGZcb{}}
+            \PYG{n}{forgetEmail}\PYG{p}{.}\PYG{n+na}{addTextChangedListener}\PYG{p}{(}\PYG{k}{this}\PYG{n+nd}{@ForgetPasswordActivity}\PYG{p}{)}
+            \PYG{n}{checkEmpty}\PYG{p}{()}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onSupportNavigateUp}\PYG{p}{():} \PYG{k+kt}{Boolean} \PYG{p}{\PYGZob{}}
+        \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{onBackPressed}\PYG{p}{()}
+        \PYG{k}{return} \PYG{k+kc}{true}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{dispatchTouchEvent}\PYG{p}{(}\PYG{n}{ev}\PYG{p}{:} \PYG{n}{MotionEvent?)}\PYG{p}{:} \PYG{k+kt}{Boolean} \PYG{p}{\PYGZob{}}
+        \PYG{k}{if} \PYG{p}{(}\PYG{n}{currentFocus} \PYG{o}{!=} \PYG{k+kc}{null}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+            \PYG{k+kd}{val} \PYG{n+nv}{imm}\PYG{p}{:} \PYG{n}{InputMethodManager} \PYG{o}{=}
+                \PYG{n}{getSystemService}\PYG{p}{(}\PYG{n}{Context}\PYG{p}{.}\PYG{n+na}{INPUT\PYGZus{}METHOD\PYGZus{}SERVICE}\PYG{p}{)} \PYG{k}{as} \PYG{n}{InputMethodManager}
+            \PYG{n}{imm}\PYG{p}{.}\PYG{n+na}{hideSoftInputFromWindow}\PYG{p}{(}\PYG{n}{currentFocus}\PYG{o}{!!}\PYG{p}{.}\PYG{n+na}{windowToken}\PYG{p}{,} \PYG{l+m}{0}\PYG{p}{)}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{return} \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{dispatchTouchEvent}\PYG{p}{(}\PYG{n}{ev}\PYG{p}{)}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onClick}\PYG{p}{(}\PYG{n}{v}\PYG{p}{:} \PYG{n}{View?)} \PYG{p}{\PYGZob{}}
+        \PYG{k}{when}\PYG{p}{(}\PYG{n}{v}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{forgetSubmit}\PYG{p}{,} \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{forgetResend} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{p}{\PYGZob{}}
+                \PYG{n}{utility}\PYG{p}{.}\PYG{n+na}{isLoading} \PYG{o}{=} \PYG{k+kc}{true}
+                \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{sendEmailReset}\PYG{p}{(}\PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{forgetEmail}\PYG{p}{.}\PYG{n+na}{text}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{())}
+                \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{isUserForgetPassword}\PYG{p}{.}\PYG{n+na}{observe}\PYG{p}{(}\PYG{k}{this}\PYG{p}{,} \PYG{p}{\PYGZob{}}
+                    \PYG{k}{if}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{)\PYGZob{}}
+                        \PYG{n}{utility}\PYG{p}{.}\PYG{n+na}{isLoading} \PYG{o}{=} \PYG{k+kc}{false}
+                        \PYG{n}{handleDynamicLink}\PYG{p}{()}
+                    \PYG{p}{\PYGZcb{}} \PYG{k}{else} \PYG{p}{\PYGZob{}}
+                        \PYG{n}{utility}\PYG{p}{.}\PYG{n+na}{isLoading} \PYG{o}{=} \PYG{k+kc}{false}
+                        \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{forgetPasswordError}\PYG{p}{.}\PYG{n+na}{observe}\PYG{p}{(}\PYG{k}{this}\PYG{p}{,} \PYG{p}{\PYGZob{}}
+                            \PYG{k}{if} \PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{isNotEmpty}\PYG{p}{())} \PYG{p}{\PYGZob{}}
+                                \PYG{n}{Toast}\PYG{p}{.}\PYG{n+na}{makeText}\PYG{p}{(}\PYG{k}{this}\PYG{n+nd}{@ForgetPasswordActivity}\PYG{p}{,} \PYG{n+nb}{it}\PYG{p}{,} \PYG{n}{Toast}\PYG{p}{.}\PYG{n+na}{LENGTH\PYGZus{}SHORT}\PYG{p}{)}
+                                    \PYG{p}{.}\PYG{n+na}{show}\PYG{p}{()}
+                                \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{forgetPasswordError}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}\PYGZdq{}}
+                            \PYG{p}{\PYGZcb{}}
+                        \PYG{p}{\PYGZcb{})}
+                    \PYG{p}{\PYGZcb{}}
+                \PYG{p}{\PYGZcb{})}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{beforeTextChanged}\PYG{p}{(}\PYG{n}{s}\PYG{p}{:} \PYG{n}{CharSequence?,} \PYG{n}{start}\PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{,} \PYG{n}{count}\PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{,} \PYG{n}{after}\PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{)} \PYG{p}{\PYGZob{}\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onTextChanged}\PYG{p}{(}\PYG{n}{s}\PYG{p}{:} \PYG{n}{CharSequence?,} \PYG{n}{start}\PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{,} \PYG{n}{before}\PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{,} \PYG{n}{count}\PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+        \PYG{n}{checkEmpty}\PYG{p}{()}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{afterTextChanged}\PYG{p}{(}\PYG{n}{s}\PYG{p}{:} \PYG{n}{Editable?)} \PYG{p}{\PYGZob{}\PYGZcb{}}
+
+    \PYG{k+kd}{private} \PYG{k+kd}{fun} \PYG{n+nf}{checkEmpty}\PYG{p}{()} \PYG{p}{\PYGZob{}}
+        \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{checkNotEmpty}\PYG{p}{(}\PYG{n}{utility}\PYG{p}{.}\PYG{n+na}{isEmpty}\PYG{p}{(}\PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{forgetEmail}\PYG{p}{)).}\PYG{n+na}{observe}\PYG{p}{(}\PYG{k}{this}\PYG{p}{,} \PYG{p}{\PYGZob{}}
+            \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{forgetSubmit}\PYG{p}{.}\PYG{n+na}{isEnabled} \PYG{o}{=} \PYG{n+nb}{it}
+        \PYG{p}{\PYGZcb{})}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{handleDynamicLink}\PYG{p}{()} \PYG{p}{\PYGZob{}}
+\PYG{c+c1}{//        FirebaseDynamicLinks.getInstance().getDynamicLink(intent)}
+\PYG{c+c1}{//            .addOnSuccessListener(this) \PYGZob{} pendingDynamicLinkData: PendingDynamicLinkData \PYGZhy{}\PYGZgt{}}
+\PYG{c+c1}{//                Log.i(\PYGZdq{}forgetPasswordActivity\PYGZdq{}, \PYGZdq{}Dynamic link detected\PYGZdq{})}
+\PYG{c+c1}{//                val oobCode =}
+\PYG{c+c1}{//                    pendingDynamicLinkData.link!!.getQueryParameter(\PYGZdq{}oobCode\PYGZdq{})}
+\PYG{c+c1}{//                if (oobCode != null) \PYGZob{}}
+\PYG{c+c1}{//                    auth.checkActionCode(oobCode).addOnSuccessListener \PYGZob{} result \PYGZhy{}\PYGZgt{}}
+\PYG{c+c1}{//                        when (result.getOperation()) \PYGZob{}}
+\PYG{c+c1}{//                            ActionCodeResult.VERIFY\PYGZus{}EMAIL \PYGZhy{}\PYGZgt{} \PYGZob{}}
+\PYG{c+c1}{//                                auth.applyActionCode(oobCode)}
+\PYG{c+c1}{//                                    .addOnSuccessListener \PYGZob{} resultCode \PYGZhy{}\PYGZgt{}}
+\PYG{c+c1}{//                                        Log.i(\PYGZdq{}forgetPasswordActivity\PYGZdq{}, \PYGZdq{}Verified email\PYGZdq{})}
+\PYG{c+c1}{//                                        finish()}
+\PYG{c+c1}{//                                    \PYGZcb{}.addOnFailureListener \PYGZob{} resultCode \PYGZhy{}\PYGZgt{}}
+\PYG{c+c1}{//                                        Log.w(}
+\PYG{c+c1}{//                                            \PYGZdq{}forgetPasswordActivity\PYGZdq{},}
+\PYG{c+c1}{//                                            \PYGZdq{}Failed to Verified Email\PYGZdq{},}
+\PYG{c+c1}{//                                            resultCode}
+\PYG{c+c1}{//                                        )}
+\PYG{c+c1}{//                                    \PYGZcb{}}
+\PYG{c+c1}{//                            \PYGZcb{}}
+\PYG{c+c1}{//                            ActionCodeResult.PASSWORD\PYGZus{}RESET \PYGZhy{}\PYGZgt{} \PYGZob{}}
+\PYG{c+c1}{//                                val passWordResetInetemnt =}
+\PYG{c+c1}{//                                    Intent(this, ResetPasswordActivity::class.java)}
+\PYG{c+c1}{//                                passWordResetInetemnt.putExtra(\PYGZdq{}oobCode\PYGZdq{}, oobCode)}
+\PYG{c+c1}{//                                startActivity(passWordResetInetemnt)}
+\PYG{c+c1}{//                                finish()}
+\PYG{c+c1}{//                            \PYGZcb{}}
+\PYG{c+c1}{//                        \PYGZcb{}}
+\PYG{c+c1}{//                    \PYGZcb{}.addOnFailureListener \PYGZob{} result \PYGZhy{}\PYGZgt{}}
+\PYG{c+c1}{//                        Log.w(\PYGZdq{}forgetPasswordActivity\PYGZdq{}, \PYGZdq{}Invalid code sent\PYGZdq{})}
+\PYG{c+c1}{//                        finish()}
+\PYG{c+c1}{//                    \PYGZcb{}}
+\PYG{c+c1}{//                \PYGZcb{}}
+\PYG{c+c1}{//            \PYGZcb{}.addOnFailureListener \PYGZob{} result: Exception? \PYGZhy{}\PYGZgt{}}
+\PYG{c+c1}{//                Log.w(\PYGZdq{}forgetPasswordActivity\PYGZdq{}, \PYGZdq{}Failed to get dynamic link\PYGZdq{})}
+\PYG{c+c1}{//                finish()}
+\PYG{c+c1}{//            \PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

@@ -1,0 +1,205 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{class} \PYG{n+nc}{EditProfileFarmActivity} \PYG{p}{:} \PYG{n}{AppCompatActivity}\PYG{p}{(),} \PYG{n}{View}\PYG{p}{.}\PYG{n+na}{OnClickListener}\PYG{p}{,} \PYG{n}{TextWatcher} \PYG{p}{\PYGZob{}}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{binding} \PYG{p}{:} \PYG{n}{ActivityEditProfileFarmBinding}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{bindingFragment} \PYG{p}{:} \PYG{n}{FragmentCreateFarmBinding}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{viewModel} \PYG{p}{:} \PYG{n}{CreateProfileViewModel}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{viewsAsButton} \PYG{p}{:} \PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{View}\PYG{o}{\PYGZgt{}}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{utility}\PYG{p}{:} \PYG{n}{ViewUtility}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{editTexts} \PYG{p}{:} \PYG{n}{java}\PYG{p}{.}\PYG{n+na}{util}\PYG{p}{.}\PYG{n+na}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{TextInputEditText}\PYG{o}{\PYGZgt{}}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{strEdt} \PYG{p}{:} \PYG{n}{HashMap}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{String}\PYG{p}{,} \PYG{n}{TextInputEditText}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{hashMapOf}\PYG{p}{()}
+
+    \PYG{k+kd}{companion} \PYG{k+kd}{object} \PYG{err}{\PYGZob{}}
+        \PYG{k+kd}{const} \PYG{k+kd}{val} \PYG{n+nv}{TAG} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}editProfileFarm\PYGZdq{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onCreate}\PYG{p}{(}\PYG{n}{savedInstanceState}\PYG{p}{:} \PYG{n}{Bundle?)} \PYG{p}{\PYGZob{}}
+        \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{onCreate}\PYG{p}{(}\PYG{n}{savedInstanceState}\PYG{p}{)}
+        \PYG{n}{binding} \PYG{o}{=} \PYG{n}{ActivityEditProfileFarmBinding}\PYG{p}{.}\PYG{n+na}{inflate}\PYG{p}{(}\PYG{n}{layoutInflater}\PYG{p}{)}
+        \PYG{n}{setContentView}\PYG{p}{(}\PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{root}\PYG{p}{)}
+
+        \PYG{n}{viewModel} \PYG{o}{=} \PYG{n}{ViewModelProvider}\PYG{p}{(}\PYG{k}{this}\PYG{p}{).}\PYG{n+na}{get}\PYG{p}{(}\PYG{n}{CreateProfileViewModel}\PYG{o}{::}\PYG{n}{class}\PYG{p}{.}\PYG{n+na}{java}\PYG{p}{)}
+        \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{setCurrentFarm}\PYG{p}{(}\PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{getParcelableExtra}\PYG{o}{\PYGZlt{}}\PYG{n}{FarmModel}\PYG{o}{\PYGZgt{}}\PYG{p}{(}\PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{CURRENT\PYGZus{}FARM}\PYG{p}{),}
+                                 \PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{getParcelableExtra}\PYG{o}{\PYGZlt{}}\PYG{n}{UserModel}\PYG{o}{\PYGZgt{}}\PYG{p}{(}\PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{CURRENT\PYGZus{}USER}\PYG{p}{))}
+        \PYG{n}{supportActionBar}\PYG{o}{?.}\PYG{n+na}{title} \PYG{o}{=} \PYG{n}{getString}\PYG{p}{(}\PYG{n}{R}\PYG{p}{.}\PYG{n+na}{string}\PYG{p}{.}\PYG{n+na}{farm}\PYG{p}{)}
+        \PYG{n}{supportActionBar}\PYG{o}{?.}\PYG{n+na}{setDisplayHomeAsUpEnabled}\PYG{p}{(}\PYG{k+kc}{true}\PYG{p}{)}
+        \PYG{n}{supportActionBar}\PYG{o}{?.}\PYG{n+na}{setDisplayShowHomeEnabled}\PYG{p}{(}\PYG{k+kc}{false}\PYG{p}{)}
+
+        \PYG{n}{bindingFragment} \PYG{o}{=} \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{editFarmFragment}
+        \PYG{n}{bindingFragment}\PYG{p}{.}\PYG{n+na}{apply} \PYG{p}{\PYGZob{}}
+            \PYG{n}{setupDefaultData}\PYG{p}{()}
+            \PYG{n}{viewsAsButton} \PYG{o}{=} \PYG{n}{arrayListOf}\PYG{p}{(}\PYG{n}{esAddStaff}\PYG{p}{,} \PYG{n}{createFarmSubmit}\PYG{p}{)}
+            \PYG{n}{editTexts} \PYG{o}{=} \PYG{n}{arrayListOf}\PYG{p}{(}
+                \PYG{n}{createFarmName}\PYG{p}{,}
+                \PYG{n}{createFarmLoc}\PYG{p}{,}
+                \PYG{n}{createFarmDesc}
+            \PYG{p}{)}
+            \PYG{n}{utility} \PYG{o}{=} \PYG{n}{ViewUtility}\PYG{p}{(}
+                \PYG{n}{context} \PYG{o}{=} \PYG{k}{this}\PYG{n+nd}{@EditProfileFarmActivity}\PYG{p}{,}
+                \PYG{n}{circularProgressButton} \PYG{o}{=} \PYG{n}{createFarmSubmit}\PYG{p}{,}
+                \PYG{n}{textInputEditTexts} \PYG{o}{=} \PYG{n}{editTexts}\PYG{p}{,}
+                \PYG{n}{viewsAsButton} \PYG{o}{=} \PYG{n}{viewsAsButton}\PYG{p}{,}
+                \PYG{n}{actionBar} \PYG{o}{=} \PYG{n}{supportActionBar}
+            \PYG{p}{)}
+
+            \PYG{n}{viewsAsButton}\PYG{p}{.}\PYG{n+na}{forEach} \PYG{p}{\PYGZob{}} \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{setOnClickListener}\PYG{p}{(}\PYG{k}{this}\PYG{n+nd}{@EditProfileFarmActivity}\PYG{p}{)} \PYG{p}{\PYGZcb{}}
+            \PYG{n}{editTexts}\PYG{p}{.}\PYG{n+na}{forEach} \PYG{p}{\PYGZob{}} \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{addTextChangedListener}\PYG{p}{(}\PYG{k}{this}\PYG{n+nd}{@EditProfileFarmActivity}\PYG{p}{)} \PYG{p}{\PYGZcb{}}
+            \PYG{n}{setupRecyclerView}\PYG{p}{()}
+            \PYG{n}{checkUpdate}\PYG{p}{()}
+        \PYG{p}{\PYGZcb{}}
+
+        \PYG{k+kd}{val} \PYG{n+nv}{mapFragment} \PYG{o}{=} \PYG{n}{supportFragmentManager}\PYG{p}{.}\PYG{n+na}{findFragmentById}\PYG{p}{(}\PYG{n}{R}\PYG{p}{.}\PYG{n+na}{id}\PYG{p}{.}\PYG{n+na}{map}\PYG{p}{)} \PYG{k}{as} \PYG{n}{SupportMapFragment?}
+        \PYG{n}{mapFragment}\PYG{o}{?.}\PYG{n+na}{getMapAsync}\PYG{p}{(}\PYG{n}{callback}\PYG{p}{)}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{private} \PYG{k+kd}{fun} \PYG{n+nf}{setupDefaultData}\PYG{p}{()} \PYG{p}{\PYGZob{}}
+        \PYG{n}{bindingFragment}\PYG{p}{.}\PYG{n+na}{apply} \PYG{p}{\PYGZob{}}
+            \PYG{n}{createFarmSubmit}\PYG{p}{.}\PYG{n+na}{text} \PYG{o}{=} \PYG{n}{getString}\PYG{p}{(}\PYG{n}{R}\PYG{p}{.}\PYG{n+na}{string}\PYG{p}{.}\PYG{n+na}{save}\PYG{p}{)}
+            \PYG{n}{editStaff}\PYG{p}{.}\PYG{n+na}{visibility} \PYG{o}{=} \PYG{n}{View}\PYG{p}{.}\PYG{n+na}{VISIBLE}
+
+            \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getCurrentFarmModel}\PYG{p}{()}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+                \PYG{n}{createFarmName}\PYG{p}{.}\PYG{n+na}{setText}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{name} \PYG{o}{?:} \PYG{l+s}{\PYGZdq{}\PYGZdq{}}\PYG{p}{)}
+                \PYG{n}{createFarmDesc}\PYG{p}{.}\PYG{n+na}{setText}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{description} \PYG{o}{?:} \PYG{l+s}{\PYGZdq{}\PYGZdq{}}\PYG{p}{)}
+                \PYG{n}{createFarmLoc}\PYG{p}{.}\PYG{n+na}{setText}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{location} \PYG{o}{?:} \PYG{l+s}{\PYGZdq{}\PYGZdq{}}\PYG{p}{)}
+
+                \PYG{n}{strEdt}\PYG{o}{[}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{name} \PYG{o}{?:} \PYG{l+s}{\PYGZdq{}\PYGZdq{}}\PYG{o}{]} \PYG{o}{=} \PYG{n}{createFarmName}
+                \PYG{n}{strEdt}\PYG{o}{[}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{description} \PYG{o}{?:} \PYG{l+s}{\PYGZdq{}\PYGZdq{}}\PYG{o}{]} \PYG{o}{=} \PYG{n}{createFarmDesc}
+                \PYG{n}{strEdt}\PYG{o}{[}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{location} \PYG{o}{?:} \PYG{l+s}{\PYGZdq{}\PYGZdq{}}\PYG{o}{]} \PYG{o}{=} \PYG{n}{createFarmLoc}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{private} \PYG{k+kd}{fun} \PYG{n+nf}{setupRecyclerView}\PYG{p}{()\PYGZob{}}
+        \PYG{k+kd}{val} \PYG{n+nv}{data} \PYG{p}{:} \PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{UserModel}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{arrayListOf}\PYG{p}{()}
+        \PYG{k+kd}{val} \PYG{n+nv}{rowAdapter} \PYG{o}{=} \PYG{n}{AdapterType}\PYG{p}{.}\PYG{n+na}{SEARCH\PYGZus{}USER}\PYG{p}{.}\PYG{n+na}{getAdapter}\PYG{p}{(}\PYG{k}{this}\PYG{p}{,} \PYG{n}{data}\PYG{p}{,} \PYG{n}{type} \PYG{o}{=} \PYG{n}{AdapterType}\PYG{p}{.}\PYG{n+na}{Companion}\PYG{p}{.}\PYG{n+na}{SearchSelectType}\PYG{p}{.}\PYG{n+na}{SELECT}\PYG{p}{)}
+        \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{updateStaff}\PYG{p}{()}
+        \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getStaff}\PYG{p}{().}\PYG{n+na}{observe}\PYG{p}{(}\PYG{k}{this}\PYG{p}{,} \PYG{p}{\PYGZob{}}
+            \PYG{n}{data}\PYG{p}{.}\PYG{n+na}{clear}\PYG{p}{()}
+            \PYG{n}{data}\PYG{p}{.}\PYG{n+na}{addAll}\PYG{p}{(}\PYG{n+nb}{it} \PYG{o}{?:} \PYG{n}{arrayListOf}\PYG{p}{())}
+            \PYG{n}{rowAdapter}\PYG{p}{.}\PYG{n+na}{notifyDataSetChanged}\PYG{p}{()}
+            \PYG{p}{(}\PYG{n}{rowAdapter} \PYG{k}{as} \PYG{n}{UserModelAdapter}\PYG{p}{).}\PYG{n+na}{setOnItemClickListener}\PYG{p}{(}
+                \PYG{k}{object} \PYG{p}{:} \PYG{n+nc}{UserModelAdapter}\PYG{p}{.}\PYG{n+na}{OnItemClickListener}\PYG{p}{\PYGZob{}}
+                    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onItemClicked}\PYG{p}{(}
+                        \PYG{n}{userModel}\PYG{p}{:} \PYG{n}{UserModel}\PYG{p}{,}
+                        \PYG{n}{position}\PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{,}
+                        \PYG{n}{itemView}\PYG{p}{:} \PYG{n}{View}\PYG{p}{,}
+                        \PYG{n}{v}\PYG{p}{:} \PYG{n}{RowItemSearchBinding}
+                    \PYG{p}{)} \PYG{p}{\PYGZob{}}
+                        \PYG{k}{when}\PYG{p}{(}\PYG{n}{itemView}\PYG{p}{)\PYGZob{}}
+                            \PYG{n}{v}\PYG{p}{.}\PYG{n+na}{searchRoot} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{p}{\PYGZob{}}
+                                \PYG{k+kd}{val} \PYG{n+nv}{intent} \PYG{o}{=} \PYG{n}{Intent}\PYG{p}{(}\PYG{k}{this}\PYG{n+nd}{@EditProfileFarmActivity}\PYG{p}{,} \PYG{n}{ProfileUserActivity}\PYG{o}{::}\PYG{n}{class}\PYG{p}{.}\PYG{n+na}{java}\PYG{p}{)}
+                                \PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{putExtra}\PYG{p}{(}\PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{SELECTED\PYGZus{}USER}\PYG{p}{,} \PYG{n}{userModel}\PYG{p}{)}
+                                \PYG{n}{startActivity}\PYG{p}{(}\PYG{n}{intent}\PYG{p}{)}
+                            \PYG{p}{\PYGZcb{}}
+                            \PYG{n}{v}\PYG{p}{.}\PYG{n+na}{searchClose} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{removeStaff}\PYG{p}{(}\PYG{n}{position}\PYG{p}{)}
+                        \PYG{p}{\PYGZcb{}}
+                    \PYG{p}{\PYGZcb{}}
+
+                \PYG{p}{\PYGZcb{}}
+            \PYG{p}{)}
+        \PYG{p}{\PYGZcb{})}
+        \PYG{n}{bindingFragment}\PYG{p}{.}\PYG{n+na}{esRecyclerView}\PYG{p}{.}\PYG{n+na}{adapter} \PYG{o}{=} \PYG{n}{rowAdapter}
+        \PYG{n}{bindingFragment}\PYG{p}{.}\PYG{n+na}{esRecyclerView}\PYG{p}{.}\PYG{n+na}{layoutManager} \PYG{o}{=} \PYG{n}{LinearLayoutManager}\PYG{p}{(}\PYG{k}{this}\PYG{p}{)}
+        \PYG{n}{bindingFragment}\PYG{p}{.}\PYG{n+na}{esRecyclerView}\PYG{p}{.}\PYG{n+na}{addItemDecoration}\PYG{p}{(}\PYG{k}{object} \PYG{p}{:} \PYG{n+nc}{DividerItemDecoration}\PYG{p}{(}\PYG{k}{this}\PYG{p}{,} \PYG{n}{VERTICAL}\PYG{p}{)} \PYG{p}{\PYGZob{}\PYGZcb{})}
+        \PYG{n}{bindingFragment}\PYG{p}{.}\PYG{n+na}{esRecyclerView}\PYG{p}{.}\PYG{n+na}{setHasFixedSize}\PYG{p}{(}\PYG{k+kc}{true}\PYG{p}{)}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{private} \PYG{k+kd}{fun} \PYG{n+nf}{checkUpdate}\PYG{p}{()\PYGZob{}}
+        \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{checkNotEmpty}\PYG{p}{(}
+            \PYG{n}{utility}\PYG{p}{.}\PYG{n+na}{isChanges}\PYG{p}{(}\PYG{n}{strEdt}\PYG{p}{)} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{utility}\PYG{p}{.}\PYG{n+na}{isEmpties}\PYG{p}{(}\PYG{n}{editTexts}\PYG{p}{)}
+        \PYG{p}{).}\PYG{n+na}{observe}\PYG{p}{(}\PYG{k}{this}\PYG{p}{,} \PYG{p}{\PYGZob{}}
+            \PYG{n}{bindingFragment}\PYG{p}{.}\PYG{n+na}{createFarmSubmit}\PYG{p}{.}\PYG{n+na}{isEnabled} \PYG{o}{=} \PYG{n+nb}{it}
+        \PYG{p}{\PYGZcb{})}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onSupportNavigateUp}\PYG{p}{():} \PYG{k+kt}{Boolean} \PYG{p}{\PYGZob{}}
+        \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{isNotEmpties}\PYG{p}{.}\PYG{n+na}{observe}\PYG{p}{(}\PYG{k}{this}\PYG{p}{,} \PYG{p}{\PYGZob{}}
+            \PYG{k}{when}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{)\PYGZob{}}
+                \PYG{k+kc}{true} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{bindingFragment}\PYG{p}{.}\PYG{n+na}{createFarmSubmit}\PYG{p}{.}\PYG{n+na}{performClick}\PYG{p}{()}
+                \PYG{k}{else} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{onBackPressed}\PYG{p}{()}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{})}
+        \PYG{k}{return} \PYG{k+kc}{true}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{dispatchTouchEvent}\PYG{p}{(}\PYG{n}{ev}\PYG{p}{:} \PYG{n}{MotionEvent?)}\PYG{p}{:} \PYG{k+kt}{Boolean} \PYG{p}{\PYGZob{}}
+        \PYG{k}{if} \PYG{p}{(}\PYG{n}{currentFocus} \PYG{o}{!=} \PYG{k+kc}{null}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+            \PYG{k+kd}{val} \PYG{n+nv}{imm}\PYG{p}{:} \PYG{n}{InputMethodManager} \PYG{o}{=}
+                \PYG{n}{getSystemService}\PYG{p}{(}\PYG{n}{Context}\PYG{p}{.}\PYG{n+na}{INPUT\PYGZus{}METHOD\PYGZus{}SERVICE}\PYG{p}{)} \PYG{k}{as} \PYG{n}{InputMethodManager}
+            \PYG{n}{imm}\PYG{p}{.}\PYG{n+na}{hideSoftInputFromWindow}\PYG{p}{(}\PYG{n}{currentFocus}\PYG{o}{!!}\PYG{p}{.}\PYG{n+na}{windowToken}\PYG{p}{,} \PYG{l+m}{0}\PYG{p}{)}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{return} \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{dispatchTouchEvent}\PYG{p}{(}\PYG{n}{ev}\PYG{p}{)}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onClick}\PYG{p}{(}\PYG{n}{v}\PYG{p}{:} \PYG{n}{View?)} \PYG{p}{\PYGZob{}}
+        \PYG{k}{when}\PYG{p}{(}\PYG{n}{v}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{bindingFragment}\PYG{p}{.}\PYG{n+na}{esAddStaff} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{p}{\PYGZob{}}
+                \PYG{k+kd}{val} \PYG{n+nv}{intent} \PYG{o}{=} \PYG{n}{Intent}\PYG{p}{(}\PYG{k}{this}\PYG{p}{,} \PYG{n}{SearchActivity}\PYG{o}{::}\PYG{n}{class}\PYG{p}{.}\PYG{n+na}{java}\PYG{p}{)}
+                \PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{putExtra}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}search\PYGZdq{}}\PYG{p}{,} \PYG{n}{TAG}\PYG{p}{)}
+                \PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{putExtra}\PYG{p}{(}\PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{EXCEPT\PYGZus{}USERS}\PYG{p}{,} \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getStaff}\PYG{p}{().}\PYG{n+na}{value}\PYG{p}{)}
+                \PYG{n}{startForResult}\PYG{p}{.}\PYG{n+na}{launch}\PYG{p}{(}\PYG{n}{intent}\PYG{p}{)}
+            \PYG{p}{\PYGZcb{}}
+            \PYG{n}{bindingFragment}\PYG{p}{.}\PYG{n+na}{createFarmSubmit} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{p}{\PYGZob{}}
+                \PYG{n}{utility}\PYG{p}{.}\PYG{n+na}{isLoading} \PYG{o}{=} \PYG{k+kc}{true}
+                \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{createFarmProfile}\PYG{p}{(}\PYG{n}{bindingFragment}\PYG{p}{.}\PYG{n+na}{createFarmName}\PYG{p}{.}\PYG{n+na}{text}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{(),}
+                    \PYG{n}{bindingFragment}\PYG{p}{.}\PYG{n+na}{createFarmDesc}\PYG{p}{.}\PYG{n+na}{text}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{(),}
+                    \PYG{n}{bindingFragment}\PYG{p}{.}\PYG{n+na}{createFarmLoc}\PYG{p}{.}\PYG{n+na}{text}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{())}
+                \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{isFarmCreated}\PYG{p}{.}\PYG{n+na}{observe}\PYG{p}{(}\PYG{k}{this}\PYG{p}{,} \PYG{p}{\PYGZob{}}
+                    \PYG{k}{if}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{)\PYGZob{}}
+                        \PYG{n}{utility}\PYG{p}{.}\PYG{n+na}{isLoading} \PYG{o}{=} \PYG{k+kc}{false}
+                        \PYG{n}{Toast}\PYG{p}{.}\PYG{n+na}{makeText}\PYG{p}{(}\PYG{k}{this}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}Farm updated.\PYGZdq{}}\PYG{p}{,} \PYG{n}{Toast}\PYG{p}{.}\PYG{n+na}{LENGTH\PYGZus{}SHORT}\PYG{p}{).}\PYG{n+na}{show}\PYG{p}{()}
+                        \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{onBackPressed}\PYG{p}{()}
+                    \PYG{p}{\PYGZcb{}} \PYG{k}{else} \PYG{p}{\PYGZob{}}
+                        \PYG{n}{utility}\PYG{p}{.}\PYG{n+na}{isLoading} \PYG{o}{=} \PYG{k+kc}{false}
+                        \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{createProfileError}\PYG{p}{.}\PYG{n+na}{observe}\PYG{p}{(}\PYG{k}{this}\PYG{p}{,} \PYG{p}{\PYGZob{}}
+                            \PYG{k}{if}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{isNotEmpty}\PYG{p}{())\PYGZob{}}
+                                \PYG{n}{Toast}\PYG{p}{.}\PYG{n+na}{makeText}\PYG{p}{(}\PYG{k}{this}\PYG{p}{,} \PYG{n+nb}{it}\PYG{p}{,} \PYG{n}{Toast}\PYG{p}{.}\PYG{n+na}{LENGTH\PYGZus{}SHORT}\PYG{p}{).}\PYG{n+na}{show}\PYG{p}{()}
+                                \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{i}\PYG{p}{(}\PYG{n}{CreateFarmFragment}\PYG{p}{.}\PYG{n+na}{TAG}\PYG{p}{,} \PYG{n+nb}{it}\PYG{p}{)}
+                                \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{createProfileError}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}\PYGZdq{}}
+                            \PYG{p}{\PYGZcb{}}
+                        \PYG{p}{\PYGZcb{})}
+                    \PYG{p}{\PYGZcb{}}
+                \PYG{p}{\PYGZcb{})}
+\PYG{c+c1}{//                viewModel.createStaff()}
+\PYG{c+c1}{//                viewModel.isStaffAdded.observe(this, \PYGZob{}}
+\PYG{c+c1}{//                    if(it)\PYGZob{}}
+\PYG{c+c1}{//                        utility.isLoading = false}
+\PYG{c+c1}{//                        Toast.makeText(this, \PYGZdq{}Farm updated\PYGZdq{}, Toast.LENGTH\PYGZus{}SHORT).show()}
+\PYG{c+c1}{//                        super.onBackPressed()}
+\PYG{c+c1}{//                        finish()}
+\PYG{c+c1}{//                    \PYGZcb{}}
+\PYG{c+c1}{//                \PYGZcb{})}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{private} \PYG{k+kd}{val} \PYG{n+nv}{callback} \PYG{o}{=} \PYG{n}{OnMapReadyCallback} \PYG{p}{\PYGZob{}} \PYG{n}{googleMap} \PYG{o}{\PYGZhy{}\PYGZgt{}}
+        \PYG{k+kd}{val} \PYG{n+nv}{sydney} \PYG{o}{=} \PYG{n}{LatLng}\PYG{p}{(}\PYG{o}{\PYGZhy{}}\PYG{l+m}{34.0}\PYG{p}{,} \PYG{l+m}{151.0}\PYG{p}{)}
+        \PYG{n}{googleMap}\PYG{p}{.}\PYG{n+na}{addMarker}\PYG{p}{(}\PYG{n}{MarkerOptions}\PYG{p}{().}\PYG{n+na}{position}\PYG{p}{(}\PYG{n}{sydney}\PYG{p}{).}\PYG{n+na}{title}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}Marker in Sydney\PYGZdq{}}\PYG{p}{))}
+        \PYG{n}{googleMap}\PYG{p}{.}\PYG{n+na}{moveCamera}\PYG{p}{(}\PYG{n}{CameraUpdateFactory}\PYG{p}{.}\PYG{n+na}{newLatLng}\PYG{p}{(}\PYG{n}{sydney}\PYG{p}{))}
+        \PYG{c+c1}{//todo posisi awal sesuai dari data starter}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{private} \PYG{k+kd}{val} \PYG{n+nv}{startForResult} \PYG{o}{=} \PYG{n}{registerForActivityResult}\PYG{p}{(}\PYG{n}{ActivityResultContracts}\PYG{p}{.}\PYG{n+na}{StartActivityForResult}\PYG{p}{())} \PYG{p}{\PYGZob{}} \PYG{n}{data} \PYG{o}{\PYGZhy{}\PYGZgt{}}
+        \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{i}\PYG{p}{(}\PYG{n}{CreateProfileActivity}\PYG{p}{.}\PYG{n+na}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}}\PYG{l+s+si}{\PYGZdl{}}\PYG{n}{data}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}
+        \PYG{k}{try}\PYG{p}{\PYGZob{}}
+            \PYG{k}{if}\PYG{p}{(}\PYG{n}{data}\PYG{o}{?.}\PYG{n+na}{resultCode} \PYG{o}{==} \PYG{n}{Activity}\PYG{p}{.}\PYG{n+na}{RESULT\PYGZus{}OK}\PYG{p}{)\PYGZob{}}
+                \PYG{n}{data}\PYG{p}{.}\PYG{n+na}{data}\PYG{o}{?.}\PYG{n+na}{getParcelableExtra}\PYG{o}{\PYGZlt{}}\PYG{n}{UserModel}\PYG{o}{\PYGZgt{}}\PYG{p}{(}\PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{SELECTED\PYGZus{}USER}\PYG{p}{)}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+                    \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{addStaff}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{)}
+                    \PYG{n}{checkUpdate}\PYG{p}{()}
+                \PYG{p}{\PYGZcb{}}
+            \PYG{p}{\PYGZcb{}}
+
+        \PYG{p}{\PYGZcb{}} \PYG{k}{catch} \PYG{p}{(}\PYG{n}{e}\PYG{p}{:} \PYG{n}{Exception}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{Toast}\PYG{p}{.}\PYG{n+na}{makeText}\PYG{p}{(}\PYG{k}{this}\PYG{p}{,} \PYG{n}{e}\PYG{p}{.}\PYG{n+na}{message}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{(),} \PYG{n}{Toast}\PYG{p}{.}\PYG{n+na}{LENGTH\PYGZus{}SHORT}\PYG{p}{).}\PYG{n+na}{show}\PYG{p}{()}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{beforeTextChanged}\PYG{p}{(}\PYG{n}{s}\PYG{p}{:} \PYG{n}{CharSequence?,} \PYG{n}{start}\PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{,} \PYG{n}{count}\PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{,} \PYG{n}{after}\PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{)} \PYG{p}{\PYGZob{}\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onTextChanged}\PYG{p}{(}\PYG{n}{s}\PYG{p}{:} \PYG{n}{CharSequence?,} \PYG{n}{start}\PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{,} \PYG{n}{before}\PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{,} \PYG{n}{count}\PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+        \PYG{n}{checkUpdate}\PYG{p}{()}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{afterTextChanged}\PYG{p}{(}\PYG{n}{s}\PYG{p}{:} \PYG{n}{Editable?)} \PYG{p}{\PYGZob{}\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

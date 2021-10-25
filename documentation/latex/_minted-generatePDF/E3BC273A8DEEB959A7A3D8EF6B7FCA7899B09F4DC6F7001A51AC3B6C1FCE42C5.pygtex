@@ -1,0 +1,65 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{class} \PYG{n+nc}{CreateProfileActivity} \PYG{p}{:} \PYG{n}{AppCompatActivity}\PYG{p}{()} \PYG{p}{\PYGZob{}}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{binding} \PYG{p}{:} \PYG{n}{ActivityCreateProfileBinding}
+    \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{viewModel} \PYG{p}{:} \PYG{n}{CreateProfileViewModel}
+
+    \PYG{n}{companion} \PYG{n}{object}\PYG{p}{\PYGZob{}}
+        \PYG{k+kd}{const} \PYG{k+kd}{val} \PYG{n+nv}{TAG} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}createProfile\PYGZdq{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onCreate}\PYG{p}{(}\PYG{n}{savedInstanceState}\PYG{p}{:} \PYG{n}{Bundle?)} \PYG{p}{\PYGZob{}}
+        \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{onCreate}\PYG{p}{(}\PYG{n}{savedInstanceState}\PYG{p}{)}
+        \PYG{n}{binding} \PYG{o}{=} \PYG{n}{ActivityCreateProfileBinding}\PYG{p}{.}\PYG{n+na}{inflate}\PYG{p}{(}\PYG{n}{layoutInflater}\PYG{p}{)}
+        \PYG{n}{setContentView}\PYG{p}{(}\PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{root}\PYG{p}{)}
+
+        \PYG{n}{viewModel} \PYG{o}{=} \PYG{n}{ViewModelProvider}\PYG{p}{(}\PYG{k}{this}\PYG{p}{).}\PYG{n+na}{get}\PYG{p}{(}\PYG{n}{CreateProfileViewModel}\PYG{o}{::}\PYG{n}{class}\PYG{p}{.}\PYG{n+na}{java}\PYG{p}{)}
+        \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{setCurrentUser}\PYG{p}{(}\PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{getParcelableExtra}\PYG{o}{\PYGZlt{}}\PYG{n}{UserModel}\PYG{o}{\PYGZgt{}}\PYG{p}{(}\PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{CURRENT\PYGZus{}USER}\PYG{p}{))}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{dispatchTouchEvent}\PYG{p}{(}\PYG{n}{ev}\PYG{p}{:} \PYG{n}{MotionEvent?)}\PYG{p}{:} \PYG{k+kt}{Boolean} \PYG{p}{\PYGZob{}}
+        \PYG{k}{if} \PYG{p}{(}\PYG{n}{currentFocus} \PYG{o}{!=} \PYG{k+kc}{null}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+            \PYG{k+kd}{val} \PYG{n+nv}{imm}\PYG{p}{:} \PYG{n}{InputMethodManager} \PYG{o}{=}
+                \PYG{n}{getSystemService}\PYG{p}{(}\PYG{n}{Context}\PYG{p}{.}\PYG{n+na}{INPUT\PYGZus{}METHOD\PYGZus{}SERVICE}\PYG{p}{)} \PYG{k}{as} \PYG{n}{InputMethodManager}
+            \PYG{n}{imm}\PYG{p}{.}\PYG{n+na}{hideSoftInputFromWindow}\PYG{p}{(}\PYG{n}{currentFocus}\PYG{o}{!!}\PYG{p}{.}\PYG{n+na}{windowToken}\PYG{p}{,} \PYG{l+m}{0}\PYG{p}{)}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{return} \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{dispatchTouchEvent}\PYG{p}{(}\PYG{n}{ev}\PYG{p}{)}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{val} \PYG{n+nv}{startForResult} \PYG{o}{=} \PYG{n}{registerForActivityResult}\PYG{p}{(}\PYG{n}{ActivityResultContracts}\PYG{p}{.}\PYG{n+na}{StartActivityForResult}\PYG{p}{())} \PYG{p}{\PYGZob{}} \PYG{n}{data} \PYG{o}{\PYGZhy{}\PYGZgt{}}
+        \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{i}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}}\PYG{l+s+si}{\PYGZdl{}}\PYG{n}{data}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}
+        \PYG{k}{try}\PYG{p}{\PYGZob{}}
+            \PYG{k}{if}\PYG{p}{(}\PYG{n}{data}\PYG{o}{?.}\PYG{n+na}{resultCode} \PYG{o}{==} \PYG{n}{Activity}\PYG{p}{.}\PYG{n+na}{RESULT\PYGZus{}OK}\PYG{p}{)\PYGZob{}}
+                \PYG{n}{CropImage}\PYG{p}{.}\PYG{n+na}{getActivityResult}\PYG{p}{(}\PYG{n}{data}\PYG{p}{.}\PYG{n+na}{data}\PYG{p}{)}\PYG{o}{?.}\PYG{n+na}{let}\PYG{p}{\PYGZob{}}
+                    \PYG{k+kd}{val} \PYG{n+nv}{mimeTypeMap} \PYG{o}{=} \PYG{n}{MimeTypeMap}\PYG{p}{.}\PYG{n+na}{getSingleton}\PYG{p}{()}
+                    \PYG{k+kd}{val} \PYG{n+nv}{fileExtension} \PYG{o}{=} \PYG{n}{mimeTypeMap}\PYG{p}{.}\PYG{n+na}{getExtensionFromMimeType}\PYG{p}{(}\PYG{n}{contentResolver}\PYG{p}{.}\PYG{n+na}{getType}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{uriContent}\PYG{o}{!!}\PYG{p}{))}
+                    \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{setPhotoProfile}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{uriContent}\PYG{o}{!!}\PYG{p}{,} \PYG{n}{fileExtension}\PYG{p}{)}
+                \PYG{p}{\PYGZcb{}}
+
+                \PYG{n}{data}\PYG{p}{.}\PYG{n+na}{data}\PYG{o}{?.}\PYG{n+na}{getParcelableExtra}\PYG{o}{\PYGZlt{}}\PYG{n}{UserModel}\PYG{o}{\PYGZgt{}}\PYG{p}{(}\PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{SELECTED\PYGZus{}USER}\PYG{p}{)}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+                    \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{addStaff}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{)}
+                \PYG{p}{\PYGZcb{}}
+            \PYG{p}{\PYGZcb{}}
+
+        \PYG{p}{\PYGZcb{}} \PYG{k}{catch} \PYG{p}{(}\PYG{n}{e}\PYG{p}{:} \PYG{n}{Exception}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{Toast}\PYG{p}{.}\PYG{n+na}{makeText}\PYG{p}{(}\PYG{k}{this}\PYG{p}{,} \PYG{n}{e}\PYG{p}{.}\PYG{n+na}{message}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{(),} \PYG{n}{Toast}\PYG{p}{.}\PYG{n+na}{LENGTH\PYGZus{}SHORT}\PYG{p}{).}\PYG{n+na}{show}\PYG{p}{()}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{changeImageProfile}\PYG{p}{()\PYGZob{}}
+        \PYG{k+kd}{val} \PYG{n+nv}{intent} \PYG{o}{=} \PYG{n}{CropImage}\PYG{p}{.}\PYG{n+na}{activity}\PYG{p}{()}
+            \PYG{p}{.}\PYG{n+na}{setActivityTitle}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}Edit Photo\PYGZdq{}}\PYG{p}{)}
+            \PYG{p}{.}\PYG{n+na}{setAspectRatio}\PYG{p}{(}\PYG{l+m}{1}\PYG{p}{,}\PYG{l+m}{1}\PYG{p}{)}
+            \PYG{p}{.}\PYG{n+na}{setGuidelines}\PYG{p}{(}\PYG{n}{CropImageView}\PYG{p}{.}\PYG{n+na}{Guidelines}\PYG{p}{.}\PYG{n+na}{ON}\PYG{p}{)}
+            \PYG{p}{.}\PYG{n+na}{setAutoZoomEnabled}\PYG{p}{(}\PYG{k+kc}{true}\PYG{p}{)}
+            \PYG{p}{.}\PYG{n+na}{setAllowFlipping}\PYG{p}{(}\PYG{k+kc}{false}\PYG{p}{)}
+            \PYG{p}{.}\PYG{n+na}{getIntent}\PYG{p}{(}\PYG{k}{this}\PYG{p}{)}
+        \PYG{n}{startForResult}\PYG{p}{.}\PYG{n+na}{launch}\PYG{p}{(}\PYG{n}{intent}\PYG{p}{)}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{searchUser}\PYG{p}{()\PYGZob{}}
+        \PYG{k+kd}{val} \PYG{n+nv}{intent} \PYG{o}{=} \PYG{n}{Intent}\PYG{p}{(}\PYG{k}{this}\PYG{p}{,} \PYG{n}{SearchActivity}\PYG{o}{::}\PYG{n}{class}\PYG{p}{.}\PYG{n+na}{java}\PYG{p}{)}
+        \PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{putExtra}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}search\PYGZdq{}}\PYG{p}{,} \PYG{n}{TAG}\PYG{p}{)}
+        \PYG{n}{startForResult}\PYG{p}{.}\PYG{n+na}{launch}\PYG{p}{(}\PYG{n}{intent}\PYG{p}{)}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

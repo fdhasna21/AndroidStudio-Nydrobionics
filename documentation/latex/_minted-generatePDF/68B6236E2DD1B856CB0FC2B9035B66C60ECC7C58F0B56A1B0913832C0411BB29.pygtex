@@ -1,0 +1,53 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{class} \PYG{n+nc}{SplashScreenViewModel} \PYG{p}{:} \PYG{n}{ViewModel}\PYG{p}{()} \PYG{p}{\PYGZob{}}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{auth} \PYG{p}{:} \PYG{n}{FirebaseAuth} \PYG{o}{=} \PYG{n}{Firebase}\PYG{p}{.}\PYG{n+na}{auth}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{firestore} \PYG{p}{:} \PYG{n}{FirebaseFirestore} \PYG{o}{=} \PYG{n}{Firebase}\PYG{p}{.}\PYG{n+na}{firestore}
+    \PYG{k+kd}{var} \PYG{n+nv}{currentUserModel} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{n}{UserModel?\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{k+kc}{null}\PYG{p}{)}
+    \PYG{k+kd}{var} \PYG{n+nv}{currentFarmModel} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{n}{FarmModel?\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{k+kc}{null}\PYG{p}{)}
+    \PYG{k+kd}{var} \PYG{n+nv}{isCurrentUserExist} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{Boolean?}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{k+kc}{null}\PYG{p}{)}
+    \PYG{k+kd}{var} \PYG{n+nv}{isCurrentFarmExist} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{Boolean?}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{k+kc}{null}\PYG{p}{)}
+
+    \PYG{k+kd}{companion} \PYG{k+kd}{object} \PYG{err}{\PYGZob{}}
+        \PYG{k+kd}{const} \PYG{k+kd}{val} \PYG{n+nv}{TAG} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}splashScreen\PYGZdq{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{getCurrentData}\PYG{p}{()\PYGZob{}}
+        \PYG{k}{try}\PYG{p}{\PYGZob{}}
+            \PYG{n}{auth}\PYG{p}{.}\PYG{n+na}{uid}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+                \PYG{n}{firestore}\PYG{p}{.}\PYG{n+na}{collection}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}users\PYGZdq{}}\PYG{p}{).}\PYG{n+na}{document}\PYG{p}{(}\PYG{n}{auth}\PYG{p}{.}\PYG{n+na}{uid}\PYG{o}{!!}\PYG{p}{)}
+                    \PYG{p}{.}\PYG{n+na}{get}\PYG{p}{().}\PYG{n+na}{addOnSuccessListener} \PYG{p}{\PYGZob{}}
+                        \PYG{k}{if}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{exists}\PYG{p}{())\PYGZob{}}
+                            \PYG{n}{currentUserModel}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{toUserModel}\PYG{p}{()}
+                            \PYG{n}{isCurrentUserExist}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{k+kc}{true}
+                            \PYG{n}{currentUserModel}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{farmId}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+                                \PYG{n}{firestore}\PYG{p}{.}\PYG{n+na}{collection}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}farms\PYGZdq{}}\PYG{p}{).}\PYG{n+na}{document}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{)}
+                                    \PYG{p}{.}\PYG{n+na}{get}\PYG{p}{().}\PYG{n+na}{addOnSuccessListener} \PYG{p}{\PYGZob{}}
+                                        \PYG{k}{if}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{exists}\PYG{p}{())\PYGZob{}}
+                                            \PYG{n}{currentFarmModel}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{toFarmModel}\PYG{p}{()}
+                                            \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{i}\PYG{p}{(}
+                                                \PYG{n}{TAG}\PYG{p}{,}
+                                                \PYG{l+s}{\PYGZdq{}getCurrentData: }\PYG{l+s+si}{\PYGZdl{}\PYGZob{}}\PYG{n}{currentUserModel}\PYG{p}{.}\PYG{n+na}{value}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s}{\PYGZbs{}n\PYGZdq{}} \PYG{o}{+}
+                                                        \PYG{l+s}{\PYGZdq{}}\PYG{l+s+si}{\PYGZdl{}\PYGZob{}}\PYG{n}{currentFarmModel}\PYG{p}{.}\PYG{n+na}{value}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s}{\PYGZdq{}}
+                                            \PYG{p}{)}
+                                            \PYG{n}{isCurrentFarmExist}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{k+kc}{true}
+                                        \PYG{p}{\PYGZcb{}} \PYG{k}{else} \PYG{p}{\PYGZob{}}
+                                            \PYG{n}{isCurrentFarmExist}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{k+kc}{false}
+                                        \PYG{p}{\PYGZcb{}}
+                                    \PYG{p}{\PYGZcb{}}
+                            \PYG{p}{\PYGZcb{}} \PYG{o}{?:} \PYG{n}{kotlin}\PYG{p}{.}\PYG{n+na}{run} \PYG{p}{\PYGZob{}}
+                                \PYG{n}{isCurrentFarmExist}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{k+kc}{false}
+                            \PYG{p}{\PYGZcb{}}
+
+                        \PYG{p}{\PYGZcb{}} \PYG{k}{else} \PYG{p}{\PYGZob{}}
+                            \PYG{n}{isCurrentUserExist}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{k+kc}{false}
+                        \PYG{p}{\PYGZcb{}}
+                    \PYG{p}{\PYGZcb{}}
+            \PYG{p}{\PYGZcb{}} \PYG{o}{?:} \PYG{n}{kotlin}\PYG{p}{.}\PYG{n+na}{run} \PYG{p}{\PYGZob{}}
+                \PYG{n}{isCurrentUserExist}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{k+kc}{false}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}} \PYG{k}{catch} \PYG{p}{(}\PYG{n}{e}\PYG{p}{:}\PYG{n}{Exception}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{e}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}getCurrentData }\PYG{l+s+si}{\PYGZdl{}\PYGZob{}}\PYG{n}{auth}\PYG{p}{.}\PYG{n+na}{uid}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,} \PYG{n}{e}\PYG{p}{)}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

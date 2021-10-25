@@ -1,0 +1,161 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{class} \PYG{n+nc}{SearchActivity} \PYG{p}{:} \PYG{n}{AppCompatActivity}\PYG{p}{(),} \PYG{n}{SearchView}\PYG{p}{.}\PYG{n+na}{OnQueryTextListener}\PYG{p}{,} \PYG{n}{SwipeRefreshLayout}\PYG{p}{.}\PYG{n+na}{OnRefreshListener} \PYG{p}{\PYGZob{}}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{binding} \PYG{p}{:} \PYG{n}{ActivitySearchBinding}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{viewModel} \PYG{p}{:} \PYG{n}{SearchViewModel}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{objectSearch} \PYG{p}{:} \PYG{n}{ProfileType}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{rowAdapter} \PYG{p}{:} \PYG{n}{RecyclerView}\PYG{p}{.}\PYG{n+na}{Adapter}\PYG{o}{\PYGZlt{}*\PYGZgt{}}
+
+    \PYG{k+kd}{companion} \PYG{k+kd}{object} \PYG{err}{\PYGZob{}}
+        \PYG{k+kd}{const} \PYG{k+kd}{val} \PYG{n+nv}{TAG} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}searchActivity\PYGZdq{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onCreate}\PYG{p}{(}\PYG{n}{savedInstanceState}\PYG{p}{:} \PYG{n}{Bundle?)} \PYG{p}{\PYGZob{}}
+        \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{onCreate}\PYG{p}{(}\PYG{n}{savedInstanceState}\PYG{p}{)}
+        \PYG{n}{binding} \PYG{o}{=} \PYG{n}{ActivitySearchBinding}\PYG{p}{.}\PYG{n+na}{inflate}\PYG{p}{(}\PYG{n}{layoutInflater}\PYG{p}{)}
+        \PYG{n}{setContentView}\PYG{p}{(}\PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{root}\PYG{p}{)}
+
+        \PYG{n}{objectSearch} \PYG{o}{=} \PYG{n}{ProfileType}\PYG{p}{.}\PYG{n+na}{getType}\PYG{p}{(}\PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{getStringExtra}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}search\PYGZdq{}}\PYG{p}{).}\PYG{n+na}{toString}\PYG{p}{())}
+
+        \PYG{n}{viewModel} \PYG{o}{=} \PYG{n}{ViewModelProvider}\PYG{p}{(}\PYG{k}{this}\PYG{p}{).}\PYG{n+na}{get}\PYG{p}{(}\PYG{n}{SearchViewModel}\PYG{o}{::}\PYG{n}{class}\PYG{p}{.}\PYG{n+na}{java}\PYG{p}{)}
+        \PYG{n}{supportActionBar}\PYG{o}{?.}\PYG{n+na}{title} \PYG{o}{=} \PYG{n}{getString}\PYG{p}{(}\PYG{n}{R}\PYG{p}{.}\PYG{n+na}{string}\PYG{p}{.}\PYG{n+na}{search}\PYG{p}{)} \PYG{o}{+} \PYG{l+s}{\PYGZdq{} }\PYG{l+s+si}{\PYGZdl{}}\PYG{n}{objectSearch}\PYG{l+s}{\PYGZdq{}}
+        \PYG{n}{supportActionBar}\PYG{o}{?.}\PYG{n+na}{elevation} \PYG{o}{=} \PYG{l+m}{0f}
+        \PYG{n}{supportActionBar}\PYG{o}{?.}\PYG{n+na}{setDisplayHomeAsUpEnabled}\PYG{p}{(}\PYG{k+kc}{true}\PYG{p}{)}
+        \PYG{n}{supportActionBar}\PYG{o}{?.}\PYG{n+na}{setDisplayShowHomeEnabled}\PYG{p}{(}\PYG{k+kc}{false}\PYG{p}{)}
+
+        \PYG{k+kd}{val} \PYG{n+nv}{searchManager} \PYG{p}{:} \PYG{n}{SearchManager} \PYG{o}{=} \PYG{n}{getSystemService}\PYG{p}{(}\PYG{n}{Context}\PYG{p}{.}\PYG{n+na}{SEARCH\PYGZus{}SERVICE}\PYG{p}{)} \PYG{k}{as} \PYG{n}{SearchManager}
+        \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{searchView}\PYG{p}{.}\PYG{n+na}{setSearchableInfo}\PYG{p}{(}\PYG{n}{searchManager}\PYG{p}{.}\PYG{n+na}{getSearchableInfo}\PYG{p}{(}\PYG{n}{componentName}\PYG{p}{))}
+        \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{searchView}\PYG{p}{.}\PYG{n+na}{setOnQueryTextListener}\PYG{p}{(}\PYG{k}{this}\PYG{p}{)}
+        \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{searchRefresh}\PYG{p}{.}\PYG{n+na}{setOnRefreshListener}\PYG{p}{(}\PYG{k}{this}\PYG{p}{)}
+
+        \PYG{k}{when}\PYG{p}{(}\PYG{n}{objectSearch}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{ProfileType}\PYG{p}{.}\PYG{n+na}{PLANT} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{setupRecyclerViewPlant}\PYG{p}{()}
+            \PYG{n}{ProfileType}\PYG{p}{.}\PYG{n+na}{USER} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{setupRecyclerViewUser}\PYG{p}{()}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{private} \PYG{k+kd}{fun} \PYG{n+nf}{setupRecyclerViewPlant}\PYG{p}{()\PYGZob{}}
+        \PYG{k+kd}{val} \PYG{n+nv}{plantModels} \PYG{p}{:} \PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{PlantModel}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{arrayListOf}\PYG{p}{()}
+        \PYG{k+kd}{val} \PYG{n+nv}{allUsers} \PYG{p}{:} \PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{UserModel}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getAllUsers}\PYG{p}{().}\PYG{n+na}{value} \PYG{o}{?:} \PYG{n}{arrayListOf}\PYG{p}{()}
+        \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getAllPlants}\PYG{p}{()}
+        \PYG{n}{rowAdapter} \PYG{o}{=} \PYG{n}{AdapterType}\PYG{p}{.}\PYG{n+na}{SEARCH\PYGZus{}PLANT}\PYG{p}{.}\PYG{n+na}{getAdapter}\PYG{p}{(}\PYG{k}{this}\PYG{p}{,} \PYG{n}{plantModels}\PYG{p}{,}
+            \PYG{n}{allUsers} \PYG{o}{=} \PYG{n}{allUsers}\PYG{p}{,}
+            \PYG{n}{type} \PYG{o}{=} \PYG{n}{AdapterType}\PYG{p}{.}\PYG{n+na}{Companion}\PYG{p}{.}\PYG{n+na}{SearchSelectType}\PYG{p}{.}\PYG{n+na}{SEARCH}\PYG{p}{)}
+        \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getPlants}\PYG{p}{().}\PYG{n+na}{observe}\PYG{p}{(}\PYG{k}{this}\PYG{p}{,} \PYG{p}{\PYGZob{}}
+            \PYG{n}{plantModels}\PYG{p}{.}\PYG{n+na}{clear}\PYG{p}{()}
+            \PYG{n}{plantModels}\PYG{p}{.}\PYG{n+na}{addAll}\PYG{p}{(}\PYG{n+nb}{it} \PYG{o}{?:} \PYG{n}{arrayListOf}\PYG{p}{())}
+            \PYG{n}{rowAdapter}\PYG{p}{.}\PYG{n+na}{notifyDataSetChanged}\PYG{p}{()}
+            \PYG{p}{(}\PYG{n}{rowAdapter} \PYG{k}{as} \PYG{n}{PlantModelAdapter}\PYG{p}{).}\PYG{n+na}{setOnItemClickListener}\PYG{p}{(}
+                \PYG{k}{object} \PYG{p}{:} \PYG{n+nc}{PlantModelAdapter}\PYG{p}{.}\PYG{n+na}{OnItemClickListener}\PYG{p}{\PYGZob{}}
+                    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onItemClicked}\PYG{p}{(}
+                        \PYG{n}{position}\PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{,}
+                        \PYG{n}{itemView}\PYG{p}{:} \PYG{n}{View}\PYG{p}{,}
+                        \PYG{n}{v}\PYG{p}{:} \PYG{n}{RowItemSearchBinding}
+                    \PYG{p}{)} \PYG{p}{\PYGZob{}}
+                        \PYG{k}{when}\PYG{p}{(}\PYG{n}{itemView}\PYG{p}{)\PYGZob{}}
+                            \PYG{n}{v}\PYG{p}{.}\PYG{n+na}{searchRoot} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{p}{\PYGZob{}}
+                                \PYG{k+kd}{val} \PYG{n+nv}{intent} \PYG{o}{=} \PYG{n}{Intent}\PYG{p}{()}
+                                \PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{putExtra}\PYG{p}{(}\PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{SELECTED\PYGZus{}PLANT}\PYG{p}{,} \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getPlant}\PYG{p}{(}\PYG{n}{position}\PYG{p}{))}
+                                \PYG{n}{setResult}\PYG{p}{(}\PYG{n}{RESULT\PYGZus{}OK}\PYG{p}{,} \PYG{n}{intent}\PYG{p}{)}
+                                \PYG{k}{this}\PYG{n+nd}{@SearchActivity.onBackPressed}\PYG{p}{()}
+                                \PYG{n}{finish}\PYG{p}{()}
+                            \PYG{p}{\PYGZcb{}}
+                        \PYG{p}{\PYGZcb{}}
+
+                    \PYG{p}{\PYGZcb{}}
+                \PYG{p}{\PYGZcb{}}
+            \PYG{p}{)}
+            \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{searchRefresh}\PYG{p}{.}\PYG{n+na}{isRefreshing} \PYG{o}{=} \PYG{k+kc}{false}
+            \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{i}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}setupRecyclerViewPlant: }\PYG{l+s+si}{\PYGZdl{}\PYGZob{}}\PYG{n}{rowAdapter}\PYG{p}{.}\PYG{n+na}{itemCount}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}
+        \PYG{p}{\PYGZcb{})}
+        \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getAllUsers}\PYG{p}{().}\PYG{n+na}{observe}\PYG{p}{(}\PYG{k}{this}\PYG{p}{,} \PYG{p}{\PYGZob{}}
+            \PYG{n}{allUsers}\PYG{p}{.}\PYG{n+na}{clear}\PYG{p}{()}
+            \PYG{n}{allUsers}\PYG{p}{.}\PYG{n+na}{addAll}\PYG{p}{(}\PYG{n+nb}{it} \PYG{o}{?:} \PYG{n}{arrayListOf}\PYG{p}{())}
+            \PYG{n}{rowAdapter}\PYG{p}{.}\PYG{n+na}{notifyDataSetChanged}\PYG{p}{()}
+        \PYG{p}{\PYGZcb{})}
+        \PYG{n}{setupRecyclerView}\PYG{p}{()}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{private} \PYG{k+kd}{fun} \PYG{n+nf}{setupRecyclerViewUser}\PYG{p}{()\PYGZob{}}
+        \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{setExceptUsers}\PYG{p}{(}\PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{getParcelableArrayListExtra}\PYG{o}{\PYGZlt{}}\PYG{n}{UserModel}\PYG{o}{\PYGZgt{}}\PYG{p}{(}\PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{EXCEPT\PYGZus{}USERS}\PYG{p}{))}
+        \PYG{k+kd}{val} \PYG{n+nv}{data} \PYG{p}{:} \PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{UserModel}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{arrayListOf}\PYG{p}{()}
+        \PYG{n}{rowAdapter} \PYG{o}{=} \PYG{n}{AdapterType}\PYG{p}{.}\PYG{n+na}{SEARCH\PYGZus{}USER}\PYG{p}{.}\PYG{n+na}{getAdapter}\PYG{p}{(}\PYG{k}{this}\PYG{p}{,} \PYG{n}{data}\PYG{p}{,}
+            \PYG{n}{type} \PYG{o}{=} \PYG{n}{AdapterType}\PYG{p}{.}\PYG{n+na}{Companion}\PYG{p}{.}\PYG{n+na}{SearchSelectType}\PYG{p}{.}\PYG{n+na}{SEARCH}\PYG{p}{)}
+        \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getUsers}\PYG{p}{().}\PYG{n+na}{observe}\PYG{p}{(}\PYG{k}{this}\PYG{p}{,} \PYG{p}{\PYGZob{}}
+            \PYG{n}{data}\PYG{p}{.}\PYG{n+na}{clear}\PYG{p}{()}
+            \PYG{n}{data}\PYG{p}{.}\PYG{n+na}{addAll}\PYG{p}{(}\PYG{n+nb}{it} \PYG{o}{?:} \PYG{n}{arrayListOf}\PYG{p}{())}
+            \PYG{n}{rowAdapter}\PYG{p}{.}\PYG{n+na}{notifyDataSetChanged}\PYG{p}{()}
+            \PYG{p}{(}\PYG{n}{rowAdapter} \PYG{k}{as} \PYG{n}{UserModelAdapter}\PYG{p}{).}\PYG{n+na}{setOnItemClickListener}\PYG{p}{(}
+                \PYG{k}{object} \PYG{p}{:} \PYG{n+nc}{UserModelAdapter}\PYG{p}{.}\PYG{n+na}{OnItemClickListener}\PYG{p}{\PYGZob{}}
+                    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onItemClicked}\PYG{p}{(}
+                        \PYG{n}{userModel}\PYG{p}{:} \PYG{n}{UserModel}\PYG{p}{,}
+                        \PYG{n}{position}\PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{,}
+                        \PYG{n}{itemView}\PYG{p}{:} \PYG{n}{View}\PYG{p}{,}
+                        \PYG{n}{v}\PYG{p}{:} \PYG{n}{RowItemSearchBinding}
+                    \PYG{p}{)} \PYG{p}{\PYGZob{}}
+                        \PYG{k}{when}\PYG{p}{(}\PYG{n}{itemView}\PYG{p}{)\PYGZob{}}
+                            \PYG{n}{v}\PYG{p}{.}\PYG{n+na}{searchRoot} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{p}{\PYGZob{}}
+                                \PYG{k+kd}{val} \PYG{n+nv}{intent} \PYG{o}{=} \PYG{n}{Intent}\PYG{p}{()}
+                                \PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{putExtra}\PYG{p}{(}\PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{SELECTED\PYGZus{}USER}\PYG{p}{,} \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getUser}\PYG{p}{(}\PYG{n}{position}\PYG{p}{))}
+                                \PYG{n}{setResult}\PYG{p}{(}\PYG{n}{RESULT\PYGZus{}OK}\PYG{p}{,} \PYG{n}{intent}\PYG{p}{)}
+                                \PYG{k}{this}\PYG{n+nd}{@SearchActivity.onBackPressed}\PYG{p}{()}
+                                \PYG{n}{finish}\PYG{p}{()}
+                            \PYG{p}{\PYGZcb{}}
+                        \PYG{p}{\PYGZcb{}}
+                    \PYG{p}{\PYGZcb{}}
+                \PYG{p}{\PYGZcb{})}
+            \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{searchRefresh}\PYG{p}{.}\PYG{n+na}{isRefreshing} \PYG{o}{=} \PYG{k+kc}{false}
+            \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{i}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}setupRecyclerViewUser: }\PYG{l+s+si}{\PYGZdl{}\PYGZob{}}\PYG{n}{rowAdapter}\PYG{p}{.}\PYG{n+na}{itemCount}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}
+        \PYG{p}{\PYGZcb{})}
+        \PYG{n}{setupRecyclerView}\PYG{p}{()}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{private} \PYG{k+kd}{fun} \PYG{n+nf}{setupRecyclerView}\PYG{p}{()\PYGZob{}}
+        \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{searchRecyclerView}\PYG{p}{.}\PYG{n+na}{adapter} \PYG{o}{=} \PYG{n}{rowAdapter}
+        \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{searchRecyclerView}\PYG{p}{.}\PYG{n+na}{layoutManager} \PYG{o}{=} \PYG{n}{LinearLayoutManager}\PYG{p}{(}\PYG{k}{this}\PYG{p}{)}
+        \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{searchRecyclerView}\PYG{p}{.}\PYG{n+na}{addItemDecoration}\PYG{p}{(}\PYG{k}{object} \PYG{p}{:} \PYG{n+nc}{DividerItemDecoration}\PYG{p}{(}\PYG{k}{this}\PYG{p}{,} \PYG{n}{VERTICAL}\PYG{p}{)} \PYG{p}{\PYGZob{}\PYGZcb{})}
+        \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{searchRecyclerView}\PYG{p}{.}\PYG{n+na}{setHasFixedSize}\PYG{p}{(}\PYG{k+kc}{true}\PYG{p}{)}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onSupportNavigateUp}\PYG{p}{():} \PYG{k+kt}{Boolean} \PYG{p}{\PYGZob{}}
+        \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{onBackPressed}\PYG{p}{()}
+        \PYG{k}{return} \PYG{k+kc}{true}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{dispatchTouchEvent}\PYG{p}{(}\PYG{n}{ev}\PYG{p}{:} \PYG{n}{MotionEvent?)}\PYG{p}{:} \PYG{k+kt}{Boolean} \PYG{p}{\PYGZob{}}
+        \PYG{k}{if} \PYG{p}{(}\PYG{n}{currentFocus} \PYG{o}{!=} \PYG{k+kc}{null}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+            \PYG{k+kd}{val} \PYG{n+nv}{imm}\PYG{p}{:} \PYG{n}{InputMethodManager} \PYG{o}{=}
+                \PYG{n}{getSystemService}\PYG{p}{(}\PYG{n}{Context}\PYG{p}{.}\PYG{n+na}{INPUT\PYGZus{}METHOD\PYGZus{}SERVICE}\PYG{p}{)} \PYG{k}{as} \PYG{n}{InputMethodManager}
+            \PYG{n}{imm}\PYG{p}{.}\PYG{n+na}{hideSoftInputFromWindow}\PYG{p}{(}\PYG{n}{currentFocus}\PYG{o}{!!}\PYG{p}{.}\PYG{n+na}{windowToken}\PYG{p}{,} \PYG{l+m}{0}\PYG{p}{)}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{return} \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{dispatchTouchEvent}\PYG{p}{(}\PYG{n}{ev}\PYG{p}{)}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{private} \PYG{k+kd}{fun} \PYG{n+nf}{searchKeyword}\PYG{p}{(}\PYG{n}{key}\PYG{p}{:}\PYG{k+kt}{String?}\PYG{p}{)} \PYG{p}{:} \PYG{k+kt}{Boolean}\PYG{p}{\PYGZob{}}
+        \PYG{k}{when}\PYG{p}{(}\PYG{n}{objectSearch}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{ProfileType}\PYG{p}{.}\PYG{n+na}{PLANT} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{searchPlants}\PYG{p}{(}\PYG{n}{key}\PYG{p}{)}
+            \PYG{n}{ProfileType}\PYG{p}{.}\PYG{n+na}{USER} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{searchUsers}\PYG{p}{(}\PYG{n}{key}\PYG{p}{)}
+            \PYG{k}{else} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{i}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}enum class not found\PYGZdq{}}\PYG{p}{)}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{return} \PYG{k+kc}{true}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onQueryTextSubmit}\PYG{p}{(}\PYG{n}{query}\PYG{p}{:} \PYG{k+kt}{String?}\PYG{p}{):} \PYG{k+kt}{Boolean} \PYG{p}{\PYGZob{}}
+        \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{searchView}\PYG{p}{.}\PYG{n+na}{clearFocus}\PYG{p}{()}
+        \PYG{k}{return} \PYG{n}{searchKeyword}\PYG{p}{(}\PYG{n}{query}\PYG{p}{)}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onQueryTextChange}\PYG{p}{(}\PYG{n}{newText}\PYG{p}{:} \PYG{k+kt}{String?}\PYG{p}{):} \PYG{k+kt}{Boolean} \PYG{p}{\PYGZob{}}
+        \PYG{k}{return} \PYG{n}{searchKeyword}\PYG{p}{(}\PYG{n}{newText}\PYG{p}{)}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onRefresh}\PYG{p}{()} \PYG{p}{\PYGZob{}}
+        \PYG{k}{when}\PYG{p}{(}\PYG{n}{objectSearch}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{ProfileType}\PYG{p}{.}\PYG{n+na}{PLANT} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{p}{\PYGZob{}}
+                \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getAllPlants}\PYG{p}{(}\PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{searchView}\PYG{p}{.}\PYG{n+na}{query}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{())}
+            \PYG{p}{\PYGZcb{}}
+            \PYG{n}{ProfileType}\PYG{p}{.}\PYG{n+na}{USER} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getAllUsers}\PYG{p}{(}\PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{searchView}\PYG{p}{.}\PYG{n+na}{query}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{())}
+            \PYG{k}{else} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{i}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}enum class not found\PYGZdq{}}\PYG{p}{)}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

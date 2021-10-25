@@ -1,0 +1,6 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{data} \PYG{k+kd}{class} \PYG{n+nc}{UriFileExtensions}\PYG{p}{(}
+    \PYG{k+kd}{var} \PYG{n+nv}{uri} \PYG{p}{:} \PYG{n}{Uri}\PYG{p}{,}
+    \PYG{k+kd}{var} \PYG{n+nv}{fileExtensions} \PYG{p}{:} \PYG{k+kt}{String}
+\PYG{p}{)}
+\end{Verbatim}

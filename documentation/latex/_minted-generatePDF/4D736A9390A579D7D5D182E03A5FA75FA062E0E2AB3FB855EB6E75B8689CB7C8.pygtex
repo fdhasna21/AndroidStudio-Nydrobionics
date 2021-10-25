@@ -1,0 +1,17 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nd}{@Parcelize}
+\PYG{k+kd}{data} \PYG{k+kd}{class} \PYG{n+nc}{KitModel}\PYG{p}{(}
+    \PYG{k+kd}{var} \PYG{n+nv}{kitId} \PYG{p}{:} \PYG{k+kt}{String?} \PYG{o}{=} \PYG{k+kc}{null}\PYG{p}{,}
+    \PYG{k+kd}{var} \PYG{n+nv}{name} \PYG{p}{:} \PYG{k+kt}{String?}\PYG{o}{=} \PYG{k+kc}{null}\PYG{p}{,}
+    \PYG{k+kd}{var} \PYG{n+nv}{position} \PYG{p}{:} \PYG{k+kt}{String?} \PYG{o}{=} \PYG{k+kc}{null}\PYG{p}{,}
+    \PYG{k+kd}{var} \PYG{n+nv}{length} \PYG{p}{:} \PYG{k+kt}{Int?} \PYG{o}{=} \PYG{k+kc}{null}\PYG{p}{,}
+    \PYG{k+kd}{var} \PYG{n+nv}{width} \PYG{p}{:} \PYG{k+kt}{Int?} \PYG{o}{=} \PYG{k+kc}{null}\PYG{p}{,}
+    \PYG{k+kd}{var} \PYG{n+nv}{waterLv} \PYG{p}{:} \PYG{n+nd}{@RawValue} \PYG{n}{ScoreLevel? }\PYG{o}{=} \PYG{k+kc}{null}\PYG{p}{,}
+    \PYG{k+kd}{var} \PYG{n+nv}{nutrientLv} \PYG{p}{:} \PYG{n+nd}{@RawValue} \PYG{n}{ScoreLevel? }\PYG{o}{=} \PYG{k+kc}{null}\PYG{p}{,}
+    \PYG{k+kd}{var} \PYG{n+nv}{turbidityLv}\PYG{p}{:} \PYG{n+nd}{@RawValue} \PYG{n}{ScoreLevel? }\PYG{o}{=} \PYG{k+kc}{null}\PYG{p}{,}
+    \PYG{k+kd}{var} \PYG{n+nv}{isPlanted} \PYG{p}{:} \PYG{k+kt}{Boolean?} \PYG{o}{=} \PYG{k+kc}{false}\PYG{p}{,}
+    \PYG{k+kd}{var} \PYG{n+nv}{timestamp} \PYG{p}{:} \PYG{k+kt}{String?} \PYG{o}{=} \PYG{k+kc}{null}\PYG{p}{,}
+    \PYG{k+kd}{var} \PYG{n+nv}{lastMonitoring} \PYG{p}{:} \PYG{n}{DataMonitoringModel? }\PYG{o}{=} \PYG{k+kc}{null}\PYG{p}{,}
+    \PYG{k+kd}{var} \PYG{n+nv}{lastCrops} \PYG{p}{:} \PYG{n}{CropsModel? }\PYG{o}{=} \PYG{k+kc}{null}
+\PYG{p}{)}  \PYG{p}{:} \PYG{n}{Parcelable}
+\end{Verbatim}

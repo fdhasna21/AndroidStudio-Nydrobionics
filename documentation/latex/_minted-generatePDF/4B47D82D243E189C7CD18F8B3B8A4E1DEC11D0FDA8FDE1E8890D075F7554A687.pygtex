@@ -1,0 +1,78 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{class} \PYG{n+nc}{AboutMeActivity} \PYG{p}{:} \PYG{n}{AppCompatActivity}\PYG{p}{()} \PYG{p}{\PYGZob{}}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{binding}\PYG{p}{:} \PYG{n}{ActivityAboutMeBinding}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{intentData} \PYG{o}{=} \PYG{n}{IntentUtility}\PYG{p}{(}\PYG{k}{this}\PYG{p}{)}
+
+    \PYG{k+kd}{private} \PYG{k+kd}{fun} \PYG{n+nf}{setupToolbar}\PYG{p}{()\PYGZob{}}
+        \PYG{n}{supportActionBar}\PYG{o}{?.}\PYG{n+na}{setDisplayHomeAsUpEnabled}\PYG{p}{(}\PYG{k+kc}{true}\PYG{p}{)}
+        \PYG{n}{supportActionBar}\PYG{o}{?.}\PYG{n+na}{setDisplayShowHomeEnabled}\PYG{p}{(}\PYG{k+kc}{false}\PYG{p}{)}
+        \PYG{n}{supportActionBar}\PYG{o}{?.}\PYG{n+na}{title} \PYG{o}{=} \PYG{n}{getString}\PYG{p}{(}\PYG{n}{R}\PYG{p}{.}\PYG{n+na}{string}\PYG{p}{.}\PYG{n+na}{about\PYGZus{}me}\PYG{p}{)}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{private} \PYG{k+kd}{fun} \PYG{n+nf}{setupHeader}\PYG{p}{()\PYGZob{}}
+        \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{aboutEmail}\PYG{p}{.}\PYG{n+na}{text} \PYG{o}{=} \PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{CREATOR\PYGZus{}EMAIL}
+        \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{aboutDescription}\PYG{p}{.}\PYG{n+na}{text} \PYG{o}{=} \PYG{n}{listOf}\PYG{p}{(}\PYG{n}{getString}\PYG{p}{(}\PYG{n}{R}\PYG{p}{.}\PYG{n+na}{string}\PYG{p}{.}\PYG{n+na}{tab}\PYG{p}{),} \PYG{n}{getString}\PYG{p}{(}\PYG{n}{R}\PYG{p}{.}\PYG{n+na}{string}\PYG{p}{.}\PYG{n+na}{profile\PYGZus{}description}\PYG{p}{)).}\PYG{n+na}{joinToString}\PYG{p}{(}\PYG{l+s}{\PYGZdq{} \PYGZdq{}}\PYG{p}{)}
+        \PYG{n}{Glide}\PYG{p}{.}\PYG{n+na}{with}\PYG{p}{(}\PYG{k}{this}\PYG{p}{)}
+            \PYG{p}{.}\PYG{n+na}{load}\PYG{p}{(}\PYG{n}{R}\PYG{p}{.}\PYG{n+na}{drawable}\PYG{p}{.}\PYG{n+na}{profile\PYGZus{}photo}\PYG{p}{)}
+            \PYG{p}{.}\PYG{n+na}{circleCrop}\PYG{p}{()}
+            \PYG{p}{.}\PYG{n+na}{into}\PYG{p}{(}\PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{profilePicture}\PYG{p}{)}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{private} \PYG{k+kd}{fun} \PYG{n+nf}{setupFindMe}\PYG{p}{()\PYGZob{}}
+        \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{aboutFindMe}\PYG{p}{.}\PYG{n+na}{itemIconTintList} \PYG{o}{=} \PYG{k+kc}{null}
+        \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{aboutFindMe}\PYG{p}{.}\PYG{n+na}{setNavigationItemSelectedListener} \PYG{p}{\PYGZob{}}
+            \PYG{k}{when}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{itemId}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+                \PYG{n}{R}\PYG{p}{.}\PYG{n+na}{id}\PYG{p}{.}\PYG{n+na}{about\PYGZus{}whatsapp} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{p}{\PYGZob{}}
+                    \PYG{k}{try}\PYG{p}{\PYGZob{}}
+                        \PYG{k+kd}{val} \PYG{n+nv}{intent} \PYG{o}{=} \PYG{n}{Intent}\PYG{p}{()}
+                        \PYG{n}{applicationContext}\PYG{p}{.}\PYG{n+na}{packageManager}\PYG{p}{.}\PYG{n+na}{getPackageInfo}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}com.whatsapp\PYGZdq{}}\PYG{p}{,} \PYG{n}{PackageManager}\PYG{p}{.}\PYG{n+na}{GET\PYGZus{}META\PYGZus{}DATA}\PYG{p}{)}
+                        \PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{action} \PYG{o}{=} \PYG{n}{Intent}\PYG{p}{.}\PYG{n+na}{ACTION\PYGZus{}VIEW}
+                        \PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{type} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}text/plain\PYGZdq{}}
+                        \PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{data} \PYG{o}{=} \PYG{n}{Uri}\PYG{p}{.}\PYG{n+na}{parse}\PYG{p}{(}\PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{CREATOR\PYGZus{}WHATSAPP}\PYG{p}{)}
+                        \PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{setPackage}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}com.whatsapp\PYGZdq{}}\PYG{p}{)}
+                        \PYG{n}{startActivity}\PYG{p}{(}\PYG{n}{intent}\PYG{p}{)}
+                    \PYG{p}{\PYGZcb{}} \PYG{k}{catch} \PYG{p}{(}\PYG{n}{e} \PYG{p}{:} \PYG{n}{PackageManager}\PYG{p}{.}\PYG{n+na}{NameNotFoundException}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+                        \PYG{n}{Toast}\PYG{p}{.}\PYG{n+na}{makeText}\PYG{p}{(}\PYG{k}{this}\PYG{p}{,} \PYG{n}{e}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{(),} \PYG{n}{Toast}\PYG{p}{.}\PYG{n+na}{LENGTH\PYGZus{}SHORT}\PYG{p}{).}\PYG{n+na}{show}\PYG{p}{()}
+                    \PYG{p}{\PYGZcb{}}
+                    \PYG{k+kc}{true} \PYG{p}{\PYGZcb{}}
+                \PYG{n}{R}\PYG{p}{.}\PYG{n+na}{id}\PYG{p}{.}\PYG{n+na}{about\PYGZus{}email} \PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{p}{\PYGZob{}}
+                    \PYG{n}{intentData}\PYG{p}{.}\PYG{n+na}{openEmail}\PYG{p}{(}\PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{CREATOR\PYGZus{}EMAIL}\PYG{p}{)}
+                    \PYG{k+kc}{true} \PYG{p}{\PYGZcb{}}
+                \PYG{n}{R}\PYG{p}{.}\PYG{n+na}{id}\PYG{p}{.}\PYG{n+na}{about\PYGZus{}github} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{p}{\PYGZob{}}
+                    \PYG{n}{intentData}\PYG{p}{.}\PYG{n+na}{openBrowser}\PYG{p}{(}\PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{CREATOR\PYGZus{}GITHUB}\PYG{p}{)}
+                    \PYG{k+kc}{true} \PYG{p}{\PYGZcb{}}
+                \PYG{n}{R}\PYG{p}{.}\PYG{n+na}{id}\PYG{p}{.}\PYG{n+na}{about\PYGZus{}project} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{p}{\PYGZob{}}
+                    \PYG{n}{intentData}\PYG{p}{.}\PYG{n+na}{openBrowser}\PYG{p}{(}\PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{PROJECT\PYGZus{}URL}\PYG{p}{)}
+                    \PYG{k+kc}{true} \PYG{p}{\PYGZcb{}}
+                \PYG{k}{else} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{k+kc}{false}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{private} \PYG{k+kd}{fun} \PYG{n+nf}{setupCredit}\PYG{p}{()} \PYG{p}{\PYGZob{}}
+        \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{aboutCredit}\PYG{p}{.}\PYG{n+na}{itemIconTintList} \PYG{o}{=} \PYG{k+kc}{null}
+        \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{aboutCredit}\PYG{p}{.}\PYG{n+na}{setNavigationItemSelectedListener} \PYG{p}{\PYGZob{}}
+            \PYG{k}{when} \PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{itemId}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+                \PYG{n}{R}\PYG{p}{.}\PYG{n+na}{id}\PYG{p}{.}\PYG{n+na}{about\PYGZus{}lottie} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{intentData}\PYG{p}{.}\PYG{n+na}{openBrowser}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}https://lottiefiles.com/45869\PYGZhy{}farmers\PYGZdq{}}\PYG{p}{)}
+                \PYG{n}{R}\PYG{p}{.}\PYG{n+na}{id}\PYG{p}{.}\PYG{n+na}{about\PYGZus{}freepik} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{intentData}\PYG{p}{.}\PYG{n+na}{openBrowser}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}https://www.freepik.com/\PYGZdq{}}\PYG{p}{)}
+            \PYG{p}{\PYGZcb{}}
+            \PYG{k+kc}{true}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onCreate}\PYG{p}{(}\PYG{n}{savedInstanceState}\PYG{p}{:} \PYG{n}{Bundle?)} \PYG{p}{\PYGZob{}}
+        \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{onCreate}\PYG{p}{(}\PYG{n}{savedInstanceState}\PYG{p}{)}
+        \PYG{n}{binding} \PYG{o}{=} \PYG{n}{ActivityAboutMeBinding}\PYG{p}{.}\PYG{n+na}{inflate}\PYG{p}{(}\PYG{n}{layoutInflater}\PYG{p}{)}
+        \PYG{n}{setContentView}\PYG{p}{(}\PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{root}\PYG{p}{)}
+        \PYG{n}{setupToolbar}\PYG{p}{()}
+        \PYG{n}{setupHeader}\PYG{p}{()}
+        \PYG{n}{setupFindMe}\PYG{p}{()}
+        \PYG{n}{setupCredit}\PYG{p}{()}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onSupportNavigateUp}\PYG{p}{():} \PYG{k+kt}{Boolean} \PYG{p}{\PYGZob{}}
+        \PYG{n}{onBackPressed}\PYG{p}{()}
+        \PYG{k}{return} \PYG{k+kc}{true}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

@@ -1,0 +1,260 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{class} \PYG{n+nc}{CreateProfileViewModel} \PYG{p}{:} \PYG{n}{ViewModel}\PYG{p}{()} \PYG{p}{\PYGZob{}}
+    \PYG{k+kd}{private} \PYG{k+kd}{val} \PYG{n+nv}{today} \PYG{o}{=} \PYG{n}{ViewUtility}\PYG{p}{().}\PYG{n+na}{getCurrentDate}\PYG{p}{()}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{auth} \PYG{p}{:} \PYG{n}{FirebaseAuth} \PYG{o}{=} \PYG{n}{Firebase}\PYG{p}{.}\PYG{n+na}{auth}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{storage} \PYG{p}{:} \PYG{n}{FirebaseStorage} \PYG{o}{=} \PYG{n}{Firebase}\PYG{p}{.}\PYG{n+na}{storage}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{firestore} \PYG{p}{:} \PYG{n}{FirebaseFirestore} \PYG{o}{=} \PYG{n}{Firebase}\PYG{p}{.}\PYG{n+na}{firestore}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{userImageUri} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{n}{UriFileExtensions}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{k+kc}{null}\PYG{p}{)}
+
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{userModel} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{n}{UserModel}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}
+        \PYG{n}{UserModel}\PYG{p}{(}\PYG{n}{gender} \PYG{o}{=} \PYG{n}{Gender}\PYG{p}{.}\PYG{n+na}{MALE}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{(),}
+             \PYG{n}{dob} \PYG{o}{=} \PYG{n}{today}\PYG{p}{)}
+    \PYG{p}{)}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{farmModel} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{n}{FarmModel}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{n}{FarmModel}\PYG{p}{())}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{updateStaff} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{UserModel}\PYG{o}{\PYGZgt{}\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{n}{arrayListOf}\PYG{p}{())}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{currentStaff} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{UserModel}\PYG{o}{\PYGZgt{}\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{k+kc}{null}\PYG{p}{)}
+
+    \PYG{k+kd}{var} \PYG{n+nv}{isNotEmpties} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{Boolean}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{k+kc}{false}\PYG{p}{)}
+    \PYG{k+kd}{var} \PYG{n+nv}{isUserCreated} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{Boolean}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{k+kc}{false}\PYG{p}{)}
+    \PYG{k+kd}{var} \PYG{n+nv}{isFarmCreated} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{Boolean}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{k+kc}{false}\PYG{p}{)}
+    \PYG{k+kd}{var} \PYG{n+nv}{isStaffAdded} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{Boolean}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{k+kc}{false}\PYG{p}{)}
+    \PYG{k+kd}{var} \PYG{n+nv}{createProfileError} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{String}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZdq{}}\PYG{p}{)}
+
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{updateUser} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{n}{UserModel}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{k+kc}{null}\PYG{p}{)}
+
+    \PYG{n}{companion} \PYG{n}{object}\PYG{p}{\PYGZob{}}
+        \PYG{k+kd}{const} \PYG{k+kd}{val} \PYG{n+nv}{TAG} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}createProfileViewModel\PYGZdq{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{checkNotEmpty}\PYG{p}{(}\PYG{n}{boolean}\PYG{p}{:} \PYG{k+kt}{Boolean}\PYG{p}{)} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{Boolean}\PYG{o}{\PYGZgt{}}\PYG{p}{\PYGZob{}}
+        \PYG{n}{isNotEmpties}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n}{boolean}
+        \PYG{k}{return} \PYG{n}{isNotEmpties}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{c+cm}{/** SET MODEL **/}
+    \PYG{k+kd}{fun} \PYG{n+nf}{setCurrentUser}\PYG{p}{(}\PYG{n}{userModel}\PYG{p}{:} \PYG{n}{UserModel?)}\PYG{p}{\PYGZob{}}
+        \PYG{n}{userModel}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+            \PYG{k}{this}\PYG{p}{.}\PYG{n+na}{userModel}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n}{userModel}
+            \PYG{n}{isUserCreated}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{k+kc}{true}
+            \PYG{n}{updateUserGender}\PYG{p}{.}\PYG{n+na}{value}  \PYG{o}{=} \PYG{n}{Gender}\PYG{p}{.}\PYG{n+na}{getType}\PYG{p}{(}\PYG{n}{userModel}\PYG{p}{.}\PYG{n+na}{gender}\PYG{o}{!!}\PYG{p}{)}\PYG{o}{?.}\PYG{n+na}{getPosition}\PYG{p}{()}\PYG{o}{!!}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{setCurrentFarm}\PYG{p}{(}\PYG{n}{farmModel} \PYG{p}{:} \PYG{n}{FarmModel?,} \PYG{n}{userModel}\PYG{p}{:} \PYG{n}{UserModel?)}\PYG{p}{\PYGZob{}}
+        \PYG{k}{this}\PYG{p}{.}\PYG{n+na}{farmModel}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n}{farmModel}
+        \PYG{k}{this}\PYG{p}{.}\PYG{n+na}{userModel}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n}{userModel}
+        \PYG{n}{isFarmCreated}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{k+kc}{true}
+        \PYG{n}{isUserCreated}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{k+kc}{true}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{getCurrentUserModel}\PYG{p}{()} \PYG{p}{:} \PYG{n}{UserModel? }\PYG{o}{=} \PYG{n}{userModel}\PYG{p}{.}\PYG{n+na}{value}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{getCurrentFarmModel}\PYG{p}{()} \PYG{p}{:} \PYG{n}{FarmModel? }\PYG{o}{=} \PYG{n}{farmModel}\PYG{p}{.}\PYG{n+na}{value}
+
+
+    \PYG{c+cm}{/** CREATE USER FRAGMENT **/}
+    \PYG{k+kd}{fun} \PYG{n+nf}{setPhotoProfile}\PYG{p}{(}\PYG{n}{uri} \PYG{p}{:} \PYG{n}{Uri?,} \PYG{n}{fileExtension}\PYG{p}{:} \PYG{k+kt}{String?}\PYG{o}{=}\PYG{k+kc}{null}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{userImageUri}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{k}{if}\PYG{p}{(}\PYG{n}{uri} \PYG{o}{!=} \PYG{k+kc}{null}\PYG{p}{)\PYGZob{}}
+             \PYG{n}{UriFileExtensions}\PYG{p}{(}\PYG{n}{uri}\PYG{p}{,} \PYG{n}{fileExtension}\PYG{o}{!!}\PYG{p}{)}
+        \PYG{p}{\PYGZcb{}} \PYG{k}{else} \PYG{p}{\PYGZob{}}
+            \PYG{k+kc}{null}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{i}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}setPhotoProfile: }\PYG{l+s+si}{\PYGZdl{}}\PYG{n}{uri}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{getPhotoProfile}\PYG{p}{()} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{n}{UriFileExtensions}\PYG{o}{\PYGZgt{}}\PYG{p}{\PYGZob{}}
+        \PYG{k}{return} \PYG{n}{userImageUri}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{setRole}\PYG{p}{(}\PYG{n}{role}\PYG{p}{:}\PYG{n}{Role}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{userModel}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{role} \PYG{o}{=} \PYG{n}{role}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{()}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{setGender}\PYG{p}{(}\PYG{n}{gender}\PYG{p}{:} \PYG{n}{Gender}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{userModel}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{gender} \PYG{o}{=} \PYG{n}{gender}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{()}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{setDOB}\PYG{p}{(}\PYG{n}{date}\PYG{p}{:}\PYG{k+kt}{Long?}\PYG{p}{)} \PYG{p}{:} \PYG{k+kt}{String?} \PYG{p}{\PYGZob{}}
+        \PYG{k+kd}{val} \PYG{n+nv}{temp} \PYG{p}{:} \PYG{n}{UserModel? }\PYG{o}{=} \PYG{n}{userModel}\PYG{p}{.}\PYG{n+na}{value}
+        \PYG{n}{temp}\PYG{o}{?.}\PYG{n+na}{dob} \PYG{o}{=}  \PYG{n}{ViewUtility}\PYG{p}{().}\PYG{n+na}{formatDateToString}\PYG{p}{(}\PYG{n}{date}\PYG{p}{)}
+        \PYG{n}{userModel}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n}{temp}
+        \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{i}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}setDOB: }\PYG{l+s+si}{\PYGZdl{}}\PYG{n}{date}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}
+        \PYG{k}{return} \PYG{n}{userModel}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{dob}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{getDOB}\PYG{p}{()} \PYG{p}{:} \PYG{k+kt}{Long}\PYG{p}{\PYGZob{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{userModel}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{dob} \PYG{o}{==} \PYG{k+kc}{null}\PYG{p}{)\PYGZob{}}
+            \PYG{k+kd}{val} \PYG{n+nv}{temp} \PYG{p}{:} \PYG{n}{UserModel? }\PYG{o}{=} \PYG{n}{userModel}\PYG{p}{.}\PYG{n+na}{value}
+            \PYG{n}{temp}\PYG{o}{?.}\PYG{n+na}{dob} \PYG{o}{=} \PYG{n}{ViewUtility}\PYG{p}{().}\PYG{n+na}{getCurrentDate}\PYG{p}{()}
+            \PYG{n}{userModel}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n}{temp}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{return} \PYG{n}{ViewUtility}\PYG{p}{().}\PYG{n+na}{formatStringToDate}\PYG{p}{(}\PYG{n}{userModel}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{dob}\PYG{p}{)}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{createUserProfile}\PYG{p}{(}\PYG{n}{name}\PYG{p}{:}\PYG{k+kt}{String}\PYG{p}{,} \PYG{n}{phone}\PYG{p}{:}\PYG{k+kt}{String}\PYG{p}{,} \PYG{n}{address}\PYG{p}{:}\PYG{k+kt}{String}\PYG{p}{,} \PYG{n}{bio}\PYG{p}{:}\PYG{k+kt}{String}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+        \PYG{k}{try} \PYG{p}{\PYGZob{}}
+            \PYG{n}{userModel}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{apply} \PYG{p}{\PYGZob{}}
+                \PYG{k}{this}\PYG{p}{.}\PYG{n+na}{name} \PYG{o}{=} \PYG{n}{name}
+                \PYG{k}{this}\PYG{p}{.}\PYG{n+na}{email} \PYG{o}{=} \PYG{n}{auth}\PYG{p}{.}\PYG{n+na}{currentUser}\PYG{o}{?.}\PYG{n+na}{email}
+                \PYG{k}{this}\PYG{p}{.}\PYG{n+na}{phone} \PYG{o}{=} \PYG{n}{phone}
+                \PYG{k}{this}\PYG{p}{.}\PYG{n+na}{address} \PYG{o}{=} \PYG{n}{address}
+                \PYG{k}{this}\PYG{p}{.}\PYG{n+na}{bio} \PYG{o}{=} \PYG{n}{bio}
+                \PYG{k}{this}\PYG{p}{.}\PYG{n+na}{uid} \PYG{o}{=} \PYG{n}{auth}\PYG{p}{.}\PYG{n+na}{uid}
+                \PYG{k}{this}\PYG{p}{.}\PYG{n+na}{joinedSince} \PYG{o}{=} \PYG{n}{today}
+                \PYG{k}{this}\PYG{p}{.}\PYG{n+na}{performanceRate} \PYG{o}{=} \PYG{l+m}{5.0f}
+            \PYG{p}{\PYGZcb{}}
+
+            \PYG{k}{if}\PYG{p}{(}\PYG{n}{userImageUri}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{!=} \PYG{k+kc}{null}\PYG{p}{)\PYGZob{}}
+                \PYG{k+kd}{val} \PYG{n+nv}{storageReference} \PYG{p}{:} \PYG{n}{StorageReference} \PYG{o}{=} \PYG{n}{storage}\PYG{p}{.}\PYG{n+na}{getReference}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}profile\PYGZus{}images\PYGZdq{}}\PYG{p}{)}
+                    \PYG{p}{.}\PYG{n+na}{child}\PYG{p}{(}\PYG{n}{System}\PYG{p}{.}\PYG{n+na}{currentTimeMillis}\PYG{p}{().}\PYG{n+na}{toString}\PYG{p}{()} \PYG{o}{+} \PYG{l+s}{\PYGZdq{}.}\PYG{l+s+si}{\PYGZdl{}\PYGZob{}}\PYG{n}{userImageUri}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{fileExtensions}\PYG{o}{!!}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}
+                \PYG{k+kd}{val} \PYG{n+nv}{uploadTask} \PYG{o}{=} \PYG{n}{storageReference}\PYG{p}{.}\PYG{n+na}{putFile}\PYG{p}{(}\PYG{n}{userImageUri}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{uri}\PYG{o}{!!}\PYG{p}{)}
+                \PYG{n}{uploadTask}\PYG{p}{.}\PYG{n+na}{continueWithTask} \PYG{p}{\PYGZob{}}
+                    \PYG{k}{if}\PYG{p}{(}\PYG{o}{!}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{isSuccessful}\PYG{p}{)\PYGZob{}}
+                        \PYG{k}{throw} \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{exception}\PYG{o}{!!}\PYG{p}{.}\PYG{n+na}{cause}\PYG{o}{!!}
+                    \PYG{p}{\PYGZcb{}}
+                    \PYG{n}{storageReference}\PYG{p}{.}\PYG{n+na}{downloadUrl}
+                \PYG{p}{\PYGZcb{}.}\PYG{n+na}{addOnCompleteListener} \PYG{p}{\PYGZob{}}
+                    \PYG{k}{if} \PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{isSuccessful}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+                        \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{result}\PYG{p}{.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+                            \PYG{n}{userModel}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{photo\PYGZus{}url} \PYG{o}{=} \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{()}
+                            \PYG{n}{sendUserProfile}\PYG{p}{()}
+                        \PYG{p}{\PYGZcb{}}
+                    \PYG{p}{\PYGZcb{}}
+                \PYG{p}{\PYGZcb{}}
+            \PYG{p}{\PYGZcb{}} \PYG{k}{else} \PYG{p}{\PYGZob{}}
+                \PYG{n}{sendUserProfile}\PYG{p}{()}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}} \PYG{k}{catch} \PYG{p}{(}\PYG{n}{e}\PYG{p}{:}\PYG{n}{Exception}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{e}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}Error submit user\PYGZdq{}}\PYG{p}{,} \PYG{n}{e}\PYG{p}{)}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{private} \PYG{k+kd}{fun} \PYG{n+nf}{sendUserProfile}\PYG{p}{()\PYGZob{}}
+        \PYG{n}{createProfileError}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}\PYGZdq{}}
+        \PYG{k}{try} \PYG{p}{\PYGZob{}}
+            \PYG{n}{firestore}\PYG{p}{.}\PYG{n+na}{collection}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}users\PYGZdq{}}\PYG{p}{).}\PYG{n+na}{document}\PYG{p}{(}\PYG{n}{auth}\PYG{p}{.}\PYG{n+na}{uid}\PYG{o}{!!}\PYG{p}{).}\PYG{n+na}{set}\PYG{p}{(}\PYG{n}{userModel}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{!!}\PYG{p}{.}\PYG{n+na}{toHashMap}\PYG{p}{())}
+                \PYG{p}{.}\PYG{n+na}{addOnCompleteListener} \PYG{p}{\PYGZob{}}
+                    \PYG{k}{if} \PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{isSuccessful}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+                        \PYG{n}{isUserCreated}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{k+kc}{true}
+                        \PYG{n}{isNotEmpties}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{k+kc}{false}
+                    \PYG{p}{\PYGZcb{}} \PYG{k}{else} \PYG{p}{\PYGZob{}}
+                        \PYG{n}{createProfileError}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{exception}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{()}
+                        \PYG{n}{isUserCreated}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{k+kc}{false}
+                    \PYG{p}{\PYGZcb{}}
+                \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}} \PYG{k}{catch} \PYG{p}{(}\PYG{n}{e}\PYG{p}{:}\PYG{n}{Exception}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{e}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}sendUserProfile failed\PYGZdq{}}\PYG{p}{,} \PYG{n}{e}\PYG{p}{)}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+
+
+    \PYG{c+cm}{/** CREATE FARM FRAGMENT **/}
+    \PYG{k+kd}{fun} \PYG{n+nf}{createFarmProfile}\PYG{p}{(}\PYG{n}{name}\PYG{p}{:}\PYG{k+kt}{String}\PYG{p}{,} \PYG{n}{description}\PYG{p}{:}\PYG{k+kt}{String}\PYG{p}{,} \PYG{n}{location}\PYG{p}{:}\PYG{k+kt}{String}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{try} \PYG{p}{\PYGZob{}}
+            \PYG{n}{createProfileError}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}\PYGZdq{}}
+            \PYG{k+kd}{val} \PYG{n+nv}{db} \PYG{o}{=} \PYG{n}{firestore}\PYG{p}{.}\PYG{n+na}{collection}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}farms\PYGZdq{}}\PYG{p}{)}
+            \PYG{k+kd}{val} \PYG{n+nv}{ref} \PYG{p}{:} \PYG{n}{DocumentReference} \PYG{o}{=} \PYG{n}{db}\PYG{p}{.}\PYG{n+na}{document}\PYG{p}{()}
+
+            \PYG{n}{farmModel}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{apply} \PYG{p}{\PYGZob{}}
+                \PYG{k}{this}\PYG{p}{.}\PYG{n+na}{farmId} \PYG{o}{=} \PYG{n}{farmId} \PYG{o}{?:} \PYG{n}{ref}\PYG{p}{.}\PYG{n+na}{id}
+                \PYG{k}{this}\PYG{p}{.}\PYG{n+na}{name} \PYG{o}{=} \PYG{n}{name}
+                \PYG{k}{this}\PYG{p}{.}\PYG{n+na}{description} \PYG{o}{=} \PYG{n}{description}
+                \PYG{k}{this}\PYG{p}{.}\PYG{n+na}{location} \PYG{o}{=} \PYG{n}{location}
+            \PYG{p}{\PYGZcb{}}
+
+            \PYG{n}{db}\PYG{p}{.}\PYG{n+na}{document}\PYG{p}{(}\PYG{n}{farmModel}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{!!}\PYG{p}{.}\PYG{n+na}{farmId}\PYG{o}{!!}\PYG{p}{).}\PYG{n+na}{set}\PYG{p}{(}\PYG{n}{farmModel}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{!!}\PYG{p}{.}\PYG{n+na}{toHashMap}\PYG{p}{()).}\PYG{n+na}{addOnCompleteListener} \PYG{p}{\PYGZob{}}
+                \PYG{k}{if}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{isSuccessful}\PYG{p}{)\PYGZob{}}
+                    \PYG{n}{userModel}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{farmId} \PYG{o}{=} \PYG{n}{farmModel}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{!!}\PYG{p}{.}\PYG{n+na}{farmId}\PYG{o}{!!}
+                    \PYG{n}{sendUserProfile}\PYG{p}{()}
+                    \PYG{n}{isFarmCreated}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n}{isUserCreated}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{==} \PYG{k+kc}{true}
+                \PYG{p}{\PYGZcb{}} \PYG{k}{else} \PYG{p}{\PYGZob{}}
+                    \PYG{n}{createProfileError}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{exception}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{()}
+                    \PYG{n}{isFarmCreated}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{k+kc}{false}
+                \PYG{p}{\PYGZcb{}}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}} \PYG{k}{catch} \PYG{p}{(}\PYG{n}{e}\PYG{p}{:}\PYG{n}{Exception}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{e}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}Error submit farm\PYGZdq{}}\PYG{p}{,} \PYG{n}{e}\PYG{p}{)}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+
+
+    \PYG{c+cm}{/** EDIT FARM **/}
+    \PYG{k+kd}{fun} \PYG{n+nf}{getCurrentStaff}\PYG{p}{()} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{UserModel}\PYG{o}{\PYGZgt{}\PYGZgt{}}  \PYG{o}{=} \PYG{n}{currentStaff}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{getStaff}\PYG{p}{()} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{UserModel}\PYG{o}{\PYGZgt{}\PYGZgt{}} \PYG{o}{=} \PYG{n}{updateStaff}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{addStaff}\PYG{p}{(}\PYG{n}{userModel} \PYG{p}{:} \PYG{n}{UserModel}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{updateStaff}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+            \PYG{k+kd}{val} \PYG{n+nv}{array} \PYG{p}{:} \PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{UserModel}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n+nb}{it}
+            \PYG{n}{array}\PYG{p}{.}\PYG{n+na}{add}\PYG{p}{(}\PYG{n}{userModel}\PYG{p}{)}
+            \PYG{n}{updateStaff}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n}{array}
+            \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{i}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}addStaff: }\PYG{l+s+si}{\PYGZdl{}\PYGZob{}}\PYG{n}{updateStaff}\PYG{p}{.}\PYG{n+na}{value}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{removeStaff}\PYG{p}{(}\PYG{n}{position} \PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{updateStaff}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+            \PYG{k+kd}{val} \PYG{n+nv}{array} \PYG{p}{:} \PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{UserModel}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n+nb}{it}
+            \PYG{n}{array}\PYG{p}{.}\PYG{n+na}{removeAt}\PYG{p}{(}\PYG{n}{position}\PYG{p}{)}
+            \PYG{n}{updateStaff}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n}{array}
+            \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{i}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}removeStaff: }\PYG{l+s+si}{\PYGZdl{}\PYGZob{}}\PYG{n}{updateStaff}\PYG{p}{.}\PYG{n+na}{value}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{createStaff}\PYG{p}{()\PYGZob{}}
+        \PYG{k}{try} \PYG{p}{\PYGZob{}}
+            \PYG{n}{farmModel}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+                \PYG{n}{firestore}\PYG{p}{.}\PYG{n+na}{collection}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}farms\PYGZdq{}}\PYG{p}{).}\PYG{n+na}{document}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{farmId}\PYG{o}{!!}\PYG{p}{)}
+                    \PYG{p}{.}\PYG{n+na}{set}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{toHashMap}\PYG{p}{())}
+            \PYG{p}{\PYGZcb{}}
+
+            \PYG{n}{currentStaff}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+                \PYG{k}{for} \PYG{p}{(}\PYG{n}{staff} \PYG{k}{in} \PYG{n+nb}{it}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+                    \PYG{n}{firestore}\PYG{p}{.}\PYG{n+na}{collection}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}users\PYGZdq{}}\PYG{p}{).}\PYG{n+na}{document}\PYG{p}{(}\PYG{n}{staff}\PYG{p}{.}\PYG{n+na}{uid}\PYG{o}{!!}\PYG{p}{)}
+                        \PYG{p}{.}\PYG{n+na}{update}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}farmId\PYGZdq{}}\PYG{p}{,} \PYG{k+kc}{null}\PYG{p}{)}
+                \PYG{p}{\PYGZcb{}}
+            \PYG{p}{\PYGZcb{}}
+
+            \PYG{n}{updateStaff}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+                \PYG{k}{for} \PYG{p}{(}\PYG{n}{staff} \PYG{k}{in} \PYG{n+nb}{it}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+                    \PYG{n}{firestore}\PYG{p}{.}\PYG{n+na}{collection}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}users\PYGZdq{}}\PYG{p}{).}\PYG{n+na}{document}\PYG{p}{(}\PYG{n}{staff}\PYG{p}{.}\PYG{n+na}{uid}\PYG{o}{!!}\PYG{p}{)}
+                        \PYG{p}{.}\PYG{n+na}{update}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}farmId\PYGZdq{}}\PYG{p}{,} \PYG{n}{farmModel}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{farmId}\PYG{p}{)}
+                \PYG{p}{\PYGZcb{}}
+                \PYG{n}{isStaffAdded}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{k+kc}{true}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}} \PYG{k}{catch} \PYG{p}{(}\PYG{n}{e}\PYG{p}{:}\PYG{n}{Exception}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{e}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}createStaff: \PYGZdq{}}\PYG{p}{,} \PYG{n}{e}\PYG{p}{)}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{updateStaff}\PYG{p}{()} \PYG{p}{\PYGZob{}}
+        \PYG{k}{try} \PYG{p}{\PYGZob{}}
+            \PYG{n}{firestore}\PYG{p}{.}\PYG{n+na}{collection}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}users\PYGZdq{}}\PYG{p}{)}
+                \PYG{p}{.}\PYG{n+na}{get}\PYG{p}{().}\PYG{n+na}{addOnCompleteListener} \PYG{p}{\PYGZob{}}
+                    \PYG{k}{if}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{isSuccessful}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+                        \PYG{k+kd}{val} \PYG{n+nv}{staffs}\PYG{p}{:} \PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{UserModel}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{arrayListOf}\PYG{p}{()}
+                        \PYG{k}{for} \PYG{p}{(}\PYG{n}{staffDocument} \PYG{k}{in} \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{result}\PYG{p}{.}\PYG{n+na}{documents}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+                            \PYG{n}{staffDocument}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}} \PYG{n}{staff} \PYG{o}{\PYGZhy{}\PYGZgt{}}
+                                \PYG{n}{staff}\PYG{p}{.}\PYG{n+na}{toUserModel}\PYG{p}{()}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}} \PYG{n}{staffModel} \PYG{o}{\PYGZhy{}\PYGZgt{}}
+                                    \PYG{n}{staffModel}\PYG{p}{.}\PYG{n+na}{farmId}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+                                        \PYG{k}{if} \PYG{p}{(}\PYG{n+nb}{it} \PYG{o}{==} \PYG{n}{farmModel}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{farmId}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+                                            \PYG{n}{staffs}\PYG{p}{.}\PYG{n+na}{add}\PYG{p}{(}\PYG{n}{staffModel}\PYG{p}{)}
+                                        \PYG{p}{\PYGZcb{}}
+                                    \PYG{p}{\PYGZcb{}}
+                                \PYG{p}{\PYGZcb{}}
+                            \PYG{p}{\PYGZcb{}}
+                        \PYG{p}{\PYGZcb{}}
+                        \PYG{n}{currentStaff}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n}{staffs}
+                        \PYG{n}{updateStaff}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n}{staffs}
+                    \PYG{p}{\PYGZcb{}}
+                \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}} \PYG{k}{catch} \PYG{p}{(}\PYG{n}{e}\PYG{p}{:}\PYG{n}{Exception}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{e}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}updateCurrentStaff for farm }\PYG{l+s+si}{\PYGZdl{}\PYGZob{}}\PYG{n}{farmModel}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{farmId}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s}{: \PYGZdq{}}\PYG{p}{,} \PYG{n}{e}\PYG{p}{)}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{c+cm}{/** EDIT USER **/}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{updateUserGender} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{Int}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{l+m}{0}\PYG{p}{)}
+    \PYG{k+kd}{fun} \PYG{n+nf}{getUpdateGender}\PYG{p}{()} \PYG{p}{:} \PYG{k+kt}{Int?} \PYG{o}{=} \PYG{n}{updateUserGender}\PYG{p}{.}\PYG{n+na}{value}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

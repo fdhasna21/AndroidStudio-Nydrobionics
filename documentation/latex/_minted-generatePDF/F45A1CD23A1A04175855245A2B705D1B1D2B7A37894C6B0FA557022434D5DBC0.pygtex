@@ -1,0 +1,48 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{class} \PYG{n+nc}{FeedbackViewModel} \PYG{p}{:} \PYG{n}{ViewModel}\PYG{p}{()\PYGZob{}}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{auth} \PYG{p}{:} \PYG{n}{FirebaseAuth} \PYG{o}{=} \PYG{n}{Firebase}\PYG{p}{.}\PYG{n+na}{auth}
+    \PYG{k+kd}{private} \PYG{k+kd}{val} \PYG{n+nv}{db} \PYG{o}{=} \PYG{n}{Firebase}\PYG{p}{.}\PYG{n+na}{firestore}\PYG{p}{.}\PYG{n+na}{collection}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}feedbacks\PYGZdq{}}\PYG{p}{)}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{ref} \PYG{p}{:} \PYG{n}{DocumentReference} \PYG{o}{=} \PYG{n}{db}\PYG{p}{.}\PYG{n+na}{document}\PYG{p}{()}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{feedbackModel} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{n}{FeedbackModel}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{n}{FeedbackModel}\PYG{p}{())}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{isNotEmpties} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{Boolean}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{k+kc}{false}\PYG{p}{)}
+    \PYG{k+kd}{var} \PYG{n+nv}{isFeedbackSubmit} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{Boolean}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{k+kc}{false}\PYG{p}{)}
+    \PYG{k+kd}{var} \PYG{n+nv}{feedbackSubmitError} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{String}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZdq{}}\PYG{p}{)}
+
+    \PYG{k+kd}{companion} \PYG{k+kd}{object} \PYG{err}{\PYGZob{}}
+        \PYG{k+kd}{const} \PYG{k+kd}{val} \PYG{n+nv}{TAG} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}feedback\PYGZdq{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{checkNotEmpty}\PYG{p}{(}\PYG{n}{boolean}\PYG{p}{:} \PYG{k+kt}{Boolean}\PYG{p}{)} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{Boolean}\PYG{o}{\PYGZgt{}} \PYG{p}{\PYGZob{}}
+        \PYG{n}{isNotEmpties}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n}{boolean}
+        \PYG{k}{return} \PYG{n}{isNotEmpties}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{setRating}\PYG{p}{(}\PYG{n}{rating} \PYG{p}{:} \PYG{k+kt}{Float}\PYG{p}{)} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{n}{FeedbackModel}\PYG{o}{\PYGZgt{}?} \PYG{p}{\PYGZob{}}
+        \PYG{n}{feedbackModel}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{rating} \PYG{o}{=} \PYG{n}{rating}
+        \PYG{k}{return} \PYG{n}{feedbackModel}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{getRating}\PYG{p}{()} \PYG{o}{=} \PYG{n}{feedbackModel}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{rating}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{submitFeedback}\PYG{p}{(}\PYG{n}{content}\PYG{p}{:}\PYG{k+kt}{String}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{try}\PYG{p}{\PYGZob{}}
+            \PYG{n}{feedbackModel}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+                \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{feedbackId} \PYG{o}{=} \PYG{n}{ref}\PYG{p}{.}\PYG{n+na}{id}
+                \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{content} \PYG{o}{=} \PYG{n}{content}
+                \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{userId} \PYG{o}{=} \PYG{n}{auth}\PYG{p}{.}\PYG{n+na}{uid}
+            \PYG{p}{\PYGZcb{}}
+
+            \PYG{n}{db}\PYG{p}{.}\PYG{n+na}{document}\PYG{p}{(}\PYG{n}{ref}\PYG{p}{.}\PYG{n+na}{id}\PYG{p}{).}\PYG{n+na}{set}\PYG{p}{(}\PYG{n}{feedbackModel}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{!!}\PYG{p}{.}\PYG{n+na}{toHashMap}\PYG{p}{()).}\PYG{n+na}{addOnCompleteListener} \PYG{p}{\PYGZob{}}
+                \PYG{k}{if}\PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{isSuccessful}\PYG{p}{)\PYGZob{}}
+                    \PYG{n}{isFeedbackSubmit}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{k+kc}{true}
+                \PYG{p}{\PYGZcb{}} \PYG{k}{else} \PYG{p}{\PYGZob{}}
+                    \PYG{n}{feedbackSubmitError}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{exception}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{()}
+                    \PYG{n}{isFeedbackSubmit}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{k+kc}{false}
+                \PYG{p}{\PYGZcb{}}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}} \PYG{k}{catch} \PYG{p}{(}\PYG{n}{e}\PYG{p}{:}\PYG{n}{Exception}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{e}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}Error submit feedback\PYGZdq{}}\PYG{p}{,} \PYG{n}{e}\PYG{p}{)}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

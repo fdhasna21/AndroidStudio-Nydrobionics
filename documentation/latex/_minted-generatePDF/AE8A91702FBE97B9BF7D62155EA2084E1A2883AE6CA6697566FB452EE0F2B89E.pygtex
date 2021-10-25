@@ -1,0 +1,156 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{class} \PYG{n+nc}{MainHomeFragment} \PYG{p}{:} \PYG{n}{Fragment}\PYG{p}{(),} \PYG{n}{View}\PYG{p}{.}\PYG{n+na}{OnClickListener}\PYG{p}{,} \PYG{n}{CardStackListener}\PYG{p}{\PYGZob{}}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{\PYGZus{}binding} \PYG{p}{:} \PYG{n}{FragmentMainHomeBinding? }\PYG{o}{=} \PYG{k+kc}{null}
+    \PYG{k+kd}{private} \PYG{k+kd}{val} \PYG{n+nv}{binding} \PYG{k}{get}\PYG{p}{()} \PYG{o}{=} \PYG{n}{\PYGZus{}binding}\PYG{o}{!!}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{viewModel} \PYG{p}{:} \PYG{n}{MainViewModel}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{viewsAsButton} \PYG{p}{:} \PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{View}\PYG{o}{\PYGZgt{}}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{cardStackLayoutManager}\PYG{p}{:} \PYG{n}{CardStackLayoutManager}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{cardStackAdapter} \PYG{p}{:} \PYG{n}{RecyclerView}\PYG{p}{.}\PYG{n+na}{Adapter}\PYG{o}{\PYGZlt{}*\PYGZgt{}}
+
+    \PYG{k+kd}{companion} \PYG{k+kd}{object} \PYG{err}{\PYGZob{}}
+        \PYG{k+kd}{const} \PYG{k+kd}{val} \PYG{n+nv}{TAG} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}mainHomeFragment\PYGZdq{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onCreateView}\PYG{p}{(}
+        \PYG{n}{inflater}\PYG{p}{:} \PYG{n}{LayoutInflater}\PYG{p}{,} \PYG{n}{container}\PYG{p}{:} \PYG{n}{ViewGroup?,}
+        \PYG{n}{savedInstanceState}\PYG{p}{:} \PYG{n}{Bundle?}
+    \PYG{p}{):} \PYG{n}{View} \PYG{p}{\PYGZob{}}
+        \PYG{n}{\PYGZus{}binding} \PYG{o}{=} \PYG{n}{FragmentMainHomeBinding}\PYG{p}{.}\PYG{n+na}{inflate}\PYG{p}{(}\PYG{n}{layoutInflater}\PYG{p}{,} \PYG{n}{container}\PYG{p}{,} \PYG{k+kc}{false}\PYG{p}{)}
+        \PYG{k}{return} \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{root}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onViewCreated}\PYG{p}{(}\PYG{n}{view}\PYG{p}{:} \PYG{n}{View}\PYG{p}{,} \PYG{n}{savedInstanceState}\PYG{p}{:} \PYG{n}{Bundle?)} \PYG{p}{\PYGZob{}}
+        \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{onViewCreated}\PYG{p}{(}\PYG{n}{view}\PYG{p}{,} \PYG{n}{savedInstanceState}\PYG{p}{)}
+        \PYG{n}{setHasOptionsMenu}\PYG{p}{(}\PYG{k+kc}{true}\PYG{p}{)}
+        \PYG{n}{requireActivity}\PYG{p}{().}\PYG{n+na}{title} \PYG{o}{=} \PYG{n}{getString}\PYG{p}{(}\PYG{n}{R}\PYG{p}{.}\PYG{n+na}{string}\PYG{p}{.}\PYG{n+na}{home}\PYG{p}{)}
+        \PYG{n}{viewModel} \PYG{o}{=} \PYG{n}{ViewModelProvider}\PYG{p}{(}\PYG{n}{requireActivity}\PYG{p}{()).}\PYG{n+na}{get}\PYG{p}{(}\PYG{n}{MainViewModel}\PYG{o}{::}\PYG{n}{class}\PYG{p}{.}\PYG{n+na}{java}\PYG{p}{)}
+
+        \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{apply} \PYG{p}{\PYGZob{}}
+            \PYG{n}{viewsAsButton} \PYG{o}{=} \PYG{n}{arrayListOf}\PYG{p}{(}\PYG{n}{mainCardPrevious}\PYG{p}{,} \PYG{n}{mainCardNext}\PYG{p}{)}
+            \PYG{n}{viewsAsButton}\PYG{p}{.}\PYG{n+na}{forEach} \PYG{p}{\PYGZob{}} \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{setOnClickListener}\PYG{p}{(}\PYG{k}{this}\PYG{n+nd}{@MainHomeFragment}\PYG{p}{)} \PYG{p}{\PYGZcb{}}
+
+            \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getCurrentFarm}\PYG{p}{().}\PYG{n+na}{observe}\PYG{p}{(}\PYG{n}{viewLifecycleOwner}\PYG{p}{,\PYGZob{}}
+                \PYG{n+nb}{it}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+                    \PYG{n}{mainHomeFarmName}\PYG{p}{.}\PYG{n+na}{text} \PYG{o}{=} \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{name}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{()}
+                    \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{i}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}onViewCreated: update\PYGZdq{}}\PYG{p}{)}
+                \PYG{p}{\PYGZcb{}}
+            \PYG{p}{\PYGZcb{})}
+        \PYG{p}{\PYGZcb{}}
+
+        \PYG{n}{setupCardStack}\PYG{p}{()}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{private} \PYG{k+kd}{fun} \PYG{n+nf}{setupCardStack}\PYG{p}{()} \PYG{p}{\PYGZob{}}
+        \PYG{k+kd}{val} \PYG{n+nv}{data} \PYG{p}{:} \PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{KitModel}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{arrayListOf}\PYG{p}{()}
+        \PYG{n}{cardStackAdapter} \PYG{o}{=} \PYG{n}{AdapterType}\PYG{p}{.}\PYG{n+na}{DATA\PYGZus{}MONITORING}\PYG{p}{.}\PYG{n+na}{getAdapter}\PYG{p}{(}\PYG{n}{requireContext}\PYG{p}{(),} \PYG{n}{data}\PYG{p}{)}
+        \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getCurrentKits}\PYG{p}{().}\PYG{n+na}{observe}\PYG{p}{(}\PYG{n}{viewLifecycleOwner}\PYG{p}{,} \PYG{p}{\PYGZob{}}
+            \PYG{k+kd}{val} \PYG{n+nv}{temp} \PYG{o}{=} \PYG{n+nb}{it} \PYG{o}{?:} \PYG{n}{arrayListOf}\PYG{p}{()}
+            \PYG{n}{data}\PYG{p}{.}\PYG{n+na}{clear}\PYG{p}{()}
+            \PYG{n}{data}\PYG{p}{.}\PYG{n+na}{addAll}\PYG{p}{(}\PYG{n}{temp}\PYG{p}{)}
+             \PYG{n}{cardStackAdapter}\PYG{p}{.}\PYG{n+na}{notifyDataSetChanged}\PYG{p}{()}
+            \PYG{p}{(}\PYG{n}{cardStackAdapter} \PYG{k}{as} \PYG{n}{KitModelAdapter}\PYG{p}{).}\PYG{n+na}{setOnItemClickListener}\PYG{p}{(}
+                \PYG{k}{object} \PYG{p}{:} \PYG{n+nc}{KitModelAdapter}\PYG{p}{.}\PYG{n+na}{OnItemClickListener}\PYG{p}{\PYGZob{}}
+                    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onItemClicked}\PYG{p}{(}\PYG{n}{position}\PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+                        \PYG{k+kd}{val} \PYG{n+nv}{intent} \PYG{o}{=} \PYG{n}{Intent}\PYG{p}{(}\PYG{n}{requireContext}\PYG{p}{(),} \PYG{n}{ProfileKitActivity}\PYG{o}{::}\PYG{n}{class}\PYG{p}{.}\PYG{n+na}{java}\PYG{p}{)}
+                        \PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{putExtra}\PYG{p}{(}\PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{CURRENT\PYGZus{}USER}\PYG{p}{,} \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getCurrentUser}\PYG{p}{().}\PYG{n+na}{value}\PYG{p}{)}
+                        \PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{putExtra}\PYG{p}{(}\PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{CURRENT\PYGZus{}FARM}\PYG{p}{,} \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getCurrentFarm}\PYG{p}{().}\PYG{n+na}{value}\PYG{p}{)}
+                        \PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{putExtra}\PYG{p}{(}\PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{SELECTED\PYGZus{}KIT}\PYG{p}{,} \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getKit}\PYG{p}{(}\PYG{n}{position}\PYG{p}{))}
+                        \PYG{n}{startActivity}\PYG{p}{(}\PYG{n}{intent}\PYG{p}{)}
+                    \PYG{p}{\PYGZcb{}}
+                \PYG{p}{\PYGZcb{}}
+            \PYG{p}{)}
+            \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{i}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}adapter count }\PYG{l+s+si}{\PYGZdl{}\PYGZob{}}\PYG{n}{cardStackAdapter}\PYG{p}{.}\PYG{n+na}{itemCount}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}
+            \PYG{p}{(}\PYG{n}{requireActivity}\PYG{p}{()} \PYG{k}{as} \PYG{n}{MainActivity}\PYG{p}{).}\PYG{n+na}{swipeRefresh}\PYG{p}{.}\PYG{n+na}{isRefreshing} \PYG{o}{=} \PYG{k+kc}{false}
+
+            \PYG{k}{if}\PYG{p}{(}\PYG{n}{temp}\PYG{p}{.}\PYG{n+na}{size} \PYG{o}{==}\PYG{l+m}{0}\PYG{p}{)\PYGZob{}}
+                \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{mainCardPrevious}\PYG{p}{.}\PYG{n+na}{visibility} \PYG{o}{=} \PYG{n}{View}\PYG{p}{.}\PYG{n+na}{GONE}
+                \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{mainCardNext}\PYG{p}{.}\PYG{n+na}{visibility} \PYG{o}{=} \PYG{n}{View}\PYG{p}{.}\PYG{n+na}{GONE}
+            \PYG{p}{\PYGZcb{}} \PYG{k}{else} \PYG{p}{\PYGZob{}}
+                \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{mainCardPrevious}\PYG{p}{.}\PYG{n+na}{visibility} \PYG{o}{=} \PYG{n}{View}\PYG{p}{.}\PYG{n+na}{VISIBLE}
+                \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{mainCardNext}\PYG{p}{.}\PYG{n+na}{visibility} \PYG{o}{=} \PYG{n}{View}\PYG{p}{.}\PYG{n+na}{VISIBLE}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{})}
+
+
+        \PYG{k+kd}{val} \PYG{n+nv}{swipeSetting} \PYG{o}{=} \PYG{n}{SwipeAnimationSetting}\PYG{p}{.}\PYG{n+na}{Builder}\PYG{p}{()}
+            \PYG{p}{.}\PYG{n+na}{setDirection}\PYG{p}{(}\PYG{n}{Direction}\PYG{p}{.}\PYG{n+na}{Right}\PYG{p}{)}
+            \PYG{p}{.}\PYG{n+na}{setDuration}\PYG{p}{(}\PYG{n}{Duration}\PYG{p}{.}\PYG{n+na}{Normal}\PYG{p}{.}\PYG{n+na}{duration}\PYG{p}{)}
+            \PYG{p}{.}\PYG{n+na}{build}\PYG{p}{()}
+
+        \PYG{k+kd}{val} \PYG{n+nv}{rewindSetting} \PYG{o}{=} \PYG{n}{RewindAnimationSetting}\PYG{p}{.}\PYG{n+na}{Builder}\PYG{p}{()}
+            \PYG{p}{.}\PYG{n+na}{setDirection}\PYG{p}{(}\PYG{n}{Direction}\PYG{p}{.}\PYG{n+na}{Left}\PYG{p}{)}
+            \PYG{p}{.}\PYG{n+na}{setDuration}\PYG{p}{(}\PYG{n}{Duration}\PYG{p}{.}\PYG{n+na}{Normal}\PYG{p}{.}\PYG{n+na}{duration}\PYG{p}{)}
+            \PYG{p}{.}\PYG{n+na}{build}\PYG{p}{()}
+
+        \PYG{n}{cardStackLayoutManager} \PYG{o}{=} \PYG{n}{CardStackLayoutManager}\PYG{p}{(}\PYG{n}{requireContext}\PYG{p}{(),} \PYG{k}{this}\PYG{n+nd}{@MainHomeFragment}\PYG{p}{).}\PYG{n+na}{apply} \PYG{p}{\PYGZob{}}
+            \PYG{n}{setStackFrom}\PYG{p}{(}\PYG{n}{StackFrom}\PYG{p}{.}\PYG{n+na}{None}\PYG{p}{)}
+            \PYG{n}{setDirections}\PYG{p}{(}\PYG{n}{Direction}\PYG{p}{.}\PYG{n+na}{HORIZONTAL}\PYG{p}{)}
+            \PYG{n}{setCanScrollHorizontal}\PYG{p}{(}\PYG{k+kc}{true}\PYG{p}{)}
+            \PYG{n}{setCanScrollVertical}\PYG{p}{(}\PYG{k+kc}{false}\PYG{p}{)}
+            \PYG{n}{setSwipeAnimationSetting}\PYG{p}{(}\PYG{n}{swipeSetting}\PYG{p}{)}
+            \PYG{n}{setRewindAnimationSetting}\PYG{p}{(}\PYG{n}{rewindSetting}\PYG{p}{)}
+        \PYG{p}{\PYGZcb{}}
+
+        \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{mainHomeCardStack}\PYG{p}{.}\PYG{n+na}{apply} \PYG{p}{\PYGZob{}}
+            \PYG{n}{adapter} \PYG{o}{=} \PYG{n}{cardStackAdapter}
+            \PYG{n}{layoutManager} \PYG{o}{=} \PYG{n}{cardStackLayoutManager}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onCreateOptionsMenu}\PYG{p}{(}\PYG{n}{menu}\PYG{p}{:} \PYG{n}{Menu}\PYG{p}{,} \PYG{n}{inflater}\PYG{p}{:} \PYG{n}{MenuInflater}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+        \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{onCreateOptionsMenu}\PYG{p}{(}\PYG{n}{menu}\PYG{p}{,} \PYG{n}{inflater}\PYG{p}{)}
+        \PYG{n}{menu}\PYG{p}{.}\PYG{n+na}{clear}\PYG{p}{()}
+        \PYG{n}{inflater}\PYG{p}{.}\PYG{n+na}{inflate}\PYG{p}{(}\PYG{n}{R}\PYG{p}{.}\PYG{n+na}{menu}\PYG{p}{.}\PYG{n+na}{menu\PYGZus{}main\PYGZus{}home}\PYG{p}{,} \PYG{n}{menu}\PYG{p}{)}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onOptionsItemSelected}\PYG{p}{(}\PYG{n}{item}\PYG{p}{:} \PYG{n}{MenuItem}\PYG{p}{):} \PYG{k+kt}{Boolean} \PYG{p}{\PYGZob{}}
+        \PYG{k}{when}\PYG{p}{(}\PYG{n}{item}\PYG{p}{.}\PYG{n+na}{itemId}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{R}\PYG{p}{.}\PYG{n+na}{id}\PYG{p}{.}\PYG{n+na}{farmProfile} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{p}{\PYGZob{}}
+                \PYG{k+kd}{val} \PYG{n+nv}{intent} \PYG{o}{=} \PYG{n}{Intent}\PYG{p}{(}\PYG{n}{activity}\PYG{p}{,} \PYG{n}{EditProfileFarmActivity}\PYG{o}{::}\PYG{n}{class}\PYG{p}{.}\PYG{n+na}{java}\PYG{p}{)}
+                \PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{putExtra}\PYG{p}{(}\PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{CURRENT\PYGZus{}FARM}\PYG{p}{,} \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getCurrentFarm}\PYG{p}{().}\PYG{n+na}{value}\PYG{p}{)}
+                \PYG{n}{intent}\PYG{p}{.}\PYG{n+na}{putExtra}\PYG{p}{(}\PYG{n}{BuildConfig}\PYG{p}{.}\PYG{n+na}{CURRENT\PYGZus{}USER}\PYG{p}{,} \PYG{n}{viewModel}\PYG{p}{.}\PYG{n+na}{getCurrentUser}\PYG{p}{().}\PYG{n+na}{value}\PYG{p}{)}
+                \PYG{n}{startActivity}\PYG{p}{(}\PYG{n}{intent}\PYG{p}{)}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{return} \PYG{k}{super}\PYG{p}{.}\PYG{n+na}{onOptionsItemSelected}\PYG{p}{(}\PYG{n}{item}\PYG{p}{)}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onClick}\PYG{p}{(}\PYG{n}{v}\PYG{p}{:} \PYG{n}{View?)} \PYG{p}{\PYGZob{}}
+        \PYG{k}{when}\PYG{p}{(}\PYG{n}{v}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{mainCardNext} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{p}{\PYGZob{}}
+                \PYG{k}{if}\PYG{p}{(}\PYG{n}{cardStackLayoutManager}\PYG{p}{.}\PYG{n+na}{topPosition} \PYG{o}{\PYGZlt{}} \PYG{n}{cardStackAdapter}\PYG{p}{.}\PYG{n+na}{itemCount}\PYG{o}{\PYGZhy{}}\PYG{l+m}{1}\PYG{p}{)\PYGZob{}}
+                    \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{mainHomeCardStack}\PYG{p}{.}\PYG{n+na}{swipe}\PYG{p}{()}
+                \PYG{p}{\PYGZcb{}} \PYG{k}{else} \PYG{p}{\PYGZob{}}
+                    \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{mainHomeCardStack}\PYG{p}{.}\PYG{n+na}{smoothScrollToPosition}\PYG{p}{(}\PYG{l+m}{0}\PYG{p}{)}
+                \PYG{p}{\PYGZcb{}}
+            \PYG{p}{\PYGZcb{}}
+            \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{mainCardPrevious} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{p}{\PYGZob{}}
+                \PYG{k}{if}\PYG{p}{(}\PYG{n}{cardStackLayoutManager}\PYG{p}{.}\PYG{n+na}{topPosition} \PYG{o}{!=} \PYG{l+m}{0}\PYG{p}{)\PYGZob{}}
+                    \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{mainHomeCardStack}\PYG{p}{.}\PYG{n+na}{rewind}\PYG{p}{()}
+                \PYG{p}{\PYGZcb{}} \PYG{k}{else} \PYG{p}{\PYGZob{}}
+                    \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{mainHomeCardStack}\PYG{p}{.}\PYG{n+na}{smoothScrollToPosition}\PYG{p}{(}\PYG{n}{cardStackAdapter}\PYG{p}{.}\PYG{n+na}{itemCount}\PYG{o}{\PYGZhy{}}\PYG{l+m}{1}\PYG{p}{)}
+                \PYG{p}{\PYGZcb{}}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onCardDragging}\PYG{p}{(}\PYG{n}{direction}\PYG{p}{:} \PYG{n}{Direction?,} \PYG{n}{ratio}\PYG{p}{:} \PYG{k+kt}{Float}\PYG{p}{)} \PYG{p}{\PYGZob{}\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onCardSwiped}\PYG{p}{(}\PYG{n}{direction}\PYG{p}{:} \PYG{n}{Direction?)} \PYG{p}{\PYGZob{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{cardStackLayoutManager}\PYG{p}{.}\PYG{n+na}{topPosition} \PYG{o}{==} \PYG{n}{cardStackAdapter}\PYG{p}{.}\PYG{n+na}{itemCount}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{binding}\PYG{p}{.}\PYG{n+na}{mainHomeCardStack}\PYG{p}{.}\PYG{n+na}{scrollToPosition}\PYG{p}{(}\PYG{l+m}{0}\PYG{p}{)}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onCardRewound}\PYG{p}{()} \PYG{p}{\PYGZob{}\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onCardCanceled}\PYG{p}{()} \PYG{p}{\PYGZob{}\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onCardAppeared}\PYG{p}{(}\PYG{n}{view}\PYG{p}{:} \PYG{n}{View?,} \PYG{n}{position}\PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+        \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{i}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}appear }\PYG{l+s+si}{\PYGZdl{}}\PYG{n}{position}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{override} \PYG{k+kd}{fun} \PYG{n+nf}{onCardDisappeared}\PYG{p}{(}\PYG{n}{view}\PYG{p}{:} \PYG{n}{View?,} \PYG{n}{position}\PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

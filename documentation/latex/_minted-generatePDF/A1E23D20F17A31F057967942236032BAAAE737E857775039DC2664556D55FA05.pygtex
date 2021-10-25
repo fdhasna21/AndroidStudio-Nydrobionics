@@ -1,0 +1,13 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{class} \PYG{n+nc}{AddCropsViewModel} \PYG{p}{:} \PYG{n}{ViewModel}\PYG{p}{()} \PYG{p}{\PYGZob{}}
+    \PYG{k+kd}{var} \PYG{n+nv}{isPlantExist}\PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{Boolean}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{k+kc}{false}\PYG{p}{)}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{plantModel} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{n}{PlantModel}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{n}{PlantModel}\PYG{p}{())}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{setPlantModel}\PYG{p}{(}\PYG{n}{plantModel}\PYG{p}{:} \PYG{n}{PlantModel}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+        \PYG{k}{this}\PYG{p}{.}\PYG{n+na}{plantModel}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n}{plantModel}
+        \PYG{n}{isPlantExist}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{k+kc}{true}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{getPlantModel}\PYG{p}{()} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{n}{PlantModel}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{plantModel}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

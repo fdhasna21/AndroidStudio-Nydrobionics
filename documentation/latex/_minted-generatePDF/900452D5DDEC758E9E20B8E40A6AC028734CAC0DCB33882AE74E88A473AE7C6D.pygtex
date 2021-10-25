@@ -1,0 +1,361 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{class} \PYG{n+nc}{MainViewModel} \PYG{p}{:} \PYG{n}{ViewModel}\PYG{p}{()} \PYG{p}{\PYGZob{}}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{auth} \PYG{p}{:} \PYG{n}{FirebaseAuth} \PYG{o}{=} \PYG{n}{Firebase}\PYG{p}{.}\PYG{n+na}{auth}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{firestore} \PYG{p}{:} \PYG{n}{FirebaseFirestore} \PYG{o}{=} \PYG{n}{Firebase}\PYG{p}{.}\PYG{n+na}{firestore}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{currentUserModel} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{n}{UserModel?\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{k+kc}{null}\PYG{p}{)}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{currentFarmModel} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{n}{FarmModel?\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{k+kc}{null}\PYG{p}{)}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{currentKitModels} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{KitModel}\PYG{o}{\PYGZgt{}?\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{k+kc}{null}\PYG{p}{)}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{currentNoteModels} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{NoteModel}\PYG{o}{\PYGZgt{}?\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{k+kc}{null}\PYG{p}{)}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{allUserModels} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{UserModel}\PYG{o}{\PYGZgt{}?\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{k+kc}{null}\PYG{p}{)}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{allPlantModels} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{PlantModel}\PYG{o}{\PYGZgt{}?\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{k+kc}{null}\PYG{p}{)}
+
+    \PYG{n}{companion} \PYG{n}{object}\PYG{p}{\PYGZob{}}
+        \PYG{k+kd}{const} \PYG{k+kd}{val} \PYG{n+nv}{TAG} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}mainViewModel\PYGZdq{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{setCurrentData}\PYG{p}{(}\PYG{n}{userModel}\PYG{p}{:} \PYG{n}{UserModel?,} \PYG{n}{farmModel}\PYG{p}{:} \PYG{n}{FarmModel?)}\PYG{p}{\PYGZob{}}
+        \PYG{n}{getUsersUpdate}\PYG{p}{()}
+        \PYG{n}{getPlantsUpdate}\PYG{p}{()}
+        \PYG{n}{userModel}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+            \PYG{n}{currentUserModel}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n+nb}{it}
+            \PYG{n}{farmModel}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+                \PYG{n}{currentFarmModel}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n+nb}{it}
+            \PYG{p}{\PYGZcb{}} \PYG{o}{?:} \PYG{n}{kotlin}\PYG{p}{.}\PYG{n+na}{run} \PYG{p}{\PYGZob{}}
+                \PYG{n}{getFarmsUpdate}\PYG{p}{(}\PYG{n}{currentFarmModel}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{farmId}\PYG{p}{)}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}} \PYG{o}{?:} \PYG{n}{kotlin}\PYG{p}{.}\PYG{n+na}{run} \PYG{p}{\PYGZob{}}
+            \PYG{n}{getUsersUpdate}\PYG{p}{()}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{c+cm}{/** GET DATA **/}
+    \PYG{k+kd}{fun} \PYG{n+nf}{getCurrentUser}\PYG{p}{()} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{n}{UserModel?\PYGZgt{}} \PYG{o}{=} \PYG{n}{currentUserModel}
+    \PYG{k+kd}{fun} \PYG{n+nf}{getCurrentFarm}\PYG{p}{()} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{n}{FarmModel?\PYGZgt{}} \PYG{o}{=} \PYG{n}{currentFarmModel}
+    \PYG{k+kd}{fun} \PYG{n+nf}{getCurrentKits}\PYG{p}{()} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{KitModel}\PYG{o}{\PYGZgt{}?\PYGZgt{}} \PYG{o}{=} \PYG{n}{currentKitModels}
+    \PYG{k+kd}{fun} \PYG{n+nf}{getCurrentNotes}\PYG{p}{()} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{NoteModel}\PYG{o}{\PYGZgt{}?\PYGZgt{}} \PYG{o}{=} \PYG{n}{currentNoteModels}
+    \PYG{k+kd}{fun} \PYG{n+nf}{getAllUsers}\PYG{p}{()} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{UserModel}\PYG{o}{\PYGZgt{}?\PYGZgt{}} \PYG{o}{=} \PYG{n}{allUserModels}
+    \PYG{k+kd}{fun} \PYG{n+nf}{getAllPosts}\PYG{p}{()} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{PlantModel}\PYG{o}{\PYGZgt{}?\PYGZgt{}} \PYG{o}{=} \PYG{n}{allPlantModels}
+
+    \PYG{c+cm}{/** UPDATE DATABASE LISTENER **/}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{usersListener} \PYG{p}{:} \PYG{n}{ListenerRegistration}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{farmsListener} \PYG{p}{:} \PYG{n}{ListenerRegistration}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{kitsListener} \PYG{p}{:} \PYG{n}{ListenerRegistration}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{monitoringsListeners} \PYG{p}{:} \PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{ListenerRegistration}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{arrayListOf}\PYG{p}{()}
+    \PYG{k+kd}{private} \PYG{k+kd}{var} \PYG{n+nv}{cropsListeners} \PYG{p}{:} \PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{ListenerRegistration}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{arrayListOf}\PYG{p}{()}
+    \PYG{k+kd}{private} \PYG{k+kd}{lateinit} \PYG{k+kd}{var} \PYG{n+nv}{plantsListener} \PYG{p}{:} \PYG{n}{ListenerRegistration}
+
+    \PYG{k+kd}{private} \PYG{k+kd}{fun} \PYG{n+nf}{getUsersUpdate}\PYG{p}{()\PYGZob{}}
+        \PYG{k+kd}{val} \PYG{n+nv}{db} \PYG{o}{=} \PYG{n}{firestore}\PYG{p}{.}\PYG{n+na}{collection}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}users\PYGZdq{}}\PYG{p}{)}
+        \PYG{k}{try} \PYG{p}{\PYGZob{}}
+            \PYG{n}{usersListener} \PYG{o}{=}
+                \PYG{n}{db}\PYG{p}{.}\PYG{n+na}{orderBy}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}timestamp\PYGZdq{}}\PYG{p}{,} \PYG{n}{Query}\PYG{p}{.}\PYG{n+na}{Direction}\PYG{p}{.}\PYG{n+na}{DESCENDING}\PYG{p}{)}
+                    \PYG{p}{.}\PYG{n+na}{addSnapshotListener} \PYG{p}{\PYGZob{}} \PYG{n}{usersSnapshot}\PYG{p}{,} \PYG{n}{error} \PYG{o}{\PYGZhy{}\PYGZgt{}}
+                        \PYG{n}{usersSnapshot}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+                            \PYG{k+kd}{val} \PYG{n+nv}{users} \PYG{p}{:} \PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{UserModel}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{arrayListOf}\PYG{p}{()}
+                            \PYG{k}{for}\PYG{p}{(}\PYG{n}{userDocument} \PYG{k}{in} \PYG{n}{usersSnapshot}\PYG{p}{.}\PYG{n+na}{documents}\PYG{p}{)\PYGZob{}}
+                                \PYG{n}{userDocument}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}} \PYG{n}{user} \PYG{o}{\PYGZhy{}\PYGZgt{}}
+                                    \PYG{n}{user}\PYG{p}{.}\PYG{n+na}{toUserModel}\PYG{p}{()}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}} \PYG{n}{userModel} \PYG{o}{\PYGZhy{}\PYGZgt{}}
+                                        \PYG{n}{users}\PYG{p}{.}\PYG{n+na}{add}\PYG{p}{(}\PYG{n}{userModel}\PYG{p}{)}
+                                        \PYG{k+kd}{val} \PYG{n+nv}{userId} \PYG{o}{=} \PYG{n}{userDocument}\PYG{p}{.}\PYG{n+na}{id}
+                                        \PYG{k}{if}\PYG{p}{(}\PYG{n}{auth}\PYG{p}{.}\PYG{n+na}{uid} \PYG{o}{==} \PYG{n}{userId}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+                                            \PYG{n}{currentUserModel}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n}{userModel}
+                                            \PYG{n}{getFarmsUpdate}\PYG{p}{(}\PYG{n}{userModel}\PYG{p}{.}\PYG{n+na}{farmId}\PYG{p}{)}
+
+                                            \PYG{k+kd}{val} \PYG{n+nv}{userRef} \PYG{o}{=} \PYG{n}{db}\PYG{p}{.}\PYG{n+na}{document}\PYG{p}{(}\PYG{n}{userId}\PYG{p}{)}
+                                            \PYG{n}{userRef}\PYG{p}{.}\PYG{n+na}{collection}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}notes\PYGZdq{}}\PYG{p}{)}
+                                                \PYG{p}{.}\PYG{n+na}{orderBy}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}timestamp\PYGZdq{}}\PYG{p}{,} \PYG{n}{Query}\PYG{p}{.}\PYG{n+na}{Direction}\PYG{p}{.}\PYG{n+na}{DESCENDING}\PYG{p}{)}
+                                                \PYG{p}{.}\PYG{n+na}{addSnapshotListener} \PYG{p}{\PYGZob{}} \PYG{n}{notesSnapshot}\PYG{p}{,} \PYG{n}{error} \PYG{o}{\PYGZhy{}\PYGZgt{}}
+                                                    \PYG{n}{notesSnapshot}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+                                                        \PYG{k+kd}{val} \PYG{n+nv}{notes}\PYG{p}{:} \PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{NoteModel}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{arrayListOf}\PYG{p}{()}
+                                                        \PYG{k}{for} \PYG{p}{(}\PYG{n}{noteDocument} \PYG{k}{in} \PYG{n}{notesSnapshot}\PYG{p}{.}\PYG{n+na}{documents}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+                                                            \PYG{n}{noteDocument}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}} \PYG{n}{note} \PYG{o}{\PYGZhy{}\PYGZgt{}}
+                                                                \PYG{n}{note}\PYG{p}{.}\PYG{n+na}{toNoteModel}\PYG{p}{()}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}} \PYG{n}{noteModel} \PYG{o}{\PYGZhy{}\PYGZgt{}}
+                                                                    \PYG{n}{notes}\PYG{p}{.}\PYG{n+na}{add}\PYG{p}{(}\PYG{n}{noteModel}\PYG{p}{)}
+                                                                \PYG{p}{\PYGZcb{}}
+                                                            \PYG{p}{\PYGZcb{}}
+                                                        \PYG{p}{\PYGZcb{}}
+                                                        \PYG{n}{currentNoteModels}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n}{notes}
+                                                        \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{i}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}getUsersUpdate }\PYG{l+s+si}{\PYGZdl{}\PYGZob{}}\PYG{n}{currentUserModel}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{uid}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s}{\PYGZdq{}} \PYG{o}{+}
+                                                                \PYG{l+s}{\PYGZdq{} \PYGZbs{}tnotes:}\PYG{l+s+si}{\PYGZdl{}\PYGZob{}}\PYG{n}{currentNoteModels}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{size}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s}{\PYGZbs{}n\PYGZdq{}} \PYG{o}{+}
+                                                                \PYG{l+s}{\PYGZdq{}}\PYG{l+s+si}{\PYGZdl{}\PYGZob{}}\PYG{n}{currentUserModel}\PYG{p}{.}\PYG{n+na}{value}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s}{\PYGZbs{}n\PYGZdq{}}\PYG{p}{)}
+                                                    \PYG{p}{\PYGZcb{}}
+
+                                                    \PYG{n}{error}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+                                                        \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{e}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}Listen notes from }\PYG{l+s+si}{\PYGZdl{}}\PYG{n}{userId}\PYG{l+s}{ failed\PYGZdq{}}\PYG{p}{,} \PYG{n+nb}{it}\PYG{p}{)}
+                                                    \PYG{p}{\PYGZcb{}}
+                                                \PYG{p}{\PYGZcb{}}
+                                        \PYG{p}{\PYGZcb{}}
+                                    \PYG{p}{\PYGZcb{}}
+                                \PYG{p}{\PYGZcb{}}
+                            \PYG{p}{\PYGZcb{}}
+                            \PYG{n}{allUserModels}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n}{users}
+                            \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{i}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}getUsersUpdate: }\PYG{l+s+si}{\PYGZdl{}\PYGZob{}}\PYG{n}{allUserModels}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{size}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s}{\PYGZbs{}n\PYGZdq{}}\PYG{p}{)}
+                        \PYG{p}{\PYGZcb{}}
+
+                        \PYG{n}{error}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+                            \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{e}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}Listen users failed\PYGZdq{}}\PYG{p}{,} \PYG{n+nb}{it}\PYG{p}{)}
+                        \PYG{p}{\PYGZcb{}}
+                    \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}} \PYG{k}{catch} \PYG{p}{(}\PYG{n}{e}\PYG{p}{:}\PYG{n}{Exception}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{e}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}getUsersUpdate() error\PYGZdq{}}\PYG{p}{,} \PYG{n}{e}\PYG{p}{)}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{private} \PYG{k+kd}{fun} \PYG{n+nf}{getFarmsUpdate}\PYG{p}{(}\PYG{n}{farmId}\PYG{p}{:} \PYG{k+kt}{String?}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{farmId} \PYG{o}{==} \PYG{k+kc}{null}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{currentFarmModel}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{k+kc}{null}
+        \PYG{p}{\PYGZcb{}} \PYG{k}{else} \PYG{p}{\PYGZob{}}
+            \PYG{k}{try}\PYG{p}{\PYGZob{}}
+                \PYG{k+kd}{val} \PYG{n+nv}{db} \PYG{o}{=} \PYG{n}{firestore}\PYG{p}{.}\PYG{n+na}{collection}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}farms\PYGZdq{}}\PYG{p}{).}\PYG{n+na}{document}\PYG{p}{(}\PYG{n}{farmId}\PYG{p}{)}
+                \PYG{n}{farmsListener} \PYG{o}{=} \PYG{n}{db}\PYG{p}{.}\PYG{n+na}{addSnapshotListener} \PYG{p}{\PYGZob{}} \PYG{n}{farmSnapshot}\PYG{p}{,} \PYG{n}{error} \PYG{o}{\PYGZhy{}\PYGZgt{}}
+                    \PYG{n}{farmSnapshot}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}} \PYG{n}{farm} \PYG{o}{\PYGZhy{}\PYGZgt{}}
+                        \PYG{n}{farm}\PYG{p}{.}\PYG{n+na}{toFarmModel}\PYG{p}{()}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}} \PYG{n}{farmModel} \PYG{o}{\PYGZhy{}\PYGZgt{}}
+                            \PYG{n}{currentFarmModel}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n}{farmModel}
+
+                            \PYG{k+kd}{val} \PYG{n+nv}{kitsRef} \PYG{o}{=} \PYG{n}{db}\PYG{p}{.}\PYG{n+na}{collection}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}kits\PYGZdq{}}\PYG{p}{)}
+                            \PYG{n}{kitsListener} \PYG{o}{=} \PYG{n}{kitsRef}\PYG{p}{.}\PYG{n+na}{addSnapshotListener}\PYG{p}{\PYGZob{}} \PYG{n}{kitSnapshot}\PYG{p}{,} \PYG{n}{error} \PYG{o}{\PYGZhy{}\PYGZgt{}}
+                                \PYG{n}{kitSnapshot}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}} \PYG{n}{kitDocuments} \PYG{o}{\PYGZhy{}\PYGZgt{}}
+                                    \PYG{k+kd}{val} \PYG{n+nv}{kits} \PYG{p}{:} \PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{KitModel}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{arrayListOf}\PYG{p}{()}
+                                    \PYG{n}{kitDocuments}\PYG{p}{.}\PYG{n+na}{documents}\PYG{p}{.}\PYG{n+na}{forEachIndexed} \PYG{p}{\PYGZob{}} \PYG{n}{index}\PYG{p}{,} \PYG{n}{kitDocument} \PYG{o}{\PYGZhy{}\PYGZgt{}}
+                                        \PYG{n}{kitDocument}\PYG{o}{?.}\PYG{n+na}{toKitModel}\PYG{p}{().}\PYG{n+na}{let} \PYG{p}{\PYGZob{}} \PYG{n}{kit} \PYG{o}{\PYGZhy{}\PYGZgt{}}
+                                            \PYG{n}{kit}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}} \PYG{n}{kitModel} \PYG{o}{\PYGZhy{}\PYGZgt{}}
+                                                \PYG{k+kd}{val} \PYG{n+nv}{kitId} \PYG{o}{=} \PYG{n}{kitDocument}\PYG{p}{.}\PYG{n+na}{id}
+                                                \PYG{k+kd}{val} \PYG{n+nv}{kitRef} \PYG{o}{=} \PYG{n}{kitsRef}\PYG{p}{.}\PYG{n+na}{document}\PYG{p}{(}\PYG{n}{kitId}\PYG{p}{)}
+                                                \PYG{n}{kits}\PYG{p}{.}\PYG{n+na}{add}\PYG{p}{(}\PYG{n}{kitModel}\PYG{p}{)}
+
+                                                \PYG{k+kd}{val} \PYG{n+nv}{monitorListener} \PYG{o}{=} \PYG{n}{kitRef}\PYG{p}{.}\PYG{n+na}{collection}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}dataMonitorings\PYGZdq{}}\PYG{p}{)}
+                                                    \PYG{p}{.}\PYG{n+na}{orderBy}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}timestamp\PYGZdq{}}\PYG{p}{,} \PYG{n}{Query}\PYG{p}{.}\PYG{n+na}{Direction}\PYG{p}{.}\PYG{n+na}{DESCENDING}\PYG{p}{)}
+                                                    \PYG{p}{.}\PYG{n+na}{addSnapshotListener} \PYG{p}{\PYGZob{}} \PYG{n}{monitoringSnapshot}\PYG{p}{,} \PYG{n}{error} \PYG{o}{\PYGZhy{}\PYGZgt{}}
+                                                        \PYG{n}{monitoringSnapshot}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}} \PYG{n}{monitoringDocuments} \PYG{o}{\PYGZhy{}\PYGZgt{}}
+                                                            \PYG{k}{if}\PYG{p}{(}\PYG{n}{monitoringDocuments}\PYG{p}{.}\PYG{n+na}{documents}\PYG{p}{.}\PYG{n+na}{size} \PYG{o}{\PYGZgt{}} \PYG{l+m}{0}\PYG{p}{)\PYGZob{}}
+                                                                \PYG{k+kd}{val} \PYG{n+nv}{lastMonitoring} \PYG{p}{:} \PYG{n}{DataMonitoringModel? }\PYG{o}{=} \PYG{n}{monitoringDocuments}\PYG{p}{.}\PYG{n+na}{documents}\PYG{o}{[}\PYG{l+m}{0}\PYG{o}{]}\PYG{p}{.}\PYG{n+na}{toDataMonitoringModel}\PYG{p}{()}
+                                                                \PYG{n}{updateKitModel}\PYG{p}{(}\PYG{n}{index}\PYG{p}{,} \PYG{n}{monitoringModel} \PYG{o}{=} \PYG{n}{lastMonitoring}\PYG{p}{)}
+                                                            \PYG{p}{\PYGZcb{}}
+                                                        \PYG{p}{\PYGZcb{}}
+
+                                                        \PYG{n}{error}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+                                                            \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{e}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}Listen dataMonitoring from kit }\PYG{l+s+si}{\PYGZdl{}}\PYG{n}{kitId}\PYG{l+s}{ failed\PYGZdq{}}\PYG{p}{,} \PYG{n+nb}{it}\PYG{p}{)}
+                                                        \PYG{p}{\PYGZcb{}}
+                                                    \PYG{p}{\PYGZcb{}}
+
+                                                \PYG{k+kd}{val} \PYG{n+nv}{cropsListener} \PYG{o}{=} \PYG{n}{kitRef}\PYG{p}{.}\PYG{n+na}{collection}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}crops\PYGZdq{}}\PYG{p}{)}
+                                                    \PYG{p}{.}\PYG{n+na}{orderBy}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}timestamp\PYGZdq{}}\PYG{p}{,} \PYG{n}{Query}\PYG{p}{.}\PYG{n+na}{Direction}\PYG{p}{.}\PYG{n+na}{DESCENDING}\PYG{p}{)}
+                                                    \PYG{p}{.}\PYG{n+na}{addSnapshotListener} \PYG{p}{\PYGZob{}} \PYG{n}{cropsSnapshot}\PYG{p}{,} \PYG{n}{error} \PYG{o}{\PYGZhy{}\PYGZgt{}}
+                                                        \PYG{n}{cropsSnapshot}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}} \PYG{n}{cropsDocuments} \PYG{o}{\PYGZhy{}\PYGZgt{}}
+                                                            \PYG{k}{if}\PYG{p}{(}\PYG{n}{cropsDocuments}\PYG{p}{.}\PYG{n+na}{documents}\PYG{p}{.}\PYG{n+na}{size} \PYG{o}{\PYGZgt{}} \PYG{l+m}{0}\PYG{p}{)\PYGZob{}}
+                                                                \PYG{k+kd}{val} \PYG{n+nv}{lastCropsModel} \PYG{p}{:} \PYG{n}{CropsModel? }\PYG{o}{=} \PYG{n}{cropsDocuments}\PYG{p}{.}\PYG{n+na}{documents}\PYG{o}{[}\PYG{l+m}{0}\PYG{o}{]}\PYG{p}{.}\PYG{n+na}{toCropsModel}\PYG{p}{()}
+                                                                \PYG{n}{updateKitModel}\PYG{p}{(}\PYG{n}{index}\PYG{p}{,} \PYG{n}{cropsModel} \PYG{o}{=} \PYG{n}{lastCropsModel}\PYG{p}{)}
+                                                            \PYG{p}{\PYGZcb{}}
+                                                        \PYG{p}{\PYGZcb{}}
+
+                                                        \PYG{n}{error}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+                                                            \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{e}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}Listen crops from kit }\PYG{l+s+si}{\PYGZdl{}}\PYG{n}{kitId}\PYG{l+s}{ failed\PYGZdq{}}\PYG{p}{,} \PYG{n+nb}{it}\PYG{p}{)}
+                                                        \PYG{p}{\PYGZcb{}}
+                                                    \PYG{p}{\PYGZcb{}}
+
+                                                \PYG{n}{monitoringsListeners}\PYG{p}{.}\PYG{n+na}{add}\PYG{p}{(}\PYG{n}{monitorListener}\PYG{p}{)}
+                                                \PYG{n}{cropsListeners}\PYG{p}{.}\PYG{n+na}{add}\PYG{p}{(}\PYG{n}{cropsListener}\PYG{p}{)}
+                                            \PYG{p}{\PYGZcb{}}
+                                        \PYG{p}{\PYGZcb{}}
+                                    \PYG{p}{\PYGZcb{}}
+                                    \PYG{n}{currentKitModels}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n}{kits}
+                                    \PYG{n}{updateKitModel}\PYG{p}{(}\PYG{l+m}{0}\PYG{p}{)}
+                                \PYG{p}{\PYGZcb{}}
+
+                                \PYG{n}{error}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+                                    \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{e}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}Listen kits from farm }\PYG{l+s+si}{\PYGZdl{}}\PYG{n}{farmId}\PYG{l+s}{ failed\PYGZdq{}}\PYG{p}{,} \PYG{n+nb}{it}\PYG{p}{)}
+                                \PYG{p}{\PYGZcb{}}
+                            \PYG{p}{\PYGZcb{}}
+                        \PYG{p}{\PYGZcb{}}
+
+                        \PYG{n}{error}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+                            \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{e}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}Listen farm }\PYG{l+s+si}{\PYGZdl{}}\PYG{n}{farmId}\PYG{l+s}{ failed\PYGZdq{}}\PYG{p}{,} \PYG{n+nb}{it}\PYG{p}{)}
+                        \PYG{p}{\PYGZcb{}}
+                    \PYG{p}{\PYGZcb{}}
+                \PYG{p}{\PYGZcb{}}
+            \PYG{p}{\PYGZcb{}} \PYG{k}{catch} \PYG{p}{(}\PYG{n}{e}\PYG{p}{:}\PYG{n}{Exception}\PYG{p}{)\PYGZob{}}
+                \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{e}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}real time farms error\PYGZdq{}}\PYG{p}{,} \PYG{n}{e}\PYG{p}{)}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{private} \PYG{k+kd}{fun} \PYG{n+nf}{getPlantsUpdate}\PYG{p}{()\PYGZob{}}
+        \PYG{k+kd}{val} \PYG{n+nv}{db} \PYG{o}{=} \PYG{n}{firestore}\PYG{p}{.}\PYG{n+na}{collection}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}plants\PYGZdq{}}\PYG{p}{).}\PYG{n+na}{orderBy}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}timestamp\PYGZdq{}}\PYG{p}{,} \PYG{n}{Query}\PYG{p}{.}\PYG{n+na}{Direction}\PYG{p}{.}\PYG{n+na}{DESCENDING}\PYG{p}{)}
+        \PYG{k}{try} \PYG{p}{\PYGZob{}}
+            \PYG{n}{plantsListener} \PYG{o}{=} \PYG{n}{db}\PYG{p}{.}\PYG{n+na}{addSnapshotListener} \PYG{p}{\PYGZob{}} \PYG{n}{plantsSnapshot}\PYG{p}{,} \PYG{n}{error} \PYG{o}{\PYGZhy{}\PYGZgt{}}
+                \PYG{n}{plantsSnapshot}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+                    \PYG{k+kd}{val} \PYG{n+nv}{plants} \PYG{p}{:} \PYG{n}{ArrayList}\PYG{o}{\PYGZlt{}}\PYG{n}{PlantModel}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{arrayListOf}\PYG{p}{()}
+                    \PYG{k}{for}\PYG{p}{(}\PYG{n}{plantDocument} \PYG{k}{in} \PYG{n}{plantsSnapshot}\PYG{p}{.}\PYG{n+na}{documents}\PYG{p}{)\PYGZob{}}
+                        \PYG{n}{plantDocument}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}} \PYG{n}{plant} \PYG{o}{\PYGZhy{}\PYGZgt{}}
+                            \PYG{n}{plant}\PYG{p}{.}\PYG{n+na}{toPlantModel}\PYG{p}{()}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}} \PYG{n}{plantModel} \PYG{o}{\PYGZhy{}\PYGZgt{}}
+                                \PYG{n}{plants}\PYG{p}{.}\PYG{n+na}{add}\PYG{p}{(}\PYG{n}{plantModel}\PYG{p}{)}
+                            \PYG{p}{\PYGZcb{}}
+                        \PYG{p}{\PYGZcb{}}
+                    \PYG{p}{\PYGZcb{}}
+                    \PYG{n}{allPlantModels}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n}{plants}
+                    \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{i}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}getPlantsUpdate: }\PYG{l+s+si}{\PYGZdl{}\PYGZob{}}\PYG{n}{allPlantModels}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{size}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}
+                \PYG{p}{\PYGZcb{}}
+
+                \PYG{n}{error}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+                    \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{e}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}Listen plants failed\PYGZdq{}}\PYG{p}{,} \PYG{n+nb}{it}\PYG{p}{)}
+                \PYG{p}{\PYGZcb{}}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}} \PYG{k}{catch} \PYG{p}{(}\PYG{n}{e}\PYG{p}{:}\PYG{n}{Exception}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{e}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}real time plant error\PYGZdq{}}\PYG{p}{,} \PYG{n}{e}\PYG{p}{)}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{private} \PYG{k+kd}{fun} \PYG{n+nf}{updateKitModel}\PYG{p}{(}\PYG{n}{index}\PYG{p}{:}\PYG{k+kt}{Int}\PYG{p}{,} \PYG{n}{cropsModel}\PYG{p}{:} \PYG{n}{CropsModel?=}\PYG{k+kc}{null}\PYG{p}{,} \PYG{n}{monitoringModel}\PYG{p}{:} \PYG{n}{DataMonitoringModel? }\PYG{o}{=} \PYG{k+kc}{null}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{try} \PYG{p}{\PYGZob{}}
+            \PYG{n}{currentKitModels}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+                \PYG{k+kd}{val} \PYG{n+nv}{kitModels} \PYG{o}{=} \PYG{n+nb}{it}
+                \PYG{n}{kitModels}\PYG{p}{.}\PYG{n+na}{forEachIndexed} \PYG{p}{\PYGZob{}} \PYG{n}{kitIndex}\PYG{p}{,} \PYG{n}{kitModel} \PYG{o}{\PYGZhy{}\PYGZgt{}}
+                    \PYG{k}{if}\PYG{p}{(}\PYG{n}{kitIndex} \PYG{o}{==} \PYG{n}{index}\PYG{p}{)\PYGZob{}}
+                        \PYG{n}{cropsModel}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+                            \PYG{n}{kitModel}\PYG{p}{.}\PYG{n+na}{lastCrops} \PYG{o}{=} \PYG{n+nb}{it}
+                        \PYG{p}{\PYGZcb{}}
+                        \PYG{n}{monitoringModel}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+                            \PYG{n}{kitModel}\PYG{p}{.}\PYG{n+na}{lastMonitoring} \PYG{o}{=} \PYG{n+nb}{it}
+                        \PYG{p}{\PYGZcb{}}
+                    \PYG{p}{\PYGZcb{}}
+                \PYG{p}{\PYGZcb{}}
+                \PYG{n}{currentKitModels}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n}{kitModels}
+            \PYG{p}{\PYGZcb{}}
+
+            \PYG{n}{currentFarmModel}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+                \PYG{k+kd}{val} \PYG{n+nv}{farmModel} \PYG{o}{=} \PYG{n+nb}{it}
+                \PYG{n}{farmModel}\PYG{p}{.}\PYG{n+na}{kitModels} \PYG{o}{=} \PYG{n}{currentKitModels}\PYG{p}{.}\PYG{n+na}{value}
+                \PYG{n}{currentFarmModel}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n}{farmModel}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}\PYG{k}{catch} \PYG{p}{(}\PYG{n}{e}\PYG{p}{:}\PYG{n}{Exception}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+            \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{e}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}updateKitModel }\PYG{l+s+si}{\PYGZdl{}\PYGZob{}}\PYG{n}{currentKitModels}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{!![}\PYG{n}{index}\PYG{o}{]}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s}{\PYGZbs{}n\PYGZdq{}}\PYG{p}{,} \PYG{n}{e}\PYG{p}{)}
+        \PYG{p}{\PYGZcb{}}
+
+        \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{i}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}getFarmsUpdate }\PYG{l+s+si}{\PYGZdl{}\PYGZob{}}\PYG{n}{currentFarmModel}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{farmId}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s}{\PYGZdq{}} \PYG{o}{+}
+                \PYG{l+s}{\PYGZdq{} \PYGZbs{}tkits:}\PYG{l+s+si}{\PYGZdl{}\PYGZob{}}\PYG{n}{currentKitModels}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{size}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s}{\PYGZbs{}n\PYGZdq{}} \PYG{o}{+}
+                \PYG{l+s}{\PYGZdq{}}\PYG{l+s+si}{\PYGZdl{}\PYGZob{}}\PYG{n}{currentFarmModel}\PYG{p}{.}\PYG{n+na}{value}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s}{\PYGZbs{}n\PYGZdq{}}\PYG{p}{)}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{c+cm}{/** NOTES **/}
+    \PYG{k+kd}{var} \PYG{n+nv}{isNoteDeleted} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{Boolean?}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{k+kc}{null}\PYG{p}{)}
+    \PYG{k+kd}{var} \PYG{n+nv}{deleteNoteError} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{String}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{k+kc}{null}\PYG{p}{)}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{getNote}\PYG{p}{(}\PYG{n}{position}\PYG{p}{:}\PYG{k+kt}{Int}\PYG{p}{)} \PYG{p}{:} \PYG{n}{NoteModel?\PYGZob{}}
+        \PYG{k}{return} \PYG{n}{currentNoteModels}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{get}\PYG{p}{(}\PYG{n}{position}\PYG{p}{)}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{deleteNote}\PYG{p}{(}\PYG{n}{position}\PYG{p}{:}\PYG{k+kt}{Int}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{isNoteDeleted}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{k+kc}{null}
+        \PYG{k+kd}{val} \PYG{n+nv}{noteId} \PYG{o}{=} \PYG{n}{getNote}\PYG{p}{(}\PYG{n}{position}\PYG{p}{)}\PYG{o}{?.}\PYG{n+na}{noteId}
+        \PYG{k}{try} \PYG{p}{\PYGZob{}}
+            \PYG{n}{noteId}\PYG{o}{?.}\PYG{n+na}{let}\PYG{p}{\PYGZob{}}
+                \PYG{n}{firestore}\PYG{p}{.}\PYG{n+na}{collection}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}users\PYGZdq{}}\PYG{p}{).}\PYG{n+na}{document}\PYG{p}{(}\PYG{n}{auth}\PYG{p}{.}\PYG{n+na}{uid}\PYG{o}{!!}\PYG{p}{)}
+                    \PYG{p}{.}\PYG{n+na}{collection}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}notes\PYGZdq{}}\PYG{p}{).}\PYG{n+na}{document}\PYG{p}{(}\PYG{n}{noteId}\PYG{p}{)}
+                    \PYG{p}{.}\PYG{n+na}{delete}\PYG{p}{().}\PYG{n+na}{addOnCompleteListener} \PYG{p}{\PYGZob{}}
+                        \PYG{k}{if} \PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{isSuccessful}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+                            \PYG{n}{isNoteDeleted}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{k+kc}{true}
+                        \PYG{p}{\PYGZcb{}} \PYG{k}{else} \PYG{p}{\PYGZob{}}
+                            \PYG{n}{isNoteDeleted}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{k+kc}{false}
+                            \PYG{n}{deleteNoteError}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{exception}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{()}
+                            \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{e}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}deleteNote }\PYG{l+s+si}{\PYGZdl{}}\PYG{n}{noteId}\PYG{l+s}{\PYGZbs{}n }\PYG{l+s+si}{\PYGZdl{}\PYGZob{}}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{exception}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}
+                        \PYG{p}{\PYGZcb{}}
+                    \PYG{p}{\PYGZcb{}}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}} \PYG{k}{catch} \PYG{p}{(}\PYG{n}{e}\PYG{p}{:}\PYG{n}{Exception}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{e}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}deleteNote }\PYG{l+s+si}{\PYGZdl{}}\PYG{n}{noteId}\PYG{l+s}{ failed\PYGZdq{}}\PYG{p}{,} \PYG{n}{e}\PYG{p}{)}
+            \PYG{n}{isNoteDeleted}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{k+kc}{false}
+            \PYG{n}{deleteNoteError}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n}{e}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{()}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{refreshNotes}\PYG{p}{()\PYGZob{}}
+        \PYG{n}{usersListener}\PYG{p}{.}\PYG{n+na}{remove}\PYG{p}{()}
+        \PYG{n}{currentNoteModels}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{clear}\PYG{p}{()}
+        \PYG{n}{getUsersUpdate}\PYG{p}{()}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{c+cm}{/** POSTS **/}
+    \PYG{k+kd}{var} \PYG{n+nv}{isPostDeleted} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{Boolean?}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{k+kc}{null}\PYG{p}{)}
+    \PYG{k+kd}{var} \PYG{n+nv}{deletePostError} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{String}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{k+kc}{null}\PYG{p}{)}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{getPostUser}\PYG{p}{(}\PYG{n}{position}\PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{)} \PYG{p}{:} \PYG{n}{UserModel? }\PYG{p}{\PYGZob{}}
+        \PYG{k+kd}{var} \PYG{n+nv}{output} \PYG{p}{:} \PYG{n}{UserModel? }\PYG{o}{=} \PYG{k+kc}{null}
+        \PYG{k+kd}{val} \PYG{n+nv}{post} \PYG{o}{=} \PYG{n}{getPost}\PYG{p}{(}\PYG{n}{position}\PYG{p}{)}\PYG{o}{?.}\PYG{n+na}{userId}
+        \PYG{n}{post}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}} \PYG{n}{postId} \PYG{o}{\PYGZhy{}\PYGZgt{}}
+            \PYG{n}{allUserModels}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{forEach} \PYG{p}{\PYGZob{}}
+                \PYG{k}{if} \PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{uid} \PYG{o}{==} \PYG{n}{postId}\PYG{p}{)\PYGZob{}}
+                    \PYG{n}{output} \PYG{o}{=} \PYG{n+nb}{it}
+                \PYG{p}{\PYGZcb{}}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{return} \PYG{n}{output}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{getPost}\PYG{p}{(}\PYG{n}{position}\PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{)} \PYG{p}{:} \PYG{n}{PlantModel?\PYGZob{}}
+        \PYG{k}{return} \PYG{n}{allPlantModels}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{get}\PYG{p}{(}\PYG{n}{position}\PYG{p}{)}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{deletePost}\PYG{p}{(}\PYG{n}{position}\PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{isPostDeleted}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{k+kc}{null}
+        \PYG{k+kd}{val} \PYG{n+nv}{plantModel} \PYG{o}{=} \PYG{n}{getPost}\PYG{p}{(}\PYG{n}{position}\PYG{p}{)}
+        \PYG{k+kd}{val} \PYG{n+nv}{plantId} \PYG{o}{=} \PYG{n}{plantModel}\PYG{o}{?.}\PYG{n+na}{plantId}
+        \PYG{k}{try} \PYG{p}{\PYGZob{}}
+            \PYG{k}{if}\PYG{p}{(}\PYG{n}{plantModel}\PYG{o}{?.}\PYG{n+na}{userId} \PYG{o}{==} \PYG{n}{auth}\PYG{p}{.}\PYG{n+na}{uid}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+                \PYG{n}{firestore}\PYG{p}{.}\PYG{n+na}{collection}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}plants\PYGZdq{}}\PYG{p}{).}\PYG{n+na}{document}\PYG{p}{(}\PYG{n}{plantId}\PYG{o}{!!}\PYG{p}{)}
+                    \PYG{p}{.}\PYG{n+na}{delete}\PYG{p}{().}\PYG{n+na}{addOnCompleteListener} \PYG{p}{\PYGZob{}}
+                        \PYG{k}{if} \PYG{p}{(}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{isSuccessful}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+                            \PYG{n}{isPostDeleted}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{k+kc}{true}
+                        \PYG{p}{\PYGZcb{}} \PYG{k}{else} \PYG{p}{\PYGZob{}}
+                            \PYG{n}{isPostDeleted}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{k+kc}{false}
+                            \PYG{n}{deletePostError}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{exception}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{()}
+                            \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{e}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}deletePost }\PYG{l+s+si}{\PYGZdl{}}\PYG{n}{plantId}\PYG{l+s}{\PYGZbs{}n }\PYG{l+s+si}{\PYGZdl{}\PYGZob{}}\PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{exception}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}
+                        \PYG{p}{\PYGZcb{}}
+                    \PYG{p}{\PYGZcb{}}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}} \PYG{k}{catch} \PYG{p}{(}\PYG{n}{e}\PYG{p}{:}\PYG{n}{Exception}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{e}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}deletePost }\PYG{l+s+si}{\PYGZdl{}}\PYG{n}{plantId}\PYG{l+s}{ failed\PYGZdq{}}\PYG{p}{,} \PYG{n}{e}\PYG{p}{)}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{refreshPosts}\PYG{p}{()\PYGZob{}}
+        \PYG{n}{plantsListener}\PYG{p}{.}\PYG{n+na}{remove}\PYG{p}{()}
+        \PYG{n}{allPlantModels}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{clear}\PYG{p}{()}
+        \PYG{n}{getPlantsUpdate}\PYG{p}{()}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{c+cm}{/** FARM DASHBOARD **/}
+    \PYG{k+kd}{fun} \PYG{n+nf}{getKit}\PYG{p}{(}\PYG{n}{position}\PYG{p}{:} \PYG{k+kt}{Int}\PYG{p}{)} \PYG{p}{:} \PYG{n}{KitModel? }\PYG{p}{\PYGZob{}}
+        \PYG{k}{return} \PYG{n}{currentKitModels}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{get}\PYG{p}{(}\PYG{n}{position}\PYG{p}{)}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{refreshFarm}\PYG{p}{()\PYGZob{}}
+        \PYG{n}{farmsListener}\PYG{p}{.}\PYG{n+na}{remove}\PYG{p}{()}
+        \PYG{n}{kitsListener}\PYG{p}{.}\PYG{n+na}{remove}\PYG{p}{()}
+        \PYG{n}{monitoringsListeners}\PYG{p}{.}\PYG{n+na}{forEach} \PYG{p}{\PYGZob{}} \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{remove}\PYG{p}{()} \PYG{p}{\PYGZcb{}}
+        \PYG{n}{cropsListeners}\PYG{p}{.}\PYG{n+na}{forEach} \PYG{p}{\PYGZob{}} \PYG{n+nb}{it}\PYG{p}{.}\PYG{n+na}{remove}\PYG{p}{()} \PYG{p}{\PYGZcb{}}
+
+        \PYG{n}{currentFarmModel}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{let} \PYG{p}{\PYGZob{}}
+            \PYG{k+kd}{val} \PYG{n+nv}{farmModel} \PYG{o}{=} \PYG{n+nb}{it}
+            \PYG{n}{farmModel}\PYG{p}{.}\PYG{n+na}{kitModels}\PYG{o}{?.}\PYG{n+na}{clear}\PYG{p}{()}
+            \PYG{n}{currentFarmModel}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n}{farmModel}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{currentKitModels}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{clear}\PYG{p}{()}
+        \PYG{n}{getFarmsUpdate}\PYG{p}{(}\PYG{n}{currentUserModel}\PYG{p}{.}\PYG{n+na}{value}\PYG{o}{?.}\PYG{n+na}{farmId}\PYG{p}{)}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{c+cm}{/** SIGN OUT **/}
+    \PYG{k+kd}{var} \PYG{n+nv}{isUserSignOut} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{Boolean?}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{k+kc}{null}\PYG{p}{)}
+    \PYG{k+kd}{var} \PYG{n+nv}{signOutError} \PYG{p}{:} \PYG{n}{MutableLiveData}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{String?}\PYG{o}{\PYGZgt{}} \PYG{o}{=} \PYG{n}{MutableLiveData}\PYG{p}{(}\PYG{k+kc}{null}\PYG{p}{)}
+
+    \PYG{k+kd}{fun} \PYG{n+nf}{signOut}\PYG{p}{()\PYGZob{}}
+        \PYG{k}{try} \PYG{p}{\PYGZob{}}
+            \PYG{n}{auth}\PYG{p}{.}\PYG{n+na}{signOut}\PYG{p}{()}
+            \PYG{n}{isUserSignOut}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{k+kc}{true}
+        \PYG{p}{\PYGZcb{}} \PYG{k}{catch} \PYG{p}{(}\PYG{n}{e}\PYG{p}{:}\PYG{n}{Exception}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{isUserSignOut}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{k+kc}{false}
+            \PYG{n}{signOutError}\PYG{p}{.}\PYG{n+na}{value} \PYG{o}{=} \PYG{n}{e}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{()}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

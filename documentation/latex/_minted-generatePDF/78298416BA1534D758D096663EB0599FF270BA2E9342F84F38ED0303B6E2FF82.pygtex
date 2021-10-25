@@ -1,0 +1,22 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nd}{@Parcelize}
+\PYG{k+kd}{data} \PYG{k+kd}{class} \PYG{n+nc}{ScoreLevel}\PYG{p}{(}
+    \PYG{k+kd}{var} \PYG{n+nv}{min} \PYG{p}{:} \PYG{k+kt}{Float?} \PYG{o}{=} \PYG{l+m}{0f}\PYG{p}{,}
+    \PYG{k+kd}{var} \PYG{n+nv}{max} \PYG{p}{:} \PYG{k+kt}{Float?} \PYG{o}{=} \PYG{l+m}{0f}\PYG{p}{,}
+    \PYG{k+kd}{var} \PYG{n+nv}{score} \PYG{p}{:} \PYG{k+kt}{Float?} \PYG{o}{=} \PYG{l+m}{0f}
+\PYG{p}{)} \PYG{p}{:} \PYG{n}{Parcelable} \PYG{p}{\PYGZob{}}
+    \PYG{k+kd}{companion} \PYG{k+kd}{object} \PYG{err}{\PYGZob{}}
+        \PYG{k+kd}{fun} \PYG{n+nf}{getLevelModel}\PYG{p}{(}\PYG{n}{string}\PYG{p}{:} \PYG{k+kt}{String?}\PYG{p}{)} \PYG{p}{:} \PYG{n}{ScoreLevel? }\PYG{p}{\PYGZob{}}
+            \PYG{k}{return} \PYG{k}{try} \PYG{p}{\PYGZob{}}
+                \PYG{k+kd}{val} \PYG{n+nv}{output} \PYG{o}{=} \PYG{n}{Gson}\PYG{p}{().}\PYG{n+na}{fromJson}\PYG{o}{\PYGZlt{}}\PYG{n}{ScoreLevel}\PYG{o}{\PYGZgt{}}\PYG{p}{(}\PYG{n}{string}\PYG{p}{,} \PYG{n}{ScoreLevel}\PYG{o}{::}\PYG{n}{class}\PYG{p}{.}\PYG{n+na}{java}\PYG{p}{)}
+                \PYG{n}{ScoreLevel}\PYG{p}{(}\PYG{n}{output}\PYG{p}{.}\PYG{n+na}{min}\PYG{p}{,} \PYG{n}{output}\PYG{p}{.}\PYG{n+na}{max}\PYG{p}{)}
+            \PYG{p}{\PYGZcb{}} \PYG{k}{catch} \PYG{p}{(}\PYG{n}{e}\PYG{p}{:}\PYG{n}{Exception}\PYG{p}{)\PYGZob{}}
+                \PYG{n}{Log}\PYG{p}{.}\PYG{n+na}{e}\PYG{p}{(}\PYG{n}{TAG}\PYG{p}{,} \PYG{l+s}{\PYGZdq{}Error converting }\PYG{l+s+si}{\PYGZdl{}}\PYG{n}{TAG}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,} \PYG{n}{e}\PYG{p}{)}
+                \PYG{k+kc}{null}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+
+        \PYG{k+kd}{private} \PYG{k+kd}{const} \PYG{k+kd}{val} \PYG{n+nv}{TAG} \PYG{o}{=} \PYG{l+s}{\PYGZdq{}ScoreLevel\PYGZdq{}}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}
